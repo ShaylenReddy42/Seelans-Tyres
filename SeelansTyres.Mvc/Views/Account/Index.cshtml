@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-md-4 account-info-div pb-5">
             <div class="profile-div p-4 border border-2 rounded-3 mb-4 text-center border-dark">
-                <div class="account-profile-pic rounded-circle ms-auto me-auto border border-1 mb-3"></div>
+                <div class="account-profile-pic rounded-circle mx-auto border border-1 mb-3"></div>
                 <p class="account-holder-name">@($"{user.FirstName} {user.LastName}")</p>
             </div>
             <div class="account-nav-div">
@@ -68,7 +68,7 @@
                     <hr class="mt-5 mb-3">
                     <p>Login email:</p>
                     <p class="mb-4"><span>@user.Email</span></p>
-                    <form method="post" asp-controller="Account" asp-action="UpdateAccount" >
+                    <form method="post" asp-controller="Account" asp-action="UpdateAccount">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
