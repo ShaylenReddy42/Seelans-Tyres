@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.WebApi", "Seel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Mvc", "SeelansTyres.Mvc\SeelansTyres.Mvc.csproj", "{BF43EC2A-C4D6-4028-97C6-DDD376D74351}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Data", "SeelansTyres.Models\SeelansTyres.Data.csproj", "{A22106F7-E5F5-4F31-934A-2E8E08240C32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Data", "SeelansTyres.Data\SeelansTyres.Data.csproj", "{A22106F7-E5F5-4F31-934A-2E8E08240C32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

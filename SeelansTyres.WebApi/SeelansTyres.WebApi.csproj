@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SeelansTyres.Models\SeelansTyres.Data.csproj" />
+    <ProjectReference Include="..\SeelansTyres.Data\SeelansTyres.Data.csproj" />
   </ItemGroup>
 
 </Project>
