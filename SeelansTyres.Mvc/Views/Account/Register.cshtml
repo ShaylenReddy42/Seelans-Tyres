@@ -1,0 +1,48 @@
+@model RegisterModel
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="col-8 offset-2 col-md-6 offset-md-3 col-xl-4 offset-xl-4 py-4 my-4">
+    <h3 class="seelanstyres-color">Register</h3>
+    <h4 class="seelanstyres-color">Create an account with us</h4>
+    <hr class="mb-5"/>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger list-unstyled"></div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="FirstName">First Name</label>
+            <input type="text" class="form-control" asp-for="FirstName" placeholder="e.g. Shaylen">
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="LastName">Last Name</label>
+            <input type="text" class="form-control" asp-for="LastName" placeholder="e.g. Reddy">
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Email">Email</label>
+            <input type="email" class="form-control" asp-for="Email" placeholder="e.g. user@gmail.com">
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="PhoneNumber">Phone</label>
+            <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="e.g. 0000000000">
+            <span asp-validation-for="PhoneNumber"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Password">Password</label>
+            <input type="password" class="form-control" asp-for="Password" placeholder="Enter Password">
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="ConfirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password">
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
+        <div class="text-center mb-2">
+            <button type="submit" class="btn btn-dark w-50">Create Account</button>
+        </div>
+    </form>
+    <hr class="mt-5"/>
+</div>

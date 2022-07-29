@@ -1,0 +1,97 @@
+﻿<div class="modal fade" id="addTyreModal" tabindex="-1" role="dialog" aria-labelledby="addTyreModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTyreModal">Add a New Tyre</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm('nt_')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="../scripts/addNewTyre.php" enctype="multipart/form-data" method="post" name="addNewTyreForm" id="addNewTyreForm">
+                    <div class="alert alert-danger fade show d-none" id="nt_alert_error" role="alert">
+                        <span id="nt_errorMsg">...</span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_name">Name</label>
+                        <input type="text" class="form-control" name="nt_name" id="nt_name">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_width">Tyre Width</label>
+                        <select class="form-control" name="nt_width" id="nt_width">
+                        @for (int i = 115; i <= 355; i += 10)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_ratio">Tyre Ratio</label>
+                        <select class="form-control" name="nt_ratio" id="nt_ratio">
+                        @for (int i = 13; i <= 19; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_diameter">Tyre Diameter</label>
+                        <select class="form-control" name="nt_diameter" id="nt_diameter">
+                        @for (int i = 25; i <= 75; i += 5)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_vehicle_type">Tyre Vehicle Type</label>
+                        <select class="form-control" name="nt_vehicle_type" id="nt_vehicle_type">
+                            <option value="Car">Car</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Van / Light Truck">Van / Light Truck</option>
+                            <option value="Truck / Bus">Truck / Bus</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_price">Price</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">R</span>
+                            </div>
+                            <input type="text" class="form-control" name="nt_price" id="nt_price" aria-label="Amount">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_brand">Brand</label>
+                        <select class="form-control" name="nt_brand" id="nt_brand">
+                            <option value="1">BFGoodrich</option>
+                            <option value="2">Continental</option>
+                            <option value="3">Goodyear</option>
+                            <option value="4">Hankook</option>
+                            <option value="5">Michelin</option>
+                            <option value="6">Pirelli</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="nt_image">Upload an Image</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupFileAddon">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="nt_image" name="nt_image" aria-describedby="inputGroupFileAddon">
+                                <label class="custom-file-label" for="nt_image" id="upload-file-info">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-dark w-50" type="submit" onclick="return tyreValidation('nt_')">Add New Tyre</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

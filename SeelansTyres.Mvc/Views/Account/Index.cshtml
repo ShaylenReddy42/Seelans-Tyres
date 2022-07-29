@@ -1,0 +1,152 @@
+﻿<div class="container pt-5 mt-5">
+    <div class="row">
+        <div class="col-md-4 account-info-div pb-5">
+            <div class="profile-div p-4 border border-2 rounded-3 mb-4 text-center border-dark">
+                <div class="account-profile-pic rounded-circle ms-auto me-auto border border-1 mb-3"></div>
+                <p class="account-holder-name">Shaylen Reddy</p>
+            </div>
+            <div class="account-nav-div">
+                <ul class="nav nav-pills nav-stacked list-group">
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#orders-pill">My Orders</a></li>
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#addresses-pill">My Addresses</a></li>
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#account-pill">My Account</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8 account-detail-div">
+            <div class="tab-content">
+                <div id="orders-pill" class="tab-pane fade text-start pt-3">
+                    <h4 class="seelanstyres-color">My Orders</h4>
+                    <p>Check the status of your orders or browser through your past purchases</p>
+                    <hr class="mt-5 mb-5">
+                    <div class="orders text-center">
+                        <p>You haven't placed any orders yet</p>
+                        <a class="btn btn-dark" asp-controller="Home" asp-action="Shop">Shop Now</a>
+                    </div>
+                    <hr>
+                </div>
+                <div id="addresses-pill" class="tab-pane fade text-start pt-3">
+                    <h4 class="seelanstyres-color">My Addresses</h4>
+                    <p>Add or manage the addresses you use often</p>
+                    <hr class="mt-5 mb-5">
+                    <div class="addresses">
+                        <div class="card w-100 mb-2" style="width: 18rem;">
+                            <div class="card-body text-center">
+                                <p class="card-text" name="a_home">16 Gandhinagar Mews</p>
+                                <p class="card-text" name="a_street">27 Henrietta Street</p>
+                                <p class="card-text" name="a_city">Tongaat</p>
+                                <p class="card-text" name="a_postal_code">4399</p>
+                                <p class="card-text" name="a_preferred_address">Preferred Address: Yes</p>
+                                <form method="post">
+                                    <input type="hidden" name="address_id">
+                                    <button type="submit" class="btn btn-dark w-50">Mark as Preferred</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a class="btn btn-dark" href="#" data-toggle="modal" data-target="#addAddressModal">Add New Address</a>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div id="account-pill" class="tab-pane fade text-start pt-3">
+                    <h4 class="seelanstyres-color">My Account</h4>
+                    <p>View and edit your personal info below</p>
+                    <hr class="mt-5 mb-5">
+                    <p>Login email:</p>
+                    <p class="mb-4"><span class="user-email">CUSTOMER EMAIL FROM DB</span></p>
+                    <form method="post">
+                        <div class="alert alert-danger fade show d-none" id="cu_alert_error" role="alert">
+                            <span id="cu_errorMsg">...</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="cu_firstName" name="cu_firstName" placeholder="e.g. Shaylen">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="cu_lastName" name="cu_lastName" placeholder="e.g. Reddy">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="email">Contact Email</label>
+                                <input type="email" class="form-control disabled" id="cu_email" name="cu_email" placeholder="e.g. user@gmail.com" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="phone">Phone</label>
+                                <input type="text" class="form-control" id="cu_phone" name="cu_phone" placeholder="e.g. 0000000000">
+                            </div>
+                            <div class="col-sm-12 col-md-6 offset-md-3">
+                                <button type="submit" class="btn btn-dark w-100">Update Info</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <h4>Delete Account</h4>
+                    <div class="alert alert-warning mt-4" id="da_alert_warning" role="alert">
+                        <p>Note: Your account and it's data are not recoverable</p>
+                    </div>
+                    <form class="deleteAccountForm">
+                        <div class="alert alert-danger fade show d-none" id="da_alert_error" role="alert">
+                            <span id="da_errorMsg">...</span>
+                        </div>
+                        <div class="w-100">
+                            <label class="form-label" for="da_password">Enter Your Password and Proceed</label>
+                            <input type="password" class="form-control" id="da_password" name="da_password">
+                        </div>
+                        <div class="col-md-6 offset-md-3">
+                            <button type="submit" class="btn btn-danger w-100">Delete Account</button>
+                        </div>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAddressModal">Enter Your Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm('na_')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="scripts/addNewAddress.php" method="post" name="addAddressForm" id="addAddressForm">
+                    <div class="alert alert-danger fade show d-none" id="na_alert_error" role="alert">
+                        <span id="na_errorMsg">...</span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="na_home">Home</label>
+                        <input type="text" class="form-control" name="na_home" id="na_home" placeholder="Your Home Address">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="na_street">Street</label>
+                        <input type="text" class="form-control" name="na_street" id="na_street" placeholder="Your Street Name">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="na_city">City</label>
+                        <input type="text" class="form-control" name="na_city" id="na_city" placeholder="Your City Name">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="na_postal_code">Postal Code</label>
+                        <input type="text" class="form-control" name="na_postal_code" id="na_postal_code" placeholder="Your Area Code">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="na_preferred">Make This Your Preferred Delivery Address</label>
+                        <select class="form-control" name="na_preferred" id="na_preferred">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark w-50" onclick="return addressValidation()">Add Address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

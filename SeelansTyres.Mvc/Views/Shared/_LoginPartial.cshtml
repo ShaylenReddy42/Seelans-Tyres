@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Customer> SignInManager
+@inject UserManager<Customer> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    var user = await UserManager.GetUserAsync(User);
+    string firstName = user.FirstName,
+            lastName = user.LastName;
+
+    if (await SignInManager.UserManager.IsInRoleAsync(user, "Administrator") is false)
+    {
+        <li class="nav-item ms-2 ms-md-0">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">@($"{firstName} {lastName}")</a>
+        </li>
+    }
+    <li class="nav-item ms-2 ms-md-0">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+    </li>
+}
+else
+{
+    <li class="nav-item ms-2 ms-md-0">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+    </li>
+    <li class="nav-item ms-2 ms-md-0">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+    </li>
+}
+</ul>

@@ -1,0 +1,151 @@
+.seelanstyres-color {
+    color: rgb(255, 40, 0) !important;
+}
+
+.seelanstyres-bg {
+    background-color: rgb(255, 40, 0);
+}
+
+.modalLink {
+    color: rgb(90, 90, 90);
+}
+
+.modalLink:hover {
+    color: rgb(40, 40, 40);
+}
+
+.validation-summary-errors ul li {
+    list-style: none;
+}
+
+/* start of home page css */
+
+.welcome-sign {
+    height: 550px;
+    background: url("/images/home-bg.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.welcome-sign-note {
+    transition: all 1s;
+}
+
+.welcome-sign-note h1 {
+    font-size: 35px;
+    transition: all 1s;
+}
+
+.map-div iframe {
+    height: 500px;
+}
+
+/* end of home page css */
+
+/* start of the services page css */
+
+.service-group {
+    background-color: rgb(240, 240, 240);
+}
+
+.service {
+    border-color: rgb(255, 40, 0) !important;
+}
+
+/* end of the services page css */
+
+/* start of the about page css */
+
+.canvas {
+    background: url("/images/about-bg.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: all 1s;
+}
+
+.about-div {
+    width: 550px;
+    transition: all 1s;
+}
+
+/* end of the about page css */
+
+/* start of the account page css */
+
+.account-info-div {
+    padding-top: 80px;
+    transition: all 1s;
+}
+
+.account-profile-pic {
+    width: 100px;
+    height: 100px;
+    background: url("/images/user_icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.orders p {
+    margin-top: 100px;
+}
+
+.orders a {
+    margin-bottom: 100px;
+}
+
+/* end of the account page css */
+
+/* start of admin page css */
+
+.admin-nav-div {
+    padding-top: 80px;
+    transition: all 1s;
+}
+
+/* end of the admin page css */
+
+@media (max-width: 768px) {
+    /* start of home page css */
+
+    .welcome-sign-note h1 {
+        font-size: 50px;
+        transition: all 1s;
+    }
+
+    /* end of home page css */
+
+    /* start of about page css */
+
+    .canvas {
+        background: none;
+        transition: all 1s;
+    }
+
+    .about-div {
+        width: 100%;
+        transition: all 1s;
+    }
+
+    /* end of about page css */
+
+    /* start of account page css */
+
+    .account-info-div {
+        padding-top: 20px;
+        transition: all 1s;
+    }
+
+    /* end of account page css */
+
+    /* start of admin page css */
+
+    .admin-nav-div {
+        padding-top: 20px;
+        transition: all 1s;
+    }
+
+    /* end of admin page css */
+}

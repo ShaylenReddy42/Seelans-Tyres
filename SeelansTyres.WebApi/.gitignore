@@ -1,0 +1,6 @@
+# Folders
+bin/
+obj/
+
+Data/Migrations/ # for now
+Migrations/

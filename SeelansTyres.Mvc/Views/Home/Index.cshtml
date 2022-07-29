@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<string>
+
+<div class="welcome-sign">
+    <div class="welcome-sign-note bg-opacity-10 bg-white col-12 col-md-6 h-100 float-end text-center d-flex align-items-center">
+        <div class="mx-auto">
+            <h1 class="fw-bold seelanstyres-color">Welcome to<br>Seelan's Tyres</h1>
+            <p class="text-white fw-bold">Your local tyre shop</p>
+            <a class="btn btn-light" asp-controller="Home" asp-action="Shop">Shop Now!</a>
+        </div>
+    </div>
+</div>
+<div class="seelanstyres-bg w-100 text-center">
+    <h1 class="pt-5 mb-4 text-white">Brands</h1>
+    <p class="mb-5 text-white">Manufacturers We Cover</p>
+    <div class="container-fluid">
+        <div class="row justify-content-between">
+            @foreach (string brand in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4 col-xxl-2 pb-5">
+                    <div class="card mx-auto w-100">
+                        <img src=@($"/images/{brand}.png") class="card-img-top" alt="...">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="contact-div text-center p-5">
+    <div class="container">
+        <h1 class="pb-3 seelanstyres-color">Contact</h1>
+        <p>Dawood Cl. Dolphin Coast, 4420. South Africa</p>
+        <p>seelan@seelanstyres.co.za</p>
+        <p>065-899-2598 / 084-506-6400 / 081-426-6256</p>
+        <hr>
+        <p>Trading hours:</p>
+        <p>Monday to Friday: 07:30 to 16:30</p>
+        <p>Saturday: 07:30 to 13:00</p>
+    </div>
+</div>
+<div class="map-div">
+    <iframe class="w-100 border-0 d-block" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3471.6230654564324!2d31.1933777!3d-29.5273443!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ef71570c3fb7215%3A0x716dd2fda5a3d8f6!2sSeelans+Tyres+Ballito!5e0!3m2!1sen!2sza!4v1563890930737!5m2!1sen!2sza" allowfullscreen></iframe>
+</div>

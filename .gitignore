@@ -1,0 +1,6 @@
+# Folders
+.vs/
+.vscode/
+
+# File extensions
+*.user

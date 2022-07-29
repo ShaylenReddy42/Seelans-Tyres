@@ -1,0 +1,31 @@
+﻿@inject IHttpClientFactory httpClientFactory
+
+@{
+    var client = httpClientFactory.CreateClient("SeelansTyresAPI");
+
+    var response = await client.GetAsync("api/brands");
+    response.EnsureSuccessStatusCode();
+
+    var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
+}
+
+<table class="table table-bordered mb-4">
+    <thead>
+        <tr>
+            <th class="table-dark text-center" colspan="2">Brands</th>
+        </tr>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var brand in brands!)
+    {
+        <tr>
+            <th scope="col">@brand.Id</th>
+            <td>@brand.Name</td>
+        </tr>
+    }
+    </tbody>
+</table>

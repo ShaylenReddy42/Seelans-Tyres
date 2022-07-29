@@ -1,0 +1,47 @@
+﻿@inject IHttpClientFactory httpClientFactory
+
+@{
+    var client = httpClientFactory.CreateClient("SeelansTyresAPI");
+
+    var response = await client.GetAsync("api/tyres");
+    response.EnsureSuccessStatusCode();
+
+    var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
+}
+
+<table class="table table-bordered table-responsive mb-4">
+    <thead>
+        <tr>
+            <th class="table-dark text-center" colspan="10">Tyres</th>
+        </tr>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Width</th>
+            <th scope="col">Ratio</th>
+            <th scope="col">Diameter</th>
+            <th scope="col">Vehicle Type</th>
+            <th scope="col">Price</th>
+            <th scope="col">Available?</th>
+            <th scope="col">Image</th>
+            <th scope="col">Associated Brand</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var tyre in tyres!)
+    {
+        <tr>
+            <th scope="col">@tyre.Id</th>
+            <td>@tyre.Name</td>
+            <td>@tyre.Width</td>
+            <td>@tyre.Ratio</td>
+            <td>@tyre.Diameter</td>
+            <td>@tyre.VehicleType</td>
+            <td>@tyre.Price</td>
+            <td>@(tyre.Available ? "Yes" : "No")</td>
+            <td>@tyre.ImageUrl</td>
+            <td>@tyre.Brand!.Name</td>
+        </tr>
+    }
+    </tbody>
+</table>

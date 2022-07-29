@@ -1,0 +1,119 @@
+﻿<h1 class="seelanstyres-color text-center p-5">Admin Dashboard</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="admin-nav-div col-md-3 pb-5">
+            <div>
+                <ul class="nav nav-pills nav-stacked list-group">
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" href="#database-pill">View Database</a></li>
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" href="#tyres-pill">Tyres</a></li>
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" href="#views-pill">Views</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="tab-content">
+                <div id="database-pill" class="tab-pane fade">
+                    <h4 class="text-center mb-4">Database Structure</h4>
+                    <partial name="_AdminCustomersTable" />
+                    <partial name="_AdminAddressesTable" />
+                    <partial name="_AdminBrandsTable" />
+                    <partial name="_AdminTyresDisplayTable" />
+                    <table class="table table-bordered table-responsive-lg mb-4">
+                        <thead>
+                            <tr>
+                                <th class="table-dark text-center" colspan="8">Transactions</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Number of Items</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Delivered?</th>
+                                <th scope="col">View Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-responsive-lg mb-4">
+                        <thead>
+                            <tr>
+                                <th class="table-dark text-center" colspan="5">Transaction Details</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">Transaction ID</th>
+                                <th scope="col">Tyre</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tyres-pill" class="tab-pane fade">
+                    <h4 class="text-center mb-4">Tyres</h4>
+                    <table class="table table-bordered table-responsive mb-4">
+                        <thead>
+                            <tr>
+                                <th class="table-dark text-center" colspan="11">Tyres</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Width</th>
+                                <th scope="col">Ratio</th>
+                                <th scope="col">Diameter</th>
+                                <th scope="col">Vehicle Type</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Available?</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Associated Brand</th>
+                                <th scope="col">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div class="text-center">
+                        <a href="" class="btn btn-dark w-50" data-toggle="modal" data-target="#addTyreModal">Add Tyre</a>
+                    </div>
+                </div>
+                <div id="views-pill" class="tab-pane fade">
+                    <h4 class="text-center mb-4">Views</h4>
+                    <table class="table table-bordered table-responsive mb-4">
+                        <thead>
+                            <tr>
+                                <th class="table-dark text-center" colspan="8">Undelivered Orders</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Number of Items</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">View Receipt</th>
+                                <th scope="col">Mark as Delivered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_AddTyreModal" />
+<partial name="_UpdateTyreModal" />
+<partial name="_ViewReceiptModal" />

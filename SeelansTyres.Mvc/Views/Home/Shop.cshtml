@@ -1,0 +1,21 @@
+﻿@model IEnumerable<TyreModel>
+
+<h1 class="seelanstyres-color text-center p-5">Shop</h1>
+
+<div class="w-100 p-5">
+    <div class="row">
+    @if (Model.Count() is 0)
+    {
+        <div class="alert alert-info col-sm-12 text-center">
+            There are no tyres available for purchase at the moment
+        </div>  
+    }
+    else
+    {
+        foreach (TyreModel tyre in Model)
+        {
+            <partial name="_TyreShopItem" model=@tyre />
+        }
+    }
+    </div>
+</div>

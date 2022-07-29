@@ -1,0 +1,31 @@
+﻿@model TyreModel
+
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 mb-4">
+    <div class="card mx-auto w-100" style="width: 17rem;">
+    <img class="card-img-top" src=@Model.ImageUrl alt="Image Unavailable">
+        <div class="card-body">
+            <hr>
+            <h4 class="card-title">@Model.Name</h4>
+            <h5 class="card-text">@Model.Brand?.Name</h5>
+            <hr>
+            <p class="card-text">Vehicle Type: @Model.VehicleType</p>
+            <p class="card-text">Width: @Model.Width</p>
+            <p class="card-text">Ratio: @Model.Ratio</p>
+            <p class="card-text">Diameter: @Model.Diameter</p>
+            <p class="card-text">Price: R@(Model.Price)</p>
+            <form method="post">
+                <div class="input-group mb-3">
+                    <label class="input-group-text">Quantity</label>
+                    <select class="form-select">
+                    <option selected value="1">1</option>
+                    @for (int i = 2; i <= 10; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                    </select>
+                    <button class="btn btn-dark">Add to Cart</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
