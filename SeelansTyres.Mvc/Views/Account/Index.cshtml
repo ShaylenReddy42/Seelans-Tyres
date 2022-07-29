@@ -1,9 +1,22 @@
-﻿<div class="container pt-5 mt-5">
+﻿@model AccountViewModel
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@inject UserManager<Customer> userManager
+
+@{
+    var user = await userManager.GetUserAsync(User);
+}
+
+<div class="container pt-5 mt-5">
     <div class="row">
         <div class="col-md-4 account-info-div pb-5">
             <div class="profile-div p-4 border border-2 rounded-3 mb-4 text-center border-dark">
                 <div class="account-profile-pic rounded-circle ms-auto me-auto border border-1 mb-3"></div>
-                <p class="account-holder-name">Shaylen Reddy</p>
+                <p class="account-holder-name">@($"{user.FirstName} {user.LastName}")</p>
             </div>
             <div class="account-nav-div">
                 <ul class="nav nav-pills nav-stacked list-group">
@@ -52,53 +65,56 @@
                 <div id="account-pill" class="tab-pane fade text-start pt-3">
                     <h4 class="seelanstyres-color">My Account</h4>
                     <p>View and edit your personal info below</p>
-                    <hr class="mt-5 mb-5">
+                    <hr class="mt-5 mb-3">
                     <p>Login email:</p>
-                    <p class="mb-4"><span class="user-email">CUSTOMER EMAIL FROM DB</span></p>
-                    <form method="post">
-                        <div class="alert alert-danger fade show d-none" id="cu_alert_error" role="alert">
-                            <span id="cu_errorMsg">...</span>
-                        </div>
+                    <p class="mb-4"><span>@user.Email</span></p>
+                    <form method="post" asp-controller="Account" asp-action="UpdateAccount" >
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="firstName">First Name</label>
-                                <input type="text" class="form-control" id="cu_firstName" name="cu_firstName" placeholder="e.g. Shaylen">
+                                <label class="form-label" asp-for="updateAccountModel.FirstName">First Name</label>
+                                <input type="text" class="form-control" asp-for="updateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@user.FirstName">
+                                <span asp-validation-for="updateAccountModel.FirstName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="cu_lastName" name="cu_lastName" placeholder="e.g. Reddy">
+                                <label class="form-label" asp-for="updateAccountModel.LastName">Last Name</label>
+                                <input type="text" class="form-control" asp-for="updateAccountModel.LastName" placeholder="e.g. Reddy" value="@user.LastName">
+                                <span asp-validation-for="updateAccountModel.LastName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="email">Contact Email</label>
-                                <input type="email" class="form-control disabled" id="cu_email" name="cu_email" placeholder="e.g. user@gmail.com" readonly>
+                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@user.Email" disabled>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="phone">Phone</label>
-                                <input type="text" class="form-control" id="cu_phone" name="cu_phone" placeholder="e.g. 0000000000">
+                                <label class="form-label" asp-for="updateAccountModel.PhoneNumber">Phone</label>
+                                <input type="text" class="form-control" asp-for="updateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@user.PhoneNumber">
+                                <span asp-validation-for="updateAccountModel.PhoneNumber"></span>
                             </div>
                             <div class="col-sm-12 col-md-6 offset-md-3">
                                 <button type="submit" class="btn btn-dark w-100">Update Info</button>
                             </div>
                         </div>
                     </form>
-                    <hr>
+                    <hr class="my-3">
                     <h4>Delete Account</h4>
-                    <div class="alert alert-warning mt-4" id="da_alert_warning" role="alert">
-                        <p>Note: Your account and it's data are not recoverable</p>
+                    <div class="alert alert-warning mt-4">
+                        <p>
+                            Note: Your account and its data are not recoverable.
+                            <br />
+                            On success, you will be logged out and redirected to the home screen.
+                            <br />
+                            On failure, the screen will be refreshed
+                        </p>
                     </div>
-                    <form class="deleteAccountForm">
-                        <div class="alert alert-danger fade show d-none" id="da_alert_error" role="alert">
-                            <span id="da_errorMsg">...</span>
+                    <form method="post" asp-controller="Account" asp-action="DeleteAccount">
+                        <div class="w-100 mb-3">
+                            <label class="form-label">Enter your password to proceed</label>
+                            <input type="password" name="password" class="form-control" required>
                         </div>
-                        <div class="w-100">
-                            <label class="form-label" for="da_password">Enter Your Password and Proceed</label>
-                            <input type="password" class="form-control" id="da_password" name="da_password">
-                        </div>
-                        <div class="col-md-6 offset-md-3">
+                        <div class="col-md-6 offset-md-3 mb-5">
                             <button type="submit" class="btn btn-danger w-100">Delete Account</button>
                         </div>
                     </form>
-                    <hr>
                 </div>
             </div>
         </div>

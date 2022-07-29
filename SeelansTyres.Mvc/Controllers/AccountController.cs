@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.ViewModels;
 
 namespace SeelansTyres.Mvc.Controllers;
 
@@ -25,7 +26,9 @@ public class AccountController : Controller
     [Authorize]
     public IActionResult Index()
     {
-        return View();
+        AccountViewModel accountViewModel = new();
+        
+        return View(accountViewModel);
     }
 
     public IActionResult Login()
@@ -121,5 +124,41 @@ public class AccountController : Controller
         }
 
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateAccount(AccountViewModel model)
+    {
+        var updateAccountModel = model.updateAccountModel;
+        
+        if (TryValidateModel(updateAccountModel))
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            user.FirstName = updateAccountModel.FirstName;
+            user.LastName = updateAccountModel.LastName;
+            user.PhoneNumber = updateAccountModel.PhoneNumber;
+
+            await userManager.UpdateAsync(user);
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteAccount(string password)
+    {
+        var user = await userManager.GetUserAsync(User);
+        
+        var passwordCorrect = await userManager.CheckPasswordAsync(user, password);
+
+        if (passwordCorrect is true)
+        {
+            await signInManager.SignOutAsync();
+            await userManager.DeleteAsync(user);
+            return RedirectToAction("Index", "Home");
+        }
+
+        return RedirectToAction("Index");
     }
 }
