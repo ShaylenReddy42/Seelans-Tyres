@@ -22,5 +22,7 @@ public class Address
     [MaxLength(4)]
     public string PostalCode { get; set; } = string.Empty;
     public bool PreferredAddress { get; set; } = default;
+    [ForeignKey("CustomerId")]
     public Customer? Customer { get; set; }
+    public Guid CustomerId { get; set; }
 }

@@ -6,9 +6,15 @@
 }
 
 @inject UserManager<Customer> userManager
+@inject IHttpClientFactory httpClientFactory
 
-@{
+    @{
     var user = await userManager.GetUserAsync(User);
+
+    var client = httpClientFactory.CreateClient("SeelansTyresAPI");
+    var response = await client.GetAsync($"api/customers/{user.Id}/addresses");
+
+    var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 }
 
 <div class="container pt-5 mt-5">
@@ -31,7 +37,7 @@
                 <div id="orders-pill" class="tab-pane fade text-start pt-3">
                     <h4 class="seelanstyres-color">My Orders</h4>
                     <p>Check the status of your orders or browser through your past purchases</p>
-                    <hr class="mt-5 mb-5">
+                    <hr class="my-5">
                     <div class="orders text-center">
                         <p>You haven't placed any orders yet</p>
                         <a class="btn btn-dark" asp-controller="Home" asp-action="Shop">Shop Now</a>
@@ -41,26 +47,38 @@
                 <div id="addresses-pill" class="tab-pane fade text-start pt-3">
                     <h4 class="seelanstyres-color">My Addresses</h4>
                     <p>Add or manage the addresses you use often</p>
-                    <hr class="mt-5 mb-5">
+                    <hr class="my-5">
                     <div class="addresses">
-                        <div class="card w-100 mb-2" style="width: 18rem;">
-                            <div class="card-body text-center">
-                                <p class="card-text" name="a_home">16 Gandhinagar Mews</p>
-                                <p class="card-text" name="a_street">27 Henrietta Street</p>
-                                <p class="card-text" name="a_city">Tongaat</p>
-                                <p class="card-text" name="a_postal_code">4399</p>
-                                <p class="card-text" name="a_preferred_address">Preferred Address: Yes</p>
-                                <form method="post">
-                                    <input type="hidden" name="address_id">
-                                    <button type="submit" class="btn btn-dark w-50">Mark as Preferred</button>
-                                </form>
-                            </div>
-                        </div>
+                        @if (addresses!.Count() is 0)
+                        {
+                            <p class="text-center">You haven't saved any addresses yet</p>
+                        }
+                        else
+                        {
+                            foreach (var address in addresses!)
+                            {
+                                <div class="card w-100 mb-2" style="width: 18rem;">
+                                    <div class="card-body text-center">
+                                        <p class="card-text">@address.AddressLine1</p>
+                                        <p class="card-text">@address.AddressLine2</p>
+                                        <p class="card-text">@address.City</p>
+                                        <p class="card-text">@address.PostalCode</p>
+                                        <p class="card-text">Preferred Address: @(address.PreferredAddress ? "Yes" : "No")</p>
+                                        @if (address.PreferredAddress is false)
+                                        {
+                                            <form method="post" asp-controller="Account" asp-action="MarkAddressAsPreferred" asp-route-addressId="@address.Id">
+                                                <button type="submit" class="btn btn-dark w-50">Mark as Preferred</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
                         <div class="text-center mt-4">
-                            <a class="btn btn-dark" href="#" data-toggle="modal" data-target="#addAddressModal">Add New Address</a>
+                            <a class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAddressModal">Add New Address</a>
                         </div>
                     </div>
-                    <hr>
+                    <hr class="my-5">
                 </div>
                 <div id="account-pill" class="tab-pane fade text-start pt-3">
                     <h4 class="seelanstyres-color">My Account</h4>
@@ -72,23 +90,23 @@
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="updateAccountModel.FirstName">First Name</label>
-                                <input type="text" class="form-control" asp-for="updateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@user.FirstName">
-                                <span asp-validation-for="updateAccountModel.FirstName"></span>
+                                <label class="form-label" asp-for="UpdateAccountModel.FirstName">First Name</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@user.FirstName">
+                                <span asp-validation-for="UpdateAccountModel.FirstName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="updateAccountModel.LastName">Last Name</label>
-                                <input type="text" class="form-control" asp-for="updateAccountModel.LastName" placeholder="e.g. Reddy" value="@user.LastName">
-                                <span asp-validation-for="updateAccountModel.LastName"></span>
+                                <label class="form-label" asp-for="UpdateAccountModel.LastName">Last Name</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.LastName" placeholder="e.g. Reddy" value="@user.LastName">
+                                <span asp-validation-for="UpdateAccountModel.LastName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="email">Contact Email</label>
                                 <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@user.Email" disabled>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="updateAccountModel.PhoneNumber">Phone</label>
-                                <input type="text" class="form-control" asp-for="updateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@user.PhoneNumber">
-                                <span asp-validation-for="updateAccountModel.PhoneNumber"></span>
+                                <label class="form-label" asp-for="UpdateAccountModel.PhoneNumber">Phone</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@user.PhoneNumber">
+                                <span asp-validation-for="UpdateAccountModel.PhoneNumber"></span>
                             </div>
                             <div class="col-sm-12 col-md-6 offset-md-3">
                                 <button type="submit" class="btn btn-dark w-100">Update Info</button>
@@ -121,45 +139,45 @@
     </div>
 </div>
 
-<div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addAddressModal">Enter Your Address</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm('na_')">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title">Enter Your Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="scripts/addNewAddress.php" method="post" name="addAddressForm" id="addAddressForm">
-                    <div class="alert alert-danger fade show d-none" id="na_alert_error" role="alert">
-                        <span id="na_errorMsg">...</span>
+                <form method="post" asp-controller="Account" asp-action="AddNewAddress">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.AddressLine1">Address Line 1</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.AddressLine1" placeholder="Address Line 1">
+                        <span asp-validation-for="CreateAddressModel.AddressLine1"></span>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label for="na_home">Home</label>
-                        <input type="text" class="form-control" name="na_home" id="na_home" placeholder="Your Home Address">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.AddressLine2">Address Line 2</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.AddressLine2" placeholder="Address Line 2">
+                        <span asp-validation-for="CreateAddressModel.AddressLine2"></span>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label for="na_street">Street</label>
-                        <input type="text" class="form-control" name="na_street" id="na_street" placeholder="Your Street Name">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.City">City</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.City" placeholder="City Name">
+                        <span asp-validation-for="CreateAddressModel.City"></span>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label for="na_city">City</label>
-                        <input type="text" class="form-control" name="na_city" id="na_city" placeholder="Your City Name">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.PostalCode">Postal Code</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.PostalCode" placeholder="Postal Code">
+                        <span asp-validation-for="CreateAddressModel.PostalCode"></span>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label for="na_postal_code">Postal Code</label>
-                        <input type="text" class="form-control" name="na_postal_code" id="na_postal_code" placeholder="Your Area Code">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="na_preferred">Make This Your Preferred Delivery Address</label>
-                        <select class="form-control" name="na_preferred" id="na_preferred">
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" asp-for="CreateAddressModel.PreferredAddress">Mark As Preferred Delivery Address</label>
+                        <select class="form-select" asp-for="CreateAddressModel.PreferredAddress">
+                            <option value="true" selected>Yes</option>
+                            <option value="false">No</option>
                         </select>
-                    </div>
+                        </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-dark w-50" onclick="return addressValidation()">Add Address</button>
+                        <button type="submit" class="btn btn-dark w-50">Add Address</button>
                     </div>
                 </form>
             </div>

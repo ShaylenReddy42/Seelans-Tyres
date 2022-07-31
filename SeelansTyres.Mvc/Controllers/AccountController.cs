@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.ViewModels;
+using System.Text.Json;
 
 namespace SeelansTyres.Mvc.Controllers;
 
@@ -12,15 +13,21 @@ public class AccountController : Controller
     private readonly ILogger<AccountController> logger;
     private readonly SignInManager<Customer> signInManager;
     private readonly UserManager<Customer> userManager;
+    private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient client;
 
     public AccountController(
         ILogger<AccountController> logger,
         SignInManager<Customer> signInManager,
-        UserManager<Customer> userManager)
+        UserManager<Customer> userManager,
+        IHttpClientFactory httpClientFactory)
     {
         this.logger = logger;
         this.signInManager = signInManager;
         this.userManager = userManager;
+        this.httpClientFactory = httpClientFactory;
+
+        client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }
     
     [Authorize]
@@ -129,7 +136,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateAccount(AccountViewModel model)
     {
-        var updateAccountModel = model.updateAccountModel;
+        var updateAccountModel = model.UpdateAccountModel;
         
         if (TryValidateModel(updateAccountModel))
         {
@@ -158,6 +165,30 @@ public class AccountController : Controller
             await userManager.DeleteAsync(user);
             return RedirectToAction("Index", "Home");
         }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddNewAddress(AccountViewModel model)
+    {
+        var createAddressModel = model.CreateAddressModel;
+
+        var customerId = (await userManager.GetUserAsync(User)).Id;
+
+        var contentJson = JsonSerializer.Serialize(createAddressModel);
+
+        await client.PostAsJsonAsync($"customers/{customerId}/addresses", contentJson);
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> MarkAddressAsPreferred(int addressId)
+    {
+        var customerId = (await userManager.GetUserAsync(User)).Id;
+
+        await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", new StringContent(""));
 
         return RedirectToAction("Index");
     }

@@ -7,4 +7,5 @@ public class AddressModel
     public string AddressLine2 { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
+    public bool PreferredAddress { get; set; }
 }

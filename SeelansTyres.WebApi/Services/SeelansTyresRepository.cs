@@ -1,42 +1,86 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeelansTyres.WebApi.Data;
 using SeelansTyres.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace SeelansTyres.WebApi.Services;
 
 public class SeelansTyresRepository : ISeelansTyresRepository
 {
     private readonly SeelansTyresContext context;
+    private readonly UserManager<Customer> userManager;
 
     public SeelansTyresRepository(
-        SeelansTyresContext context)
+        SeelansTyresContext context,
+        UserManager<Customer> userManager)
     {
         this.context = context;
+        this.userManager = userManager;
     }
 
-    public async Task<IEnumerable<Address>?> GetAddressesForCustomerAsync(Guid customerId)
+    #region Customer
+
+    public async Task<bool> CheckIfCustomerExistsAsync(Guid customerId)
     {
-        var customer = await context.Customers.FirstOrDefaultAsync(customer => customer.Id == customerId);
+        var customer = await userManager.FindByIdAsync(customerId.ToString());
 
-        if (customer is not null)
-        {
-            return customer.Addresses.ToList();
-        }
-
-        return null;
+        return customer is not null;
     }
+
+    #endregion Customer
+
+    #region Addresses
+
+    public async Task<IEnumerable<Address>> GetAddressesForCustomerAsync(Guid customerId) => 
+        await context.Addresses.Where(address => address.Customer!.Id == customerId).ToListAsync();
+
+    public async Task<Address?> GetAddressForCustomerAsync(Guid customerId, int addressId) => 
+        await context.Addresses.FirstOrDefaultAsync(address => address.Id == addressId && address.Customer!.Id == customerId);
+
+    public async Task AddNewAddressForCustomerAsync(Guid customerId, Address newAddress)
+    {
+        newAddress.CustomerId = customerId;
+
+        if (newAddress.PreferredAddress is true)
+        {
+            await context.Addresses
+                .Where(address => address.Customer!.Id == customerId)
+                .ForEachAsync(address => address.PreferredAddress = false);
+        }
+        
+        await context.Addresses.AddAsync(newAddress);
+    }
+
+    public async Task MarkAsPrefferedAsync(Guid customerId, Address addressToMarkAsPreferred)
+    {
+        await context.Addresses
+            .Where(address => address.Customer!.Id == customerId)
+            .ForEachAsync(address => address.PreferredAddress = false);
+
+        addressToMarkAsPreferred.PreferredAddress = true;
+    }
+
+    #endregion Addresses
+
+    #region Brands
 
     public async Task<IEnumerable<Brand>> GetAllBrandsAsync() =>
         await context.Brands.ToListAsync();
 
+    #endregion Brands
+
+    #region Tyres
+
     public async Task<IEnumerable<Tyre>> GetAllTyresAsync() => 
         await context.Tyres.Include(tyre => tyre.Brand).ToListAsync();
 
-    public async Task<Tyre?> GetTyreById(int tyreId) => 
+    public async Task<Tyre?> GetTyreByIdAsync(int tyreId) => 
         await context.Tyres.Include(tyre => tyre.Brand).FirstOrDefaultAsync(tyre => tyre.Id == tyreId);
 
-    public async Task SaveChangesAsync()
+    #endregion Tyres
+
+    public async Task<bool> SaveChangesAsync()
     {
-        await context.SaveChangesAsync();
+        return await context.SaveChangesAsync() >= 0;
     }
 }

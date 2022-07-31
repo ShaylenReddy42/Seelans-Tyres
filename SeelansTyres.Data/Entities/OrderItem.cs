@@ -10,6 +10,10 @@ public class OrderItem
     public int Id { get; set; }
     [Required]
     public int Quantity { get; set; }
+    [ForeignKey("TyreId")]
     public Tyre? Tyre { get; set; }
+    public int TyreId { get; set; }
+    [ForeignKey("OrderId")]
     public Order? Order { get; set; }
+    public int OrderId { get; set; }
 }

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SeelansTyres.Data.Entities;
 using SeelansTyres.WebApi.Data;
 using SeelansTyres.WebApi.Services;
 using System.Reflection;
@@ -25,6 +27,9 @@ builder.Services.AddDbContext<SeelansTyresContext>(
         builder.Configuration["ConnectionStrings:SeelansTyresContext"]));
 
 builder.Services.AddScoped<ISeelansTyresRepository, SeelansTyresRepository>();
+
+builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<SeelansTyresContext>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

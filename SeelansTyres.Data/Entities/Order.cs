@@ -19,5 +19,5 @@ public class Order
     public bool Delivered { get; set; }
     public Customer? Customer { get; set; }
     public Address? Address { get; set; }
-    public ICollection<OrderItem> OrderItems { get; set; } = null!;
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

@@ -1,8 +1,10 @@
-﻿using SeelansTyres.Mvc.Models;
+﻿using SeelansTyres.Data.Models;
+using SeelansTyres.Mvc.Models;
 
 namespace SeelansTyres.Mvc.ViewModels;
 
 public class AccountViewModel
 {
-    public UpdateAccountModel updateAccountModel { get; set; } = null!;
+    public UpdateAccountModel UpdateAccountModel { get; set; } = null!;
+    public CreateAddressModel CreateAddressModel { get; set; } = null!;
 }

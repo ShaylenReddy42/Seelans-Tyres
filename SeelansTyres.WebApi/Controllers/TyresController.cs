@@ -35,7 +35,7 @@ public class TyresController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<TyreModel>> GetTyreById(int id)
     {
-        var tyre = await repository.GetTyreById(id);
+        var tyre = await repository.GetTyreByIdAsync(id);
 
         if (tyre is not null)
         {
