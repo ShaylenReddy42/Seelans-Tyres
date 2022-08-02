@@ -55,7 +55,7 @@
             @if (ViewData["IncludeEdit"] is true)
             {
                 <td>
-                    <button type="button" class="btn btn-warning btn-sm w-100 updateTyre"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <a class="btn btn-warning btn-sm w-100" asp-controller="Admin" asp-action="UpdateTyre" asp-route-tyreId="@tyre.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
             }
         </tr>

@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeelansTyres.Mvc.Models;
 
-public class AddNewTyreModel
+public class MvcTyreModel
 {
+    public int Id { get; set; }
     [Required]
     [MinLength(3)]
     [MaxLength(40)]
@@ -25,6 +26,7 @@ public class AddNewTyreModel
     [Column(TypeName = "decimal")]
     public decimal Price { get; set; }
     public bool Available { get; set; } = true;
+    public string? OriginalImageUrl { get; set; }
     public IFormFile? Image { get; set; }
     [FileExtensions(Extensions = "jpg,jpeg,png")]
     public string? ImageFileName => Image is not null ? Image.FileName : null;

@@ -35,7 +35,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTyre(AddNewTyreModel model)
+    public async Task<IActionResult> AddTyre(MvcTyreModel model)
     {
         if (ModelState.IsValid is false)
         {
@@ -81,6 +81,76 @@ public class AdminController : Controller
         var jsonContent = JsonContent.Create(createTyreModel);
 
         var response = await client.PostAsync("api/tyres", jsonContent);
+
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> UpdateTyre(int tyreId)
+    {
+        var response = await client.GetAsync($"api/tyres/{tyreId}");
+
+        var model = await response.Content.ReadFromJsonAsync<TyreModel>();
+        
+        var mvcTyreModel = new MvcTyreModel
+        {
+            Id = model!.Id,
+            Name = model.Name,
+            Width = model.Width,
+            Ratio = model.Ratio,
+            Diameter = model.Diameter,
+            VehicleType = model.VehicleType,
+            Price = model.Price,
+            Available = model.Available,
+            OriginalImageUrl = model.ImageUrl,
+            BrandId = model.Brand!.Id
+        };
+        
+        return View(mvcTyreModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateTyre(MvcTyreModel model)
+    {
+        if (ModelState.IsValid is false)
+        {
+            return View(model);
+        }
+
+        var filePath = model.OriginalImageUrl;
+
+        if (model.Image is not null)
+        {
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
+
+            filePath = Path.Combine(
+                environment.WebRootPath,
+                "images",
+                fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.Image.CopyToAsync(fileStream);
+            }
+
+            filePath = $"/images/{fileName}";
+        }
+
+        var createTyreModel = new CreateTyreModel
+        {
+            Name = model.Name,
+            Width = model.Width,
+            Ratio = model.Ratio,
+            Diameter = model.Diameter,
+            VehicleType = model.VehicleType,
+            Price = model.Price,
+            Available = model.Available,
+            ImageUrl = filePath!,
+            BrandId = model.BrandId
+        };
+
+        var jsonContent = JsonContent.Create(createTyreModel);
+
+        var response = await client.PutAsync($"api/tyres/{model.Id}", jsonContent);
 
         return RedirectToAction("Index");
     }

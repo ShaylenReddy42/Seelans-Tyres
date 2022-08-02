@@ -8,10 +8,11 @@
 <h1 class="seelanstyres-color text-center p-5">Admin Portal</h1>
 
 <div class="col-8 offset-2 col-md-6 offset-md-3 col-xl-4 offset-xl-4">
-    <h3>Add Tyre</h3>
+    <h3>Update Tyre</h3>
     <hr />
     <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <input asp-for="Id" value="@Model.Id" hidden />
         <div class="col-md-12 mb-3">
             <label class="form-label" asp-for="Name">Name</label>
             <input type="text" asp-for="Name" class="form-control">
@@ -84,6 +85,7 @@
         </div>
         <div class="col-md-12 mb-4">
             <label class="form-label" asp-for="Image">Upload an Image</label>
+            <input asp-for="OriginalImageUrl" value="@Model.OriginalImageUrl" hidden />
             <div class="input-group">
                 <input type="file" class="form-control" asp-for="Image">
                 <label class="input-group-text" asp-for="Image">Upload</label>
@@ -91,7 +93,7 @@
             <span asp-validation-for="ImageFileName"></span>
         </div>
         <div class="text-center mb-4">
-            <button class="btn btn-dark w-50" type="submit">Add New Tyre</button>
+            <button class="btn btn-dark w-50" type="submit">Update Tyre</button>
         </div>
     </form>
 </div>

@@ -61,4 +61,21 @@ public class TyresController : ControllerBase
             new { id = createdTyre.Id },
             createdTyre);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateTyre(CreateTyreModel model, int id)
+    {
+        var tyre = await repository.GetTyreByIdAsync(id);
+
+        if (tyre is null)
+        {
+            return NotFound();
+        }
+
+        mapper.Map(model, tyre);
+
+        await repository.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

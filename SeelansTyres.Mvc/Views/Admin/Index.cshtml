@@ -18,7 +18,7 @@
                     <partial name="_AdminCustomersTable" />
                     <partial name="_AdminAddressesTable" />
                     <partial name="_AdminBrandsTable" />
-                    <partial name="_AdminTyresDisplayTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", false } }' />
+                    <partial name="_AdminTyresTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", false } }' />
                     <table class="table table-bordered table-responsive-lg mb-4">
                         <thead>
                             <tr>
@@ -59,7 +59,7 @@
                 </div>
                 <div id="tyres-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Tyres <a class="fa-solid fa-plus btn btn-dark" asp-controller="Admin" asp-action="AddTyre"></a></h4>
-                    <partial name="_AdminTyresDisplayTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", true } }' />
+                    <partial name="_AdminTyresTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", true } }' />
                 </div>
                 <div id="views-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Views</h4>
