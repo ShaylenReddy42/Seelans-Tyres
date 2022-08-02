@@ -12,7 +12,14 @@
 <table class="table table-bordered table-responsive mb-4">
     <thead>
         <tr>
-            <th class="table-dark text-center" colspan="10">Tyres</th>
+            @if (ViewData["IncludeEdit"] is true)
+            {
+                <th class="table-dark text-center" colspan="11">Tyres</th>
+            }
+            else
+            {
+                <th class="table-dark text-center" colspan="10">Tyres</th>
+            }
         </tr>
         <tr>
             <th scope="col">ID</th>
@@ -25,6 +32,10 @@
             <th scope="col">Available?</th>
             <th scope="col">Image</th>
             <th scope="col">Associated Brand</th>
+            @if (ViewData["IncludeEdit"] is true)
+            {
+                <th scope="col">Edit</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -41,6 +52,12 @@
             <td>@(tyre.Available ? "Yes" : "No")</td>
             <td>@tyre.ImageUrl</td>
             <td>@tyre.Brand!.Name</td>
+            @if (ViewData["IncludeEdit"] is true)
+            {
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm w-100 updateTyre"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                </td>
+            }
         </tr>
     }
     </tbody>

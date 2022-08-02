@@ -18,7 +18,7 @@
                     <partial name="_AdminCustomersTable" />
                     <partial name="_AdminAddressesTable" />
                     <partial name="_AdminBrandsTable" />
-                    <partial name="_AdminTyresDisplayTable" />
+                    <partial name="_AdminTyresDisplayTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", false } }' />
                     <table class="table table-bordered table-responsive-lg mb-4">
                         <thead>
                             <tr>
@@ -58,33 +58,8 @@
                     </table>
                 </div>
                 <div id="tyres-pill" class="tab-pane fade">
-                    <h4 class="text-center mb-4">Tyres</h4>
-                    <table class="table table-bordered table-responsive mb-4">
-                        <thead>
-                            <tr>
-                                <th class="table-dark text-center" colspan="11">Tyres</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Width</th>
-                                <th scope="col">Ratio</th>
-                                <th scope="col">Diameter</th>
-                                <th scope="col">Vehicle Type</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Available?</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Associated Brand</th>
-                                <th scope="col">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                    <div class="text-center">
-                        <a href="" class="btn btn-dark w-50" data-toggle="modal" data-target="#addTyreModal">Add Tyre</a>
-                    </div>
+                    <h4 class="text-center mb-4">Tyres <i class="fa-solid fa-plus btn btn-dark" data-bs-toggle="modal" data-bs-target="#addTyreModal"></i></h4>
+                    <partial name="_AdminTyresDisplayTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", true } }' />
                 </div>
                 <div id="views-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Views</h4>
