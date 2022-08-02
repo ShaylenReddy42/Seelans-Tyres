@@ -19,7 +19,7 @@ public interface ISeelansTyresRepository
     /***** Tyres *****/
     Task<IEnumerable<Tyre>> GetAllTyresAsync();
     Task<Tyre?> GetTyreByIdAsync(int id);
+    Task AddNewTyreAsync(Tyre tyreEntity);
 
     Task<bool> SaveChangesAsync();
-    
 }

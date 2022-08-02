@@ -9,5 +9,6 @@ public class TyreProfile : Profile
     public TyreProfile()
     {
         CreateMap<Tyre, TyreModel>().ReverseMap();
+        CreateMap<Tyre, CreateTyreModel>().ReverseMap();
     }
 }

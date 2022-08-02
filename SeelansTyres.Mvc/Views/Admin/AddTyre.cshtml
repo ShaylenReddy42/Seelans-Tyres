@@ -1,0 +1,97 @@
+﻿@model AddNewTyreModel
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<h1 class="seelanstyres-color text-center p-5">Admin Portal</h1>
+
+<div class="col-8 offset-2 col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+    <h3>Add Tyre</h3>
+    <hr />
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Name">Name</label>
+            <input type="text" asp-for="Name" class="form-control">
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Width">Width</label>
+            <select asp-for="Width" class="form-control">
+            @for (int i = 115; i <= 355; i += 10)
+            {
+                <option value="@i">@i</option>
+            }
+            </select>
+            <span asp-validation-for="Width"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Ratio">Ratio</label>
+            <select asp-for="Ratio" class="form-control">
+            @for (int i = 13; i <= 19; i++)
+            {
+                <option value="@i">@i</option>
+            }
+            </select>
+            <span asp-validation-for="Ratio"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Diameter">Diameter</label>
+            <select asp-for="Diameter" class="form-control">
+            @for (int i = 25; i <= 75; i += 5)
+            {
+                <option value="@i">@i</option>
+            }
+            </select>
+            <span asp-validation-for="Diameter"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="VehicleType">Vehicle Type</label>
+            <select asp-for="VehicleType" class="form-control">
+                <option value="Car">Car</option>
+                <option value="SUV">SUV</option>
+                <option value="Van / Light Truck">Van / Light Truck</option>
+                <option value="Truck / Bus">Truck / Bus</option>
+            </select>
+            <span asp-validation-for="VehicleType"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Price">Price</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">R</span>
+                </div>
+                <input type="text" asp-for="Price" class="form-control" aria-label="Amount">
+                <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                </div>
+            </div>
+            <span asp-validation-for="Price"></span>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="BrandId">Brand</label>
+            <select asp-for="BrandId" class="form-control">
+                <option value="1">BFGoodrich</option>
+                <option value="2">Continental</option>
+                <option value="3">Goodyear</option>
+                <option value="4">Hankook</option>
+                <option value="5">Michelin</option>
+                <option value="6">Pirelli</option>
+            </select>
+            <span asp-validation-for="BrandId"></span>
+        </div>
+        <div class="col-md-12 mb-4">
+            <label class="form-label" asp-for="Image">Upload an Image</label>
+            <div class="input-group">
+                <input type="file" class="form-control" asp-for="Image">
+                <label class="input-group-text" asp-for="Image">Upload</label>
+            </div>
+            <span asp-validation-for="ImageFileName"></span>
+        </div>
+        <div class="text-center mb-4">
+            <button class="btn btn-dark w-50" type="submit">Add New Tyre</button>
+        </div>
+    </form>
+</div>

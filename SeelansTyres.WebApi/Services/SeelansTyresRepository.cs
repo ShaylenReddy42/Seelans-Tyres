@@ -77,6 +77,15 @@ public class SeelansTyresRepository : ISeelansTyresRepository
     public async Task<Tyre?> GetTyreByIdAsync(int tyreId) => 
         await context.Tyres.Include(tyre => tyre.Brand).FirstOrDefaultAsync(tyre => tyre.Id == tyreId);
 
+    public async Task AddNewTyreAsync(Tyre tyreEntity)
+    {
+        var brand = await context.Brands.FirstOrDefaultAsync(brand => brand.Id == tyreEntity.BrandId);
+
+        tyreEntity.Brand = brand;
+
+        await context.Tyres.AddAsync(tyreEntity);
+    }
+
     #endregion Tyres
 
     public async Task<bool> SaveChangesAsync()

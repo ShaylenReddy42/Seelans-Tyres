@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Data.Entities;
+namespace SeelansTyres.Data.Models;
 
-public class Tyre
+public class CreateTyreModel
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
     [Required]
     [MinLength(3)]
     [MaxLength(40)]
@@ -29,7 +26,6 @@ public class Tyre
     public decimal Price { get; set; }
     public bool Available { get; set; } = true;
     public string ImageUrl { get; set; } = string.Empty;
-    [ForeignKey("BrandId")]
-    public Brand? Brand { get; set; }
+    [Required]
     public int BrandId { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿@if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values) != Url.Action("Index", "Admin"))
+﻿@if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin") is false)
 {
     <script>
         window.location.href = "@Url.Action("Index", "Admin")";

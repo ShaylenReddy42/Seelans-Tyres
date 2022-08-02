@@ -9,6 +9,7 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient client;
 
     public HomeController(
         ILogger<HomeController> logger,
@@ -16,6 +17,7 @@ public class HomeController : Controller
     {
         _logger = logger;
         this.httpClientFactory = httpClientFactory;
+        client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }
 
     public IActionResult Index()
@@ -38,8 +40,6 @@ public class HomeController : Controller
     public async Task<IActionResult> Shop()
     {
         ViewData["Title"] = "Shop";
-
-        var client = httpClientFactory.CreateClient("SeelansTyresAPI");
 
         var response = await client.GetAsync("api/tyres");
         response.EnsureSuccessStatusCode();
