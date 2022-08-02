@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.ViewModels;
-using System.Text.Json;
 
 namespace SeelansTyres.Mvc.Controllers;
 
@@ -13,7 +12,6 @@ public class AccountController : Controller
     private readonly ILogger<AccountController> logger;
     private readonly SignInManager<Customer> signInManager;
     private readonly UserManager<Customer> userManager;
-    private readonly IHttpClientFactory httpClientFactory;
     private readonly HttpClient client;
 
     public AccountController(
@@ -25,7 +23,6 @@ public class AccountController : Controller
         this.logger = logger;
         this.signInManager = signInManager;
         this.userManager = userManager;
-        this.httpClientFactory = httpClientFactory;
 
         client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }
@@ -138,16 +135,13 @@ public class AccountController : Controller
     {
         var updateAccountModel = model.UpdateAccountModel;
         
-        if (TryValidateModel(updateAccountModel))
-        {
-            var user = await userManager.GetUserAsync(User);
+        var user = await userManager.GetUserAsync(User);
 
-            user.FirstName = updateAccountModel.FirstName;
-            user.LastName = updateAccountModel.LastName;
-            user.PhoneNumber = updateAccountModel.PhoneNumber;
+        user.FirstName = updateAccountModel.FirstName;
+        user.LastName = updateAccountModel.LastName;
+        user.PhoneNumber = updateAccountModel.PhoneNumber;
 
-            await userManager.UpdateAsync(user);
-        }
+        await userManager.UpdateAsync(user);
 
         return RedirectToAction("Index");
     }
@@ -176,9 +170,9 @@ public class AccountController : Controller
 
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        var contentJson = JsonSerializer.Serialize(createAddressModel);
+        var jsonContent = JsonContent.Create(createAddressModel);
 
-        await client.PostAsJsonAsync($"customers/{customerId}/addresses", contentJson);
+        await client.PostAsync($"api/customers/{customerId}/addresses", jsonContent);
 
         return RedirectToAction("Index");
     }
@@ -188,7 +182,7 @@ public class AccountController : Controller
     {
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", new StringContent(""));
+        await client.PutAsJsonAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", "");
 
         return RedirectToAction("Index");
     }

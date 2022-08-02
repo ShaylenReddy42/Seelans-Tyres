@@ -47,7 +47,7 @@ public class AddressesController : ControllerBase
 
         var address = await repository.GetAddressForCustomerAsync(customerId, addressId);
 
-        return Ok(mapper.Map<Address, AddressModel>(address));
+        return Ok(mapper.Map<Address, AddressModel>(address!));
     }
 
     [HttpPost]
