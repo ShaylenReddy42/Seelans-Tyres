@@ -19,7 +19,7 @@
                     <partial name="_AdminAddressesTable" />
                     <partial name="_AdminBrandsTable" />
                     <partial name="_AdminTyresTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", false } }' />
-                    <partial name="_AdminOrdersTable" />
+                    <partial name="_AdminOrdersTable" view-data='@new ViewDataDictionary(ViewData) { { "NotDeliveredOnly", false } }' />
                 </div>
                 <div id="tyres-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Tyres <a class="fa-solid fa-plus btn btn-dark" asp-controller="Admin" asp-action="AddTyre"></a></h4>
@@ -27,26 +27,7 @@
                 </div>
                 <div id="views-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Views</h4>
-                    <table class="table table-bordered table-responsive mb-4">
-                        <thead>
-                            <tr>
-                                <th class="table-dark text-center" colspan="8">Undelivered Orders</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Number of Items</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Customer</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">View Receipt</th>
-                                <th scope="col">Mark as Delivered</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
+                    <partial name="_AdminOrdersTable" view-data='@new ViewDataDictionary(ViewData) { { "NotDeliveredOnly", true } }' />
                 </div>
             </div>
         </div>

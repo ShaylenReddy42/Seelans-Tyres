@@ -25,9 +25,9 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<OrderModel>>> GetAllOrders(Guid? customerId = null)
+    public async Task<ActionResult<IEnumerable<OrderModel>>> GetAllOrders(Guid? customerId = null, bool notDeliveredOnly = false)
     {
-        var orders = await repository.GetAllOrdersAsync(customerId);
+        var orders = await repository.GetAllOrdersAsync(customerId, notDeliveredOnly);
 
         return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderModel>>(orders));
     }
@@ -60,5 +60,22 @@ public class OrdersController : ControllerBase
             "GetOrderById",
             new { id = createdOrder.Id },
             createdOrder);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> MarkOrderAsDelivered(int id, bool delivered = true)
+    {
+        var order = await repository.GetOrderByIdAsync(id);
+
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        order.Delivered = delivered;
+
+        await repository.SaveChangesAsync();
+
+        return NoContent();
     }
 }

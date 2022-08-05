@@ -101,26 +101,35 @@ public class SeelansTyresRepository : ISeelansTyresRepository
         await context.Orders.AddAsync(newOrder);
     }
 
-    public async Task<IEnumerable<Order>> GetAllOrdersAsync(Guid? customerId)
+    public async Task<IEnumerable<Order>> GetAllOrdersAsync(Guid? customerId, bool notDeliveredOnly)
     {
-        return customerId switch
+        var collection = notDeliveredOnly switch
         {
-            null => await context.Orders
+            true  => context.Orders
                 .Include(order => order.Customer)
                 .Include(order => order.Address)
                 .Include(order => order.OrderItems)
                     .ThenInclude(item => item.Tyre)
                         .ThenInclude(tyre => tyre!.Brand)
+                .Where(order => order.Delivered == false),
+            false => context.Orders
+                .Include(order => order.Customer)
+                .Include(order => order.Address)
+                .Include(order => order.OrderItems)
+                    .ThenInclude(item => item.Tyre)
+                        .ThenInclude(tyre => tyre!.Brand)
+        };
+        
+        var orders = customerId switch
+        {
+            null => await collection
                 .ToListAsync(),
-            _    => await context.Orders
-                .Include(order => order.Customer)
-                .Include(order => order.Address)
-                .Include(order => order.OrderItems)
-                    .ThenInclude(item => item.Tyre)
-                        .ThenInclude(tyre => tyre!.Brand)
+            _    => await collection
                 .Where(order => order.CustomerId == customerId)
                 .ToListAsync()
         };
+
+        return orders;
     }
 
     public async Task<Order?> GetOrderByIdAsync(int id)
@@ -159,8 +168,9 @@ public class SeelansTyresRepository : ISeelansTyresRepository
     public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(string cartId) => 
         await context.CartItems
         .Include(item => item.Tyre)
-        .ThenInclude(tyre => tyre!.Brand)
-        .Where(item => item.CartId == cartId).ToListAsync();
+            .ThenInclude(tyre => tyre!.Brand)
+        .Where(item => item.CartId == cartId)
+        .ToListAsync();
 
     public async Task<CartItem?> GetCartItemByIdAsync(int cartItemId) =>
         await context.CartItems
@@ -174,8 +184,6 @@ public class SeelansTyresRepository : ISeelansTyresRepository
 
     #endregion Cart
 
-    public async Task<bool> SaveChangesAsync()
-    {
-        return await context.SaveChangesAsync() >= 0;
-    }
+    public async Task<bool> SaveChangesAsync() => 
+        await context.SaveChangesAsync() >= 0;
 }

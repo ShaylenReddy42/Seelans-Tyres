@@ -154,4 +154,12 @@ public class AdminController : Controller
 
         return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public async Task<IActionResult> MarkOrderAsDelivered(int orderId)
+    {
+        await client.PutAsync($"api/orders/{orderId}?delivered=true", new StringContent(""));
+
+        return RedirectToAction("Index");
+    }
 }

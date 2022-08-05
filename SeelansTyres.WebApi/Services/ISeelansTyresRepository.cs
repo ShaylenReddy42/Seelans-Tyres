@@ -23,7 +23,7 @@ public interface ISeelansTyresRepository
 
     /***** Orders *****/
     Task AddNewOrderAsync(Order newOrder);
-    Task<IEnumerable<Order>> GetAllOrdersAsync(Guid? customerId);
+    Task<IEnumerable<Order>> GetAllOrdersAsync(Guid? customerId, bool notDeliveredOnly);
     Task<Order?> GetOrderByIdAsync(int id);
 
     /***** Cart *****/
