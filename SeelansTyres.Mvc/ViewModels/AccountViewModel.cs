@@ -7,4 +7,6 @@ public class AccountViewModel
 {
     public UpdateAccountModel UpdateAccountModel { get; set; } = null!;
     public CreateAddressModel CreateAddressModel { get; set; } = null!;
+    public CustomerModel Customer { get; set; } = null!;
+    public IEnumerable<AddressModel> Addresses { get; set; } = null!;
 }

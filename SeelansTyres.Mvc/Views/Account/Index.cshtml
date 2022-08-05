@@ -5,24 +5,12 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }
 
-@inject UserManager<Customer> userManager
-@inject IHttpClientFactory httpClientFactory
-
-    @{
-    var user = await userManager.GetUserAsync(User);
-
-    var client = httpClientFactory.CreateClient("SeelansTyresAPI");
-    var response = await client.GetAsync($"api/customers/{user.Id}/addresses");
-
-    var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
-}
-
 <div class="container pt-5 mt-5">
     <div class="row">
         <div class="col-md-4 account-info-div pb-5">
             <div class="profile-div p-4 border border-2 rounded-3 mb-4 text-center border-dark">
                 <div class="account-profile-pic rounded-circle mx-auto border border-1 mb-3"></div>
-                <p class="account-holder-name">@($"{user.FirstName} {user.LastName}")</p>
+                <p class="account-holder-name">@($"{Model.Customer.FirstName} {Model.Customer.LastName}")</p>
             </div>
             <div class="account-nav-div">
                 <ul class="nav nav-pills nav-stacked list-group">
@@ -49,13 +37,13 @@
                     <p>Add or manage the addresses you use often</p>
                     <hr class="my-5">
                     <div class="addresses">
-                        @if (addresses!.Count() is 0)
+                        @if (Model.Addresses!.Count() is 0)
                         {
                             <p class="text-center">You haven't saved any addresses yet</p>
                         }
                         else
                         {
-                            foreach (var address in addresses!)
+                            foreach (var address in Model.Addresses!)
                             {
                                 <div class="card w-100 mb-2" style="width: 18rem;">
                                     <div class="card-body text-center">
@@ -85,27 +73,27 @@
                     <p>View and edit your personal info below</p>
                     <hr class="mt-5 mb-3">
                     <p>Login email:</p>
-                    <p class="mb-4"><span>@user.Email</span></p>
+                    <p class="mb-4"><span>@Model.Customer.Email</span></p>
                     <form method="post" asp-controller="Account" asp-action="UpdateAccount">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" asp-for="UpdateAccountModel.FirstName">First Name</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@user.FirstName">
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@Model.Customer.FirstName">
                                 <span asp-validation-for="UpdateAccountModel.FirstName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" asp-for="UpdateAccountModel.LastName">Last Name</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel.LastName" placeholder="e.g. Reddy" value="@user.LastName">
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.LastName" placeholder="e.g. Reddy" value="@Model.Customer.LastName">
                                 <span asp-validation-for="UpdateAccountModel.LastName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="email">Contact Email</label>
-                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@user.Email" disabled>
+                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@Model.Customer.Email" disabled>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" asp-for="UpdateAccountModel.PhoneNumber">Phone</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@user.PhoneNumber">
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@Model.Customer.PhoneNumber">
                                 <span asp-validation-for="UpdateAccountModel.PhoneNumber"></span>
                             </div>
                             <div class="col-sm-12 col-md-6 offset-md-3">

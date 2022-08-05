@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
+using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.ViewModels;
 
@@ -28,9 +29,28 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        AccountViewModel accountViewModel = new();
+        var customer = await userManager.GetUserAsync(User);
+
+        var customerModel = new CustomerModel
+        {
+            Id = customer.Id,
+            FirstName = customer.FirstName,
+            LastName = customer.LastName,
+            Email = customer.Email,
+            PhoneNumber = customer.PhoneNumber
+        };
+
+        var response = await client.GetAsync($"api/customers/{customer.Id}/addresses");
+
+        var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
+
+        var accountViewModel = new AccountViewModel
+        {
+            Customer = customerModel,
+            Addresses = addresses!
+        };
         
         return View(accountViewModel);
     }
