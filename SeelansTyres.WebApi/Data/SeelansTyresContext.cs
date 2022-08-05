@@ -60,8 +60,8 @@ public class SeelansTyresContext : IdentityDbContext<Customer, IdentityRole<Guid
         builder
             .Entity<Order>()
             .HasOne(order => order.Address)
-            .WithOne()
-            .OnDelete(DeleteBehavior.ClientNoAction);
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .Entity<Order>()

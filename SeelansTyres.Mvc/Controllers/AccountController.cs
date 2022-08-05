@@ -46,10 +46,15 @@ public class AccountController : Controller
 
         var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
+        response = await client.GetAsync($"api/orders?customerId={customer.Id}");
+
+        var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
+
         var accountViewModel = new AccountViewModel
         {
             Customer = customerModel,
-            Addresses = addresses!
+            Addresses = addresses!,
+            Orders = orders!
         };
         
         return View(accountViewModel);

@@ -26,11 +26,40 @@
                     <h4 class="seelanstyres-color">My Orders</h4>
                     <p>Check the status of your orders or browser through your past purchases</p>
                     <hr class="my-5">
-                    <div class="orders text-center">
-                        <p>You haven't placed any orders yet</p>
-                        <a class="btn btn-dark" asp-controller="Home" asp-action="Shop">Shop Now</a>
+                    <div class="text-center">
+                        @if (Model.Orders.Count() is 0)
+                        {
+                            <p>You haven't placed any orders yet</p>
+                            <a class="btn btn-dark" asp-controller="Home" asp-action="Shop">Shop Now</a>
+                        }
+                        else
+                        {
+                            foreach (var order in Model.Orders)
+                            {
+                                <div class="card card-body mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <h5>Order ID: @order.Id</h5>
+                                        <small>@order.OrderPlaced</small>
+                                    </div>
+                                    <p class="m-0">Address: @order.Address!.AddressLine1</p>
+                                    <p class="m-0">Total Price: @($"{order.TotalPrice:R0.00}")</p>
+                                    <button class="btn btn-dark w-100 mt-2 mb-1" data-bs-toggle="collapse" data-bs-target=@($"#items{order.Id}") aria-controls=@($"items{order.Id}")>View Items</button>
+                                    <div class="collapse" id=@($"items{order.Id}")>
+                                    @foreach (var item in order.OrderItems)
+                                    {
+                                        <div class="card card-body">
+                                            <p class="m-0">Name: @item.Tyre!.Name</p>
+                                            <p class="m-0">Quantity: @item.Quantity</p>
+                                            <p class="m-0">Price: @($"{item.Tyre.Price:R0.00}")</p>
+                                            <p class="m-0">Total Price: @($"{(item.Tyre.Price * item.Quantity):R0.00}")</p>
+                                        </div>
+                                    }
+                                    </div>
+                                </div>
+                            }
+                        }
                     </div>
-                    <hr>
+                    <hr class="my-5">
                 </div>
                 <div id="addresses-pill" class="tab-pane fade text-start pt-3">
                     <h4 class="seelanstyres-color">My Addresses</h4>
