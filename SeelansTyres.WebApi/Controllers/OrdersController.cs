@@ -56,8 +56,6 @@ public class OrdersController : ControllerBase
 
         var createdOrder = mapper.Map<Order, OrderModel>(order);
 
-        logger.LogWarning("AFTER MAPPING");
-
         return CreatedAtRoute(
             "GetOrderById",
             new { id = createdOrder.Id },
