@@ -13,18 +13,20 @@ public class SeelansTyresContext : IdentityDbContext<Customer, IdentityRole<Guid
 
     }
 
-    public DbSet<Customer> Customers { get; set; } = null!;
-    public DbSet<Address> Addresses { get; set; } = null!;
-    public DbSet<Brand> Brands { get; set; } = null!;
-    public DbSet<Tyre> Tyres { get; set; } = null!;
-    public DbSet<Order> Orders { get; set; } = null!;
-    public DbSet<OrderItem> OrderItems { get; set; } = null!;
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Address> Addresses => Set<Address>();
+    public DbSet<Brand> Brands => Set<Brand>();
+    public DbSet<Tyre> Tyres => Set<Tyre>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+    public DbSet<CartItem> CartItems => Set<CartItem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<Brand>()
+        builder
+            .Entity<Brand>()
             .HasData(
                 new Brand { Id = 1, Name = "BFGoodrich" },
                 new Brand { Id = 2, Name = "Continental" },
@@ -34,7 +36,8 @@ public class SeelansTyresContext : IdentityDbContext<Customer, IdentityRole<Guid
                 new Brand { Id = 6, Name = "Pirelli" }
             );
 
-        builder.Entity<Tyre>()
+        builder
+            .Entity<Tyre>()
             .HasData(
                 new Tyre { Id = 1, Name = "Sample1", Width = 115, Ratio = 13, Diameter = 25, VehicleType = "Car", Price = 200.00M, Available = true, ImageUrl = "https://clipartcraft.com/images/tire-clipart-transparent-background-5.png", BrandId = 1 },
                 new Tyre { Id = 2, Name = "Sample2", Width = 125, Ratio = 13, Diameter = 25, VehicleType = "Car", Price = 200.00M, Available = true, ImageUrl = "https://clipartcraft.com/images/tire-clipart-transparent-background-5.png", BrandId = 2 },
@@ -47,5 +50,23 @@ public class SeelansTyresContext : IdentityDbContext<Customer, IdentityRole<Guid
                 new Tyre { Id = 9, Name = "Sample9", Width = 135, Ratio = 15, Diameter = 25, VehicleType = "Car", Price = 200.00M, Available = true, ImageUrl = "https://clipartcraft.com/images/tire-clipart-transparent-background-5.png", BrandId = 3 },
                 new Tyre { Id = 10, Name = "Sample10", Width = 115, Ratio = 13, Diameter = 25, VehicleType = "SUV", Price = 230.00M, Available = true, ImageUrl = "https://clipartcraft.com/images/tire-clipart-transparent-background-5.png", BrandId = 2 }
             );
+
+        builder
+            .Entity<Order>()
+            .HasOne(order => order.Customer)
+            .WithMany(customer => customer.Orders)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .Entity<Order>()
+            .HasOne(order => order.Address)
+            .WithOne()
+            .OnDelete(DeleteBehavior.ClientNoAction);
+
+        builder
+            .Entity<Order>()
+            .HasIndex(order => order.AddressId)
+            .IsUnique(false);
     }
+
 }

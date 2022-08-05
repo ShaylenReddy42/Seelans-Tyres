@@ -2,10 +2,12 @@
 
 namespace SeelansTyres.Data.Models;
 
-public class CreateOrderItemModel
+public class CreateCartItemModel
 {
+    [Required]
+    public int TyreId { get; set; }
     [Required]
     public int Quantity { get; set; }
     [Required]
-    public int TyreId { get; set; }
+    public string CartId { get; set; } = string.Empty;
 }

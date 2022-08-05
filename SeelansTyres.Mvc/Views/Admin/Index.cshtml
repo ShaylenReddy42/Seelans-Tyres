@@ -19,43 +19,7 @@
                     <partial name="_AdminAddressesTable" />
                     <partial name="_AdminBrandsTable" />
                     <partial name="_AdminTyresTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", false } }' />
-                    <table class="table table-bordered table-responsive-lg mb-4">
-                        <thead>
-                            <tr>
-                                <th class="table-dark text-center" colspan="8">Transactions</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Number of Items</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Customer</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Delivered?</th>
-                                <th scope="col">View Receipt</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered table-responsive-lg mb-4">
-                        <thead>
-                            <tr>
-                                <th class="table-dark text-center" colspan="5">Transaction Details</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Transaction ID</th>
-                                <th scope="col">Tyre</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
+                    <partial name="_AdminOrdersTable" />
                 </div>
                 <div id="tyres-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Tyres <a class="fa-solid fa-plus btn btn-dark" asp-controller="Admin" asp-action="AddTyre"></a></h4>

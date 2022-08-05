@@ -1,0 +1,44 @@
+﻿@inject IHttpClientFactory httpClientFactory
+
+@{
+    var client = httpClientFactory.CreateClient("SeelansTyresAPI");
+    var response = await client.GetAsync("api/orders");
+
+    var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
+}
+
+<table class="table table-bordered table-responsive-lg mb-4">
+    <thead>
+        <tr>
+            <th class="table-dark text-center" colspan="8">Orders</th>
+        </tr>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Order Placed</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Address</th>
+            <th scope="col">Delivered?</th>
+            <th scope="col">View Receipt</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in orders!)
+    {
+        <tr>
+            <th scope="row">@order.Id</th>
+            <td>@order.OrderPlaced</td>
+            <td>R@(order.TotalPrice)</td>
+            <td>@($"{order.Customer!.FirstName} {order.Customer.LastName}")</td>
+            <td>@($"{order.Address!.AddressLine1}, {order.Address.City}, {order.Address.PostalCode}")</td>
+            <td>@(order.Delivered ? "Yes" : "No")</td>
+            <td>
+                <form class="viewReceiptForm">
+                    <input name="orderId" id="orderId" value="@order.Id" hidden>
+                    <button class="btn btn-info btn-sm w-100"><i class="fas fa-receipt" aria-hidden="true"></i></button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

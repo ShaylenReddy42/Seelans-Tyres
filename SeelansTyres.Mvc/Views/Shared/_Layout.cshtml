@@ -1,11 +1,4 @@
-﻿@if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin") is false)
-{
-    <script>
-        window.location.href = "@Url.Action("Index", "Admin")";
-    </script>
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -48,23 +41,16 @@
                             @if (User.IsInRole("Administrator") is false)
                             {
                                 <li class="nav-item ms-2 ms-md-0">
-                                    <a class="nav-link text-dark" href="https://www.facebook.com/Seelans-Tyres-Pry-Ltd-Ballito-976746385846679/"><i class="fab fa-facebook-f"></i> <span class="d-md-none">Visit Our Facebook Page</span></a>
+                                    <a class="nav-link text-dark" href="https://www.facebook.com/Seelans-Tyres-Pry-Ltd-Ballito-976746385846679/"><i class="fab fa-facebook-f"></i><span class="d-md-none ms-2">Visit Our Facebook Page</span></a>
                                 </li>
                                 <li class="nav-item ms-2 ms-md-0">
-                                    <a class="nav-link text-dark" href="https://www.google.com/maps/place/Seelans+Tyres+Ballito/@@-29.5273443,31.1933777,17z/data=!4m5!3m4!1s0x1ef71570c3fb7215:0x716dd2fda5a3d8f6!8m2!3d-29.5273443!4d31.1955717"><i class="fas fa-map-marker-alt"></i> <span class="d-md-none">View us on Maps</span></a>
+                                    <a class="nav-link text-dark" href="https://www.google.com/maps/place/Seelans+Tyres+Ballito/@@-29.5273443,31.1933777,17z/data=!4m5!3m4!1s0x1ef71570c3fb7215:0x716dd2fda5a3d8f6!8m2!3d-29.5273443!4d31.1955717"><i class="fas fa-map-marker-alt"></i><span class="d-md-none ms-2">View us on Maps</span></a>
                                 </li>
                             }
                             <partial name="_LoginPartial" />
                             @if (User.IsInRole("Administrator") is false)
                             {
-                                <li class="nav-item ms-2 ms-md-0">
-                                    <a class="nav-link text-dark" asp-controller="Shopping" asp-action="Cart">
-                                        <i class="fas fa-shopping-cart">
-                                            <span class="badge bg-secondary">0</span>
-                                        </i>
-                                        <span class="d-md-none"> View Your Cart</span>
-                                    </a>
-                                </li>
+                                <vc:shopping-cart-summary></vc:shopping-cart-summary>
                             }
                         </ul>
                     </div>

@@ -1,3 +1,18 @@
-﻿@{
+﻿@inject IHttpContextAccessor httpContextAccessor
+
+@{
     Layout = "_Layout";
+    
+    var session = httpContextAccessor.HttpContext!.Session;
+
+    var cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
+
+    session.SetString("CartId", cartId);
+}
+
+@if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin") is false)
+{
+    <script>
+        window.location.href = "@Url.Action("Index", "Admin")";
+    </script>
 }

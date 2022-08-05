@@ -1,4 +1,6 @@
-﻿<div class="text-center p-5">
+﻿@model CartViewModel
+
+<div class="text-center p-5">
     <h1 class="seelanstyres-color">Your Shopping Cart</h1>
 </div>
 <div class="container">
@@ -13,11 +15,56 @@
             </tr>
         </thead>
         <tbody>
+        @foreach (var item in Model.CartItems!)
+        {
+            <tr>
+                <td>@item.Tyre!.Name</td>
+                <td>@($"{item.Tyre.Price:R0.00}")</td>
+                <td>@item.Quantity</td>
+                <td>@($"{item.TotalItemPrice:R0.00}")</td>
+                <td class="text-center">
+                    <form method="post" asp-controller="Shopping" asp-action="RemoveTyreFromCart" asp-route-itemId="@item.Id">
+                        <button class="btn btn-sm btn-danger w-75"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+        @if (Model.CartItems.Count() is not 0)
+        {
+            <tr>
+                <td class="text-end" colspan=3>Total</td>
+                <td>@($"{Model.TotalPrice:R0.00}")</td>
+                <td></td>
+            </tr>
+        }
         </tbody>
     </table>
-    <div class="alert alert-danger text-center" role="alert">
-        <p>You need to have an account to buy tyres</p>
-        <p>Sign up or login to complete your purchase
-        and add one address to your account</p>
-    </div>
+    @if (User.Identity!.IsAuthenticated is false)
+    {
+        <div class="alert alert-danger text-center" role="alert">
+            <p>You need to have an account to buy tyres</p>
+            <p>Sign up or login to complete your purchase
+            and add one address to your account</p>
+        </div>
+    }
+    else if (Model.NumberOfAddresses is 0)
+    {
+        <div class="alert alert-danger text-center" role="alert">
+            <p>Please add an address to your account</p>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12 text-center mt-5">
+            <form method="post" asp-controller="Shopping" asp-action="Checkout">
+                <button class="btn btn-success text-center">Checkout</button>
+            </form>
+            <div class="alert alert-info text-center mt-5">
+                <p>
+                    Your receipt will be sent to you 
+                    via email upon a successful payment
+                </p>
+            </div>
+        </div>
+    }
 </div>
