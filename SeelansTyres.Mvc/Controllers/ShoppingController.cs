@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
+using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
 using System.Net;
 
@@ -12,15 +13,18 @@ public class ShoppingController : Controller
     private HttpClient client;
     private readonly ILogger<ShoppingController> logger;
     private readonly UserManager<Customer> userManager;
+    private readonly IEmailService emailService;
 
     public ShoppingController(
         ILogger<ShoppingController> logger,
         IHttpClientFactory httpClientFactory,
-        UserManager<Customer> userManager)
+        UserManager<Customer> userManager,
+        IEmailService emailService)
     {
         client = httpClientFactory.CreateClient("SeelansTyresAPI");
         this.logger = logger;
         this.userManager = userManager;
+        this.emailService = emailService;
     }
     
     public async Task<IActionResult> Cart()
@@ -113,6 +117,13 @@ public class ShoppingController : Controller
         if (response.StatusCode is HttpStatusCode.Created)
         {
             await client.DeleteAsync($"api/cart/{HttpContext.Session.GetString("CartId")}");
+            var orderId = (await response.Content.ReadFromJsonAsync<OrderModel>())!.Id;
+
+            response = await client.GetAsync($"api/orders/{orderId}");
+
+            var orderModel = await response.Content.ReadFromJsonAsync<OrderModel>();
+
+            await emailService.SendReceiptAsync(orderModel!);
         }
 
         return RedirectToAction("Index", "Home");

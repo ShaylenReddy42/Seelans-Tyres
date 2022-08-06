@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Mvc.Data;
 using SeelansTyres.Mvc.Data.Services;
+using SeelansTyres.Mvc.Services;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +44,22 @@ builder.Services.AddHttpClient("SeelansTyresAPI", client =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+builder.Services.AddFluentEmail(
+        builder.Configuration["EmailCredentials:Email"], "Seelan's Tyres")
+    .AddRazorRenderer()
+    .AddSmtpSender(
+        new SmtpClient
+        {
+            Host = "smtp.gmail.com",
+            Port = 587,
+            EnableSsl = true,
+            Credentials = 
+                new NetworkCredential(
+                    builder.Configuration["EmailCredentials:Email"],
+                    builder.Configuration["EmailCredentials:Password"])
+        });
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 

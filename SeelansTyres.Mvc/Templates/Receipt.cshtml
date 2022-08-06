@@ -1,0 +1,73 @@
+﻿@model SeelansTyres.Data.Models.OrderModel
+
+<h1 style="color: rgb(255, 40, 0); text-align: center; font-size: 36">Seelan's Tyres</h1>
+<p style="text-align: center; font-size: 24">Thank you for shopping with us</p>
+<p style="text-align: center; font-size: 24">Here is your receipt</p>
+<hr style="margin-bottom: 25px">
+<table border="1" style="border-collapse: collapse; width: 100%; margin-left: auto; margin-right: auto" cellpadding="10">
+    <thead>
+        <th>Tyre</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total Item Price</th>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.OrderItems!)
+    {
+        <tr>
+            <td>@item.Tyre.Name</td>
+            <td>@($"{item.Tyre.Price:R0.00}")</td>
+            <td>@item.Quantity</td>
+            <td>@($"{(item.Tyre.Price * item.Quantity):R0.00}")</td>
+        </tr>
+    }
+    <tr>
+        <td colspan="3" style="text-align:right">Total </td>
+        <td>@($"{Model.TotalPrice:R0.00}")</td>
+    </tr>
+    </tbody>
+</table>
+<hr style="margin-top: 25px">
+<h2 style="color: rgb(255, 40, 0); font-size: 32">Customer Info</h2>
+<table width="100%">
+    <tbody>
+        <tr>
+            <td width="35%">First Name:</td>
+            <td>@Model.Customer.FirstName</td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td>@Model.Customer.LastName</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>@Model.Customer.Email</td>
+        </tr>
+        <tr>
+            <td>Phone Number:</td>
+            <td>@Model.Customer.PhoneNumber</td>
+        </tr>
+    </tbody>
+    </table>
+    <hr style="margin-top: 25px">
+    <h2 style="color: rgb(255, 40, 0); font-size: 32">Delivery Address</h2>
+    <table width="100%">
+    <tbody>
+        <tr>
+            <td width="35%">Address Line 1:</td>
+            <td>@Model.Address.AddressLine1</td>
+        </tr>
+        <tr>
+            <td>Address Line 2:</td>
+            <td>@Model.Address.AddressLine2</td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td>@Model.Address.City</td>
+        </tr>
+        <tr>
+            <td>Postal Code:</td>
+            <td>@Model.Address.PostalCode</td>
+        </tr>
+    </tbody>
+</table>
