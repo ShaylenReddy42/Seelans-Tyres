@@ -13,9 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Templates\Receipt.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Receipt.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
