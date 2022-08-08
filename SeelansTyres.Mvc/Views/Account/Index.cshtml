@@ -190,7 +190,10 @@
                         <label class="input-group-text" asp-for="CreateAddressModel.PreferredAddress">Mark As Preferred Delivery Address</label>
                         <select class="form-select" asp-for="CreateAddressModel.PreferredAddress">
                             <option value="true" selected>Yes</option>
-                            <option value="false">No</option>
+                            @if (Model.Addresses.Count() is not 0)
+                            {
+                                <option value="false">No</option>
+                            }
                         </select>
                     </div>
                     <div class="text-center">
