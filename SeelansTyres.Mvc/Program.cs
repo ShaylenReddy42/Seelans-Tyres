@@ -19,7 +19,8 @@ builder.Services.AddDbContext<SeelansTyresContext>(
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<SeelansTyresContext>()
-    .AddRoles<IdentityRole<Guid>>();
+    .AddRoles<IdentityRole<Guid>>()
+    .AddDefaultTokenProviders();
 
 // i'm not all that strict with this
 builder.Services.Configure<IdentityOptions>(options =>

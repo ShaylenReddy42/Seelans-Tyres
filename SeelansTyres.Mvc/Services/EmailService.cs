@@ -28,4 +28,20 @@ public class EmailService : IEmailService
                 assembly: Assembly.GetExecutingAssembly())
             .SendAsync();
     }
+
+    public async Task SendResetPasswordTokenAsync(string customerEmail, string firstName, string lastName, string token)
+    {
+        await email
+            .To(customerEmail, $"{firstName} {lastName}")
+            .Subject("Seelan's Tyres: Your Reset Password Token")
+            .UsingTemplateFromEmbedded(
+                path: "SeelansTyres.Mvc.Templates.VerificationToken.cshtml",
+                model: new
+                {
+                    FirstName = firstName,
+                    Token = token
+                },
+                assembly: Assembly.GetExecutingAssembly())
+            .SendAsync();
+    }
 }

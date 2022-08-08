@@ -10,10 +10,12 @@
 
   <ItemGroup>
     <Content Remove="Templates\Receipt.cshtml" />
+    <Content Remove="Templates\VerificationToken.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Templates\Receipt.cshtml" />
+    <EmbeddedResource Include="Templates\VerificationToken.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

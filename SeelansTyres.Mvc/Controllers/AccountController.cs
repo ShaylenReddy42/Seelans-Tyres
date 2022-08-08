@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
 
 namespace SeelansTyres.Mvc.Controllers;
@@ -13,18 +14,20 @@ public class AccountController : Controller
     private readonly ILogger<AccountController> logger;
     private readonly SignInManager<Customer> signInManager;
     private readonly UserManager<Customer> userManager;
+    private readonly IEmailService emailService;
     private readonly HttpClient client;
 
     public AccountController(
         ILogger<AccountController> logger,
         SignInManager<Customer> signInManager,
         UserManager<Customer> userManager,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        IEmailService emailService)
     {
         this.logger = logger;
         this.signInManager = signInManager;
         this.userManager = userManager;
-
+        this.emailService = emailService;
         client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }
     
@@ -210,5 +213,69 @@ public class AccountController : Controller
         await client.PutAsJsonAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", "");
 
         return RedirectToAction("Index");
+    }
+
+    public IActionResult ResetPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {
+        if (model.SendCodeModel is not null)
+        {
+            var customer = await userManager.FindByEmailAsync(model.SendCodeModel.Email);
+
+            if (customer is null)
+            {
+                ModelState.AddModelError(string.Empty, $"Customer with email {model.SendCodeModel.Email} does not exist!");
+                return View(model);
+            }
+
+            await userManager.GeneratePasswordResetTokenAsync(customer);
+
+            string token = await userManager.GenerateUserTokenAsync(customer, TokenOptions.DefaultProvider, "Reset Password");
+
+            await emailService.SendResetPasswordTokenAsync(
+                email: model.SendCodeModel.Email,
+                firstName: customer.FirstName,
+                lastName: customer.LastName,
+                token: token);
+
+            model.ResetPasswordModel = new ResetPasswordModel
+            {
+                Email = model.SendCodeModel.Email
+            };
+
+            return View(model);
+        }
+        else if (model.ResetPasswordModel is not null)
+        {
+            var customer = await userManager.FindByEmailAsync(model.ResetPasswordModel.Email);
+
+            var tokenVerificationSucceeds =
+                await userManager
+                    .VerifyUserTokenAsync(
+                        user: customer,
+                        tokenProvider: TokenOptions.DefaultProvider,
+                        purpose: "Reset Password",
+                        token: model.ResetPasswordModel.Token);
+
+            if (tokenVerificationSucceeds is false)
+            {
+                ModelState.AddModelError(string.Empty, "Token invalid, copy and paste the entire token from your email");
+                return View(model);
+            }
+
+            await userManager.RemovePasswordAsync(customer);
+            await userManager.AddPasswordAsync(customer, model.ResetPasswordModel.Password);
+
+            await signInManager.PasswordSignInAsync(customer, model.ResetPasswordModel.Password, false, false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View(model);
     }
 }
