@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RazorLight;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
 using System.Net;
+using System.Reflection;
 
 namespace SeelansTyres.Mvc.Controllers;
 
@@ -127,5 +130,21 @@ public class ShoppingController : Controller
         }
 
         return RedirectToAction("Index", "Home");
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<string> ViewReceipt(int orderId)
+    {
+        var response = await client.GetAsync($"api/orders/{orderId}");
+
+        var order = await response.Content.ReadFromJsonAsync<OrderModel>();
+
+        var engine = new RazorLightEngineBuilder()
+            .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "SeelansTyres.Mvc.Templates")
+            .UseMemoryCachingProvider()
+            .Build();
+
+        return await engine.CompileRenderAsync("Receipt", order);
     }
 }
