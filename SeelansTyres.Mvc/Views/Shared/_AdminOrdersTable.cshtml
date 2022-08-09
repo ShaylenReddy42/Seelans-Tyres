@@ -3,17 +3,25 @@
 @{
     var client = httpClientFactory.CreateClient("SeelansTyresAPI");
     HttpResponseMessage response;
+    IEnumerable<OrderModel>? orders = new List<OrderModel>();
 
-    if (ViewData["NotDeliveredOnly"] is true)
+    try
     {
-        response = await client.GetAsync("api/orders/?notDeliveredOnly=true");
-    }
-    else
-    {
-        response = await client.GetAsync("api/orders");
-    }
+        if (ViewData["NotDeliveredOnly"] is true)
+        {
+            response = await client.GetAsync("api/orders/?notDeliveredOnly=true");
+        }
+        else
+        {
+            response = await client.GetAsync("api/orders");
+        }
 
-    var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
+        orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
+    }
+    catch (HttpRequestException ex)
+    {
+        // do nothing
+    }
 }
 
 <table class="table table-bordered table-responsive-lg mb-4">

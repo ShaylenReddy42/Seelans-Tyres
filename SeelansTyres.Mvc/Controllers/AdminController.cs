@@ -80,7 +80,16 @@ public class AdminController : Controller
 
         var jsonContent = JsonContent.Create(createTyreModel);
 
-        var response = await client.PostAsync("api/tyres", jsonContent);
+        try
+        {
+            _ = await client.PostAsync("api/tyres", jsonContent);
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+            ModelState.AddModelError(string.Empty, "API is not available");
+            return View(model);
+        }
 
         return RedirectToAction("Index");
     }
@@ -150,7 +159,16 @@ public class AdminController : Controller
 
         var jsonContent = JsonContent.Create(createTyreModel);
 
-        var response = await client.PutAsync($"api/tyres/{model.Id}", jsonContent);
+        try
+        {
+            _ = await client.PutAsync($"api/tyres/{model.Id}", jsonContent);
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+            ModelState.AddModelError(string.Empty, "API is not available");
+            return View(model);
+        }
 
         return RedirectToAction("Index");
     }
@@ -158,7 +176,14 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> MarkOrderAsDelivered(int orderId)
     {
-        await client.PutAsync($"api/orders/{orderId}?delivered=true", new StringContent(""));
+        try
+        {
+            await client.PutAsync($"api/orders/{orderId}?delivered=true", new StringContent(""));
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+        }
 
         return RedirectToAction("Index");
     }

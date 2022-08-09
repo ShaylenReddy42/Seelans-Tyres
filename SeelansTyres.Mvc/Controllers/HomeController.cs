@@ -7,16 +7,14 @@ namespace SeelansTyres.Mvc.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly ILogger<HomeController> logger;
     private readonly HttpClient client;
 
     public HomeController(
         ILogger<HomeController> logger,
         IHttpClientFactory httpClientFactory)
     {
-        _logger = logger;
-        this.httpClientFactory = httpClientFactory;
+        this.logger = logger;
         client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }
 
@@ -40,12 +38,19 @@ public class HomeController : Controller
     public async Task<IActionResult> Shop()
     {
         ViewData["Title"] = "Shop";
+        IEnumerable<TyreModel>? tyres = new List<TyreModel>();
 
-        var response = await client.GetAsync("api/tyres");
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await client.GetAsync("api/tyres");
 
-        var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
-        
+            tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+        }
+
         return View(tyres);
     }
 

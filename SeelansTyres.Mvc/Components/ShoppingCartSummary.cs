@@ -6,10 +6,14 @@ namespace SeelansTyres.Mvc.Components;
 public class ShoppingCartSummary : ViewComponent
 {
     private readonly HttpClient client;
+    private readonly ILogger<ShoppingCartSummary> logger;
 
-    public ShoppingCartSummary(IHttpClientFactory httpClientFactory)
+    public ShoppingCartSummary(
+        ILogger<ShoppingCartSummary> logger,
+        IHttpClientFactory httpClientFactory)
     {
         client = httpClientFactory.CreateClient("SeelansTyresAPI");
+        this.logger = logger;
     }
 
     public IViewComponentResult Invoke()
@@ -24,9 +28,18 @@ public class ShoppingCartSummary : ViewComponent
 
     private async Task<int> GetCartItemsCountAsync()
     {
-        var response = await client.GetAsync($"api/cart/{HttpContext.Session.GetString("CartId")}");
+        HttpResponseMessage response = null!;
+        IEnumerable<CartItemModel>? cartItems = new List<CartItemModel>();
 
-        var cartItems = await response.Content.ReadFromJsonAsync<IEnumerable<CartItemModel>>();
+        try
+        {
+            response = await client.GetAsync($"api/cart/{HttpContext.Session.GetString("CartId")}");
+            cartItems = await response.Content.ReadFromJsonAsync<IEnumerable<CartItemModel>>();
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+        }
 
         return cartItems!.Count();
     }

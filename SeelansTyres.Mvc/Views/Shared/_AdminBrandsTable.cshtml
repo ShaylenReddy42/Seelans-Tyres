@@ -2,11 +2,18 @@
 
 @{
     var client = httpClientFactory.CreateClient("SeelansTyresAPI");
+    IEnumerable<BrandModel>? brands = new List<BrandModel>();
 
-    var response = await client.GetAsync("api/brands");
-    response.EnsureSuccessStatusCode();
+    try
+    {
+        var response = await client.GetAsync("api/brands");
 
-    var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
+        brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
+    }
+    catch (HttpRequestException ex)
+    {
+        // do nothing
+    }
 }
 
 <table class="table table-bordered mb-4">

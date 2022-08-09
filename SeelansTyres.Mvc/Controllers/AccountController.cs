@@ -45,13 +45,25 @@ public class AccountController : Controller
             PhoneNumber = customer.PhoneNumber
         };
 
-        var response = await client.GetAsync($"api/customers/{customer.Id}/addresses");
+        HttpResponseMessage response = null!;
 
-        var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
+        IEnumerable<AddressModel>? addresses = new List<AddressModel>();
+        IEnumerable<OrderModel>? orders = new List<OrderModel>();
 
-        response = await client.GetAsync($"api/orders?customerId={customer.Id}");
+        try
+        {
+            response = await client.GetAsync($"api/customers/{customer.Id}/addresses");
 
-        var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
+            addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
+
+            response = await client.GetAsync($"api/orders?customerId={customer.Id}");
+
+            orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+        }
 
         var accountViewModel = new AccountViewModel
         {
@@ -200,7 +212,15 @@ public class AccountController : Controller
 
         var jsonContent = JsonContent.Create(createAddressModel);
 
-        await client.PostAsync($"api/customers/{customerId}/addresses", jsonContent);
+        try
+        {
+            await client.PostAsync($"api/customers/{customerId}/addresses", jsonContent);
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+            ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
+        }
 
         return RedirectToAction("Index");
     }
@@ -210,7 +230,14 @@ public class AccountController : Controller
     {
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        await client.PutAsJsonAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", "");
+        try
+        {
+            await client.PutAsJsonAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", "");
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex.Message);
+        }
 
         return RedirectToAction("Index");
     }
