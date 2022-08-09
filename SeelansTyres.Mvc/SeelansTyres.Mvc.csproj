@@ -4,12 +4,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <UserSecretsId>ec441201-d435-48f7-87a1-73516c432e7e</UserSecretsId>
 	  <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
+  <!-- Manually added PropertyGroup for reducing files created during publishing -->
   <PropertyGroup>
     <DebugType>embedded</DebugType>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <PublishDir>publish\$(RuntimeIdentifier)</PublishDir>
   </PropertyGroup>
 
   <ItemGroup>

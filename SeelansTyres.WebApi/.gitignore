@@ -1,6 +1,7 @@
 # Folders
 bin/
 obj/
+publish/
 
 Data/Migrations/ # for now
 Migrations/
