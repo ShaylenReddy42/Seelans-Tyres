@@ -19,29 +19,43 @@ public class EmailService : IEmailService
     
     public async Task SendReceiptAsync(OrderModel order)
     {
-       await email
-            .To(order.Customer!.Email, $"{order.Customer.FirstName} {order.Customer.LastName}")
-            .Subject($"Your Seelan's Tyres Order #{order.Id}")
-            .UsingTemplateFromEmbedded(
-                path: "SeelansTyres.Mvc.Templates.Receipt.cshtml", 
-                model: order,
-                assembly: Assembly.GetExecutingAssembly())
-            .SendAsync();
+        try
+        {
+            _ = await email
+                .To(order.Customer!.Email, $"{order.Customer.FirstName} {order.Customer.LastName}")
+                .Subject($"Your Seelan's Tyres Order #{order.Id}")
+                .UsingTemplateFromEmbedded(
+                    path: "SeelansTyres.Mvc.Templates.Receipt.cshtml",
+                    model: order,
+                    assembly: Assembly.GetExecutingAssembly())
+                .SendAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex.Message);
+        }
     }
 
     public async Task SendResetPasswordTokenAsync(string customerEmail, string firstName, string lastName, string token)
     {
-        await email
-            .To(customerEmail, $"{firstName} {lastName}")
-            .Subject("Seelan's Tyres: Your Reset Password Token")
-            .UsingTemplateFromEmbedded(
-                path: "SeelansTyres.Mvc.Templates.VerificationToken.cshtml",
-                model: new
-                {
-                    FirstName = firstName,
-                    Token = token
-                },
-                assembly: Assembly.GetExecutingAssembly())
-            .SendAsync();
+        try
+        {
+            _ = await email
+                .To(customerEmail, $"{firstName} {lastName}")
+                .Subject("Seelan's Tyres: Your Reset Password Token")
+                .UsingTemplateFromEmbedded(
+                    path: "SeelansTyres.Mvc.Templates.VerificationToken.cshtml",
+                    model: new
+                    {
+                        FirstName = firstName,
+                        Token = token
+                    },
+                    assembly: Assembly.GetExecutingAssembly())
+                .SendAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex.Message);
+        }
     }
 }
