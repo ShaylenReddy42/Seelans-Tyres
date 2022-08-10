@@ -15,8 +15,6 @@
             <div class="tab-content">
                 <div id="database-pill" class="tab-pane fade">
                     <h4 class="text-center mb-4">Database Structure</h4>
-                    <partial name="_AdminCustomersTable" />
-                    <partial name="_AdminAddressesTable" />
                     <partial name="_AdminBrandsTable" />
                     <partial name="_AdminTyresTable" view-data='@new ViewDataDictionary(ViewData) { { "IncludeEdit", false } }' />
                     <partial name="_AdminOrdersTable" view-data='@new ViewDataDictionary(ViewData) { { "NotDeliveredOnly", false } }' />
