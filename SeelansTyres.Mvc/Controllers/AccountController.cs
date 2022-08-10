@@ -94,15 +94,23 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+            try
+            {
+                var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
-            if (result.Succeeded)
-            {
-                return Redirect(returnUrl ?? "~/");
+                if (result.Succeeded)
+                {
+                    return Redirect(returnUrl ?? "~/");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Login attempt failed!");
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError(string.Empty, "Login attempt failed!");
+                logger.LogError(ex.Message);
+                ModelState.AddModelError(string.Empty, "Database is not connected, please try again later");
             }
         }
 
@@ -135,35 +143,43 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            var user = await userManager.FindByEmailAsync(model.Email);
-
-            if (user is not null)
+            try
             {
-                ModelState.AddModelError(string.Empty, $"Customer with email {model.Email} already exists");
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user is not null)
+                {
+                    ModelState.AddModelError(string.Empty, $"Customer with email {model.Email} already exists");
+                }
+                else
+                {
+                    var newCustomer = new Customer()
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.Email,
+                        UserName = model.Email,
+                        PhoneNumber = model.PhoneNumber
+                    };
+
+                    var result = await userManager.CreateAsync(newCustomer, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        await signInManager.SignInAsync(newCustomer, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                var newCustomer = new Customer()
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    UserName = model.Email,
-                    PhoneNumber = model.PhoneNumber
-                };
-
-                var result = await userManager.CreateAsync(newCustomer, model.Password);
-
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(newCustomer, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                logger.LogError(ex.Message);
+                ModelState.AddModelError(string.Empty, "Database is not connected, please try again later");
             }
         }
 

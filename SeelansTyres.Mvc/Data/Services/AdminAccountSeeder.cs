@@ -24,33 +24,40 @@ public class AdminAccountSeeder
 
     public async Task CreateAdminAsync()
     {
-        var administrators = await userManager!.GetUsersInRoleAsync("Administrator");
-
-        if (administrators.Count is not 0)
+        try
         {
-            return;
+            var administrators = await userManager!.GetUsersInRoleAsync("Administrator");
+
+            if (administrators.Count is not 0)
+            {
+                return;
+            }
+
+            bool roleExists = await roleManager.RoleExistsAsync("Administrator");
+
+            if (roleExists is false)
+            {
+                await roleManager.CreateAsync(
+                    new IdentityRole<Guid>
+                    {
+                        Name = "Administrator"
+                    });
+            }
+
+            var admin = new Customer()
+            {
+                FirstName = "Admin",
+                LastName = "User",
+                Email = configuration["AdminCredentials:Email"],
+                UserName = configuration["AdminCredentials:Email"]
+            };
+
+            await userManager.CreateAsync(admin, configuration["AdminCredentials:Password"]);
+            await userManager.AddToRoleAsync(admin, "Administrator");
         }
-
-        bool roleExists = await roleManager.RoleExistsAsync("Administrator");
-
-        if (roleExists is false)
+        catch (InvalidOperationException ex)
         {
-            await roleManager.CreateAsync(
-                new IdentityRole<Guid>
-                {
-                    Name = "Administrator"
-                });
+            logger.LogError(ex.Message);
         }
-
-        var admin = new Customer()
-        {
-            FirstName = "Admin",
-            LastName = "User",
-            Email = configuration["AdminCredentials:Email"],
-            UserName = configuration["AdminCredentials:Email"]
-        };
-
-        await userManager.CreateAsync(admin, configuration["AdminCredentials:Password"]);
-        await userManager.AddToRoleAsync(admin, "Administrator");
     }
 }
