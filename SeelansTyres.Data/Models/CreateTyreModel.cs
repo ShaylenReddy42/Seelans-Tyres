@@ -6,8 +6,7 @@ namespace SeelansTyres.Data.Models;
 public class CreateTyreModel
 {
     [Required]
-    [MinLength(3)]
-    [MaxLength(40)]
+    [StringLength(40, MinimumLength = 3)]
     public string Name { get; set; } = string.Empty;
     [Required]
     [Range(115, 355)]
@@ -19,7 +18,7 @@ public class CreateTyreModel
     [Range(25, 75)]
     public int Diameter { get; set; }
     [Required]
-    [MaxLength(40)]
+    [StringLength(40, MinimumLength = 2)]
     public string VehicleType { get; set; } = string.Empty;
     [Required]
     [Column(TypeName = "decimal")]
