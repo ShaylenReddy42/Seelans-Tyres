@@ -20,8 +20,6 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        ViewData["Title"] = "Home Page";
-
         List<string> brands = new()
         {
             "bfgoodrich",
@@ -37,7 +35,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Shop()
     {
-        ViewData["Title"] = "Shop";
         IEnumerable<TyreModel>? tyres = new List<TyreModel>();
 
         try
@@ -56,15 +53,11 @@ public class HomeController : Controller
 
     public IActionResult Services()
     {
-        ViewData["Title"] = "Services";
-        
         return View();
     }
 
     public IActionResult About()
     {
-        ViewData["Title"] = "About";
-        
         return View();
     }
 

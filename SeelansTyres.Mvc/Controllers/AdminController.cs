@@ -9,7 +9,6 @@ namespace SeelansTyres.Mvc.Controllers;
 public class AdminController : Controller
 {
     private readonly ILogger<AdminController> logger;
-    private readonly IHttpClientFactory httpClientFactory;
     private readonly IWebHostEnvironment environment;
     private readonly HttpClient client;
 
@@ -19,7 +18,6 @@ public class AdminController : Controller
         IWebHostEnvironment environment)
     {
         this.logger = logger;
-        this.httpClientFactory = httpClientFactory;
         this.environment = environment;
         client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }

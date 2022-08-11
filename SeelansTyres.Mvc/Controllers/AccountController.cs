@@ -77,8 +77,6 @@ public class AccountController : Controller
 
     public IActionResult Login()
     {
-        ViewData["Title"] = "Login";
-        
         if (User.Identity!.IsAuthenticated)
         {
             return RedirectToAction("Index", "Home");
@@ -90,8 +88,6 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel model, string? returnUrl = null)
     {
-        ViewData["Title"] = "Login";
-
         if (ModelState.IsValid)
         {
             try
@@ -126,8 +122,6 @@ public class AccountController : Controller
 
     public IActionResult Register()
     {
-        ViewData["Title"] = "Register";
-
         if (User.Identity!.IsAuthenticated)
         {
             return RedirectToAction("Index", "Home");
@@ -139,8 +133,6 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-        ViewData["Title"] = "Register";
-
         if (ModelState.IsValid)
         {
             try
