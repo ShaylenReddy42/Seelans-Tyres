@@ -39,7 +39,11 @@ builder.Services.AddScoped<AdminAccountSeeder>();
 
 builder.Services.AddHttpClient("SeelansTyresAPI", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7012/");
+    client.BaseAddress = builder.Environment.EnvironmentName switch
+    {
+        "Development" => new Uri("https://localhost:7012/"),
+        _             => new Uri(builder.Configuration["WebApiUrl"])
+    };
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
@@ -63,6 +67,13 @@ builder.Services.AddFluentEmail(
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
+
+if (app.Environment.IsProduction())
+{
+    app.Urls.Clear();
+    app.Urls.Add("http://localhost:4200");
+    app.Urls.Add("https://localhost:4201");
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
