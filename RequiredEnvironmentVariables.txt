@@ -1,0 +1,37 @@
+Ensure to set the following environment variables before continuing
+
+-----
+
+AdminCredentials__Email [Can be fictitious]
+
+	Used to Seed the Admin account to the database with the Administrator role
+
+AdminCredentials__Password
+
+	Password used to create the account
+
+ConnectionStrings__SeelansTyresContext -- e.g. Server=.;Initial Catalog=SeelansTyres;Trusted_Connection=true;MultipleActiveResultSets=true
+
+	Connection String to the SQL Server Database
+
+EmailCredentials__Email [Requires a real email account]
+
+	Email used to Send emails
+
+EmailCredentials__Password
+
+	This is a generated app password
+	On the email [gmail] account you choose to use, 
+	two-factor authentication has to be enabled
+	on your google account to show app passwords. 
+	You would then generate
+	a custom app password. Don't specify the
+	platform and give it any name you want.
+	Copy that as your password
+
+WebApiUrl -- https://localhost:4301
+
+	Url of the WebApi used locally
+	I manually configured the ports to use
+	in production so the provided url
+	should be used

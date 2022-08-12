@@ -3,5 +3,5 @@ bin/
 obj/
 publish/
 
-Data/Migrations/ # for now
-Migrations/
+# Files
+AssemblyInfo.cs

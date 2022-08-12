@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <UserSecretsId>1db043d0-99b6-4c5c-b7c2-b9c34459eb0b</UserSecretsId>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <!-- Manually added PropertyGroup for reducing files created during publishing -->
@@ -13,7 +14,7 @@
     <DebugType>embedded</DebugType>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
-    <PublishDir>publish\$(RuntimeIdentifier)</PublishDir>
+    <PublishDir>publish</PublishDir>
     <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 

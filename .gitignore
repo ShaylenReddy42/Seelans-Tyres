@@ -1,6 +1,11 @@
 # Folders
 .vs/
 .vscode/
+build/
+publish/
+
+#Files
+efbundle.exe
 
 # File extensions
 *.user

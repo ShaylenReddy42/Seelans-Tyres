@@ -3,3 +3,6 @@ bin/
 obj/
 images/
 publish/
+
+# Files
+AssemblyInfo.cs
