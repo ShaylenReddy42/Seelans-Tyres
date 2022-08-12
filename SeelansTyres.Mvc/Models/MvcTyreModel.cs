@@ -19,7 +19,7 @@ public class MvcTyreModel
     [Range(25, 75)]
     public int Diameter { get; set; }
     [Required]
-    [StringLength(40, MinimumLength = 2)]
+    [MaxLength(40)]
     public string VehicleType { get; set; } = string.Empty;
     [Required]
     [Column(TypeName = "decimal")]
