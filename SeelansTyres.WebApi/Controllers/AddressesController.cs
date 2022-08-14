@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.WebApi.Services;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SeelansTyres.WebApi.Controllers;
 
 [Route("api/customers/{customerId}/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "MustBeARegularCustomer")]
 public class AddressesController : ControllerBase
 {
     private readonly ILogger<AddressesController> logger;

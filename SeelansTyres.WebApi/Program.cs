@@ -46,6 +46,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization(configure =>
+{
+    configure.AddPolicy("MustBeARegularCustomer", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireAssertion(handler => handler.User.IsInRole("Administrator") is false);
+    });
+});
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();

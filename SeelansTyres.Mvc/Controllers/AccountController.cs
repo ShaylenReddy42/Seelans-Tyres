@@ -45,6 +45,7 @@ public class AccountController : Controller
             PhoneNumber = customer.PhoneNumber
         };
 
+        HttpRequestMessage request = null!;
         HttpResponseMessage response = null!;
 
         IEnumerable<AddressModel>? addresses = new List<AddressModel>();
@@ -52,11 +53,14 @@ public class AccountController : Controller
 
         try
         {
-            response = await client.GetAsync($"api/customers/{customer.Id}/addresses");
+            request = new HttpRequestMessage(HttpMethod.Get, $"api/customers/{customer.Id}/addresses");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+
+            response = await client.SendAsync(request);
 
             addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/orders?customerId={customer.Id}");
+            request = new HttpRequestMessage(HttpMethod.Get, $"api/orders?customerId={customer.Id}");
             request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
 
             response = await client.SendAsync(request);
@@ -250,7 +254,11 @@ public class AccountController : Controller
 
         try
         {
-            await client.PostAsync($"api/customers/{customerId}/addresses", jsonContent);
+            var request = new HttpRequestMessage(HttpMethod.Post, $"api/customers/{customerId}/addresses");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+            request.Content = jsonContent;
+
+            await client.SendAsync(request);
         }
         catch (HttpRequestException ex)
         {
@@ -268,7 +276,10 @@ public class AccountController : Controller
 
         try
         {
-            await client.PutAsJsonAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", "");
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+
+            await client.SendAsync(request);
         }
         catch (HttpRequestException ex)
         {
