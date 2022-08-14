@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
@@ -8,6 +10,7 @@ namespace SeelansTyres.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class OrdersController : ControllerBase
 {
     private readonly ILogger<OrdersController> logger;
@@ -27,6 +30,23 @@ public class OrdersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<OrderModel>>> GetAllOrders(Guid? customerId = null, bool notDeliveredOnly = false)
     {
+        if (customerId is null 
+            && User.IsInRole("Administrator") is false) // All orders
+        {
+            return StatusCode(StatusCodes.Status403Forbidden);
+        }
+        else if (customerId is not null 
+            && User.IsInRole("Administrator") is true) // Administrator getting orders for a specific customer
+        {
+            return StatusCode(StatusCodes.Status403Forbidden);
+        }
+        else if (customerId is not null 
+            && User.IsInRole("Administrator") is false 
+            && User.Claims.First(claim => claim.Type.EndsWith("nameidentifier")).Value != customerId.ToString()) // Customer trying to get other customer's orders
+        {
+            return StatusCode(StatusCodes.Status403Forbidden);
+        }
+
         var orders = await repository.GetAllOrdersAsync(customerId, notDeliveredOnly);
 
         return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderModel>>(orders));
@@ -65,6 +85,11 @@ public class OrdersController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> MarkOrderAsDelivered(int id, bool delivered = true)
     {
+        if (User.IsInRole("Administrator") is false)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden);
+        }
+        
         var order = await repository.GetOrderByIdAsync(id);
 
         if (order is null)

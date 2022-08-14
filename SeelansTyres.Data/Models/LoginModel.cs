@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Mvc.Models;
+namespace SeelansTyres.Data.Models;
 
 public class LoginModel
 {

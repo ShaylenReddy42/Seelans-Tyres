@@ -176,7 +176,11 @@ public class AdminController : Controller
     {
         try
         {
-            await client.PutAsync($"api/orders/{orderId}?delivered=true", new StringContent(""));
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/orders/{orderId}?delivered=true");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+            request.Content = new StringContent("");
+
+            await client.SendAsync(request);
         }
         catch (HttpRequestException ex)
         {

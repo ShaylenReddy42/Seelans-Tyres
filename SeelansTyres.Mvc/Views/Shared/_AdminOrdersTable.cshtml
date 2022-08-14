@@ -1,20 +1,25 @@
 ﻿@inject IHttpClientFactory httpClientFactory
+@inject IHttpContextAccessor httpContextAccessor
 
 @{
     var client = httpClientFactory.CreateClient("SeelansTyresAPI");
-    HttpResponseMessage response;
+    HttpRequestMessage request;
     IEnumerable<OrderModel>? orders = new List<OrderModel>();
 
     try
     {
         if (ViewData["NotDeliveredOnly"] is true)
         {
-            response = await client.GetAsync("api/orders/?notDeliveredOnly=true");
+            request = new HttpRequestMessage(HttpMethod.Get, "api/orders/?notDeliveredOnly=true");
         }
         else
         {
-            response = await client.GetAsync("api/orders");
+            request = new HttpRequestMessage(HttpMethod.Get, "api/orders");
         }
+
+        request.Headers.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
+
+        var response = await client.SendAsync(request);
 
         orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
     }

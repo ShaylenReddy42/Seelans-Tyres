@@ -29,6 +29,18 @@ EmailCredentials__Password
 	platform and give it any name you want.
 	Copy that as your password
 
+Token__Key [Must be 32 bits long]
+
+	Used to create the security key for jwt bearer authentication
+
+Token__Issuer -- https://localhost:4301 [The Api endpoint]
+
+	Party that issues the token
+
+Token__Audience -- SeelansTyresWebApi [Whatever you want here, usually the api that creates the token]
+
+	Who the token is indended for
+
 WebApiUrl -- https://localhost:4301
 
 	Url of the WebApi used locally

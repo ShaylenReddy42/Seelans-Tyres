@@ -56,7 +56,10 @@ public class AccountController : Controller
 
             addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
-            response = await client.GetAsync($"api/orders?customerId={customer.Id}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/orders?customerId={customer.Id}");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+
+            response = await client.SendAsync(request);
 
             orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
         }
@@ -96,6 +99,14 @@ public class AccountController : Controller
 
                 if (result.Succeeded)
                 {
+                    var response = await client.PostAsync("api/authentication/login", JsonContent.Create(model));
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var token = await response.Content.ReadFromJsonAsync<string>();
+                        HttpContext.Session.SetString("ApiAuthToken", token!);
+                    }
+                    
                     return Redirect(returnUrl ?? "~/");
                 }
                 else
@@ -116,6 +127,7 @@ public class AccountController : Controller
     public async Task<IActionResult> Logout()
     {
         await signInManager.SignOutAsync();
+        HttpContext.Session.Remove("ApiAuthToken");
 
         return RedirectToAction("Index", "Home");
     }
@@ -159,6 +171,22 @@ public class AccountController : Controller
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(newCustomer, isPersistent: false);
+
+                        var response = await client.PostAsync(
+                            "api/authentication/login",
+                            JsonContent.Create(
+                                new LoginModel
+                                {
+                                    UserName = model.Email,
+                                    Password = model.Password
+                                }));
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var token = await response.Content.ReadFromJsonAsync<string>();
+                            HttpContext.Session.SetString("ApiAuthToken", token!);
+                        }
+
                         return RedirectToAction("Index", "Home");
                     }
 

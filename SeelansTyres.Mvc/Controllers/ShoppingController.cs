@@ -145,14 +145,21 @@ public class ShoppingController : Controller
 
         var jsonContent = JsonContent.Create(order);
 
-        response = await client.PostAsync("api/orders", jsonContent);
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/orders");
+        request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+        request.Content = jsonContent;
+
+        response = await client.SendAsync(request);
 
         if (response.StatusCode is HttpStatusCode.Created)
         {
             await client.DeleteAsync($"api/cart/{HttpContext.Session.GetString("CartId")}");
             var orderId = (await response.Content.ReadFromJsonAsync<OrderModel>())!.Id;
 
-            response = await client.GetAsync($"api/orders/{orderId}");
+            request = new HttpRequestMessage(HttpMethod.Get, $"api/orders/{orderId}");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+
+            response = await client.SendAsync(request);
 
             var orderModel = await response.Content.ReadFromJsonAsync<OrderModel>();
 
@@ -170,7 +177,10 @@ public class ShoppingController : Controller
 
         try
         {
-            var response = await client.GetAsync($"api/orders/{orderId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/orders/{orderId}");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+
+            var response = await client.SendAsync(request);
 
             order = await response.Content.ReadFromJsonAsync<OrderModel>();
         }

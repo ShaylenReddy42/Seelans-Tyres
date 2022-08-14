@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.WebApi.Data;
 using SeelansTyres.WebApi.Services;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers()
-    .AddJsonOptions(
-        options =>
+    .AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler =
                 ReferenceHandler.IgnoreCycles;
@@ -30,6 +32,19 @@ builder.Services.AddScoped<ISeelansTyresRepository, SeelansTyresRepository>();
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<SeelansTyresContext>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(configure =>
+    {
+        configure.TokenValidationParameters = new()
+        {
+            ValidIssuer = builder.Configuration["Token:Issuer"],
+            ValidAudience = builder.Configuration["Token:Audience"],
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"])),
+        };
+    });
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -51,6 +66,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
