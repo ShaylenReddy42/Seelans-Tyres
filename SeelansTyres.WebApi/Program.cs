@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.WebApi.Data;
 using SeelansTyres.WebApi.Services;
@@ -22,7 +23,30 @@ builder.Services.AddControllers()
     .AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setup =>
+{
+    setup.AddSecurityDefinition("SeelansTyresApiBearerAuth", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Input a valid token to access this API"
+    });
+
+    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "SeelansTyresApiBearerAuth"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
 
 builder.Services.AddDbContext<SeelansTyresContext>(
     options => options.UseSqlServer(
