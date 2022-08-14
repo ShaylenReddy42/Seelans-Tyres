@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.WebApi.Services;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SeelansTyres.WebApi.Controllers;
 
@@ -33,6 +35,7 @@ public class TyresController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetTyreById")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public async Task<ActionResult<TyreModel>> GetTyreById(int id)
     {
         var tyre = await repository.GetTyreByIdAsync(id);
@@ -46,6 +49,7 @@ public class TyresController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public async Task<ActionResult<TyreModel>> AddNewTyre(CreateTyreModel model)
     {
         var tyreEntity = mapper.Map<CreateTyreModel, Tyre>(model);
@@ -63,6 +67,7 @@ public class TyresController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public async Task<ActionResult> UpdateTyre(CreateTyreModel model, int id)
     {
         var tyre = await repository.GetTyreByIdAsync(id);

@@ -80,7 +80,11 @@ public class AdminController : Controller
 
         try
         {
-            _ = await client.PostAsync("api/tyres", jsonContent);
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/tyres");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+            request.Content = jsonContent;
+
+            _ = await client.SendAsync(request);
         }
         catch (HttpRequestException ex)
         {
@@ -94,7 +98,10 @@ public class AdminController : Controller
 
     public async Task<IActionResult> UpdateTyre(int tyreId)
     {
-        var response = await client.GetAsync($"api/tyres/{tyreId}");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"api/tyres/{tyreId}");
+        request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+
+        var response = await client.SendAsync(request);
 
         var model = await response.Content.ReadFromJsonAsync<TyreModel>();
         
@@ -159,7 +166,11 @@ public class AdminController : Controller
 
         try
         {
-            _ = await client.PutAsync($"api/tyres/{model.Id}", jsonContent);
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/tyres/{model.Id}");
+            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+            request.Content = jsonContent;
+
+            _ = await client.SendAsync(request);
         }
         catch (HttpRequestException ex)
         {
