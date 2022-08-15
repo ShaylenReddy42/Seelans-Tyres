@@ -33,19 +33,17 @@ builder.Services.AddSwaggerGen(setup =>
     });
 
     setup.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+    {{
+        new OpenApiSecurityScheme
         {
-            new OpenApiSecurityScheme
+            Reference = new OpenApiReference
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "SeelansTyresApiBearerAuth"
-                }
-            },
-            new List<string>()
-        }
-    });
+                Type = ReferenceType.SecurityScheme,
+                Id = "SeelansTyresApiBearerAuth"
+            }
+        },
+        new List<string>()
+    }});
 });
 
 builder.Services.AddDbContext<SeelansTyresContext>(
