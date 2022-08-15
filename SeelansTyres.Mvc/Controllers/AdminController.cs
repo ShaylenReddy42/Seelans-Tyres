@@ -96,6 +96,7 @@ public class AdminController : Controller
         return RedirectToAction("Index");
     }
 
+    [HttpGet("Admin/UpdateTyre/{tyreId}")]
     public async Task<IActionResult> UpdateTyre(int tyreId)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"api/tyres/{tyreId}");
