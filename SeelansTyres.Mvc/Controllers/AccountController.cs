@@ -307,9 +307,7 @@ public class AccountController : Controller
                 return View(model);
             }
 
-            await userManager.GeneratePasswordResetTokenAsync(customer);
-
-            string token = await userManager.GenerateUserTokenAsync(customer, TokenOptions.DefaultProvider, "Reset Password");
+            string token = await userManager.GeneratePasswordResetTokenAsync(customer);
 
             await emailService.SendResetPasswordTokenAsync(
                 email: model.SendCodeModel.Email,
@@ -328,22 +326,22 @@ public class AccountController : Controller
         {
             var customer = await userManager.FindByEmailAsync(model.ResetPasswordModel.Email);
 
-            var tokenVerificationSucceeds =
+            var resetPasswordResult =
                 await userManager
-                    .VerifyUserTokenAsync(
+                    .ResetPasswordAsync(
                         user: customer,
-                        tokenProvider: TokenOptions.DefaultProvider,
-                        purpose: "Reset Password",
-                        token: model.ResetPasswordModel.Token);
+                        token: model.ResetPasswordModel.Token,
+                        newPassword: model.ResetPasswordModel.Password);
 
-            if (tokenVerificationSucceeds is false)
+            if (resetPasswordResult.Succeeded is false)
             {
-                ModelState.AddModelError(string.Empty, "Token invalid, copy and paste the entire token from your email");
+                foreach (var error in resetPasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
                 return View(model);
             }
-
-            await userManager.RemovePasswordAsync(customer);
-            await userManager.AddPasswordAsync(customer, model.ResetPasswordModel.Password);
 
             await signInManager.PasswordSignInAsync(customer, model.ResetPasswordModel.Password, false, false);
 
