@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SeelansTyres.Data.Entities;
 
-namespace SeelansTyres.Mvc.Data.Services;
+namespace SeelansTyres.WebApi.Services;
 
 public class AdminAccountSeeder
 {

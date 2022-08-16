@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Data.Entities;
 using SeelansTyres.Mvc.Data;
-using SeelansTyres.Mvc.Data.Services;
 using SeelansTyres.Mvc.Services;
 using System.Net;
 using System.Net.Http.Headers;
@@ -19,7 +18,6 @@ builder.Services.AddDbContext<SeelansTyresContext>(
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<SeelansTyresContext>()
-    .AddRoles<IdentityRole<Guid>>()
     .AddDefaultTokenProviders();
 
 // i'm not all that strict with this
@@ -34,8 +32,6 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     options.User.RequireUniqueEmail = true;
 });
-
-builder.Services.AddScoped<AdminAccountSeeder>();
 
 builder.Services.AddHttpClient("SeelansTyresAPI", client =>
 {
@@ -97,15 +93,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await RunAdminAccountSeeder();
-
 app.Run();
-
-async Task RunAdminAccountSeeder()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var adminAccountSeeder = scope.ServiceProvider.GetService<AdminAccountSeeder>();
-        await adminAccountSeeder!.CreateAdminAsync();
-    }
-}

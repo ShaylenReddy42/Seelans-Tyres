@@ -53,7 +53,10 @@ builder.Services.AddDbContext<SeelansTyresContext>(
 builder.Services.AddScoped<ISeelansTyresRepository, SeelansTyresRepository>();
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<SeelansTyresContext>();
+    .AddEntityFrameworkStores<SeelansTyresContext>()
+    .AddRoles<IdentityRole<Guid>>();
+
+builder.Services.AddScoped<AdminAccountSeeder>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(configure =>
@@ -102,4 +105,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+await RunAdminAccountSeeder();
+
 app.Run();
+
+async Task RunAdminAccountSeeder()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var adminAccountSeeder = scope.ServiceProvider.GetService<AdminAccountSeeder>();
+        await adminAccountSeeder!.CreateAdminAsync();
+    }
+}
