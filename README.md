@@ -32,11 +32,11 @@ The WebApi will be split into microservices that has its own databases using Dom
 
 ## Resources that helped me skill up to rewrite this project
 
-* [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://app.pluralsight.com/library/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
+* [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://www.pluralsight.com/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
   * Author: [Shawn Wildermuth](https://app.pluralsight.com/profile/author/shawn-wildermuth)
-* [ASP.NET Core 6 Web API Fundamentals](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-fundamentals)
+* [ASP.NET Core 6 Web API Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-web-api-fundamentals)
   * Author: [Kevin Dockx](https://app.pluralsight.com/profile/author/kevin-dockx)
-* [ASP.NET Core 6 Fundamentals](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-fundamentals)
+* [ASP.NET Core 6 Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-fundamentals)
   * Author: [Gill Cleeren](https://app.pluralsight.com/profile/author/gill-cleeren)
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
