@@ -1,5 +1,11 @@
 # Seelan's Tyres
 
+## Badges
+
+[![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/ShaylenReddy42.Seelans-Tyres?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=5&branchName=master)
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=ShaylenReddy42_Seelans-Tyres)
+
 ## What's the purpose of this project?
 
 This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which, compared to this, was very poorly written and insecure. Originally it was written with PHP as the backend, this project is written using ASP.NET Core 6
