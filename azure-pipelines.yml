@@ -27,6 +27,30 @@ steps:
     arguments: -c $(buildConfiguration)
     workingDirectory: $(workDir)
 
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud for Analysis'
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'shaylenreddy42'
+    scannerMode: 'MSBuild'
+    projectKey: 'ShaylenReddy42_Seelans-Tyres'
+    projectName: 'Seelans-Tyres'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: build
+    arguments: -c $(buildConfiguration)
+    workingDirectory: $(workDir)
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Quality Gate Result'
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: DotNetCoreCLI@2
   displayName: 'Restore dotnet tools for SeelansTyres.WebApi'
   inputs:
