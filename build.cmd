@@ -10,6 +10,11 @@ PAUSE
 CD SeelansTyres.WebApi
 
 ECHO.
+ECHO Restore dotnet tools
+ECHO.
+dotnet tool restore
+
+ECHO.
 ECHO Create EF Core Bundle
 ECHO.
 dotnet tool run dotnet-ef migrations bundle --force -o ../efbundle.exe
