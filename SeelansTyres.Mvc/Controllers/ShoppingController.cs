@@ -6,45 +6,38 @@ using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
-using System.Net;
 using System.Reflection;
 
 namespace SeelansTyres.Mvc.Controllers;
 
 public class ShoppingController : Controller
 {
-    private HttpClient client;
     private readonly ILogger<ShoppingController> logger;
     private readonly UserManager<Customer> userManager;
+    private readonly IAddressService addressService;
+    private readonly ICartService cartService;
+    private readonly IOrderService orderService;
     private readonly IEmailService emailService;
 
     public ShoppingController(
         ILogger<ShoppingController> logger,
-        IHttpClientFactory httpClientFactory,
         UserManager<Customer> userManager,
+        IAddressService addressService,
+        ICartService cartService,
+        IOrderService orderService,
         IEmailService emailService)
     {
-        client = httpClientFactory.CreateClient("SeelansTyresAPI");
         this.logger = logger;
         this.userManager = userManager;
+        this.addressService = addressService;
+        this.cartService = cartService;
+        this.orderService = orderService;
         this.emailService = emailService;
     }
     
     public async Task<IActionResult> Cart()
     {
-        HttpRequestMessage request;
-        HttpResponseMessage response;
-        IEnumerable<CartItemModel>? cartItems = new List<CartItemModel>();
-
-        try
-        {
-            response = await client.GetAsync($"api/cart/{HttpContext.Session.GetString("CartId")}");
-            cartItems = await response.Content.ReadFromJsonAsync<IEnumerable<CartItemModel>>();
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        var cartItems = await cartService.GetAllCartItemsAsync();
 
         var numberOfAddresses = 0;
 
@@ -52,17 +45,7 @@ public class ShoppingController : Controller
         {
             var customerId = (await userManager.GetUserAsync(User)).Id;
 
-            try
-            {
-                request = new(HttpMethod.Get, $"api/customers/{customerId}/addresses");
-                request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-                response = await client.SendAsync(request);
-                numberOfAddresses = (await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>())!.Count();
-            }
-            catch (HttpRequestException ex)
-            {
-                logger.LogError(ex.Message);
-            }
+            numberOfAddresses = (await addressService.GetAllAddressesForCustomerAsync(customerId)).Count();
         }
 
         var cartViewModel = new CartViewModel
@@ -84,16 +67,7 @@ public class ShoppingController : Controller
             CartId = HttpContext.Session.GetString("CartId")!
         };
 
-        var jsonContent = JsonContent.Create(cartItem);
-
-        try
-        {
-            _ = await client.PostAsync("api/cart", jsonContent);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        _ = await cartService.AddItemToCartAsync(cartItem);
         
         return RedirectToAction("Cart");
     }
@@ -101,14 +75,7 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> RemoveTyreFromCart(int itemId)
     {
-        try
-        {
-            _ = await client.DeleteAsync($"api/cart/{HttpContext.Session.GetString("CartId")}/items/{itemId}");
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        _ = await cartService.RemoveItemFromCartAsync(itemId);
 
         return RedirectToAction("Cart");
     }
@@ -116,22 +83,11 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> Checkout()
     {
-        HttpRequestMessage request;
-        
-        var cartId = HttpContext.Session!.GetString("CartId");
-
-        var response = await client.GetAsync($"api/cart/{cartId}");
-
-        var cartItems = await response.Content.ReadFromJsonAsync<IEnumerable<CartItemModel>>();
+        var cartItems = await cartService.GetAllCartItemsAsync();
 
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        request = new(HttpMethod.Get, $"api/customers/{customerId}/addresses");
-        request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-        
-        response = await client.SendAsync(request);
-
-        var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
+        var addresses = await addressService.GetAllAddressesForCustomerAsync(customerId);
 
         var preferredAddressId = addresses!.Single(address => address.PreferredAddress is true).Id;
 
@@ -151,25 +107,13 @@ public class ShoppingController : Controller
             });
         }
 
-        var jsonContent = JsonContent.Create(order);
+        var placedOrderId = await orderService.PlaceNewOrderAsync(order);
 
-        request = new HttpRequestMessage(HttpMethod.Post, "api/orders");
-        request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-        request.Content = jsonContent;
-
-        response = await client.SendAsync(request);
-
-        if (response.StatusCode is HttpStatusCode.Created)
+        if (placedOrderId is not 0)
         {
-            await client.DeleteAsync($"api/cart/{HttpContext.Session.GetString("CartId")}");
-            var orderId = (await response.Content.ReadFromJsonAsync<OrderModel>())!.Id;
+            _ = await cartService.ClearCartAsync();
 
-            request = new HttpRequestMessage(HttpMethod.Get, $"api/orders/{orderId}");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-
-            response = await client.SendAsync(request);
-
-            var orderModel = await response.Content.ReadFromJsonAsync<OrderModel>();
+            var orderModel = await orderService.GetOrderByIdAsync(placedOrderId);
 
             await emailService.SendReceiptAsync(orderModel!);
         }
@@ -181,21 +125,7 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<string> ViewReceipt(int orderId)
     {
-        OrderModel? order = null!;
-
-        try
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/orders/{orderId}");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-
-            var response = await client.SendAsync(request);
-
-            order = await response.Content.ReadFromJsonAsync<OrderModel>();
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        var order = await orderService.GetOrderByIdAsync(orderId);
 
         var engine = new RazorLightEngineBuilder()
             .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "SeelansTyres.Mvc.Templates")

@@ -14,21 +14,27 @@ public class AccountController : Controller
     private readonly ILogger<AccountController> logger;
     private readonly SignInManager<Customer> signInManager;
     private readonly UserManager<Customer> userManager;
+    private readonly IAuthenticationService authenticationService;
+    private readonly IAddressService addressService;
+    private readonly IOrderService orderService;
     private readonly IEmailService emailService;
-    private readonly HttpClient client;
 
     public AccountController(
         ILogger<AccountController> logger,
         SignInManager<Customer> signInManager,
         UserManager<Customer> userManager,
-        IHttpClientFactory httpClientFactory,
+        IAuthenticationService authenticationService,
+        IAddressService addressService,
+        IOrderService orderService,
         IEmailService emailService)
     {
         this.logger = logger;
         this.signInManager = signInManager;
         this.userManager = userManager;
+        this.authenticationService = authenticationService;
+        this.addressService = addressService;
+        this.orderService = orderService;
         this.emailService = emailService;
-        client = httpClientFactory.CreateClient("SeelansTyresAPI");
     }
     
     [Authorize]
@@ -45,32 +51,8 @@ public class AccountController : Controller
             PhoneNumber = customer.PhoneNumber
         };
 
-        HttpRequestMessage request = null!;
-        HttpResponseMessage response = null!;
-
-        IEnumerable<AddressModel>? addresses = new List<AddressModel>();
-        IEnumerable<OrderModel>? orders = new List<OrderModel>();
-
-        try
-        {
-            request = new HttpRequestMessage(HttpMethod.Get, $"api/customers/{customer.Id}/addresses");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-
-            response = await client.SendAsync(request);
-
-            addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
-
-            request = new HttpRequestMessage(HttpMethod.Get, $"api/orders?customerId={customer.Id}");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-
-            response = await client.SendAsync(request);
-
-            orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        var addresses = await addressService.GetAllAddressesForCustomerAsync(customer.Id);
+        var orders = await orderService.GetAllOrdersAsync(customerId: customer.Id);
 
         var accountViewModel = new AccountViewModel
         {
@@ -103,13 +85,7 @@ public class AccountController : Controller
 
                 if (result.Succeeded)
                 {
-                    var response = await client.PostAsync("api/authentication/login", JsonContent.Create(model));
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var token = await response.Content.ReadFromJsonAsync<string>();
-                        HttpContext.Session.SetString("ApiAuthToken", token!);
-                    }
+                    _ = await authenticationService.LoginAsync(model);
                     
                     return Redirect(returnUrl ?? "~/");
                 }
@@ -176,20 +152,13 @@ public class AccountController : Controller
                     {
                         await signInManager.SignInAsync(newCustomer, isPersistent: false);
 
-                        var response = await client.PostAsync(
-                            "api/authentication/login",
-                            JsonContent.Create(
-                                new LoginModel
-                                {
-                                    UserName = model.Email,
-                                    Password = model.Password
-                                }));
-
-                        if (response.IsSuccessStatusCode)
+                        var loginModel = new LoginModel
                         {
-                            var token = await response.Content.ReadFromJsonAsync<string>();
-                            HttpContext.Session.SetString("ApiAuthToken", token!);
-                        }
+                            UserName = model.Email,
+                            Password = model.Password
+                        };
+
+                        _ = await authenticationService.LoginAsync(loginModel);
 
                         return RedirectToAction("Index", "Home");
                     }
@@ -250,19 +219,10 @@ public class AccountController : Controller
 
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        var jsonContent = JsonContent.Create(createAddressModel);
+        var requestSucceeded = await addressService.AddNewAddressAsync(createAddressModel, customerId);
 
-        try
+        if (requestSucceeded is false)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"api/customers/{customerId}/addresses");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-            request.Content = jsonContent;
-
-            await client.SendAsync(request);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
         }
 
@@ -274,17 +234,7 @@ public class AccountController : Controller
     {
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        try
-        {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-
-            await client.SendAsync(request);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        _ = await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
 
         return RedirectToAction("Index");
     }

@@ -4,8 +4,8 @@ using SeelansTyres.Data.Entities;
 using SeelansTyres.Mvc.Data;
 using SeelansTyres.Mvc.Services;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Mail;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,14 +33,34 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
-builder.Services.AddHttpClient("SeelansTyresAPI", client =>
+builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {
-    client.BaseAddress = builder.Environment.EnvironmentName switch
-    {
-        "Development" => new Uri("https://localhost:7012/"),
-        _             => new Uri(builder.Configuration["WebApiUrl"])
-    };
-    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
+});
+
+builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
+});
+
+builder.Services.AddHttpClient<ICartService, CartService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
+});
+
+builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
+});
+
+builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 
 builder.Services.AddHttpContextAccessor();

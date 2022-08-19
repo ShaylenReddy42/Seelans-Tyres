@@ -1,20 +1,7 @@
-﻿@inject IHttpClientFactory httpClientFactory
+﻿@inject ITyresService tyresService
 
 @{
-    var client = httpClientFactory.CreateClient("SeelansTyresAPI");
-    IEnumerable<TyreModel>? tyres = new List<TyreModel>();
-
-    try
-    {
-        var response = await client.GetAsync("api/tyres");
-
-        tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
-    }
-    catch (HttpRequestException ex)
-    {
-        // do nothing
-        _ = ex.Message;
-    }
+    var tyres = await tyresService.GetAllTyresAsync();
 }
 
 <table class="table table-bordered table-responsive mb-4">

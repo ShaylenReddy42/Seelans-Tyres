@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.Services;
 using System.Diagnostics;
 
 namespace SeelansTyres.Mvc.Controllers;
@@ -8,15 +8,12 @@ namespace SeelansTyres.Mvc.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> logger;
-    private readonly HttpClient client;
+    private readonly ITyresService tyresService;
 
     public HomeController(
         ILogger<HomeController> logger,
-        IHttpClientFactory httpClientFactory)
-    {
-        this.logger = logger;
-        client = httpClientFactory.CreateClient("SeelansTyresAPI");
-    }
+        ITyresService tyresService) => 
+            (this.logger, this.tyresService) = (logger, tyresService);
 
     public IActionResult Index()
     {
@@ -35,18 +32,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Shop()
     {
-        IEnumerable<TyreModel>? tyres = new List<TyreModel>();
-
-        try
-        {
-            var response = await client.GetAsync("api/tyres");
-
-            tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        var tyres = await tyresService.GetAllTyresAsync();
 
         return View(tyres);
     }

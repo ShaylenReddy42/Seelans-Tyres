@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.Services;
 
 namespace SeelansTyres.Mvc.Controllers;
 
@@ -10,16 +11,19 @@ public class AdminController : Controller
 {
     private readonly ILogger<AdminController> logger;
     private readonly IWebHostEnvironment environment;
-    private readonly HttpClient client;
+    private readonly IOrderService orderService;
+    private readonly ITyresService tyresService;
 
     public AdminController(
         ILogger<AdminController> logger,
-        IHttpClientFactory httpClientFactory,
-        IWebHostEnvironment environment)
+        IWebHostEnvironment environment,
+        IOrderService orderService,
+        ITyresService tyresService)
     {
         this.logger = logger;
         this.environment = environment;
-        client = httpClientFactory.CreateClient("SeelansTyresAPI");
+        this.orderService = orderService;
+        this.tyresService = tyresService;
     }
     
     public IActionResult Index()
@@ -76,19 +80,10 @@ public class AdminController : Controller
             BrandId = model.BrandId
         };
 
-        var jsonContent = JsonContent.Create(createTyreModel);
+        var requestSucceeded = await tyresService.AddNewTyreAsync(createTyreModel);
 
-        try
+        if (requestSucceeded is false)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/tyres");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-            request.Content = jsonContent;
-
-            _ = await client.SendAsync(request);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
             ModelState.AddModelError(string.Empty, "API is not available");
             return View(model);
         }
@@ -99,25 +94,20 @@ public class AdminController : Controller
     [HttpGet("Admin/UpdateTyre/{tyreId}")]
     public async Task<IActionResult> UpdateTyre(int tyreId)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, $"api/tyres/{tyreId}");
-        request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-
-        var response = await client.SendAsync(request);
-
-        var model = await response.Content.ReadFromJsonAsync<TyreModel>();
+        var tyre = await tyresService.GetTyreByIdAsync(tyreId);
         
         var mvcTyreModel = new MvcTyreModel
         {
-            Id = model!.Id,
-            Name = model.Name,
-            Width = model.Width,
-            Ratio = model.Ratio,
-            Diameter = model.Diameter,
-            VehicleType = model.VehicleType,
-            Price = model.Price,
-            Available = model.Available,
-            OriginalImageUrl = model.ImageUrl,
-            BrandId = model.Brand!.Id
+            Id = tyre!.Id,
+            Name = tyre.Name,
+            Width = tyre.Width,
+            Ratio = tyre.Ratio,
+            Diameter = tyre.Diameter,
+            VehicleType = tyre.VehicleType,
+            Price = tyre.Price,
+            Available = tyre.Available,
+            OriginalImageUrl = tyre.ImageUrl,
+            BrandId = tyre.Brand!.Id
         };
         
         return View(mvcTyreModel);
@@ -163,19 +153,10 @@ public class AdminController : Controller
             BrandId = model.BrandId
         };
 
-        var jsonContent = JsonContent.Create(createTyreModel);
+        var requestSucceeded = await tyresService.UpdateTyreAsync(model.Id, createTyreModel);
 
-        try
+        if (requestSucceeded is false)
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"api/tyres/{model.Id}");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-            request.Content = jsonContent;
-
-            _ = await client.SendAsync(request);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
             ModelState.AddModelError(string.Empty, "API is not available");
             return View(model);
         }
@@ -186,18 +167,7 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> MarkOrderAsDelivered(int orderId)
     {
-        try
-        {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"api/orders/{orderId}?delivered=true");
-            request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
-            request.Content = new StringContent("");
-
-            await client.SendAsync(request);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex.Message);
-        }
+        _ = await orderService.MarkOrderAsDeliveredAsync(orderId);
 
         return RedirectToAction("Index");
     }
