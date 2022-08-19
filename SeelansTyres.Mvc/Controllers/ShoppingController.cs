@@ -32,7 +32,8 @@ public class ShoppingController : Controller
     
     public async Task<IActionResult> Cart()
     {
-        HttpResponseMessage response = null!;
+        HttpRequestMessage request;
+        HttpResponseMessage response;
         IEnumerable<CartItemModel>? cartItems = new List<CartItemModel>();
 
         try
@@ -53,7 +54,9 @@ public class ShoppingController : Controller
 
             try
             {
-                response = await client.GetAsync($"api/customers/{customerId}/addresses");
+                request = new(HttpMethod.Get, $"api/customers/{customerId}/addresses");
+                request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+                response = await client.SendAsync(request);
                 numberOfAddresses = (await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>())!.Count();
             }
             catch (HttpRequestException ex)
@@ -113,6 +116,8 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> Checkout()
     {
+        HttpRequestMessage request;
+        
         var cartId = HttpContext.Session!.GetString("CartId");
 
         var response = await client.GetAsync($"api/cart/{cartId}");
@@ -121,7 +126,10 @@ public class ShoppingController : Controller
 
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        response = await client.GetAsync($"api/customers/{customerId}/addresses");
+        request = new(HttpMethod.Get, $"api/customers/{customerId}/addresses");
+        request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
+        
+        response = await client.SendAsync(request);
 
         var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
@@ -145,7 +153,7 @@ public class ShoppingController : Controller
 
         var jsonContent = JsonContent.Create(order);
 
-        var request = new HttpRequestMessage(HttpMethod.Post, "api/orders");
+        request = new HttpRequestMessage(HttpMethod.Post, "api/orders");
         request.Headers.Add("Authorization", $"Bearer {HttpContext.Session.GetString("ApiAuthToken")}");
         request.Content = jsonContent;
 
