@@ -13,12 +13,12 @@ namespace SeelansTyres.WebApi.Controllers;
 public class TyresController : ControllerBase
 {
     private readonly ILogger<TyresController> logger;
-    private readonly ISeelansTyresRepository repository;
+    private readonly ITyresRepository repository;
     private readonly IMapper mapper;
 
     public TyresController(
         ILogger<TyresController> logger,
-        ISeelansTyresRepository repository,
+        ITyresRepository repository,
         IMapper mapper)
     {
         this.logger = logger;

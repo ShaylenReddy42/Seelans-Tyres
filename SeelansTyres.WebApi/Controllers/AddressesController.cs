@@ -14,12 +14,12 @@ namespace SeelansTyres.WebApi.Controllers;
 public class AddressesController : ControllerBase
 {
     private readonly ILogger<AddressesController> logger;
-    private readonly ISeelansTyresRepository repository;
+    private readonly IAddressRepository repository;
     private readonly IMapper mapper;
 
     public AddressesController(
         ILogger<AddressesController> logger,
-        ISeelansTyresRepository repository,
+        IAddressRepository repository,
         IMapper mapper)
     {
         this.logger = logger;

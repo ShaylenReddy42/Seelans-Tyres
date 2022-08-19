@@ -11,12 +11,12 @@ namespace SeelansTyres.WebApi.Controllers;
 public class CartController : ControllerBase
 {
     private readonly ILogger<CartController> logger;
-    private readonly ISeelansTyresRepository repository;
+    private readonly ICartRepository repository;
     private readonly IMapper mapper;
 
     public CartController(
         ILogger<CartController> logger,
-        ISeelansTyresRepository repository,
+        ICartRepository repository,
         IMapper mapper)
     {
         this.logger = logger;

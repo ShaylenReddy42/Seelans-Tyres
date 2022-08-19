@@ -50,7 +50,10 @@ builder.Services.AddDbContext<SeelansTyresContext>(
     options => options.UseSqlServer(
         builder.Configuration["ConnectionStrings:SeelansTyresContext"]));
 
-builder.Services.AddScoped<ISeelansTyresRepository, SeelansTyresRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ITyresRepository, TyresRepository>();
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<SeelansTyresContext>()

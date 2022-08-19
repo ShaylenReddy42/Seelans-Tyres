@@ -11,12 +11,12 @@ namespace SeelansTyres.WebApi.Controllers;
 public class BrandsController : ControllerBase
 {
     private readonly ILogger<BrandsController> logger;
-    private readonly ISeelansTyresRepository repository;
+    private readonly ITyresRepository repository;
     private readonly IMapper mapper;
 
     public BrandsController(
         ILogger<BrandsController> logger,
-        ISeelansTyresRepository repository,
+        ITyresRepository repository,
         IMapper mapper)
     {
         this.logger = logger;
