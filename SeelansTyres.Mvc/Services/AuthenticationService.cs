@@ -31,7 +31,7 @@ public class AuthenticationService : IAuthenticationService
 		}
 		catch (HttpRequestException ex)
 		{
-			logger.LogError(ex.Message);
+			logger.LogError(ex, "The API is unavailable");
 			return false;
 		}
 	}

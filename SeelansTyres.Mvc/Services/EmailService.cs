@@ -32,7 +32,7 @@ public class EmailService : IEmailService
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex.Message);
+            logger.LogWarning(ex, "Failed to send email to customer");
         }
     }
 
@@ -55,7 +55,7 @@ public class EmailService : IEmailService
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex.Message);
+            logger.LogWarning(ex, "Failed to send email to customer");
         }
     }
 }

@@ -26,7 +26,7 @@ public class TyresService : ITyresService
 		}
 		catch (HttpRequestException ex)
 		{
-			logger.LogError(ex.Message);
+			logger.LogError(ex, "The API is unavailable");
 			return false;
 		}
 	}
@@ -42,7 +42,7 @@ public class TyresService : ITyresService
 		}
 		catch (HttpRequestException ex)
 		{
-			logger.LogError(ex.Message);
+			logger.LogError(ex, "The API is unavailable");
 			return new List<BrandModel>();
 		}
 	}
@@ -58,7 +58,7 @@ public class TyresService : ITyresService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return new List<TyreModel>();
         }
     }
@@ -74,7 +74,7 @@ public class TyresService : ITyresService
 		}
 		catch (HttpRequestException ex)
 		{
-			logger.LogError(ex.Message);
+			logger.LogError(ex, "The API is unavailable");
 			return null;
 		}
 	}
@@ -88,7 +88,7 @@ public class TyresService : ITyresService
 		}
 		catch (HttpRequestException ex)
 		{
-			logger.LogError(ex.Message);
+			logger.LogError(ex, "The API is unavailable");
 			return false;
 		}
 	}

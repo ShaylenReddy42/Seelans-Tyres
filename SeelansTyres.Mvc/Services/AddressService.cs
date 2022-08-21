@@ -26,7 +26,7 @@ public class AddressService : IAddressService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return false;
         }
     }
@@ -42,7 +42,7 @@ public class AddressService : IAddressService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return new List<AddressModel>();
         }
     }
@@ -56,7 +56,7 @@ public class AddressService : IAddressService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return false;
         }
     }

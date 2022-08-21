@@ -34,6 +34,7 @@ public class AuthenticationController : ControllerBase
 
         if (customer is null)
         {
+            logger.LogWarning("Customer with id {customerId} does not exist", login.UserName);
             return NotFound();
         }
         
@@ -41,13 +42,14 @@ public class AuthenticationController : ControllerBase
 
         if (validSignIn is false)
         {
+            logger.LogWarning("Invalid login attempt!");
             return Unauthorized();
         }
 
         if (configuration["Token:Key"].Length < 32)
         {
             throw new ArgumentOutOfRangeException(
-                paramName: "Token:Key", 
+                paramName: @"configuration[""Token:Key""]", 
                 actualValue: configuration["Token:Key"].Length, 
                 message: "Key must be at least 32 bits long");
         }

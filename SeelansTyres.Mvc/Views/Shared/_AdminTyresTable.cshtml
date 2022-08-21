@@ -5,15 +5,16 @@
 }
 
 <table class="table table-bordered table-responsive mb-4">
+    <caption hidden>Tyres</caption>
     <thead>
         <tr>
             @if (ViewData["IncludeEdit"] is true)
             {
-                <th class="table-dark text-center" colspan="11">Tyres</th>
+                <th class="table-dark text-center" colspan="11" scope="col">Tyres</th>
             }
             else
             {
-                <th class="table-dark text-center" colspan="10">Tyres</th>
+                <th class="table-dark text-center" colspan="10" scope="col">Tyres</th>
             }
         </tr>
         <tr>

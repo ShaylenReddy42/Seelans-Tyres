@@ -7,20 +7,14 @@ namespace SeelansTyres.WebApi.Services;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly ILogger<OrderRepository> logger;
     private readonly SeelansTyresContext context;
     private readonly UserManager<Customer> userManager;
 
     public OrderRepository(
-        ILogger<OrderRepository> logger,
         SeelansTyresContext context,
-        UserManager<Customer> userManager)
-    {
-        this.logger = logger;
-        this.context = context;
-        this.userManager = userManager;
-    }
-    
+        UserManager<Customer> userManager) => 
+            (this.context, this.userManager) = (context, userManager);
+
     public async Task AddNewOrderAsync(Order newOrder)
     {
         newOrder.Customer = await userManager.FindByIdAsync(newOrder.CustomerId.ToString());
@@ -45,7 +39,7 @@ public class OrderRepository : IOrderRepository
                 .Include(order => order.OrderItems)
                     .ThenInclude(item => item.Tyre)
                         .ThenInclude(tyre => tyre!.Brand)
-                .Where(order => order.Delivered == false),
+                .Where(order => !order.Delivered),
             false => context.Orders
                 .Include(order => order.Customer)
                 .Include(order => order.Address)

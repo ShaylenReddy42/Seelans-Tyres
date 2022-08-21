@@ -57,7 +57,7 @@ public class AdminAccountSeeder
         }
         catch (InvalidOperationException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The database is unavailable");
         }
     }
 }

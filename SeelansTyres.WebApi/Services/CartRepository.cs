@@ -6,17 +6,11 @@ namespace SeelansTyres.WebApi.Services;
 
 public class CartRepository : ICartRepository
 {
-    private readonly ILogger<CartRepository> logger;
     private readonly SeelansTyresContext context;
 
-    public CartRepository(
-        ILogger<CartRepository> logger,
-        SeelansTyresContext context)
-    {
-        this.logger = logger;
+    public CartRepository(SeelansTyresContext context) => 
         this.context = context;
-    }
-    
+
     public async Task AddItemToCartAsync(CartItem newCartItem)
     {
         var cartItem = await context

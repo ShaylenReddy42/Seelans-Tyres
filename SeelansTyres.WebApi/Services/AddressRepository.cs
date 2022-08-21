@@ -7,19 +7,13 @@ namespace SeelansTyres.WebApi.Services;
 
 public class AddressRepository : IAddressRepository
 {
-    private readonly ILogger<AddressRepository> logger;
     private readonly SeelansTyresContext context;
     private readonly UserManager<Customer> userManager;
 
     public AddressRepository(
-        ILogger<AddressRepository> logger,
         SeelansTyresContext context,
-        UserManager<Customer> userManager)
-    {
-        this.logger = logger;
-        this.context = context;
-        this.userManager = userManager;
-    }
+        UserManager<Customer> userManager) => 
+            (this.context, this.userManager) = (context, userManager);
 
     public async Task<bool> CheckIfCustomerExistsAsync(Guid customerId)
     {

@@ -75,7 +75,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginModel model, string? returnUrl = null)
+    public async Task<IActionResult> Login(LoginModel model)
     {
         if (ModelState.IsValid)
         {
@@ -86,8 +86,8 @@ public class AccountController : Controller
                 if (result.Succeeded)
                 {
                     _ = await authenticationService.LoginAsync(model);
-                    
-                    return Redirect(returnUrl ?? "~/");
+
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -96,7 +96,7 @@ public class AccountController : Controller
             }
             catch (InvalidOperationException ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "The database is unavailable");
                 ModelState.AddModelError(string.Empty, "Database is not connected, please try again later");
             }
         }
@@ -171,7 +171,7 @@ public class AccountController : Controller
             }
             catch (InvalidOperationException ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError(ex, "The database is unavailable");
                 ModelState.AddModelError(string.Empty, "Database is not connected, please try again later");
             }
         }

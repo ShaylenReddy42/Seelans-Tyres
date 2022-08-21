@@ -41,7 +41,7 @@ public class OrderService : IOrderService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return new List<OrderModel>();
         }
     }
@@ -57,7 +57,7 @@ public class OrderService : IOrderService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return null;
         }
     }
@@ -71,7 +71,7 @@ public class OrderService : IOrderService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return false;
         }
     }
@@ -86,7 +86,7 @@ public class OrderService : IOrderService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return null;
         }
     }

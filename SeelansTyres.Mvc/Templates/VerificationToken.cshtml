@@ -2,9 +2,10 @@
 <p style="text-align: center; font-size: 24">Hi, @Model.FirstName.<br />Here is your token to reset your password</p>
 
 <table style="width: 90%; margin-left:auto; margin-right: auto; background-color:lightgrey; text-align: center; border-radius: 10px;" cellpadding="20">
+    <caption hidden>Verification Token</caption>
     <tbody>
         <tr>
-            <td style="color: rgb(255, 40, 0); word-break: break-all">@Model.Token</td>
+            <th scope="row" style="color: rgb(255, 40, 0); word-break: break-all">@Model.Token</th>
         </tr>
     </tbody>
 </table>

@@ -35,6 +35,9 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'ShaylenReddy42_Seelans-Tyres'
     projectName: 'Seelans-Tyres'
+    extraProperties: |
+      sonar.exclusions=**/wwwroot/lib/**
+      sonar.coverage.exclusions=**/wwwroot/lib/**
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'

@@ -6,17 +6,11 @@ namespace SeelansTyres.WebApi.Services;
 
 public class TyresRepository : ITyresRepository
 {
-    private readonly ILogger<TyresRepository> logger;
     private readonly SeelansTyresContext context;
 
-    public TyresRepository(
-        ILogger<TyresRepository> logger,
-        SeelansTyresContext context)
-    {
-        this.logger = logger;
+    public TyresRepository(SeelansTyresContext context) => 
         this.context = context;
-    }
-    
+
     public async Task<IEnumerable<Brand>> GetAllBrandsAsync() =>
         await context.Brands.ToListAsync();
 

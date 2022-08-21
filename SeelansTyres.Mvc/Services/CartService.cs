@@ -23,7 +23,7 @@ public class CartService : ICartService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return false;
         }
     }
@@ -37,7 +37,7 @@ public class CartService : ICartService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return false;
         }
     }
@@ -53,7 +53,7 @@ public class CartService : ICartService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return new List<CartItemModel>();
         }
     }
@@ -67,7 +67,7 @@ public class CartService : ICartService
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, "The API is unavailable");
             return false;
         }
     }

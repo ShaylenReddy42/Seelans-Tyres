@@ -5,15 +5,16 @@
 }
 
 <table class="table table-bordered table-responsive-lg mb-4">
+    <caption hidden>Orders</caption>
     <thead>
         <tr>
         @if (ViewData["NotDeliveredOnly"] is true)
         {
-            <th class="table-dark text-center" colspan="8">Undelivered Orders</th>
+            <th class="table-dark text-center" colspan="8" scope="col">Undelivered Orders</th>
         }
         else
         {
-            <th class="table-dark text-center" colspan="8">Orders</th>
+            <th class="table-dark text-center" colspan="8" scope="col">Orders</th>
         }
         </tr>
         <tr>
