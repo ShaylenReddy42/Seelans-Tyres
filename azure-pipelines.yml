@@ -67,7 +67,7 @@ steps:
     arguments: run dotnet-ef migrations bundle --force -o "$(Build.ArtifactStagingDirectory)\efbundle.exe"
     workingDirectory: '$(workDir)\SeelansTyres.WebApi'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 --self-contained
+- script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
   displayName: 'Publish SeelansTyres.Mvc'
   workingDirectory: '$(workDir)\SeelansTyres.Mvc'
 
@@ -79,7 +79,7 @@ steps:
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Mvc.zip'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 --self-contained
+- script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
   displayName: 'Publish SeelansTyres.WebApi'
   workingDirectory: '$(workDir)\SeelansTyres.WebApi'
 
