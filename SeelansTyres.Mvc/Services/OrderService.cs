@@ -22,24 +22,19 @@ public class OrderService : IOrderService
     {
         try
         {
-            HttpResponseMessage response = null!;
-
-            if (customerId is not null && notDeliveredOnly is true)
+            var response = customerId switch
             {
-                response = await client.GetAsync($"api/orders?customerId={customerId}&notDeliveredOnly=true");
-            }
-            else if (customerId is not null && notDeliveredOnly is false)
-            {
-                response = await client.GetAsync($"api/orders?customerId={customerId}");
-            }
-            else if (customerId is null && notDeliveredOnly is true)
-            {
-                response = await client.GetAsync($"api/orders?notDeliveredOnly=true");
-            }
-            else if (customerId is null && notDeliveredOnly is false)
-            {
-                response = await client.GetAsync($"api/orders");
-            }
+                null => notDeliveredOnly switch
+                {
+                    true  => await client.GetAsync($"api/orders?notDeliveredOnly=true"),
+                    false => await client.GetAsync($"api/orders")
+                },
+                _    => notDeliveredOnly switch
+                {
+                    true  => await client.GetAsync($"api/orders?customerId={customerId}&notDeliveredOnly=true"),
+                    false => await client.GetAsync($"api/orders?customerId={customerId}")
+                }
+            };
 
             var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
 
