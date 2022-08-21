@@ -43,7 +43,7 @@ IF EXIST publish (
 
 ECHO Publish the Frontend Project
 ECHO.
-dotnet publish -c Release -r win-x64 --self-contained
+dotnet publish -c Release -r win-x64 --no-self-contained
 
 CD ../SeelansTyres.WebApi
 
@@ -57,7 +57,7 @@ IF EXIST publish (
 
 ECHO Publish the WebApi 
 ECHO.
-dotnet publish -c Release -r win-x64 --self-contained
+dotnet publish -c Release -r win-x64 --no-self-contained
 
 CD ..
 
