@@ -1,5 +1,4 @@
 ﻿using SeelansTyres.Data.Models;
-using System.Net;
 
 namespace SeelansTyres.Mvc.Services;
 
@@ -77,18 +76,18 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<int> PlaceNewOrderAsync(CreateOrderModel order)
+    public async Task<OrderModel?> PlaceNewOrderAsync(CreateOrderModel order)
     {
         try
         {
             var response = await client.PostAsync("api/orders", JsonContent.Create(order));
 
-            return (await response.Content.ReadFromJsonAsync<OrderModel>())!.Id;
+            return await response.Content.ReadFromJsonAsync<OrderModel>();
         }
         catch (HttpRequestException ex)
         {
             logger.LogError(ex.Message);
-            return 0;
+            return null;
         }
     }
 }

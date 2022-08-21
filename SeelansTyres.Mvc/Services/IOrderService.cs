@@ -6,6 +6,6 @@ public interface IOrderService
 {
     Task<OrderModel?> GetOrderByIdAsync(int orderId);
     Task<IEnumerable<OrderModel>> GetAllOrdersAsync(Guid? customerId = null, bool notDeliveredOnly = false);
-    Task<int> PlaceNewOrderAsync(CreateOrderModel order);
+    Task<OrderModel?> PlaceNewOrderAsync(CreateOrderModel order);
     Task<bool> MarkOrderAsDeliveredAsync(int orderId);
 }

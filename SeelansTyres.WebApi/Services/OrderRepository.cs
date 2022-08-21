@@ -27,7 +27,10 @@ public class OrderRepository : IOrderRepository
         newOrder.Address = await context.Addresses.SingleAsync(address => address.Id == newOrder.AddressId);
 
         newOrder.OrderItems
-            .Select(async item => item.Tyre = await context.Tyres.SingleAsync(tyre => tyre.Id == item.TyreId));
+            .ToList()
+            .ForEach(item => item.Tyre = context.Tyres
+                        .Include(tyre => tyre.Brand)
+                        .Single(tyre => tyre.Id == item.TyreId));
 
         await context.Orders.AddAsync(newOrder);
     }

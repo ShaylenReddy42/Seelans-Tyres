@@ -107,15 +107,13 @@ public class ShoppingController : Controller
             });
         }
 
-        var placedOrderId = await orderService.PlaceNewOrderAsync(order);
+        var placedOrder = await orderService.PlaceNewOrderAsync(order);
 
-        if (placedOrderId is not 0)
+        if (placedOrder is not null)
         {
             _ = await cartService.ClearCartAsync();
 
-            var orderModel = await orderService.GetOrderByIdAsync(placedOrderId);
-
-            await emailService.SendReceiptAsync(orderModel!);
+            await emailService.SendReceiptAsync(placedOrder);
         }
 
         return RedirectToAction("Index", "Home");
