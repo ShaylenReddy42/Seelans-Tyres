@@ -10,6 +10,13 @@
     session.SetString("CartId", cartId);
 }
 
+@if (session.GetString("ApiAuthToken") is null && User.Identity!.IsAuthenticated is true)
+{
+    <script>
+        window.location.href = "@Url.Action("Logout", "Account")";
+    </script>
+}
+
 @if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin") is false)
 {
     <script>
