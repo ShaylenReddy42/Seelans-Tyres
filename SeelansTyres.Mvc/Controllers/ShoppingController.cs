@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RazorLight;
-using SeelansTyres.Data.Entities;
 using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
@@ -13,7 +11,6 @@ namespace SeelansTyres.Mvc.Controllers;
 public class ShoppingController : Controller
 {
     private readonly ILogger<ShoppingController> logger;
-    private readonly UserManager<Customer> userManager;
     private readonly IAddressService addressService;
     private readonly ICartService cartService;
     private readonly IOrderService orderService;
@@ -21,14 +18,12 @@ public class ShoppingController : Controller
 
     public ShoppingController(
         ILogger<ShoppingController> logger,
-        UserManager<Customer> userManager,
         IAddressService addressService,
         ICartService cartService,
         IOrderService orderService,
         IEmailService emailService)
     {
         this.logger = logger;
-        this.userManager = userManager;
         this.addressService = addressService;
         this.cartService = cartService;
         this.orderService = orderService;
