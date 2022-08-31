@@ -217,7 +217,7 @@ public class AccountController : Controller
     {
         var createAddressModel = model.CreateAddressModel;
 
-        var customerId = (await userManager.GetUserAsync(User)).Id;
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         var requestSucceeded = await addressService.CreateAsync(createAddressModel, customerId);
 
@@ -232,7 +232,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> MarkAddressAsPreferred(int addressId)
     {
-        var customerId = (await userManager.GetUserAsync(User)).Id;
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         _ = await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
 

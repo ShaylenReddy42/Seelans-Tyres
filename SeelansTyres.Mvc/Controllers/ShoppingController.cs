@@ -43,7 +43,7 @@ public class ShoppingController : Controller
 
         if (User.Identity!.IsAuthenticated)
         {
-            var customerId = (await userManager.GetUserAsync(User)).Id;
+            var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
             numberOfAddresses = (await addressService.RetrieveAllAsync(customerId)).Count();
         }
@@ -85,7 +85,7 @@ public class ShoppingController : Controller
     {
         var cartItems = await cartService.RetrieveCartAsync();
 
-        var customerId = (await userManager.GetUserAsync(User)).Id;
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         var addresses = await addressService.RetrieveAllAsync(customerId);
 
