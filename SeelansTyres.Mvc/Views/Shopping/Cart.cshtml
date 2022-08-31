@@ -58,7 +58,7 @@
             <p>Please add an address to your account</p>
         </div>
     }
-    else
+    else if (Model.CartItems.Count() is not 0)
     {
         <div class="col-md-12 text-center mt-5">
             <form method="post" asp-controller="Shopping" asp-action="Checkout">
