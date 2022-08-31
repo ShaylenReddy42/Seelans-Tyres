@@ -4,7 +4,7 @@ namespace SeelansTyres.Mvc.Services;
 
 public interface IAddressService
 {
-    Task<IEnumerable<AddressModel>> GetAllAddressesForCustomerAsync(Guid customerId);
-    Task<bool> AddNewAddressAsync(CreateAddressModel address, Guid customerId);
+    Task<IEnumerable<AddressModel>> RetrieveAllAsync(Guid customerId);
+    Task<bool> CreateAsync(CreateAddressModel address, Guid customerId);
     Task<bool> MarkAddressAsPreferredAsync(Guid customerId, int addressId);
 }

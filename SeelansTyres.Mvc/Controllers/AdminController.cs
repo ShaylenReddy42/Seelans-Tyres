@@ -80,7 +80,7 @@ public class AdminController : Controller
             BrandId = model.BrandId
         };
 
-        var requestSucceeded = await tyresService.AddNewTyreAsync(createTyreModel);
+        var requestSucceeded = await tyresService.CreateTyreAsync(createTyreModel);
 
         if (requestSucceeded is false)
         {
@@ -94,7 +94,7 @@ public class AdminController : Controller
     [HttpGet("Admin/UpdateTyre/{tyreId}")]
     public async Task<IActionResult> UpdateTyre(int tyreId)
     {
-        var tyre = await tyresService.GetTyreByIdAsync(tyreId);
+        var tyre = await tyresService.RetrieveSingleTyreAsync(tyreId);
         
         var mvcTyreModel = new MvcTyreModel
         {

@@ -17,7 +17,7 @@ public class OrderService : IOrderService
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
     }
 
-    public async Task<IEnumerable<OrderModel>> GetAllOrdersAsync(Guid? customerId = null, bool notDeliveredOnly = false)
+    public async Task<IEnumerable<OrderModel>> RetrieveAllAsync(Guid? customerId = null, bool notDeliveredOnly = false)
     {
         try
         {
@@ -46,7 +46,7 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<OrderModel?> GetOrderByIdAsync(int orderId)
+    public async Task<OrderModel?> RetrieveSingleAsync(int orderId)
     {
         try
         {
@@ -76,7 +76,7 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<OrderModel?> PlaceNewOrderAsync(CreateOrderModel order)
+    public async Task<OrderModel?> CreateAsync(CreateOrderModel order)
     {
         try
         {

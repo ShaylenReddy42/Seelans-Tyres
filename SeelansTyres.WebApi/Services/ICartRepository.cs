@@ -4,10 +4,10 @@ namespace SeelansTyres.WebApi.Services;
 
 public interface ICartRepository
 {
-    Task AddItemToCartAsync(CartItem newCartItem);
-    Task<CartItem?> GetCartItemByIdAsync(int cartItemId);
-    Task<IEnumerable<CartItem>> GetCartItemsByCartId(string cartId);
-    void RemoveItemFromCart(CartItem cartItem);
-    void RemoveCartById(IEnumerable<CartItem> cartItems);
+    Task CreateItemAsync(CartItem newCartItem);
+    Task<CartItem?> RetrieveSingleItemAsync(int cartItemId);
+    Task<IEnumerable<CartItem>> RetrieveCartAsync(string cartId);
+    void DeleteItem(CartItem cartItem);
+    void DeleteCart(IEnumerable<CartItem> cartItems);
     Task<bool> SaveChangesAsync();
 }

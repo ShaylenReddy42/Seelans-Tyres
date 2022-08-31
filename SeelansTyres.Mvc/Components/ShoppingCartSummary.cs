@@ -25,7 +25,7 @@ public class ShoppingCartSummary : ViewComponent
 
     private async Task<int> GetCartItemsCountAsync()
     {
-        var cartItems = await cartService.GetAllCartItemsAsync();
+        var cartItems = await cartService.RetrieveCartAsync();
 
         return cartItems!.Count();
     }

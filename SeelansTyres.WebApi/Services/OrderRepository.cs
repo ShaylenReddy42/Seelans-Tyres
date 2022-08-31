@@ -15,7 +15,7 @@ public class OrderRepository : IOrderRepository
         UserManager<Customer> userManager) => 
             (this.context, this.userManager) = (context, userManager);
 
-    public async Task AddNewOrderAsync(Order newOrder)
+    public async Task CreateAsync(Order newOrder)
     {
         newOrder.Customer = await userManager.FindByIdAsync(newOrder.CustomerId.ToString());
         newOrder.Address = await context.Addresses.SingleAsync(address => address.Id == newOrder.AddressId);
@@ -29,7 +29,7 @@ public class OrderRepository : IOrderRepository
         await context.Orders.AddAsync(newOrder);
     }
 
-    public async Task<IEnumerable<Order>> GetAllOrdersAsync(Guid? customerId, bool notDeliveredOnly)
+    public async Task<IEnumerable<Order>> RetrieveAllAsync(Guid? customerId, bool notDeliveredOnly)
     {
         var collection = notDeliveredOnly switch
         {
@@ -60,7 +60,7 @@ public class OrderRepository : IOrderRepository
         return orders;
     }
 
-    public async Task<Order?> GetOrderByIdAsync(int id)
+    public async Task<Order?> RetrieveSingleAsync(int id)
     {
         return await context.Orders
             .Include(order => order.Customer)

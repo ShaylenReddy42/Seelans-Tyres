@@ -14,7 +14,7 @@ public class CartService : ICartService
         ILogger<CartService> logger) =>
             (this.client, cartId, this.logger) = (client, httpContextAccessor.HttpContext!.Session.GetString("CartId")!, logger);
 
-    public async Task<bool> AddItemToCartAsync(CreateCartItemModel item)
+    public async Task<bool> CreateItemAsync(CreateCartItemModel item)
     {
         try
         {
@@ -28,7 +28,7 @@ public class CartService : ICartService
         }
     }
 
-    public async Task<bool> ClearCartAsync()
+    public async Task<bool> DeleteCartAsync()
     {
         try
         {
@@ -42,7 +42,7 @@ public class CartService : ICartService
         }
     }
 
-    public async Task<IEnumerable<CartItemModel>> GetAllCartItemsAsync()
+    public async Task<IEnumerable<CartItemModel>> RetrieveCartAsync()
     {
         try
         {
@@ -58,7 +58,7 @@ public class CartService : ICartService
         }
     }
 
-    public async Task<bool> RemoveItemFromCartAsync(int itemId)
+    public async Task<bool> DeleteItemAsync(int itemId)
     {
         try
         {

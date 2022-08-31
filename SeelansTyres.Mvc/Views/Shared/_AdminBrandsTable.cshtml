@@ -1,7 +1,7 @@
 ﻿@inject ITyresService tyresService
 
 @{
-    var brands = await tyresService.GetAllBrandsAsync();
+    var brands = await tyresService.RetrieveAllBrandsAsync();
 }
 
 <table class="table table-bordered mb-4">

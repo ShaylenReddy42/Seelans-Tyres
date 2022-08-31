@@ -11,20 +11,20 @@ public class TyresRepository : ITyresRepository
     public TyresRepository(SeelansTyresContext context) => 
         this.context = context;
 
-    public async Task<IEnumerable<Brand>> GetAllBrandsAsync() =>
+    public async Task<IEnumerable<Brand>> RetrieveAllBrandsAsync() =>
         await context.Brands.ToListAsync();
 
-    public async Task<IEnumerable<Tyre>> GetAllTyresAsync(bool availableOnly) =>
+    public async Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly) =>
         availableOnly switch
         {
             true  => await context.Tyres.Include(tyre => tyre.Brand).Where(tyre => tyre.Available).ToListAsync(),
             false => await context.Tyres.Include(tyre => tyre.Brand).ToListAsync()
         };
 
-    public async Task<Tyre?> GetTyreByIdAsync(int tyreId) =>
+    public async Task<Tyre?> RetrieveSingleTyreAsync(int tyreId) =>
         await context.Tyres.Include(tyre => tyre.Brand).SingleOrDefaultAsync(tyre => tyre.Id == tyreId);
 
-    public async Task AddNewTyreAsync(Tyre tyreEntity)
+    public async Task CreateTyreAsync(Tyre tyreEntity)
     {
         var brand = await context.Brands.SingleAsync(brand => brand.Id == tyreEntity.BrandId);
 

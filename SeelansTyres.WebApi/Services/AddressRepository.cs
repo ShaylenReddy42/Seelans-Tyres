@@ -22,13 +22,13 @@ public class AddressRepository : IAddressRepository
         return customer is not null;
     }
 
-    public async Task<IEnumerable<Address>> GetAddressesForCustomerAsync(Guid customerId) =>
+    public async Task<IEnumerable<Address>> RetrieveAllAsync(Guid customerId) =>
         await context.Addresses.Where(address => address.Customer!.Id == customerId).ToListAsync();
 
-    public async Task<Address?> GetAddressForCustomerAsync(Guid customerId, int addressId) =>
+    public async Task<Address?> RetrieveSingleAsync(Guid customerId, int addressId) =>
         await context.Addresses.FirstOrDefaultAsync(address => address.Id == addressId && address.Customer!.Id == customerId);
 
-    public async Task AddNewAddressForCustomerAsync(Guid customerId, Address newAddress)
+    public async Task CreateAsync(Guid customerId, Address newAddress)
     {
         newAddress.CustomerId = customerId;
 

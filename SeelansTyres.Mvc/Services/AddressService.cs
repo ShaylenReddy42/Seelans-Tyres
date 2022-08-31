@@ -17,7 +17,7 @@ public class AddressService : IAddressService
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
     }
 
-    public async Task<bool> AddNewAddressAsync(CreateAddressModel address, Guid customerId)
+    public async Task<bool> CreateAsync(CreateAddressModel address, Guid customerId)
     {
         try
         {
@@ -31,7 +31,7 @@ public class AddressService : IAddressService
         }
     }
 
-    public async Task<IEnumerable<AddressModel>> GetAllAddressesForCustomerAsync(Guid customerId)
+    public async Task<IEnumerable<AddressModel>> RetrieveAllAsync(Guid customerId)
     {
         try
         {

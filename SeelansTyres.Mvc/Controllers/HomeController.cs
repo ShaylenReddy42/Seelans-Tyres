@@ -32,7 +32,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Shop()
     {
-        var tyres = await tyresService.GetAllTyresAsync();
+        var tyres = await tyresService.RetrieveAllTyresAsync();
 
         return View(tyres);
     }

@@ -51,8 +51,8 @@ public class AccountController : Controller
             PhoneNumber = customer.PhoneNumber
         };
 
-        var addresses = await addressService.GetAllAddressesForCustomerAsync(customer.Id);
-        var orders = await orderService.GetAllOrdersAsync(customerId: customer.Id);
+        var addresses = await addressService.RetrieveAllAsync(customer.Id);
+        var orders = await orderService.RetrieveAllAsync(customerId: customer.Id);
 
         var accountViewModel = new AccountViewModel
         {
@@ -219,7 +219,7 @@ public class AccountController : Controller
 
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        var requestSucceeded = await addressService.AddNewAddressAsync(createAddressModel, customerId);
+        var requestSucceeded = await addressService.CreateAsync(createAddressModel, customerId);
 
         if (requestSucceeded is false)
         {

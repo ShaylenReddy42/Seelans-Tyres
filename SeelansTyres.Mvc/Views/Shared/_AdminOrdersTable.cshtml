@@ -1,7 +1,7 @@
 ﻿@inject IOrderService orderService
 
 @{
-    var orders = await orderService.GetAllOrdersAsync(notDeliveredOnly: ViewData["NotDeliveredOnly"] is true);
+    var orders = await orderService.RetrieveAllAsync(notDeliveredOnly: ViewData["NotDeliveredOnly"] is true);
 }
 
 <table class="table table-bordered table-responsive-lg mb-4">

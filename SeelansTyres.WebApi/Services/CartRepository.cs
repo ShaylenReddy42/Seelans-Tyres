@@ -11,7 +11,7 @@ public class CartRepository : ICartRepository
     public CartRepository(SeelansTyresContext context) => 
         this.context = context;
 
-    public async Task AddItemToCartAsync(CartItem newCartItem)
+    public async Task CreateItemAsync(CartItem newCartItem)
     {
         var cartItem = await context
             .CartItems
@@ -29,21 +29,21 @@ public class CartRepository : ICartRepository
         }
     }
 
-    public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(string cartId) =>
+    public async Task<IEnumerable<CartItem>> RetrieveCartAsync(string cartId) =>
         await context.CartItems
         .Include(item => item.Tyre)
             .ThenInclude(tyre => tyre!.Brand)
         .Where(item => item.CartId == cartId)
         .ToListAsync();
 
-    public async Task<CartItem?> GetCartItemByIdAsync(int cartItemId) =>
+    public async Task<CartItem?> RetrieveSingleItemAsync(int cartItemId) =>
         await context.CartItems
         .SingleOrDefaultAsync(item => item.Id == cartItemId);
 
-    public void RemoveItemFromCart(CartItem cartItem) =>
+    public void DeleteItem(CartItem cartItem) =>
         context.CartItems.Remove(cartItem);
 
-    public void RemoveCartById(IEnumerable<CartItem> cartItems) =>
+    public void DeleteCart(IEnumerable<CartItem> cartItems) =>
         context.CartItems.RemoveRange(cartItems);
 
     public async Task<bool> SaveChangesAsync() =>

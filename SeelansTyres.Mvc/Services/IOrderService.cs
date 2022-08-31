@@ -4,8 +4,8 @@ namespace SeelansTyres.Mvc.Services;
 
 public interface IOrderService
 {
-    Task<OrderModel?> GetOrderByIdAsync(int orderId);
-    Task<IEnumerable<OrderModel>> GetAllOrdersAsync(Guid? customerId = null, bool notDeliveredOnly = false);
-    Task<OrderModel?> PlaceNewOrderAsync(CreateOrderModel order);
+    Task<OrderModel?> RetrieveSingleAsync(int orderId);
+    Task<IEnumerable<OrderModel>> RetrieveAllAsync(Guid? customerId = null, bool notDeliveredOnly = false);
+    Task<OrderModel?> CreateAsync(CreateOrderModel order);
     Task<bool> MarkOrderAsDeliveredAsync(int orderId);
 }

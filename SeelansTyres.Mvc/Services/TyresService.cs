@@ -17,7 +17,7 @@ public class TyresService : ITyresService
 		client.DefaultRequestHeaders.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
 	}
 
-	public async Task<bool> AddNewTyreAsync(CreateTyreModel tyre)
+	public async Task<bool> CreateTyreAsync(CreateTyreModel tyre)
 	{
 		try
 		{
@@ -31,7 +31,7 @@ public class TyresService : ITyresService
 		}
 	}
 
-	public async Task<IEnumerable<BrandModel>> GetAllBrandsAsync()
+	public async Task<IEnumerable<BrandModel>> RetrieveAllBrandsAsync()
 	{
 		try
 		{
@@ -47,7 +47,7 @@ public class TyresService : ITyresService
 		}
 	}
 
-	public async Task<IEnumerable<TyreModel>> GetAllTyresAsync(bool availableOnly = true)
+	public async Task<IEnumerable<TyreModel>> RetrieveAllTyresAsync(bool availableOnly = true)
 	{
         try
         {
@@ -63,7 +63,7 @@ public class TyresService : ITyresService
         }
     }
 
-	public async Task<TyreModel?> GetTyreByIdAsync(int tyreId)
+	public async Task<TyreModel?> RetrieveSingleTyreAsync(int tyreId)
 	{
 		try
 		{

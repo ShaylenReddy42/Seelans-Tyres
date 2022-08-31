@@ -13,32 +13,32 @@ namespace SeelansTyres.WebApi.Controllers;
 public class TyresController : ControllerBase
 {
     private readonly ILogger<TyresController> logger;
-    private readonly ITyresRepository repository;
+    private readonly ITyresRepository tyresRepository;
     private readonly IMapper mapper;
 
     public TyresController(
         ILogger<TyresController> logger,
-        ITyresRepository repository,
+        ITyresRepository tyresRepository,
         IMapper mapper)
     {
         this.logger = logger;
-        this.repository = repository;
+        this.tyresRepository = tyresRepository;
         this.mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TyreModel>>> GetAllTyres(bool availableOnly = true)
+    public async Task<ActionResult<IEnumerable<TyreModel>>> RetrieveAll(bool availableOnly = true)
     {
-        var tyres = await repository.GetAllTyresAsync(availableOnly);
+        var tyres = await tyresRepository.RetrieveAllTyresAsync(availableOnly);
 
         return Ok(mapper.Map<IEnumerable<Tyre>, IEnumerable<TyreModel>>(tyres));
     }
 
     [HttpGet("{id}", Name = "GetTyreById")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult<TyreModel>> GetTyreById(int id)
+    public async Task<ActionResult<TyreModel>> RetrieveSingle(int id)
     {
-        var tyre = await repository.GetTyreByIdAsync(id);
+        var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
 
         if (tyre is not null)
         {
@@ -50,13 +50,13 @@ public class TyresController : ControllerBase
 
     [HttpPost]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult<TyreModel>> AddNewTyre(CreateTyreModel model)
+    public async Task<ActionResult<TyreModel>> Create(CreateTyreModel model)
     {
         var tyreEntity = mapper.Map<CreateTyreModel, Tyre>(model);
 
-        await repository.AddNewTyreAsync(tyreEntity);
+        await tyresRepository.CreateTyreAsync(tyreEntity);
 
-        await repository.SaveChangesAsync();
+        await tyresRepository.SaveChangesAsync();
 
         var createdTyre = mapper.Map<Tyre, TyreModel>(tyreEntity);
 
@@ -68,9 +68,9 @@ public class TyresController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult> UpdateTyre(CreateTyreModel model, int id)
+    public async Task<ActionResult> Update(CreateTyreModel model, int id)
     {
-        var tyre = await repository.GetTyreByIdAsync(id);
+        var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
 
         if (tyre is null)
         {
@@ -79,7 +79,7 @@ public class TyresController : ControllerBase
 
         mapper.Map(model, tyre);
 
-        await repository.SaveChangesAsync();
+        await tyresRepository.SaveChangesAsync();
 
         return NoContent();
     }

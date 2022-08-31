@@ -11,69 +11,69 @@ namespace SeelansTyres.WebApi.Controllers;
 public class CartController : ControllerBase
 {
     private readonly ILogger<CartController> logger;
-    private readonly ICartRepository repository;
+    private readonly ICartRepository cartRepository;
     private readonly IMapper mapper;
 
     public CartController(
         ILogger<CartController> logger,
-        ICartRepository repository,
+        ICartRepository cartRepository,
         IMapper mapper)
     {
         this.logger = logger;
-        this.repository = repository;
+        this.cartRepository = cartRepository;
         this.mapper = mapper;
     }
 
     [HttpGet("{cartId}")]
-    public async Task<ActionResult<IEnumerable<CartItemModel>>> GetAllCartItemsByCartId(string cartId)
+    public async Task<ActionResult<IEnumerable<CartItemModel>>> RetrieveCart(string cartId)
     {
-        var cartItems = await repository.GetCartItemsByCartId(cartId);
+        var cartItems = await cartRepository.RetrieveCartAsync(cartId);
 
         return Ok(mapper.Map<IEnumerable<CartItem>, IEnumerable<CartItemModel>>(cartItems));
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddCartItem(CreateCartItemModel newItem)
+    public async Task<ActionResult> CreateItem(CreateCartItemModel newItem)
     {
         var cartItem = mapper.Map<CreateCartItemModel, CartItem>(newItem);
 
-        await repository.AddItemToCartAsync(cartItem);
+        await cartRepository.CreateItemAsync(cartItem);
 
-        await repository.SaveChangesAsync();
+        await cartRepository.SaveChangesAsync();
 
         return NoContent();
     }
 
     [HttpDelete("{cartId}/items/{itemId}")]
-    public async Task<IActionResult> RemoveItemFromCart(int itemId)
+    public async Task<IActionResult> DeleteItem(int itemId)
     {
-        var cartItem = await repository.GetCartItemByIdAsync(itemId);
+        var cartItem = await cartRepository.RetrieveSingleItemAsync(itemId);
 
         if (cartItem is null)
         {
             return NotFound();
         }
 
-        repository.RemoveItemFromCart(cartItem);
+        cartRepository.DeleteItem(cartItem);
 
-        await repository.SaveChangesAsync();
+        await cartRepository.SaveChangesAsync();
 
         return NoContent();
     }
 
     [HttpDelete("{cartId}")]
-    public async Task<ActionResult> RemoveCart(string cartId)
+    public async Task<ActionResult> DeleteCart(string cartId)
     {
-        var cartItems = await repository.GetCartItemsByCartId(cartId);
+        var cartItems = await cartRepository.RetrieveCartAsync(cartId);
 
         if (cartItems.Count() is 0)
         {
             return NotFound();
         }
 
-        repository.RemoveCartById(cartItems);
+        cartRepository.DeleteCart(cartItems);
 
-        await repository.SaveChangesAsync();
+        await cartRepository.SaveChangesAsync();
 
         return NoContent();
     }

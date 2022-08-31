@@ -14,21 +14,21 @@ namespace SeelansTyres.WebApi.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly ILogger<OrdersController> logger;
-    private readonly IOrderRepository repository;
+    private readonly IOrderRepository orderRepository;
     private readonly IMapper mapper;
 
     public OrdersController(
         ILogger<OrdersController> logger,
-        IOrderRepository repository,
+        IOrderRepository orderRepository,
         IMapper mapper)
     {
         this.logger = logger;
-        this.repository = repository;
+        this.orderRepository = orderRepository;
         this.mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<OrderModel>>> GetAllOrders(Guid? customerId = null, bool notDeliveredOnly = false)
+    public async Task<ActionResult<IEnumerable<OrderModel>>> RetrieveAll(Guid? customerId = null, bool notDeliveredOnly = false)
     {
         if (customerId is null 
             && User.IsInRole("Administrator") is false) // All orders
@@ -47,15 +47,15 @@ public class OrdersController : ControllerBase
             return StatusCode(StatusCodes.Status403Forbidden);
         }
 
-        var orders = await repository.GetAllOrdersAsync(customerId, notDeliveredOnly);
+        var orders = await orderRepository.RetrieveAllAsync(customerId, notDeliveredOnly);
 
         return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderModel>>(orders));
     }
 
     [HttpGet("{id}", Name = "GetOrderById")]
-    public async Task<ActionResult<OrderModel>> GetOrderById(int id)
+    public async Task<ActionResult<OrderModel>> RetrieveSingle(int id)
     {
-        var order = await repository.GetOrderByIdAsync(id);
+        var order = await orderRepository.RetrieveSingleAsync(id);
 
         if (order is null)
         {
@@ -66,13 +66,13 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OrderModel>> AddOrder(CreateOrderModel newOrder)
+    public async Task<ActionResult<OrderModel>> Create(CreateOrderModel newOrder)
     {
         var order = mapper.Map<CreateOrderModel, Order>(newOrder);
 
-        await repository.AddNewOrderAsync(order);
+        await orderRepository.CreateAsync(order);
 
-        await repository.SaveChangesAsync();
+        await orderRepository.SaveChangesAsync();
 
         var createdOrder = mapper.Map<Order, OrderModel>(order);
 
@@ -90,7 +90,7 @@ public class OrdersController : ControllerBase
             return StatusCode(StatusCodes.Status403Forbidden);
         }
         
-        var order = await repository.GetOrderByIdAsync(id);
+        var order = await orderRepository.RetrieveSingleAsync(id);
 
         if (order is null)
         {
@@ -99,7 +99,7 @@ public class OrdersController : ControllerBase
 
         order.Delivered = delivered;
 
-        await repository.SaveChangesAsync();
+        await orderRepository.SaveChangesAsync();
 
         return NoContent();
     }

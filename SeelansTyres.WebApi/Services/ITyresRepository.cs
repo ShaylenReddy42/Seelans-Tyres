@@ -5,11 +5,11 @@ namespace SeelansTyres.WebApi.Services;
 public interface ITyresRepository
 {
     /***** Brands *****/
-    Task<IEnumerable<Brand>> GetAllBrandsAsync();
+    Task<IEnumerable<Brand>> RetrieveAllBrandsAsync();
 
     /***** Tyres *****/
-    Task<IEnumerable<Tyre>> GetAllTyresAsync(bool availableOnly);
-    Task<Tyre?> GetTyreByIdAsync(int tyreId);
-    Task AddNewTyreAsync(Tyre tyreEntity);
+    Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly);
+    Task<Tyre?> RetrieveSingleTyreAsync(int tyreId);
+    Task CreateTyreAsync(Tyre tyreEntity);
     Task<bool> SaveChangesAsync();
 }

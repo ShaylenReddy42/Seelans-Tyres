@@ -37,7 +37,7 @@ public class ShoppingController : Controller
     
     public async Task<IActionResult> Cart()
     {
-        var cartItems = await cartService.GetAllCartItemsAsync();
+        var cartItems = await cartService.RetrieveCartAsync();
 
         var numberOfAddresses = 0;
 
@@ -45,7 +45,7 @@ public class ShoppingController : Controller
         {
             var customerId = (await userManager.GetUserAsync(User)).Id;
 
-            numberOfAddresses = (await addressService.GetAllAddressesForCustomerAsync(customerId)).Count();
+            numberOfAddresses = (await addressService.RetrieveAllAsync(customerId)).Count();
         }
 
         var cartViewModel = new CartViewModel
@@ -67,7 +67,7 @@ public class ShoppingController : Controller
             CartId = HttpContext.Session.GetString("CartId")!
         };
 
-        _ = await cartService.AddItemToCartAsync(cartItem);
+        _ = await cartService.CreateItemAsync(cartItem);
         
         return RedirectToAction("Cart");
     }
@@ -75,7 +75,7 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> RemoveTyreFromCart(int itemId)
     {
-        _ = await cartService.RemoveItemFromCartAsync(itemId);
+        _ = await cartService.DeleteItemAsync(itemId);
 
         return RedirectToAction("Cart");
     }
@@ -83,11 +83,11 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> Checkout()
     {
-        var cartItems = await cartService.GetAllCartItemsAsync();
+        var cartItems = await cartService.RetrieveCartAsync();
 
         var customerId = (await userManager.GetUserAsync(User)).Id;
 
-        var addresses = await addressService.GetAllAddressesForCustomerAsync(customerId);
+        var addresses = await addressService.RetrieveAllAsync(customerId);
 
         var preferredAddressId = addresses!.Single(address => address.PreferredAddress is true).Id;
 
@@ -107,11 +107,11 @@ public class ShoppingController : Controller
             });
         }
 
-        var placedOrder = await orderService.PlaceNewOrderAsync(order);
+        var placedOrder = await orderService.CreateAsync(order);
 
         if (placedOrder is not null)
         {
-            _ = await cartService.ClearCartAsync();
+            _ = await cartService.DeleteCartAsync();
 
             await emailService.SendReceiptAsync(placedOrder);
         }
@@ -123,7 +123,7 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<string> ViewReceipt(int orderId)
     {
-        var order = await orderService.GetOrderByIdAsync(orderId);
+        var order = await orderService.RetrieveSingleAsync(orderId);
 
         var engine = new RazorLightEngineBuilder()
             .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "SeelansTyres.Mvc.Templates")
