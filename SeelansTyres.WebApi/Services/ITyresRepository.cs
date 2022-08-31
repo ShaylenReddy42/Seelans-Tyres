@@ -8,7 +8,7 @@ public interface ITyresRepository
     Task<IEnumerable<Brand>> GetAllBrandsAsync();
 
     /***** Tyres *****/
-    Task<IEnumerable<Tyre>> GetAllTyresAsync();
+    Task<IEnumerable<Tyre>> GetAllTyresAsync(bool availableOnly);
     Task<Tyre?> GetTyreByIdAsync(int tyreId);
     Task AddNewTyreAsync(Tyre tyreEntity);
     Task<bool> SaveChangesAsync();

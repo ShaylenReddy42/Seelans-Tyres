@@ -62,6 +62,14 @@
             <span asp-validation-for="VehicleType"></span>
         </div>
         <div class="col-md-12 mb-3">
+            <label class="form-label" asp-for="Available">Available</label>
+            <select asp-for="Available" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+            <span asp-validation-for="Available"></span>
+        </div>
+        <div class="col-md-12 mb-3">
             <label class="form-label" asp-for="Price">Price</label>
             <div class="input-group">
                 <div class="input-group-prepend">

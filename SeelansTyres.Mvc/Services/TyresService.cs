@@ -47,11 +47,11 @@ public class TyresService : ITyresService
 		}
 	}
 
-	public async Task<IEnumerable<TyreModel>> GetAllTyresAsync()
+	public async Task<IEnumerable<TyreModel>> GetAllTyresAsync(bool availableOnly = true)
 	{
         try
         {
-            var response = await client.GetAsync("api/tyres");
+            var response = await client.GetAsync($"api/tyres?availableOnly={availableOnly}");
             var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
 
             return tyres!;

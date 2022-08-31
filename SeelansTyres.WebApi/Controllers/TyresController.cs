@@ -27,9 +27,9 @@ public class TyresController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TyreModel>>> GetAllTyres()
+    public async Task<ActionResult<IEnumerable<TyreModel>>> GetAllTyres(bool availableOnly = true)
     {
-        var tyres = await repository.GetAllTyresAsync();
+        var tyres = await repository.GetAllTyresAsync(availableOnly);
 
         return Ok(mapper.Map<IEnumerable<Tyre>, IEnumerable<TyreModel>>(tyres));
     }
