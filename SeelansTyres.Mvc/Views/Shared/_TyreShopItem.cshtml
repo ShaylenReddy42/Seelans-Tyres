@@ -13,7 +13,7 @@
             <p class="card-text">Ratio: @Model.Ratio</p>
             <p class="card-text">Diameter: @Model.Diameter</p>
             <p class="card-text">Price: @($"{Model.Price:R0.00}")</p>
-            <form method="post" asp-controller="Shopping" asp-action="AddTyretoCart" asp-route-tyreId="@Model.Id">
+            <form method="post" asp-controller="Shopping" asp-action="AddTyretoCart" asp-route-tyreId="@Model.Id" asp-route-tyreName="@Model.Name" asp-route-tyrePrice="@Model.Price">
                 <div class="input-group mb-3">
                     <label class="input-group-text">Quantity</label>
                     <select class="form-select" name="quantity">

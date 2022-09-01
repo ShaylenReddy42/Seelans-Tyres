@@ -45,12 +45,6 @@ builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 
-builder.Services.AddHttpClient<ICartService, CartService>(client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
-    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
-
 builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
@@ -65,6 +59,10 @@ builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+builder.Services.AddMemoryCache();
+
+builder.Services.AddScoped<ICartService, CachedCartService>();
 
 builder.Services.AddFluentEmail(
         builder.Configuration["EmailCredentials:Email"], "Seelan's Tyres")

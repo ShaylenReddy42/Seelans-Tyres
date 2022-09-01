@@ -51,7 +51,6 @@ builder.Services.AddDbContext<SeelansTyresContext>(
         builder.Configuration["ConnectionStrings:SeelansTyresContext"]));
 
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
-builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ITyresRepository, TyresRepository>();
 

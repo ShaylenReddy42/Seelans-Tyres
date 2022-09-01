@@ -1,11 +1,11 @@
-﻿using SeelansTyres.Data.Models;
+﻿using SeelansTyres.Mvc.Models;
 
 namespace SeelansTyres.Mvc.Services;
 
 public interface ICartService
 {
-    Task<IEnumerable<CartItemModel>> RetrieveCartAsync();
-    Task<bool> CreateItemAsync(CreateCartItemModel item);
-    Task<bool> DeleteItemAsync(int itemId);
-    Task<bool> DeleteCartAsync();
+    List<CachedCartItemModel> Retrieve();
+    void CreateItem(CachedCartItemModel newItem);
+    void DeleteItem(int tyreId);
+    void Delete();
 }

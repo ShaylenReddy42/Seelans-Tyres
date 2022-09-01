@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RazorLight;
 using SeelansTyres.Data.Models;
+using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
 using System.Reflection;
@@ -32,7 +33,7 @@ public class ShoppingController : Controller
     
     public async Task<IActionResult> Cart()
     {
-        var cartItems = await cartService.RetrieveCartAsync();
+        var cartItems = cartService.Retrieve();
 
         var numberOfAddresses = 0;
 
@@ -53,24 +54,25 @@ public class ShoppingController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTyreToCart(int quantity, int tyreId)
+    public IActionResult AddTyreToCart(int quantity, int tyreId, string tyreName, decimal tyrePrice)
     {
-        var cartItem = new CreateCartItemModel
+        var cartItem = new CachedCartItemModel
         {
             TyreId = tyreId,
-            Quantity = quantity,
-            CartId = HttpContext.Session.GetString("CartId")!
+            TyreName = tyreName,
+            TyrePrice = tyrePrice,
+            Quantity = quantity
         };
 
-        _ = await cartService.CreateItemAsync(cartItem);
+        cartService.CreateItem(cartItem);
         
         return RedirectToAction("Cart");
     }
 
     [HttpPost]
-    public async Task<IActionResult> RemoveTyreFromCart(int itemId)
+    public IActionResult RemoveTyreFromCart(int tyreId)
     {
-        _ = await cartService.DeleteItemAsync(itemId);
+        cartService.DeleteItem(tyreId);
 
         return RedirectToAction("Cart");
     }
@@ -78,7 +80,7 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> Checkout()
     {
-        var cartItems = await cartService.RetrieveCartAsync();
+        var cartItems = cartService.Retrieve();
 
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
@@ -97,7 +99,7 @@ public class ShoppingController : Controller
         {
             order.OrderItems.Add(new CreateOrderItemModel
             {
-                TyreId = item.Tyre!.Id,
+                TyreId = item.TyreId,
                 Quantity = item.Quantity
             });
         }
@@ -106,7 +108,7 @@ public class ShoppingController : Controller
 
         if (placedOrder is not null)
         {
-            _ = await cartService.DeleteCartAsync();
+            cartService.Delete();
 
             await emailService.SendReceiptAsync(placedOrder);
         }

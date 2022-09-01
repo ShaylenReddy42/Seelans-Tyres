@@ -15,18 +15,10 @@ public class ShoppingCartSummary : ViewComponent
 
     public IViewComponentResult Invoke()
     {
-        var cartItemCount = GetCartItemsCountAsync();
-        cartItemCount.Wait();
+        var cartItemCount = cartService.Retrieve().Count;
         
-        ViewData["CartItemsCount"] = cartItemCount.Result;
+        ViewData["CartItemsCount"] = cartItemCount;
 
         return View();
-    }
-
-    private async Task<int> GetCartItemsCountAsync()
-    {
-        var cartItems = await cartService.RetrieveCartAsync();
-
-        return cartItems!.Count();
     }
 }

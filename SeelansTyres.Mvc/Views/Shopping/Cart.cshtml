@@ -23,12 +23,12 @@
         @foreach (var item in Model.CartItems!)
         {
             <tr>
-                <td>@item.Tyre!.Name</td>
-                <td>@($"{item.Tyre.Price:R0.00}")</td>
+                <td>@item.TyreName</td>
+                <td>@($"{item.TyrePrice:R0.00}")</td>
                 <td>@item.Quantity</td>
                 <td>@($"{item.TotalItemPrice:R0.00}")</td>
                 <td class="text-center">
-                    <form method="post" asp-controller="Shopping" asp-action="RemoveTyreFromCart" asp-route-itemId="@item.Id">
+                    <form method="post" asp-controller="Shopping" asp-action="RemoveTyreFromCart" asp-route-tyreId="@item.TyreId">
                         <button class="btn btn-sm btn-danger w-75"><i class="fas fa-trash-alt"></i></button>
                     </form>
                 </td>
