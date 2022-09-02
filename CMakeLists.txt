@@ -70,11 +70,15 @@ configure_file(
 
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Mvc.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/SeelansTyres.Mvc/Properties/AssemblyInfo.cs")
+	"${CMAKE_SOURCE_DIR}/Frontend/SeelansTyres.Mvc/Properties/AssemblyInfo.cs")
 
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.WebApi.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/SeelansTyres.WebApi/Properties/AssemblyInfo.cs")
+	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.WebApi/Properties/AssemblyInfo.cs")
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.OrderService.AssemblyInfo.cs.in" 
+	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.OrderService/Properties/AssemblyInfo.cs")
 
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 

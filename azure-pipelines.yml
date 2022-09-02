@@ -36,8 +36,8 @@ steps:
     projectKey: 'ShaylenReddy42_Seelans-Tyres'
     projectName: 'Seelans-Tyres'
     extraProperties: |
-      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**
-      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**
+      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**
+      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
@@ -55,44 +55,64 @@ steps:
     pollingTimeoutSec: '300'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Restore dotnet tools for SeelansTyres.WebApi'
+  displayName: 'Restore dotnet tools'
   inputs:
     command: custom
     custom: tool
     arguments: restore
-    workingDirectory: '$(workDir)\SeelansTyres.WebApi'
+    workingDirectory: '$(workDir)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Create EF Core Bundle'
+  displayName: 'Create EF Core Bundle for SeelansTyres.WebApi'
   inputs:
     command: custom
     custom: tool
-    arguments: run dotnet-ef migrations bundle --force -o "$(Build.ArtifactStagingDirectory)\efbundle.exe"
-    workingDirectory: '$(workDir)\SeelansTyres.WebApi'
+    arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.WebApi/SeelansTyres.WebApi.csproj --startup-project Services/SeelansTyres.WebApi/SeelansTyres.WebApi.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresContext.exe"
+    workingDirectory: '$(workDir)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create EF Core Bundle for SeelansTyres.OrderService'
+  inputs:
+    command: custom
+    custom: tool
+    arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderContext.exe"
+    workingDirectory: '$(workDir)'
 
 - script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
   displayName: 'Publish SeelansTyres.Mvc'
-  workingDirectory: '$(workDir)\SeelansTyres.Mvc'
+  workingDirectory: '$(workDir)\Frontend\SeelansTyres.Mvc'
 
 - task: ArchiveFiles@2
   displayName: 'Archive SeelansTyres.Mvc'
   inputs:
-    rootFolderOrFile: '$(workDir)\SeelansTyres.Mvc\publish'
+    rootFolderOrFile: '$(workDir)\Frontend\SeelansTyres.Mvc\publish'
     includeRootFolder: false
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Mvc.zip'
 
 - script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
   displayName: 'Publish SeelansTyres.WebApi'
-  workingDirectory: '$(workDir)\SeelansTyres.WebApi'
+  workingDirectory: '$(workDir)\Services\SeelansTyres.WebApi'
 
 - task: ArchiveFiles@2
   displayName: 'Archive SeelansTyres.WebApi'
   inputs:
-    rootFolderOrFile: '$(workDir)\SeelansTyres.WebApi\publish'
+    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.WebApi\publish'
     includeRootFolder: false
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.WebApi.zip'
+
+- script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
+  displayName: 'Publish SeelansTyres.Services.OrderService'
+  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.OrderService'
+  
+- task: ArchiveFiles@2
+  displayName: 'Archive SeelansTyres.Services.OrderService'
+  inputs:
+    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.OrderService\publish'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.OrderService.zip'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts'

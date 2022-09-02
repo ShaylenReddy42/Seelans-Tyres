@@ -7,31 +7,37 @@ MORE RequiredEnvironmentVariables.txt
 ECHO.
 PAUSE
 
-CD SeelansTyres.WebApi
-
 ECHO.
 ECHO Restore dotnet tools
 ECHO.
 dotnet tool restore
 
 ECHO.
-ECHO Create EF Core Bundle
+ECHO Create EF Core Bundle for SeelansTyres.WebApi
 ECHO.
-dotnet tool run dotnet-ef migrations bundle --force -o ../efbundle.exe
-
-CD ..
+dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.WebApi/SeelansTyres.WebApi.csproj --startup-project Services/SeelansTyres.WebApi/SeelansTyres.WebApi.csproj -o efbundle.exe
 
 ECHO.
 ECHO Execute EF Core Bundle against configured database connection
 ECHO.
-efbundle.exe --connection "%ConnectionStrings__SeelansTyresContext%"
+efbundle.exe --connection "%SeelansTyresContext%"
+
+ECHO.
+ECHO Create EF Core Bundle for SeelansTyres.Services.OrderService
+ECHO.
+dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o efbundle.exe
+
+ECHO.
+ECHO Execute EF Core Bundle against configured database connection
+ECHO.
+efbundle.exe --connection "%SeelansTyresOrderContext%"
 
 ECHO.
 ECHO Run CMake
 ECHO.
 cmake -G "Visual Studio 17" -S . -B build
 
-CD SeelansTyres.Mvc
+CD Frontend/SeelansTyres.Mvc
 
 ECHO.
 ECHO SeelansTyres.Mvc
@@ -45,7 +51,7 @@ ECHO Publish the Frontend Project
 ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
-CD ../SeelansTyres.WebApi
+CD ../../Services/SeelansTyres.WebApi
 
 ECHO.
 ECHO SeelansTyres.WebApi
@@ -59,7 +65,21 @@ ECHO Publish the WebApi
 ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
-CD ..
+CD ../../Services/SeelansTyres.Services.OrderService
+
+ECHO.
+ECHO SeelansTyres.Services.OrderService
+ECHO.
+
+IF EXIST publish (
+	RD publish /S /Q
+)
+
+ECHO Publish the Order Microservice 
+ECHO.
+dotnet publish -c Release -r win-x64 --no-self-contained
+
+CD ../..
 
 ECHO.
 ECHO Cleanup
@@ -75,10 +95,13 @@ IF EXIST publish (
 	MD publish
 )
 
-XCOPY /S /Q SeelansTyres.Mvc\publish\ publish\SeelansTyres.Mvc\
+XCOPY /S /Q Frontend\SeelansTyres.Mvc\publish\ publish\SeelansTyres.Mvc\
 ECHO.
 
-XCOPY /S /Q SeelansTyres.WebApi\publish\ publish\SeelansTyres.WebApi\
-ECHO. 
+XCOPY /S /Q Services\SeelansTyres.WebApi\publish\ publish\SeelansTyres.WebApi\
+ECHO.
+
+XCOPY /S /Q Services\SeelansTyres.Services.OrderService\publish\ publish\SeelansTyres.Services.OrderService\
+ECHO.
 
 PAUSE

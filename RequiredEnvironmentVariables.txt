@@ -10,10 +10,6 @@ AdminCredentials__Password
 
 	Password used to create the account
 
-ConnectionStrings__SeelansTyresContext -- e.g. Server=.;Initial Catalog=SeelansTyres;Trusted_Connection=true;MultipleActiveResultSets=true
-
-	Connection String to the SQL Server Database
-
 EmailCredentials__Email [Requires a real email account]
 
 	Email used to Send emails
@@ -29,21 +25,26 @@ EmailCredentials__Password
 	platform and give it any name you want.
 	Copy that as your password
 
+OrderServiceApi -- https://localhost:5011
+
+	Localhost for the Order Microservice
+
+SeelansTyresContext -- e.g. Server=.;Initial Catalog=SeelansTyres;Trusted_Connection=true;MultipleActiveResultSets=true
+
+	Connection String to the SQL Server Database for the main database [for now]
+
+SeelansTyresOrderContext -- e.g. Server=.;Initial Catalog=SeelansTyresOrderDb;Trusted_Connection=true;MultipleActiveResultSets=true
+
+	Connection String to the SQL Server Database for the Order Microservice database
+
+Token__Issuer -- https://localhost:5010
+
+	Party that issues the token
+
 Token__Key [Must be 32 bits long]
 
 	Used to create the security key for jwt bearer authentication
 
-Token__Issuer -- https://localhost:4301 [The Api endpoint]
+WebApiUrl -- https://localhost:5010
 
-	Party that issues the token
-
-Token__Audience -- SeelansTyresWebApi [Whatever you want here, usually the api that creates the token]
-
-	Who the token is indended for
-
-WebApiUrl -- https://localhost:4301
-
-	Url of the WebApi used locally
-	I manually configured the ports to use
-	in production so the provided url
-	should be used
+	Localhost for the WebApi

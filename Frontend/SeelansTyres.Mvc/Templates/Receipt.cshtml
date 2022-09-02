@@ -1,0 +1,73 @@
+﻿@model SeelansTyres.Mvc.Models.External.OrderModel
+
+<h1 style="color: rgb(255, 40, 0); text-align: center; font-size: 36">Seelan's Tyres</h1>
+<p style="text-align: center; font-size: 24">Thank you for shopping with us</p>
+<p style="text-align: center; font-size: 24">Here is your receipt</p>
+<hr style="margin-bottom: 25px">
+<table border="1" style="border-collapse: collapse; width: 100%" cellpadding="10">
+    <thead>
+        <th scope="col">Tyre</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total Item Price</th>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.OrderItems)
+    {
+        <tr>
+            <td>@item.TyreName</td>
+            <td>@($"{item.TyrePrice:R0.00}")</td>
+            <td>@item.Quantity</td>
+            <td>@($"{(item.TyrePrice * item.Quantity):R0.00}")</td>
+        </tr>
+    }
+        <tr>
+            <td colspan="3" style="text-align:right">Total </td>
+            <td>@($"{Model.TotalPrice:R0.00}")</td>
+        </tr>
+    </tbody>
+</table>
+<hr style="margin-top: 25px">
+<h2 style="color: rgb(255, 40, 0); font-size: 32">Customer Info</h2>
+<table style="width: 100%">
+    <tbody style="text-align: left">
+        <tr>
+            <th scope="row" style="width: 35%">First Name:</th>
+            <td>@Model.FirstName</td>
+        </tr>
+        <tr>
+            <th scope="row">Last Name:</th>
+            <td>@Model.LastName</td>
+        </tr>
+        <tr>
+            <th scope="row">Email:</th>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th scope="row">Phone Number:</th>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+    </tbody>
+</table>
+<hr style="margin-top: 25px">
+<h2 style="color: rgb(255, 40, 0); font-size: 32">Delivery Address</h2>
+<table style="width: 100%">
+    <tbody style="text-align: left">
+        <tr>
+            <th scope="row" style="width: 35%">Address Line 1:</th>
+            <td>@Model.AddressLine1</td>
+        </tr>
+        <tr>
+            <th scope="row">Address Line 2:</th>
+            <td>@Model.AddressLine2</td>
+        </tr>
+        <tr>
+            <th scope="row">City:</th>
+            <td>@Model.City</td>
+        </tr>
+        <tr>
+            <th scope="row">Postal Code:</th>
+            <td>@Model.PostalCode</td>
+        </tr>
+    </tbody>
+</table>

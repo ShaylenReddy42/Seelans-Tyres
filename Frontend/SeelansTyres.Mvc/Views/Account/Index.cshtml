@@ -1,0 +1,209 @@
+﻿@model AccountViewModel
+
+@{
+    ViewData["Title"] = "My Account";
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<div class="container pt-5 mt-5">
+    <div class="row">
+        <div class="col-md-4 account-info-div pb-5">
+            <div class="profile-div p-4 border border-2 rounded-3 mb-4 text-center border-dark">
+                <div class="account-profile-pic rounded-circle mx-auto border border-1 mb-3"></div>
+                <p class="account-holder-name">@($"{Model.Customer.FirstName} {Model.Customer.LastName}")</p>
+            </div>
+            <div class="account-nav-div">
+                <ul class="nav nav-pills nav-stacked list-group">
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#orders-pill">My Orders</a></li>
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#addresses-pill">My Addresses</a></li>
+                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#account-pill">My Account</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8 account-detail-div">
+            <div class="tab-content">
+                <div id="orders-pill" class="tab-pane fade text-start pt-3">
+                    <h4 class="seelanstyres-color">My Orders</h4>
+                    <p>Check the status of your orders or browser through your past purchases</p>
+                    <hr class="my-5">
+                    <div class="text-center">
+                        @if (Model.Orders.Count() is 0)
+                        {
+                            <p>You haven't placed any orders yet</p>
+                            <a class="btn btn-dark" asp-controller="Home" asp-action="Shop">Shop Now</a>
+                        }
+                        else
+                        {
+                            foreach (var order in Model.Orders)
+                            {
+                                <div class="card card-body mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <h5>Order ID: @order.Id</h5>
+                                        <small>@order.OrderPlaced</small>
+                                    </div>
+                                    <p class="m-0">Address: @order.AddressLine1</p>
+                                    <p class="m-0">Total Price: @($"{order.TotalPrice:R0.00}")</p>
+                                    <button class="btn btn-dark w-100 mt-2 mb-1" data-bs-toggle="collapse" data-bs-target=@($"#items{order.Id}") aria-controls=@($"items{order.Id}")>View Items</button>
+                                    <div class="collapse" id=@($"items{order.Id}")>
+                                    @foreach (var item in order.OrderItems)
+                                    {
+                                        <div class="card card-body">
+                                            <p class="m-0">Name: @item.TyreName</p>
+                                            <p class="m-0">Quantity: @item.Quantity</p>
+                                            <p class="m-0">Price: @($"{item.TyrePrice:R0.00}")</p>
+                                            <p class="m-0">Total Price: @($"{(item.TyrePrice * item.Quantity):R0.00}")</p>
+                                        </div>
+                                    }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <hr class="my-5">
+                </div>
+                <div id="addresses-pill" class="tab-pane fade text-start pt-3">
+                    <h4 class="seelanstyres-color">My Addresses</h4>
+                    <p>Add or manage the addresses you use often</p>
+                    <hr class="my-5">
+                    <div class="addresses">
+                        @if (Model.Addresses!.Count() is 0)
+                        {
+                            <p class="text-center">You haven't saved any addresses yet</p>
+                        }
+                        else
+                        {
+                            foreach (var address in Model.Addresses!)
+                            {
+                                <div class="card w-100 mb-2" style="width: 18rem;">
+                                    <div class="card-body text-center">
+                                        <p class="card-text">@address.AddressLine1</p>
+                                        <p class="card-text">@address.AddressLine2</p>
+                                        <p class="card-text">@address.City</p>
+                                        <p class="card-text">@address.PostalCode</p>
+                                        <p class="card-text">Preferred Address: @(address.PreferredAddress ? "Yes" : "No")</p>
+                                        @if (address.PreferredAddress is false)
+                                        {
+                                            <form method="post" asp-controller="Account" asp-action="MarkAddressAsPreferred" asp-route-addressId="@address.Id">
+                                                <button type="submit" class="btn btn-dark w-50">Mark as Preferred</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="text-center mt-4">
+                            <a class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAddressModal">Add New Address</a>
+                        </div>
+                    </div>
+                    <hr class="my-5">
+                </div>
+                <div id="account-pill" class="tab-pane fade text-start pt-3">
+                    <h4 class="seelanstyres-color">My Account</h4>
+                    <p>View and edit your personal info below</p>
+                    <hr class="mt-5 mb-3">
+                    <p>Login email:</p>
+                    <p class="mb-4"><span>@Model.Customer.Email</span></p>
+                    <form method="post" asp-controller="Account" asp-action="UpdateAccount">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="UpdateAccountModel.FirstName">First Name</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@Model.Customer.FirstName">
+                                <span asp-validation-for="UpdateAccountModel.FirstName"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="UpdateAccountModel.LastName">Last Name</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.LastName" placeholder="e.g. Reddy" value="@Model.Customer.LastName">
+                                <span asp-validation-for="UpdateAccountModel.LastName"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="email">Contact Email</label>
+                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@Model.Customer.Email" disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="UpdateAccountModel.PhoneNumber">Phone</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@Model.Customer.PhoneNumber">
+                                <span asp-validation-for="UpdateAccountModel.PhoneNumber"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-6 offset-md-3">
+                                <button type="submit" class="btn btn-dark w-100">Update Info</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr class="my-3">
+                    <h4>Delete Account</h4>
+                    <div class="alert alert-warning mt-4">
+                        <p>
+                            Note: Your account and its data are not recoverable.
+                            <br />
+                            On success, you will be logged out and redirected to the home screen.
+                            <br />
+                            On failure, the screen will be refreshed
+                        </p>
+                    </div>
+                    <form method="post" asp-controller="Account" asp-action="DeleteAccount">
+                        <div class="w-100 mb-3">
+                            <label class="form-label">Enter your password to proceed</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 offset-md-3 mb-5">
+                            <button type="submit" class="btn btn-danger w-100">Delete Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enter Your Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Account" asp-action="AddNewAddress">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.AddressLine1">Address Line 1</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.AddressLine1" placeholder="Address Line 1">
+                        <span asp-validation-for="CreateAddressModel.AddressLine1"></span>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.AddressLine2">Address Line 2</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.AddressLine2" placeholder="Address Line 2">
+                        <span asp-validation-for="CreateAddressModel.AddressLine2"></span>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.City">City</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.City" placeholder="City Name">
+                        <span asp-validation-for="CreateAddressModel.City"></span>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" asp-for="CreateAddressModel.PostalCode">Postal Code</label>
+                        <input type="text" class="form-control" asp-for="CreateAddressModel.PostalCode" placeholder="Postal Code">
+                        <span asp-validation-for="CreateAddressModel.PostalCode"></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" asp-for="CreateAddressModel.PreferredAddress">Mark As Preferred Delivery Address</label>
+                        <select class="form-select" asp-for="CreateAddressModel.PreferredAddress">
+                            <option value="true" selected>Yes</option>
+                            @if (Model.Addresses.Count() is not 0)
+                            {
+                                <option value="false">No</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark w-50">Add Address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
