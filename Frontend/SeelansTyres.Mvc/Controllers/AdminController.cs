@@ -67,8 +67,9 @@ public class AdminController : Controller
             filePath = $"/images/{fileName}";
         }
 
-        var createTyreModel = new CreateTyreModel
+        var createTyreModel = new TyreModel
         {
+            Id = 0,
             Name = model.Name,
             Width = model.Width,
             Ratio = model.Ratio,
@@ -140,8 +141,9 @@ public class AdminController : Controller
             filePath = $"/images/{fileName}";
         }
 
-        var createTyreModel = new CreateTyreModel
+        var createTyreModel = new TyreModel
         {
+            Id = model.Id,
             Name = model.Name,
             Width = model.Width,
             Ratio = model.Ratio,

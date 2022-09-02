@@ -17,7 +17,7 @@ public class TyresService : ITyresService
 		client.DefaultRequestHeaders.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
 	}
 
-	public async Task<bool> CreateTyreAsync(CreateTyreModel tyre)
+	public async Task<bool> CreateTyreAsync(TyreModel tyre)
 	{
 		try
 		{
@@ -79,7 +79,7 @@ public class TyresService : ITyresService
 		}
 	}
 
-	public async Task<bool> UpdateTyreAsync(int tyreId, CreateTyreModel tyre)
+	public async Task<bool> UpdateTyreAsync(int tyreId, TyreModel tyre)
 	{
 		try
 		{

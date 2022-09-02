@@ -50,9 +50,9 @@ public class TyresController : ControllerBase
 
     [HttpPost]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult<TyreModel>> Create(CreateTyreModel model)
+    public async Task<ActionResult<TyreModel>> Create(TyreModel model)
     {
-        var tyreEntity = mapper.Map<CreateTyreModel, Tyre>(model);
+        var tyreEntity = mapper.Map<TyreModel, Tyre>(model);
 
         await tyresRepository.CreateTyreAsync(tyreEntity);
 
@@ -68,7 +68,7 @@ public class TyresController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult> Update(CreateTyreModel model, int id)
+    public async Task<ActionResult> Update(TyreModel model, int id)
     {
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
 
@@ -78,6 +78,10 @@ public class TyresController : ControllerBase
         }
 
         mapper.Map(model, tyre);
+
+        tyre.Brand = 
+            (await tyresRepository.RetrieveAllBrandsAsync())
+                .Single(brand => brand.Id == tyre.BrandId);
 
         await tyresRepository.SaveChangesAsync();
 
