@@ -169,29 +169,30 @@
             <div class="modal-body">
                 <form method="post" asp-controller="Account" asp-action="AddNewAddress">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <input asp-for="AddressModel.Id" value="0" hidden />
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="CreateAddressModel.AddressLine1">Address Line 1</label>
-                        <input type="text" class="form-control" asp-for="CreateAddressModel.AddressLine1" placeholder="Address Line 1">
-                        <span asp-validation-for="CreateAddressModel.AddressLine1"></span>
+                        <label class="form-label" asp-for="AddressModel.AddressLine1">Address Line 1</label>
+                        <input type="text" class="form-control" asp-for="AddressModel.AddressLine1" placeholder="Address Line 1">
+                        <span asp-validation-for="AddressModel.AddressLine1"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="CreateAddressModel.AddressLine2">Address Line 2</label>
-                        <input type="text" class="form-control" asp-for="CreateAddressModel.AddressLine2" placeholder="Address Line 2">
-                        <span asp-validation-for="CreateAddressModel.AddressLine2"></span>
+                        <label class="form-label" asp-for="AddressModel.AddressLine2">Address Line 2</label>
+                        <input type="text" class="form-control" asp-for="AddressModel.AddressLine2" placeholder="Address Line 2">
+                        <span asp-validation-for="AddressModel.AddressLine2"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="CreateAddressModel.City">City</label>
-                        <input type="text" class="form-control" asp-for="CreateAddressModel.City" placeholder="City Name">
-                        <span asp-validation-for="CreateAddressModel.City"></span>
+                        <label class="form-label" asp-for="AddressModel.City">City</label>
+                        <input type="text" class="form-control" asp-for="AddressModel.City" placeholder="City Name">
+                        <span asp-validation-for="AddressModel.City"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="CreateAddressModel.PostalCode">Postal Code</label>
-                        <input type="text" class="form-control" asp-for="CreateAddressModel.PostalCode" placeholder="Postal Code">
-                        <span asp-validation-for="CreateAddressModel.PostalCode"></span>
+                        <label class="form-label" asp-for="AddressModel.PostalCode">Postal Code</label>
+                        <input type="text" class="form-control" asp-for="AddressModel.PostalCode" placeholder="Postal Code">
+                        <span asp-validation-for="AddressModel.PostalCode"></span>
                     </div>
                     <div class="input-group mb-3">
-                        <label class="input-group-text" asp-for="CreateAddressModel.PreferredAddress">Mark As Preferred Delivery Address</label>
-                        <select class="form-select" asp-for="CreateAddressModel.PreferredAddress">
+                        <label class="input-group-text" asp-for="AddressModel.PreferredAddress">Mark As Preferred Delivery Address</label>
+                        <select class="form-select" asp-for="AddressModel.PreferredAddress">
                             <option value="true" selected>Yes</option>
                             @if (Model.Addresses.Count() is not 0)
                             {

@@ -215,11 +215,11 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> AddNewAddress(AccountViewModel model)
     {
-        var createAddressModel = model.CreateAddressModel;
+        var addressModel = model.AddressModel;
 
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var requestSucceeded = await addressService.CreateAsync(createAddressModel, customerId);
+        var requestSucceeded = await addressService.CreateAsync(addressModel, customerId);
 
         if (requestSucceeded is false)
         {

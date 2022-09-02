@@ -54,14 +54,14 @@ public class AddressesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<AddressModel>> Create(Guid customerId, CreateAddressModel newAddress)
+    public async Task<ActionResult<AddressModel>> Create(Guid customerId, AddressModel newAddress)
     {
         if (await addressRepository.CheckIfCustomerExistsAsync(customerId) is false)
         {
             return NotFound();
         }
 
-        var addressEntity = mapper.Map<CreateAddressModel, Address>(newAddress);
+        var addressEntity = mapper.Map<AddressModel, Address>(newAddress);
 
         await addressRepository.CreateAsync(customerId, addressEntity);
 
