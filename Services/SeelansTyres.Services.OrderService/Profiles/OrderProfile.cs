@@ -9,7 +9,6 @@ namespace SeelansTyres.WebApi.Profiles
         public OrderProfile()
         {
             CreateMap<Order, OrderModel>().ReverseMap();
-            CreateMap<Order, CreateOrderModel>().ReverseMap();
         }
     }
 }

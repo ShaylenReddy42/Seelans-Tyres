@@ -9,7 +9,7 @@ public class Order
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
-    public DateTime OrderPlaced { get; set; } = DateTime.Now;
+    public DateTime OrderPlaced { get; set; }
     [Required]
     [Column(TypeName = "decimal")]
     public decimal TotalPrice { get; set; }

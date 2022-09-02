@@ -76,7 +76,7 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<OrderModel?> CreateAsync(CreateOrderModel order)
+    public async Task<OrderModel?> CreateAsync(OrderModel order)
     {
         try
         {

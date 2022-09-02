@@ -9,6 +9,5 @@ public class OrderItemProfile : Profile
     public OrderItemProfile()
     {
         CreateMap<OrderItem, OrderItemModel>().ReverseMap();
-        CreateMap<OrderItem, CreateOrderItemModel>().ReverseMap();
     }
 }

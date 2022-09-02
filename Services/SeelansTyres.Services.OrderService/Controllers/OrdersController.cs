@@ -66,9 +66,9 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OrderModel>> Create(CreateOrderModel newOrder)
+    public async Task<ActionResult<OrderModel>> Create(OrderModel newOrder)
     {
-        var order = mapper.Map<CreateOrderModel, Order>(newOrder);
+        var order = mapper.Map<OrderModel, Order>(newOrder);
 
         await orderRepository.CreateAsync(order);
 

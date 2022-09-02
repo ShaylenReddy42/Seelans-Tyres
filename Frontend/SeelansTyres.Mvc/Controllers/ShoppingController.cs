@@ -93,9 +93,11 @@ public class ShoppingController : Controller
 
         var preferredAddress = addresses!.Single(address => address.PreferredAddress is true);
 
-        var order = new CreateOrderModel
+        var order = new OrderModel
         {
-            CustomerId = customer.Id,
+            Id = 0,
+            OrderPlaced = DateTime.Now,
+            CustomerId = customer.Id.ToString(),
             FirstName = customer.FirstName,
             LastName = customer.LastName,
             Email = customer.Email,
@@ -110,8 +112,9 @@ public class ShoppingController : Controller
 
         foreach (var item in cartItems!)
         {
-            order.OrderItems.Add(new CreateOrderItemModel
+            order.OrderItems.Add(new OrderItemModel
             {
+                Id = Guid.Empty,
                 TyreId = item.TyreId,
                 TyreName = item.TyreName,
                 TyrePrice = item.TyrePrice,
