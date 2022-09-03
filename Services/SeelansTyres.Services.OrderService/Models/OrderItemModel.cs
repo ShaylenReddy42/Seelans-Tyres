@@ -9,7 +9,7 @@ public class OrderItemModel
     [Required]
     public int Quantity { get; set; }
     [Required]
-    public int TyreId { get; set; }
+    public Guid TyreId { get; set; }
     [Required]
     public string TyreName { get; set; } = string.Empty;
     [Required]

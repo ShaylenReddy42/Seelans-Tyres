@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeelansTyres.WebApi.Data;
 
@@ -11,9 +12,10 @@ using SeelansTyres.WebApi.Data;
 namespace SeelansTyres.WebApi.Migrations
 {
     [DbContext(typeof(SeelansTyresContext))]
-    partial class SeelansTyresContextModelSnapshot : ModelSnapshot
+    [Migration("20220903030652_RemoveTyresTableFromDatabase")]
+    partial class RemoveTyresTableFromDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

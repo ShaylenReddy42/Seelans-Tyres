@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Data.Entities;
+namespace SeelansTyres.Services.TyresService.Data.Entities;
 
 public class Brand
 {

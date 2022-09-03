@@ -12,7 +12,7 @@
     "SeelansTyres.Services.OrderService": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5011;http://localhost:4011",
       "environmentVariables": {

@@ -40,7 +40,7 @@ namespace SeelansTyres.Services.OrderService.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    TyreId = table.Column<int>(type: "int", nullable: false),
+                    TyreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TyreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TyrePrice = table.Column<decimal>(type: "decimal", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)

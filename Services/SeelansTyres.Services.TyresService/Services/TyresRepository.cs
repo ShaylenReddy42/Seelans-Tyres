@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Data.Entities;
-using SeelansTyres.WebApi.Data;
+using SeelansTyres.Services.TyresService.Data;
+using SeelansTyres.Services.TyresService.Data.Entities;
 
-namespace SeelansTyres.WebApi.Services;
+namespace SeelansTyres.Services.TyresService.Services;
 
 public class TyresRepository : ITyresRepository
 {
-    private readonly SeelansTyresContext context;
+    private readonly TyresContext context;
 
-    public TyresRepository(SeelansTyresContext context) => 
+    public TyresRepository(TyresContext context) => 
         this.context = context;
 
     public async Task<IEnumerable<Brand>> RetrieveAllBrandsAsync() =>
@@ -17,11 +17,11 @@ public class TyresRepository : ITyresRepository
     public async Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly) =>
         availableOnly switch
         {
-            true  => await context.Tyres.Include(tyre => tyre.Brand).Where(tyre => tyre.Available).ToListAsync(),
-            false => await context.Tyres.Include(tyre => tyre.Brand).ToListAsync()
+            true  => await context.Tyres.Include(tyre => tyre.Brand).Where(tyre => tyre.Available).OrderBy(tyre => tyre.Name).ToListAsync(),
+            false => await context.Tyres.Include(tyre => tyre.Brand).OrderBy(tyre => tyre.Name).ToListAsync()
         };
 
-    public async Task<Tyre?> RetrieveSingleTyreAsync(int tyreId) =>
+    public async Task<Tyre?> RetrieveSingleTyreAsync(Guid tyreId) =>
         await context.Tyres.Include(tyre => tyre.Brand).SingleOrDefaultAsync(tyre => tyre.Id == tyreId);
 
     public async Task CreateTyreAsync(Tyre tyreEntity)

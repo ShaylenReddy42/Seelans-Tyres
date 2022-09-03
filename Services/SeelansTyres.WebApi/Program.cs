@@ -51,7 +51,6 @@ builder.Services.AddDbContext<SeelansTyresContext>(
         builder.Configuration["SeelansTyresContext"]));
 
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
-builder.Services.AddScoped<ITyresRepository, TyresRepository>();
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<SeelansTyresContext>()

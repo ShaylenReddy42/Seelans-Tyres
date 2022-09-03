@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using SeelansTyres.Data.Entities;
-using SeelansTyres.Data.Models;
+using SeelansTyres.Services.TyresService.Models;
+using SeelansTyres.Services.TyresService.Data.Entities;
 
 namespace SeelansTyres.WebApi.Profiles;
 

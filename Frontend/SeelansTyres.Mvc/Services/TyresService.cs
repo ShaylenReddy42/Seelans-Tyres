@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Data.Models;
+﻿using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.Services;
 
@@ -63,7 +63,7 @@ public class TyresService : ITyresService
         }
     }
 
-	public async Task<TyreModel?> RetrieveSingleTyreAsync(int tyreId)
+	public async Task<TyreModel?> RetrieveSingleTyreAsync(Guid tyreId)
 	{
 		try
 		{
@@ -79,7 +79,7 @@ public class TyresService : ITyresService
 		}
 	}
 
-	public async Task<bool> UpdateTyreAsync(int tyreId, TyreModel tyre)
+	public async Task<bool> UpdateTyreAsync(Guid tyreId, TyreModel tyre)
 	{
 		try
 		{

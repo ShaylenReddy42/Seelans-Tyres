@@ -37,6 +37,10 @@ SeelansTyresOrderContext -- e.g. Server=.;Initial Catalog=SeelansTyresOrderDb;Tr
 
 	Connection String to the SQL Server Database for the Order Microservice database
 
+SeelansTyresTyresContext -- e.g. Server=.;Initial Catalog=SeelansTyresTyresDb;Trusted_Connection=true;MultipleActiveResultSets=true
+
+	Connection String to the SQL Server Database for the Tyres Microservice database
+
 Token__Issuer -- https://localhost:5010
 
 	Party that issues the token
@@ -44,6 +48,10 @@ Token__Issuer -- https://localhost:5010
 Token__Key [Must be 32 bits long]
 
 	Used to create the security key for jwt bearer authentication
+
+TyresServiceApi -- https://localhost:5012
+
+	Localhost for the Tyres Microservice
 
 WebApiUrl -- https://localhost:5010
 

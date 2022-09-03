@@ -4,17 +4,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:3677",
-      "sslPort": 44304
+      "applicationUrl": "http://localhost:14132",
+      "sslPort": 44320
     }
   },
   "profiles": {
-    "SeelansTyres.WebApi": {
+    "SeelansTyres.Services.TyresService": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5010;http://localhost:4010",
+      "applicationUrl": "https://localhost:5012;http://localhost:4012",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,6 +1,6 @@
-﻿using SeelansTyres.Data.Entities;
+﻿using SeelansTyres.Services.TyresService.Data.Entities;
 
-namespace SeelansTyres.WebApi.Services;
+namespace SeelansTyres.Services.TyresService.Services;
 
 public interface ITyresRepository
 {
@@ -9,7 +9,7 @@ public interface ITyresRepository
 
     /***** Tyres *****/
     Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly);
-    Task<Tyre?> RetrieveSingleTyreAsync(int tyreId);
+    Task<Tyre?> RetrieveSingleTyreAsync(Guid tyreId);
     Task CreateTyreAsync(Tyre tyreEntity);
     Task<bool> SaveChangesAsync();
 }

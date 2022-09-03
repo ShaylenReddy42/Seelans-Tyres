@@ -38,7 +38,7 @@ public class CachedCartService : ICartService
     public void Delete() =>
         cache.Remove(cartId);
 
-    public void DeleteItem(int tyreId)
+    public void DeleteItem(Guid tyreId)
     {
         var cart = Retrieve();
 

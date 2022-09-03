@@ -71,11 +71,19 @@ steps:
     workingDirectory: '$(workDir)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Create EF Core Bundle for SeelansTyres.OrderService'
+  displayName: 'Create EF Core Bundle for SeelansTyres.Services.OrderService'
   inputs:
     command: custom
     custom: tool
     arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderContext.exe"
+    workingDirectory: '$(workDir)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create EF Core Bundle for SeelansTyres.Services.TyresService'
+  inputs:
+    command: custom
+    custom: tool
+    arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
     workingDirectory: '$(workDir)'
 
 - script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
@@ -113,6 +121,18 @@ steps:
     includeRootFolder: false
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.OrderService.zip'
+
+- script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
+  displayName: 'Publish SeelansTyres.Services.TyresService'
+  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.TyresService'
+  
+- task: ArchiveFiles@2
+  displayName: 'Archive SeelansTyres.Services.TyresService'
+  inputs:
+    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.TyresService\publish'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.TyresService.zip'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts'

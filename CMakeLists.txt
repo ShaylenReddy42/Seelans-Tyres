@@ -80,6 +80,10 @@ configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.OrderService.AssemblyInfo.cs.in" 
 	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.OrderService/Properties/AssemblyInfo.cs")
 
+configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.TyresService.AssemblyInfo.cs.in" 
+	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.TyresService/Properties/AssemblyInfo.cs")
+
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 
 if(CI_BUILD)

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Data.Models;
 using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.Models.External;
 using SeelansTyres.Mvc.Services;
 
 namespace SeelansTyres.Mvc.Controllers;
@@ -69,7 +69,7 @@ public class AdminController : Controller
 
         var createTyreModel = new TyreModel
         {
-            Id = 0,
+            Id = Guid.Empty,
             Name = model.Name,
             Width = model.Width,
             Ratio = model.Ratio,
@@ -93,7 +93,7 @@ public class AdminController : Controller
     }
 
     [HttpGet("Admin/UpdateTyre/{tyreId}")]
-    public async Task<IActionResult> UpdateTyre(int tyreId)
+    public async Task<IActionResult> UpdateTyre(Guid tyreId)
     {
         var tyre = await tyresService.RetrieveSingleTyreAsync(tyreId);
         

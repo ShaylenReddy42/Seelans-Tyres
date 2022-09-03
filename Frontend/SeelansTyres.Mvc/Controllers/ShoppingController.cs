@@ -59,7 +59,7 @@ public class ShoppingController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddTyreToCart(int quantity, int tyreId, string tyreName, decimal tyrePrice)
+    public IActionResult AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
     {
         var cartItem = new CachedCartItemModel
         {
@@ -75,7 +75,7 @@ public class ShoppingController : Controller
     }
 
     [HttpPost]
-    public IActionResult RemoveTyreFromCart(int tyreId)
+    public IActionResult RemoveTyreFromCart(Guid tyreId)
     {
         cartService.DeleteItem(tyreId);
 

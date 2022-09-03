@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Data.Models;
+namespace SeelansTyres.Services.TyresService.Models;
 
 public class TyreModel
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [Required]
     [StringLength(40, MinimumLength = 3)]
     public string Name { get; set; } = string.Empty;

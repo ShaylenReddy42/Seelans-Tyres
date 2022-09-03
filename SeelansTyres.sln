@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{8C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Services.TyresService", "Services\SeelansTyres.Services.TyresService\SeelansTyres.Services.TyresService.csproj", "{F436499C-36BD-451B-83BE-B9C5A414158A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{B01BC7E3-05FD-43ED-929E-BDDC9B50B720}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B01BC7E3-05FD-43ED-929E-BDDC9B50B720}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B01BC7E3-05FD-43ED-929E-BDDC9B50B720}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F436499C-36BD-451B-83BE-B9C5A414158A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F436499C-36BD-451B-83BE-B9C5A414158A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F436499C-36BD-451B-83BE-B9C5A414158A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F436499C-36BD-451B-83BE-B9C5A414158A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +51,7 @@ Global
 		{405FFC01-8457-481E-BFB3-D7DEA9121E0A} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 		{BF43EC2A-C4D6-4028-97C6-DDD376D74351} = {8C701E00-3EE9-4873-AD67-76DB1D6FEF76}
 		{B01BC7E3-05FD-43ED-929E-BDDC9B50B720} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
+		{F436499C-36BD-451B-83BE-B9C5A414158A} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C5A8447-9A96-4A1C-AD8D-D29233AA88E4}

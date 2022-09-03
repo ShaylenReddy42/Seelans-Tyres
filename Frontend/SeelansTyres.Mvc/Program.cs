@@ -53,7 +53,7 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 
 builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.BaseAddress = new Uri(builder.Configuration["TyresServiceApi"]);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 

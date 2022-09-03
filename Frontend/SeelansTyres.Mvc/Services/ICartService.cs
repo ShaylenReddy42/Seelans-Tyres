@@ -6,6 +6,6 @@ public interface ICartService
 {
     List<CachedCartItemModel> Retrieve();
     void CreateItem(CachedCartItemModel newItem);
-    void DeleteItem(int tyreId);
+    void DeleteItem(Guid tyreId);
     void Delete();
 }

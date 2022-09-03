@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.WebApi.Services;
-using SeelansTyres.Data.Entities;
-using SeelansTyres.Data.Models;
+using SeelansTyres.Services.TyresService.Services;
+using SeelansTyres.Services.TyresService.Models;
+using SeelansTyres.Services.TyresService.Data.Entities;
 
 namespace SeelansTyres.WebApi.Controllers;
 

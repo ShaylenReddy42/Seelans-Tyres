@@ -10,15 +10,14 @@
         <tr>
             @if (ViewData["IncludeEdit"] is true)
             {
-                <th class="table-dark text-center" colspan="11" scope="col">Tyres</th>
+                <th class="table-dark text-center" colspan="10" scope="col">Tyres</th>
             }
             else
             {
-                <th class="table-dark text-center" colspan="10" scope="col">Tyres</th>
+                <th class="table-dark text-center" colspan="9" scope="col">Tyres</th>
             }
         </tr>
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Width</th>
             <th scope="col">Ratio</th>
@@ -38,8 +37,7 @@
     @foreach (var tyre in tyres!)
     {
         <tr>
-            <th scope="col">@tyre.Id</th>
-            <td>@tyre.Name</td>
+            <th scope="col">@tyre.Name</th>
             <td>@tyre.Width</td>
             <td>@tyre.Ratio</td>
             <td>@tyre.Diameter</td>

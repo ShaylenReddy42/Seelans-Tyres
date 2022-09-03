@@ -1,4 +1,4 @@
-﻿namespace SeelansTyres.Data.Models;
+﻿namespace SeelansTyres.Services.TyresService.Models;
 
 public class BrandModel
 {

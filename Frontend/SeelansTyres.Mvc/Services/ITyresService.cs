@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Data.Models;
+﻿using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.Services;
 
@@ -6,7 +6,7 @@ public interface ITyresService
 {
     Task<IEnumerable<BrandModel>> RetrieveAllBrandsAsync();
     Task<IEnumerable<TyreModel>> RetrieveAllTyresAsync(bool availableOnly = true);
-    Task<TyreModel?> RetrieveSingleTyreAsync(int tyreId);
+    Task<TyreModel?> RetrieveSingleTyreAsync(Guid tyreId);
     Task<bool> CreateTyreAsync(TyreModel tyre);
-    Task<bool> UpdateTyreAsync(int tyreId, TyreModel tyre);
+    Task<bool> UpdateTyreAsync(Guid tyreId, TyreModel tyre);
 }

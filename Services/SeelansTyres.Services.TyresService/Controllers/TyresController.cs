@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.WebApi.Services;
-using SeelansTyres.Data.Entities;
-using SeelansTyres.Data.Models;
+using SeelansTyres.Services.TyresService.Services;
+using SeelansTyres.Services.TyresService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using SeelansTyres.Services.TyresService.Data.Entities;
 
 namespace SeelansTyres.WebApi.Controllers;
 
@@ -36,7 +36,7 @@ public class TyresController : ControllerBase
 
     [HttpGet("{id}", Name = "GetTyreById")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult<TyreModel>> RetrieveSingle(int id)
+    public async Task<ActionResult<TyreModel>> RetrieveSingle(Guid id)
     {
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
 
@@ -68,7 +68,7 @@ public class TyresController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-    public async Task<ActionResult> Update(TyreModel model, int id)
+    public async Task<ActionResult> Update(TyreModel model, Guid id)
     {
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
 

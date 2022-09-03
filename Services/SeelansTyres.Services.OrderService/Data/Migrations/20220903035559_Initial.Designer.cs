@@ -12,7 +12,7 @@ using SeelansTyres.Services.OrderService.Data;
 namespace SeelansTyres.Services.OrderService.Migrations
 {
     [DbContext(typeof(OrdersContext))]
-    [Migration("20220902174914_Initial")]
+    [Migration("20220903035559_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,8 +96,8 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("TyreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TyreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TyreName")
                         .IsRequired()

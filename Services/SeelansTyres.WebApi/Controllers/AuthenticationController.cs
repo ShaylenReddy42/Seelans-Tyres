@@ -67,6 +67,7 @@ public class AuthenticationController : ControllerBase
             new Claim(JwtRegisteredClaimNames.Iss, configuration["Token:Issuer"]),
             new Claim(JwtRegisteredClaimNames.Aud, "SeelansTyresWebApi"),
             new Claim(JwtRegisteredClaimNames.Aud, "OrderService"),
+            new Claim(JwtRegisteredClaimNames.Aud, "TyresService"),
             new Claim(JwtRegisteredClaimNames.GivenName, customer.FirstName),
             new Claim(JwtRegisteredClaimNames.FamilyName, customer.LastName)
         };

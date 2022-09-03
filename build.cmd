@@ -33,6 +33,16 @@ ECHO.
 efbundle.exe --connection "%SeelansTyresOrderContext%"
 
 ECHO.
+ECHO Create EF Core Bundle for SeelansTyres.Services.TyresService
+ECHO.
+dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o efbundle.exe
+
+ECHO.
+ECHO Execute EF Core Bundle against configured database connection
+ECHO.
+efbundle.exe --connection "%SeelansTyresTyresContext%"
+
+ECHO.
 ECHO Run CMake
 ECHO.
 cmake -G "Visual Studio 17" -S . -B build
@@ -79,6 +89,20 @@ ECHO Publish the Order Microservice
 ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
+CD ../../Services/SeelansTyres.Services.TyresService
+
+ECHO.
+ECHO SeelansTyres.Services.TyresService
+ECHO.
+
+IF EXIST publish (
+	RD publish /S /Q
+)
+
+ECHO Publish the Order Microservice 
+ECHO.
+dotnet publish -c Release -r win-x64 --no-self-contained
+
 CD ../..
 
 ECHO.
@@ -102,6 +126,9 @@ XCOPY /S /Q Services\SeelansTyres.WebApi\publish\ publish\SeelansTyres.WebApi\
 ECHO.
 
 XCOPY /S /Q Services\SeelansTyres.Services.OrderService\publish\ publish\SeelansTyres.Services.OrderService\
+ECHO.
+
+XCOPY /S /Q Services\SeelansTyres.Services.TyresService\publish\ publish\SeelansTyres.Services.TyresService\
 ECHO.
 
 PAUSE

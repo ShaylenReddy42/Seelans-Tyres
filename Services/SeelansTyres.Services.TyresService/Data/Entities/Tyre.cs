@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Mvc.Models;
+namespace SeelansTyres.Services.TyresService.Data.Entities;
 
-public class MvcTyreModel
+public class Tyre
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     [Required]
     [StringLength(40, MinimumLength = 3)]
@@ -25,10 +27,8 @@ public class MvcTyreModel
     [Column(TypeName = "decimal")]
     public decimal Price { get; set; }
     public bool Available { get; set; } = true;
-    public string? OriginalImageUrl { get; set; }
-    public IFormFile? Image { get; set; }
-    [FileExtensions(Extensions = "jpg,jpeg,png")]
-    public string? ImageFileName => Image is not null ? Image.FileName : null;
-    [Required]
+    public string ImageUrl { get; set; } = string.Empty;
+    [ForeignKey("BrandId")]
+    public Brand? Brand { get; set; }
     public int BrandId { get; set; }
 }

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SeelansTyres.Services.OrderService.Data;
-using SeelansTyres.Services.OrderService.Services;
+using SeelansTyres.Services.TyresService.Data;
+using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
 using System.Text;
 
@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>
 {
-    setup.AddSecurityDefinition("OrdersServiceAuth", new OpenApiSecurityScheme
+    setup.AddSecurityDefinition("TyresServiceAuth", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.Http,
         Scheme = JwtBearerDefaults.AuthenticationScheme,
@@ -30,18 +30,18 @@ builder.Services.AddSwaggerGen(setup =>
             Reference = new OpenApiReference
             {
                 Type = ReferenceType.SecurityScheme,
-                Id = "OrdersServiceAuth"
+                Id = "TyresServiceAuth"
             }
         },
         new List<string>()
     }});
 });
 
-builder.Services.AddDbContext<OrdersContext>(options =>
+builder.Services.AddDbContext<TyresContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresOrderContext"]));
+        builder.Configuration["SeelansTyresTyresContext"]));
 
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ITyresRepository, TyresRepository>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -51,7 +51,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         configure.TokenValidationParameters = new()
         {
             ValidIssuer = builder.Configuration["Token:Issuer"],
-            ValidAudience = "OrderService",
+            ValidAudience = "TyresService",
             IssuerSigningKey =
                 new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"]))
@@ -70,6 +70,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

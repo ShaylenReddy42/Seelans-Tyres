@@ -94,8 +94,8 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("TyreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TyreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TyreName")
                         .IsRequired()
