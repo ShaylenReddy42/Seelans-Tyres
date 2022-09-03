@@ -40,8 +40,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SeelansTyres.Data\SeelansTyres.Data.csproj" />
-  </ItemGroup>
-
 </Project>

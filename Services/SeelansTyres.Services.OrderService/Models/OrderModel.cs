@@ -23,7 +23,7 @@ public class OrderModel
     [Required]
     public string PhoneNumber { get; set; } = string.Empty;
     [Required]
-    public int AddressId { get; set; }
+    public Guid AddressId { get; set; }
     [Required]
     public string AddressLine1 { get; set; } = string.Empty;
     [Required]

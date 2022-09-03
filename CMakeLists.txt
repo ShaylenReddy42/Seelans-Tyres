@@ -65,16 +65,12 @@ message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 
 configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Data.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/SeelansTyres.Data/Properties/AssemblyInfo.cs")
-
-configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Mvc.AssemblyInfo.cs.in" 
 	"${CMAKE_SOURCE_DIR}/Frontend/SeelansTyres.Mvc/Properties/AssemblyInfo.cs")
 
 configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.WebApi.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.WebApi/Properties/AssemblyInfo.cs")
+	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.AddressService.AssemblyInfo.cs.in" 
+	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.AddressService/Properties/AssemblyInfo.cs")
 
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.OrderService.AssemblyInfo.cs.in" 

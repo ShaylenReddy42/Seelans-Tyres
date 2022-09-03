@@ -13,14 +13,24 @@ ECHO.
 dotnet tool restore
 
 ECHO.
-ECHO Create EF Core Bundle for SeelansTyres.WebApi
+ECHO Create EF Core Bundle for SeelansTyres.Mvc
 ECHO.
-dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.WebApi/SeelansTyres.WebApi.csproj --startup-project Services/SeelansTyres.WebApi/SeelansTyres.WebApi.csproj -o efbundle.exe
+dotnet tool run dotnet-ef migrations bundle --force --project Frontend/SeelansTyres.Mvc/SeelansTyres.Mvc.csproj --startup-project Frontend/SeelansTyres.Mvc/SeelansTyres.Mvc.csproj -o efbundle.exe
 
 ECHO.
 ECHO Execute EF Core Bundle against configured database connection
 ECHO.
-efbundle.exe --connection "%SeelansTyresContext%"
+efbundle.exe --connection "%SeelansTyresCustomerContext%"
+
+ECHO.
+ECHO Create EF Core Bundle for SeelansTyres.Services.AddressService
+ECHO.
+dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o efbundle.exe
+
+ECHO.
+ECHO Execute EF Core Bundle against configured database connection
+ECHO.
+efbundle.exe --connection "%SeelansTyresAddressContext%"
 
 ECHO.
 ECHO Create EF Core Bundle for SeelansTyres.Services.OrderService
@@ -57,22 +67,18 @@ IF EXIST publish (
 	RD publish /S /Q
 )
 
-ECHO Publish the Frontend Project
-ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
-CD ../../Services/SeelansTyres.WebApi
+CD ../../Services/SeelansTyres.Services.AddressService
 
 ECHO.
-ECHO SeelansTyres.WebApi
+ECHO SeelansTyres.Services.AddressService
 ECHO.
 
 IF EXIST publish (
 	RD publish /S /Q
 )
 
-ECHO Publish the WebApi 
-ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
 CD ../../Services/SeelansTyres.Services.OrderService
@@ -85,8 +91,6 @@ IF EXIST publish (
 	RD publish /S /Q
 )
 
-ECHO Publish the Order Microservice 
-ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
 CD ../../Services/SeelansTyres.Services.TyresService
@@ -99,8 +103,6 @@ IF EXIST publish (
 	RD publish /S /Q
 )
 
-ECHO Publish the Order Microservice 
-ECHO.
 dotnet publish -c Release -r win-x64 --no-self-contained
 
 CD ../..
@@ -122,7 +124,7 @@ IF EXIST publish (
 XCOPY /S /Q Frontend\SeelansTyres.Mvc\publish\ publish\SeelansTyres.Mvc\
 ECHO.
 
-XCOPY /S /Q Services\SeelansTyres.WebApi\publish\ publish\SeelansTyres.WebApi\
+XCOPY /S /Q Services\SeelansTyres.Services.AddressService\publish\ publish\SeelansTyres.Services.AddressService\
 ECHO.
 
 XCOPY /S /Q Services\SeelansTyres.Services.OrderService\publish\ publish\SeelansTyres.Services.OrderService\

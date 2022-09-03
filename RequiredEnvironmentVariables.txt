@@ -2,6 +2,10 @@ Ensure to set the following environment variables before continuing
 
 -----
 
+AddressServiceApi -- https://localhost:5013
+
+	Localhost for the Address Microservice
+
 AdminCredentials__Email [Can be fictitious]
 
 	Used to Seed the Admin account to the database with the Administrator role
@@ -29,9 +33,13 @@ OrderServiceApi -- https://localhost:5011
 
 	Localhost for the Order Microservice
 
-SeelansTyresContext -- e.g. Server=.;Initial Catalog=SeelansTyres;Trusted_Connection=true;MultipleActiveResultSets=true
+SeelansTyresCustomerContext -- e.g. Server=.;Initial Catalog=SeelansTyresCustomerDb;Trusted_Connection=true;MultipleActiveResultSets=true
 
-	Connection String to the SQL Server Database for the main database [for now]
+	Connection String to the SQL Server Database that holds the customers
+
+SeelansTyresAddressContext -- e.g. Server=.;Initial Catalog=SeelansTyresAddressDb;Trusted_Connection=true;MultipleActiveResultSets=true
+
+	Connection String to the SQL Server Database for the Address Microservice database
 
 SeelansTyresOrderContext -- e.g. Server=.;Initial Catalog=SeelansTyresOrderDb;Trusted_Connection=true;MultipleActiveResultSets=true
 
@@ -52,7 +60,3 @@ Token__Key [Must be 32 bits long]
 TyresServiceApi -- https://localhost:5012
 
 	Localhost for the Tyres Microservice
-
-WebApiUrl -- https://localhost:5010
-
-	Localhost for the WebApi

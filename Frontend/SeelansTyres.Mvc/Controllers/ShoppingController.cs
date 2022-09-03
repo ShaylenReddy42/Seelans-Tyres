@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RazorLight;
-using SeelansTyres.Data.Entities;
+using SeelansTyres.Mvc.Data.Entities;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Models.External;
 using SeelansTyres.Mvc.Services;

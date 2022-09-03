@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Data.Entities;
-using SeelansTyres.Data.Models;
+using SeelansTyres.Mvc.Data.Entities;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
@@ -14,27 +13,27 @@ public class AccountController : Controller
     private readonly ILogger<AccountController> logger;
     private readonly SignInManager<Customer> signInManager;
     private readonly UserManager<Customer> userManager;
-    private readonly IAuthenticationService authenticationService;
     private readonly IAddressService addressService;
     private readonly IOrderService orderService;
     private readonly IEmailService emailService;
+    private readonly ITokenService tokenService;
 
     public AccountController(
         ILogger<AccountController> logger,
         SignInManager<Customer> signInManager,
         UserManager<Customer> userManager,
-        IAuthenticationService authenticationService,
         IAddressService addressService,
         IOrderService orderService,
-        IEmailService emailService)
+        IEmailService emailService,
+        ITokenService tokenService)
     {
         this.logger = logger;
         this.signInManager = signInManager;
         this.userManager = userManager;
-        this.authenticationService = authenticationService;
         this.addressService = addressService;
         this.orderService = orderService;
         this.emailService = emailService;
+        this.tokenService = tokenService;
     }
     
     [Authorize]
@@ -85,7 +84,9 @@ public class AccountController : Controller
 
                 if (result.Succeeded)
                 {
-                    _ = await authenticationService.LoginAsync(model);
+                    var customer = await userManager.FindByEmailAsync(model.UserName);
+
+                    tokenService.GenerateApiAuthToken(customer, await userManager.IsInRoleAsync(customer, "Administrator"));
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -137,7 +138,7 @@ public class AccountController : Controller
                 }
                 else
                 {
-                    var newCustomer = new Customer()
+                    var newCustomer = new Customer
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
@@ -152,13 +153,7 @@ public class AccountController : Controller
                     {
                         await signInManager.SignInAsync(newCustomer, isPersistent: false);
 
-                        var loginModel = new LoginModel
-                        {
-                            UserName = model.Email,
-                            Password = model.Password
-                        };
-
-                        _ = await authenticationService.LoginAsync(loginModel);
+                        tokenService.GenerateApiAuthToken(newCustomer, await userManager.IsInRoleAsync(newCustomer, "Administrator"));
 
                         return RedirectToAction("Index", "Home");
                     }
@@ -217,6 +212,8 @@ public class AccountController : Controller
     {
         var addressModel = model.AddressModel;
 
+        addressModel.Id = Guid.Empty;
+
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         var requestSucceeded = await addressService.CreateAsync(addressModel, customerId);
@@ -230,7 +227,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> MarkAddressAsPreferred(int addressId)
+    public async Task<IActionResult> MarkAddressAsPreferred(Guid addressId)
     {
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 

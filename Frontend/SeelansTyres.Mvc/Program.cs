@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Data.Entities;
+using SeelansTyres.Mvc.Data.Entities;
 using SeelansTyres.Mvc.Data;
 using SeelansTyres.Mvc.Services;
 using System.Net;
@@ -12,12 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<SeelansTyresContext>(
+builder.Services.AddDbContext<CustomerContext>(
     options => options.UseSqlServer(
-        builder.Configuration["SeelansTyresContext"]));
+        builder.Configuration["SeelansTyresCustomerContext"]));
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<SeelansTyresContext>()
+    .AddEntityFrameworkStores<CustomerContext>()
     .AddDefaultTokenProviders();
 
 // i'm not all that strict with this
@@ -33,15 +33,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
-builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
-    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
-
 builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["WebApiUrl"]);
+    client.BaseAddress = new Uri(builder.Configuration["AddressServiceApi"]);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 
@@ -63,6 +57,8 @@ builder.Services.AddSession();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ICartService, CachedCartService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddScoped<AdminAccountSeeder>();
 
 builder.Services.AddFluentEmail(
         builder.Configuration["EmailCredentials:Email"], "Seelan's Tyres")
@@ -104,4 +100,13 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+await RunAdminAccountSeeder();
+
 app.Run();
+
+async Task RunAdminAccountSeeder()
+{
+    using var scope = app.Services.CreateScope();
+    var adminAccountSeeder = scope.ServiceProvider.GetService<AdminAccountSeeder>();
+    await adminAccountSeeder!.CreateAdminAsync();
+}

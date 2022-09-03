@@ -1,5 +1,4 @@
-﻿using SeelansTyres.Data.Models;
-using SeelansTyres.Mvc.Models;
+﻿using SeelansTyres.Mvc.Models;
 
 namespace SeelansTyres.Mvc.ViewModels;
 

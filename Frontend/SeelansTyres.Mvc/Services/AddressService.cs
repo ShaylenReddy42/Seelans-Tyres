@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Data.Models;
+﻿using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.Services;
 
@@ -47,7 +47,7 @@ public class AddressService : IAddressService
         }
     }
 
-    public async Task<bool> MarkAddressAsPreferredAsync(Guid customerId, int addressId)
+    public async Task<bool> MarkAddressAsPreferredAsync(Guid customerId, Guid addressId)
     {
         try
         {
