@@ -49,7 +49,7 @@ SeelansTyresTyresContext -- e.g. Server=.;Initial Catalog=SeelansTyresTyresDb;Tr
 
 	Connection String to the SQL Server Database for the Tyres Microservice database
 
-Token__Issuer -- https://localhost:5010
+Token__Issuer -- https://localhost:5001
 
 	Party that issues the token
 

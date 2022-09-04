@@ -22,7 +22,7 @@ public class TokenService : ITokenService
             throw new ArgumentOutOfRangeException(
                 paramName: @"configuration[""Token:Key""]",
                 actualValue: configuration["Token:Key"].Length,
-                message: "Key must be at least 32 bits long");
+                message: "Key must be at least 32 bytes long");
         }
 
         var securityKey = new SymmetricSecurityKey(
