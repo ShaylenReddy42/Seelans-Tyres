@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeelansTyres.Services.OrderService.Data.Entities;
 
+[Index(nameof(TyreId), IsUnique = false, Name = "IX_OrderItems_TyreId")]
 public class OrderItem
 {
     [Key]

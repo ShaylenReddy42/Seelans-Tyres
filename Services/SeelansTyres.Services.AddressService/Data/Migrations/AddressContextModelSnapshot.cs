@@ -54,6 +54,8 @@ namespace SeelansTyres.Services.AddressService.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex(new[] { "CustomerId" }, "IX_Addresses_CustomerId");
+
                     b.ToTable("Addresses");
                 });
 #pragma warning restore 612, 618

@@ -25,6 +25,11 @@ namespace SeelansTyres.Services.AddressService.Migrations
                 {
                     table.PrimaryKey("PK_Addresses", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_CustomerId",
+                table: "Addresses",
+                column: "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -60,6 +60,21 @@ namespace SeelansTyres.Services.OrderService.Migrations
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_TyreId",
+                table: "OrderItems",
+                column: "TyreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_AddressId",
+                table: "Orders",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

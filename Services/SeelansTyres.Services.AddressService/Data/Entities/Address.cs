@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeelansTyres.Services.AddressService.Data.Entities;
 
+[Index(nameof(CustomerId), IsUnique = false, Name = "IX_Addresses_CustomerId")]
 public class Address
 {
     [Key]

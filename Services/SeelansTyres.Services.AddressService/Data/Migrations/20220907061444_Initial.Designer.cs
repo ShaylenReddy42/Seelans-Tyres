@@ -12,7 +12,7 @@ using SeelansTyres.Services.AddressService.Data;
 namespace SeelansTyres.Services.AddressService.Migrations
 {
     [DbContext(typeof(AddressContext))]
-    [Migration("20220903182328_Initial")]
+    [Migration("20220907061444_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,8 @@ namespace SeelansTyres.Services.AddressService.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "CustomerId" }, "IX_Addresses_CustomerId");
 
                     b.ToTable("Addresses");
                 });

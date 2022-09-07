@@ -79,6 +79,10 @@ namespace SeelansTyres.Services.OrderService.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex(new[] { "AddressId" }, "IX_Orders_AddressId");
+
+                    b.HasIndex(new[] { "CustomerId" }, "IX_Orders_CustomerId");
+
                     b.ToTable("Orders");
                 });
 
@@ -107,6 +111,8 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex(new[] { "TyreId" }, "IX_OrderItems_TyreId");
 
                     b.ToTable("OrderItems");
                 });

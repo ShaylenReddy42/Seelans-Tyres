@@ -12,7 +12,7 @@ using SeelansTyres.Services.OrderService.Data;
 namespace SeelansTyres.Services.OrderService.Migrations
 {
     [DbContext(typeof(OrdersContext))]
-    [Migration("20220903181419_Initial")]
+    [Migration("20220907061515_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,6 +81,10 @@ namespace SeelansTyres.Services.OrderService.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex(new[] { "AddressId" }, "IX_Orders_AddressId");
+
+                    b.HasIndex(new[] { "CustomerId" }, "IX_Orders_CustomerId");
+
                     b.ToTable("Orders");
                 });
 
@@ -109,6 +113,8 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex(new[] { "TyreId" }, "IX_OrderItems_TyreId");
 
                     b.ToTable("OrderItems");
                 });
