@@ -10,9 +10,9 @@
 
 This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which, compared to this, was very poorly written and insecure. Originally it was written with PHP as the backend, this project is written using ASP.NET Core 6
 
-This project is also rewritten to utilize my Azure and DevOps skills. As of right now, the solution is not cloud-native yet, it isn't even in its final architecture
+It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifcations and needed a way to prove my skills with a project. As of right now, the solution is not cloud-native yet, it isn't even in its final architecture
 
-This project is a proof of concept so the payment system isn't integrated
+Since this project is a proof of concept, the payment system isn't integrated
 
 ## Current Architecture
 
@@ -55,6 +55,10 @@ The WebApi will be split into microservices that has its own databases using Dom
     * [Marcel de Vries](https://www.pluralsight.com/authors/marcel-devries)
     * [Steve Gordan](https://www.pluralsight.com/authors/steve-gordon)
     * [Rag Dhiman](https://www.pluralsight.com/authors/rag-dhiman)
+* [Your Microservices Transition](https://app.pluralsight.com/courses/your-microservices-transition)
+  * Author: [Rag Dhiman](https://www.pluralsight.com/authors/rag-dhiman)
+* [Microservices Architecture: The Design Principles](https://app.pluralsight.com/courses/microservices-design-principles)
+  * Author: [Rag Dhiman](https://www.pluralsight.com/authors/rag-dhiman)
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
 * [Microsoft Docs](https://docs.microsoft.com/en-us/)
