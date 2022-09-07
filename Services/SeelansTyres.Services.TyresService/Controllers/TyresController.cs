@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SeelansTyres.Services.TyresService.Data.Entities;
 
-namespace SeelansTyres.WebApi.Controllers;
+namespace SeelansTyres.Services.TyresService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

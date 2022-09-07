@@ -2,7 +2,7 @@
 using SeelansTyres.Services.TyresService.Models;
 using SeelansTyres.Services.TyresService.Data.Entities;
 
-namespace SeelansTyres.WebApi.Profiles;
+namespace SeelansTyres.Services.TyresService.Profiles;
 
 public class BrandProfile : Profile
 {

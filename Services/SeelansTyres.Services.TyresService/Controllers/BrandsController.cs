@@ -4,7 +4,7 @@ using SeelansTyres.Services.TyresService.Services;
 using SeelansTyres.Services.TyresService.Models;
 using SeelansTyres.Services.TyresService.Data.Entities;
 
-namespace SeelansTyres.WebApi.Controllers;
+namespace SeelansTyres.Services.TyresService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

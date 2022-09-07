@@ -2,7 +2,7 @@
 using SeelansTyres.Services.OrderService.Data.Entities;
 using SeelansTyres.Services.OrderService.Models;
 
-namespace SeelansTyres.WebApi.Profiles
+namespace SeelansTyres.Services.OrderService.Profiles
 {
     public class OrderProfile : Profile
     {
