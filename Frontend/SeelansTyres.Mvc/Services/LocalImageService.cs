@@ -16,11 +16,7 @@ public class LocalImageService : IImageService
 
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
 
-        var filePath = 
-            Path.Combine(
-                environment.WebRootPath,
-                "images",
-                fileName);
+        var filePath = Path.Combine(environment.WebRootPath, "images", fileName);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))
         {

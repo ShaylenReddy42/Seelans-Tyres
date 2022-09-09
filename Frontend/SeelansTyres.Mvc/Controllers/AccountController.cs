@@ -14,6 +14,7 @@ public class AccountController : Controller
     private readonly SignInManager<Customer> signInManager;
     private readonly UserManager<Customer> userManager;
     private readonly IAddressService addressService;
+    private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
     private readonly IEmailService emailService;
     private readonly ITokenService tokenService;
@@ -23,6 +24,7 @@ public class AccountController : Controller
         SignInManager<Customer> signInManager,
         UserManager<Customer> userManager,
         IAddressService addressService,
+        ICustomerService customerService,
         IOrderService orderService,
         IEmailService emailService,
         ITokenService tokenService)
@@ -31,6 +33,7 @@ public class AccountController : Controller
         this.signInManager = signInManager;
         this.userManager = userManager;
         this.addressService = addressService;
+        this.customerService = customerService;
         this.orderService = orderService;
         this.emailService = emailService;
         this.tokenService = tokenService;
@@ -50,14 +53,16 @@ public class AccountController : Controller
             PhoneNumber = customer.PhoneNumber
         };
 
-        var addresses = await addressService.RetrieveAllAsync(customer.Id);
-        var orders = await orderService.RetrieveAllAsync(customerId: customer.Id);
+        var addresses = addressService.RetrieveAllAsync(customer.Id);
+        var orders = orderService.RetrieveAllAsync(customerId: customer.Id);
+
+        await Task.WhenAll(addresses, orders);
 
         var accountViewModel = new AccountViewModel
         {
             Customer = customerModel,
-            Addresses = addresses!,
-            Orders = orders!
+            Addresses = addresses.Result!,
+            Orders = orders.Result!
         };
         
         return View(accountViewModel);
@@ -128,46 +133,19 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            try
+            var (newCustomer, succeeded, errors) = await customerService.CreateAsync(model);
+
+            if (succeeded is true && newCustomer is not null)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                await signInManager.SignInAsync(newCustomer, isPersistent: false);
 
-                if (user is not null)
-                {
-                    ModelState.AddModelError(string.Empty, $"Customer with email {model.Email} already exists");
-                }
-                else
-                {
-                    var newCustomer = new Customer
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Email = model.Email,
-                        UserName = model.Email,
-                        PhoneNumber = model.PhoneNumber
-                    };
+                tokenService.GenerateApiAuthToken(newCustomer, await userManager.IsInRoleAsync(newCustomer, "Administrator"));
 
-                    var result = await userManager.CreateAsync(newCustomer, model.Password);
-
-                    if (result.Succeeded)
-                    {
-                        await signInManager.SignInAsync(newCustomer, isPersistent: false);
-
-                        tokenService.GenerateApiAuthToken(newCustomer, await userManager.IsInRoleAsync(newCustomer, "Administrator"));
-
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
+                return RedirectToAction("Index", "Home");
             }
-            catch (InvalidOperationException ex)
+            else
             {
-                logger.LogError(ex, "The database is unavailable");
-                ModelState.AddModelError(string.Empty, "Database is not connected, please try again later");
+                errors.ForEach(error => ModelState.AddModelError(string.Empty, error));
             }
         }
 
@@ -177,15 +155,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateAccount(AccountViewModel model)
     {
-        var updateAccountModel = model.UpdateAccountModel;
-        
-        var user = await userManager.GetUserAsync(User);
-
-        user.FirstName = updateAccountModel.FirstName;
-        user.LastName = updateAccountModel.LastName;
-        user.PhoneNumber = updateAccountModel.PhoneNumber;
-
-        await userManager.UpdateAsync(user);
+        await customerService.UpdateAsync(model.UpdateAccountModel);
 
         return RedirectToAction("Index");
     }
@@ -193,14 +163,11 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteAccount(string password)
     {
-        var user = await userManager.GetUserAsync(User);
-        
-        var passwordCorrect = await userManager.CheckPasswordAsync(user, password);
+        var succeeded = await customerService.DeleteAsync(password);
 
-        if (passwordCorrect is true)
+        if (succeeded is true)
         {
             await signInManager.SignOutAsync();
-            await userManager.DeleteAsync(user);
             return RedirectToAction("Index", "Home");
         }
 
