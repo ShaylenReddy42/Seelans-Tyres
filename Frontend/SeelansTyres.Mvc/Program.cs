@@ -56,7 +56,7 @@ builder.Services.AddSession();
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddScoped<ICartService, CachedCartService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IImageService, LocalImageService>();
 builder.Services.AddTransient<ITokenService, TokenService>();

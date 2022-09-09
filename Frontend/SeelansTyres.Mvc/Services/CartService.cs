@@ -3,19 +3,19 @@ using SeelansTyres.Mvc.Models;
 
 namespace SeelansTyres.Mvc.Services;
 
-public class CachedCartService : ICartService
+public class CartService : ICartService
 {
-    private readonly ILogger<CachedCartService> logger;
+    private readonly ILogger<CartService> logger;
     private readonly string cartId;
     private readonly IMemoryCache cache;
 
-    public CachedCartService(
-        ILogger<CachedCartService> logger,
+    public CartService(
+        ILogger<CartService> logger,
         IHttpContextAccessor httpContextAccessor,
         IMemoryCache cache) =>
             (this.logger, cartId, this.cache) = (logger, httpContextAccessor.HttpContext!.Session.GetString("CartId")!, cache);
     
-    public void CreateItem(CachedCartItemModel newItem)
+    public void CreateItem(CartItemModel newItem)
     {
         var cart = Retrieve();
 
@@ -47,20 +47,20 @@ public class CachedCartService : ICartService
         Update(cart);
     }
 
-    public List<CachedCartItemModel> Retrieve()
+    public List<CartItemModel> Retrieve()
     {
-        List<CachedCartItemModel> cart;
+        List<CartItemModel> cart;
         
         if (cache.TryGetValue(cartId, out cart) is false)
         {
-            cart = new List<CachedCartItemModel>();
+            cart = new List<CartItemModel>();
             Update(cart);
         }
 
         return cart;
     }
 
-    private void Update(List<CachedCartItemModel> cart)
+    private void Update(List<CartItemModel> cart)
     {
         var cacheEntryOptions =
             new MemoryCacheEntryOptions()

@@ -61,7 +61,7 @@ public class ShoppingController : Controller
     [HttpPost]
     public IActionResult AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
     {
-        var cartItem = new CachedCartItemModel
+        var cartItem = new CartItemModel
         {
             TyreId = tyreId,
             TyreName = tyreName,

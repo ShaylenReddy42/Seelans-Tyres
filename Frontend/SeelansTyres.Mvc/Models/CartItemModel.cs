@@ -1,6 +1,6 @@
 ﻿namespace SeelansTyres.Mvc.Models;
 
-public class CachedCartItemModel
+public class CartItemModel
 {
     public Guid TyreId { get; set; }
     public string TyreName { get; set; } = string.Empty;
