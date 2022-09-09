@@ -57,6 +57,7 @@ builder.Services.AddSession();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ICartService, CachedCartService>();
+builder.Services.AddTransient<IImageService, LocalImageService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddScoped<AdminAccountSeeder>();
 
@@ -79,7 +80,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() is false)
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -96,9 +97,7 @@ app.UseAuthorization();
 
 app.UseSession();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapDefaultControllerRoute();
 
 await RunAdminAccountSeeder();
 

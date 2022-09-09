@@ -10,18 +10,18 @@ namespace SeelansTyres.Mvc.Controllers;
 public class AdminController : Controller
 {
     private readonly ILogger<AdminController> logger;
-    private readonly IWebHostEnvironment environment;
+    private readonly IImageService imageService;
     private readonly IOrderService orderService;
     private readonly ITyresService tyresService;
 
     public AdminController(
         ILogger<AdminController> logger,
-        IWebHostEnvironment environment,
+        IImageService imageService,
         IOrderService orderService,
         ITyresService tyresService)
     {
         this.logger = logger;
-        this.environment = environment;
+        this.imageService = imageService;
         this.orderService = orderService;
         this.tyresService = tyresService;
     }
@@ -48,24 +48,7 @@ public class AdminController : Controller
         // upload the file to azure storage, get the url
         // and set the ImageUrl
 
-        var filePath = "/images/no-image.png";
-
-        if (model.Image is not null)
-        {
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
-            
-            filePath = Path.Combine(
-                environment.WebRootPath,
-                "images",
-                fileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await model.Image.CopyToAsync(fileStream);
-            }
-
-            filePath = $"/images/{fileName}";
-        }
+        var imageUrl = await imageService.UploadAsync(model.Image, "/images/no-image.png");
 
         var createTyreModel = new TyreModel
         {
@@ -77,7 +60,7 @@ public class AdminController : Controller
             VehicleType = model.VehicleType,
             Price = model.Price,
             Available = model.Available,
-            ImageUrl = filePath,
+            ImageUrl = imageUrl,
             BrandId = model.BrandId
         };
 
@@ -122,26 +105,9 @@ public class AdminController : Controller
             return View(model);
         }
 
-        var filePath = model.OriginalImageUrl;
+        var imageUrl = await imageService.UploadAsync(model.Image, model.OriginalImageUrl!);
 
-        if (model.Image is not null)
-        {
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.Image.FileName)}";
-
-            filePath = Path.Combine(
-                environment.WebRootPath,
-                "images",
-                fileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await model.Image.CopyToAsync(fileStream);
-            }
-
-            filePath = $"/images/{fileName}";
-        }
-
-        var createTyreModel = new TyreModel
+        var updateTyreModel = new TyreModel
         {
             Id = model.Id,
             Name = model.Name,
@@ -151,11 +117,11 @@ public class AdminController : Controller
             VehicleType = model.VehicleType,
             Price = model.Price,
             Available = model.Available,
-            ImageUrl = filePath!,
+            ImageUrl = imageUrl,
             BrandId = model.BrandId
         };
 
-        var requestSucceeded = await tyresService.UpdateTyreAsync(model.Id, createTyreModel);
+        var requestSucceeded = await tyresService.UpdateTyreAsync(model.Id, updateTyreModel);
 
         if (requestSucceeded is false)
         {

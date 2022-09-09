@@ -64,11 +64,12 @@ The WebApi will be split into microservices that has its own databases using Dom
 * [Microsoft Docs](https://docs.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]
 
-## Required local setup to build
+## Required local setup to build and run
 
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
 * [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) 6.0.400
 * [CMake](https://cmake.org/download/) 3.21.4 or later
+* [An Instance of SQL Server 2019 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
 
 ## Build instructions
