@@ -25,10 +25,6 @@ EmailCredentials__Password
 	platform and give it any name you want.
 	Copy that as your password
 
-SeelansTyresCustomerContext -- e.g. Server=localhost;Initial Catalog=SeelansTyresCustomerDb;Trusted_Connection=true;MultipleActiveResultSets=true
-
-	Connection String to the SQL Server Database that holds the customers
-
 SeelansTyresAddressContext -- e.g. Server=localhost;Initial Catalog=SeelansTyresAddressDb;Trusted_Connection=true;MultipleActiveResultSets=true
 
 	Connection String to the SQL Server Database for the Address Microservice database

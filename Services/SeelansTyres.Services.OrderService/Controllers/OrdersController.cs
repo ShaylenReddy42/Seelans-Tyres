@@ -28,28 +28,12 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "MustSatisfyOrderRetrievalRules")]
     public async Task<ActionResult<IEnumerable<OrderModel>>> RetrieveAll(Guid? customerId = null, bool notDeliveredOnly = false)
     {
-        if (customerId is null 
-            && User.IsInRole("Administrator") is false) // All orders
-        {
-            return StatusCode(StatusCodes.Status403Forbidden);
-        }
-        else if (customerId is not null 
-            && User.IsInRole("Administrator") is true) // Administrator getting orders for a specific customer
-        {
-            return StatusCode(StatusCodes.Status403Forbidden);
-        }
-        else if (customerId is not null 
-            && User.IsInRole("Administrator") is false 
-            && User.Claims.First(claim => claim.Type.EndsWith("nameidentifier")).Value != customerId.ToString()) // Customer trying to get other customer's orders
-        {
-            return StatusCode(StatusCodes.Status403Forbidden);
-        }
-
         var orders = await orderRepository.RetrieveAllAsync(customerId, notDeliveredOnly);
 
-        return Ok(mapper.Map<IEnumerable<Data.Entities.Order>, IEnumerable<OrderModel>>(orders));
+        return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderModel>>(orders));
     }
 
     [HttpGet("{id}", Name = "GetOrderById")]
@@ -57,12 +41,7 @@ public class OrdersController : ControllerBase
     {
         var order = await orderRepository.RetrieveSingleAsync(id);
 
-        if (order is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(mapper.Map<Order, OrderModel>(order));
+        return order is not null ? Ok(mapper.Map<Order, OrderModel>(order)) : NotFound();
     }
 
     [HttpPost]
@@ -83,13 +62,9 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = "MustBeAnAdministrator")]
     public async Task<ActionResult> MarkOrderAsDelivered(int id, bool delivered = true)
     {
-        if (User.IsInRole("Administrator") is false)
-        {
-            return StatusCode(StatusCodes.Status403Forbidden);
-        }
-        
         var order = await orderRepository.RetrieveSingleAsync(id);
 
         if (order is null)

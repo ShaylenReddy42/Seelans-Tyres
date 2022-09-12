@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{ED
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.TyresService", "Services\SeelansTyres.Services.TyresService\SeelansTyres.Services.TyresService.csproj", "{F436499C-36BD-451B-83BE-B9C5A414158A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Services.AddressService", "Services\SeelansTyres.Services.AddressService\SeelansTyres.Services.AddressService.csproj", "{108D593A-5141-4005-BA3D-801FAE819B63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.AddressService", "Services\SeelansTyres.Services.AddressService\SeelansTyres.Services.AddressService.csproj", "{108D593A-5141-4005-BA3D-801FAE819B63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Services.IdentityService", "Services\SeelansTyres.Services.IdentityService\SeelansTyres.Services.IdentityService.csproj", "{B2C9FAC3-F99E-4D35-BECB-B320054A8430}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{108D593A-5141-4005-BA3D-801FAE819B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{108D593A-5141-4005-BA3D-801FAE819B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{108D593A-5141-4005-BA3D-801FAE819B63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2C9FAC3-F99E-4D35-BECB-B320054A8430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C9FAC3-F99E-4D35-BECB-B320054A8430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C9FAC3-F99E-4D35-BECB-B320054A8430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C9FAC3-F99E-4D35-BECB-B320054A8430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{B01BC7E3-05FD-43ED-929E-BDDC9B50B720} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 		{F436499C-36BD-451B-83BE-B9C5A414158A} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 		{108D593A-5141-4005-BA3D-801FAE819B63} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
+		{B2C9FAC3-F99E-4D35-BECB-B320054A8430} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C5A8447-9A96-4A1C-AD8D-D29233AA88E4}

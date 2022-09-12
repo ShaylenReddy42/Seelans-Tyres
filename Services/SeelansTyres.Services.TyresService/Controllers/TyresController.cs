@@ -10,6 +10,7 @@ namespace SeelansTyres.Services.TyresService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "MustBeAnAdministrator")]
 public class TyresController : ControllerBase
 {
     private readonly ILogger<TyresController> logger;
@@ -27,6 +28,7 @@ public class TyresController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<TyreModel>>> RetrieveAll(bool availableOnly = true)
     {
         var tyres = await tyresRepository.RetrieveAllTyresAsync(availableOnly);
@@ -35,7 +37,6 @@ public class TyresController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetTyreById")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public async Task<ActionResult<TyreModel>> RetrieveSingle(Guid id)
     {
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
@@ -49,7 +50,6 @@ public class TyresController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public async Task<ActionResult<TyreModel>> Create(TyreModel model)
     {
         var tyreEntity = mapper.Map<TyreModel, Tyre>(model);
@@ -67,7 +67,6 @@ public class TyresController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public async Task<ActionResult> Update(TyreModel model, Guid id)
     {
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);

@@ -1,11 +1,13 @@
-﻿using SeelansTyres.Mvc.Data.Entities;
-using SeelansTyres.Mvc.Models;
+﻿using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.Services;
 
 public interface ICustomerService
 {
-    Task<(Customer?, bool, List<string>)> CreateAsync(RegisterModel registerModel);
+    Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel);
+    Task<CustomerModel> RetrieveSingleAsync(Guid customerId);
+    Task<CustomerModel?> RetrieveSingleAsync(string email);
     Task UpdateAsync(UpdateAccountModel updateAccountModel);
     Task<bool> DeleteAsync(string password);
+    Task ResetPasswordAsync(Guid customerId, string password);
 }

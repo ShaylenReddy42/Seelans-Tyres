@@ -1,55 +1,46 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Mvc.Data.Entities;
-using SeelansTyres.Mvc.Data;
 using SeelansTyres.Mvc.Services;
 using System.Net;
 using System.Net.Mail;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<CustomerContext>(
-    options => options.UseSqlServer(
-        builder.Configuration["SeelansTyresCustomerContext"]));
-
-builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<CustomerContext>()
-    .AddDefaultTokenProviders();
-
-// i'm not all that strict with this
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 8;
-    options.Password.RequiredUniqueChars = 0;
-
-    options.User.RequireUniqueEmail = true;
-});
+builder.Services.AddAccessTokenManagement();
 
 builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["AddressServiceApi"]);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
+})
+    .AddUserAccessTokenHandler();
+
+builder.Services.AddHttpClient<ICustomerService, CustomerService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["CustomerServiceApi"]);
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
+})
+    .AddUserAccessTokenHandler();
 
 builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["OrderServiceApi"]);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
+})
+    .AddUserAccessTokenHandler();
 
 builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["TyresServiceApi"]);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
+})
+    .AddUserAccessTokenHandler();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
@@ -57,10 +48,7 @@ builder.Services.AddSession();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IImageService, LocalImageService>();
-builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddScoped<AdminAccountSeeder>();
 
 builder.Services.AddFluentEmail(
         builder.Configuration["EmailCredentials:Email"], "Seelan's Tyres")
@@ -78,6 +66,37 @@ builder.Services.AddFluentEmail(
         });
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+    {
+        options.ClientId = builder.Configuration["ClientCredentials:ClientId"];
+        options.ClientSecret = builder.Configuration["ClientCredentials:ClientSecret"];
+
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.Authority = builder.Configuration["IdentityServerUrl"];
+        options.RequireHttpsMetadata = false;
+        
+        options.ResponseType = "code";
+        options.SaveTokens = true;
+        
+        options.GetClaimsFromUserInfoEndpoint = true;
+
+        options.Scope.Add("AddressService.fullaccess");
+        options.Scope.Add("CustomerService.fullaccess");
+        options.Scope.Add("OrderService.fullaccess");
+        options.Scope.Add("TyresService.fullaccess");
+
+        options.Scope.Add("offline_access");
+        options.Scope.Add("role");
+
+        options.ClaimActions.MapUniqueJsonKey(ClaimTypes.Role, ClaimTypes.Role);
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -89,24 +108,17 @@ if (app.Environment.IsDevelopment() is false)
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseSession();
 
 app.MapDefaultControllerRoute();
 
-await RunAdminAccountSeeder();
-
 app.Run();
-
-async Task RunAdminAccountSeeder()
-{
-    using var scope = app.Services.CreateScope();
-    var adminAccountSeeder = scope.ServiceProvider.GetService<AdminAccountSeeder>();
-    await adminAccountSeeder!.CreateAdminAsync();
-}

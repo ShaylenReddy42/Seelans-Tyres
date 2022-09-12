@@ -36,8 +36,8 @@ steps:
     projectKey: 'ShaylenReddy42_Seelans-Tyres'
     projectName: 'Seelans-Tyres'
     extraProperties: |
-      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**
-      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**
+      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**IdentityService/Quickstart/**,**IdentityService/Views/**
+      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**IdentityService/Quickstart/**,**IdentityService/Views/**
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
@@ -60,14 +60,6 @@ steps:
     command: custom
     custom: tool
     arguments: restore
-    workingDirectory: '$(workDir)'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Create EF Core Bundle for SeelansTyres.Mvc'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project Frontend/SeelansTyres.Mvc/SeelansTyres.Mvc.csproj --startup-project Frontend/SeelansTyres.Mvc/SeelansTyres.Mvc.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresCustomerContext.exe"
     workingDirectory: '$(workDir)'
 
 - task: DotNetCoreCLI@2
@@ -117,6 +109,18 @@ steps:
     includeRootFolder: false
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.AddressService.zip'
+
+- script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
+  displayName: 'Publish SeelansTyres.Services.IdentityService'
+  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.IdentityService'
+  
+- task: ArchiveFiles@2
+  displayName: 'Archive SeelansTyres.Services.IdentityService'
+  inputs:
+    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.IdentityService\publish'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.IdentityService.zip'
 
 - script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
   displayName: 'Publish SeelansTyres.Services.OrderService'

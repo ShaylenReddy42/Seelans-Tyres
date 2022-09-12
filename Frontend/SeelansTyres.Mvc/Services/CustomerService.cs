@@ -1,82 +1,97 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SeelansTyres.Mvc.Data.Entities;
-using SeelansTyres.Mvc.Models;
+﻿using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.Services;
 
 public class CustomerService : ICustomerService
 {
     private readonly HttpContext httpContext;
-    private readonly UserManager<Customer> userManager;
+    private readonly HttpClient client;
 
     public CustomerService(
-        IHttpContextAccessor httpContextAccessor,
-        UserManager<Customer> userManager) =>
-            (httpContext, this.userManager) = (httpContextAccessor.HttpContext!, userManager);
+        HttpClient client,
+        IHttpContextAccessor httpContextAccessor) => 
+            (this.client, httpContext) = (client, httpContextAccessor.HttpContext!);
 
-    public async Task<(Customer?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
+    public async Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
     {
-        Customer? customer = null;
+        CustomerModel? customer = null;
         bool succeeded = default;
         List<string> errors = new();
 
         try
         {
-            customer = await userManager.FindByEmailAsync(registerModel.Email);
+            var response = await client.PostAsync("api/customers", JsonContent.Create(registerModel));
 
-            if (customer is null)
+            if (response.IsSuccessStatusCode)
             {
-                customer = new Customer
-                {
-                    FirstName = registerModel.FirstName,
-                    LastName = registerModel.LastName,
-                    Email = registerModel.Email,
-                    UserName = registerModel.Email,
-                    PhoneNumber = registerModel.PhoneNumber
-                };
+                succeeded = true;
 
-                var result = await userManager.CreateAsync(customer, registerModel.Password);
-
-                succeeded = result.Succeeded;
-
-                result.Errors.ToList().ForEach(error => errors.Add(error.Description));
+                customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
             }
             else
             {
                 errors.Add($"Customer with email {registerModel.Email} already exists");
             }
         }
-        catch (InvalidOperationException)
+        catch (HttpRequestException)
         {
-            errors.Add("The database is unavailable!");
+            errors.Add("The identity service is unavailable!");
         }
 
         return (customer, succeeded, errors);
     }
 
+    public async Task<CustomerModel> RetrieveSingleAsync(Guid customerId)
+    {
+        var response = await client.GetAsync($"api/customers/{customerId}");
+
+        var customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
+
+        return customer!;
+    }
+
+    public async Task<CustomerModel?> RetrieveSingleAsync(string email)
+    {
+        var response = await client.GetAsync($"api/customers?email={email}");
+
+        var customer = response.IsSuccessStatusCode switch
+        {
+            true  => await response.Content.ReadFromJsonAsync<CustomerModel>(),
+            false => null
+        };
+
+        return customer;
+    }
+
     public async Task UpdateAsync(UpdateAccountModel updateAccountModel)
     {
-        var customer = await userManager.GetUserAsync(httpContext.User);
+        var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        customer.FirstName = updateAccountModel.FirstName;
-        customer.LastName = updateAccountModel.LastName;
-        customer.PhoneNumber = updateAccountModel.PhoneNumber;
-
-        await userManager.UpdateAsync(customer);
+        await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(updateAccountModel));
     }
 
     public async Task<bool> DeleteAsync(string password)
     {
-        var customer = await userManager.GetUserAsync(httpContext.User);
+        var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var passwordIsCorrect = await userManager.CheckPasswordAsync(customer, password);
+        var deleteAccountModel = new PasswordModel { Password = password };
 
-        if (passwordIsCorrect is true)
+        var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(deleteAccountModel));
+
+        if (response.IsSuccessStatusCode)
         {
-            await userManager.DeleteAsync(customer);
+            await client.DeleteAsync($"api/customers/{customerId}");
             return true;
         }
 
         return false;
+    }
+
+    public async Task ResetPasswordAsync(Guid customerId, string password)
+    {
+        var deleteAccountModel = new PasswordModel { Password = password };
+
+        await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(deleteAccountModel));
     }
 }

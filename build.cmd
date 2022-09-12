@@ -13,16 +13,6 @@ ECHO.
 dotnet tool restore
 
 ECHO.
-ECHO Create EF Core Bundle for SeelansTyres.Mvc
-ECHO.
-dotnet tool run dotnet-ef migrations bundle --force --project Frontend/SeelansTyres.Mvc/SeelansTyres.Mvc.csproj --startup-project Frontend/SeelansTyres.Mvc/SeelansTyres.Mvc.csproj -o efbundle.exe
-
-ECHO.
-ECHO Execute EF Core Bundle against configured database connection
-ECHO.
-efbundle.exe --connection "%SeelansTyresCustomerContext%"
-
-ECHO.
 ECHO Create EF Core Bundle for SeelansTyres.Services.AddressService
 ECHO.
 dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o efbundle.exe
@@ -81,6 +71,18 @@ IF EXIST publish (
 
 dotnet publish -c Release -r win-x64 --no-self-contained
 
+CD ../../Services/SeelansTyres.Services.IdentityService
+
+ECHO.
+ECHO SeelansTyres.Services.IdentityService
+ECHO.
+
+IF EXIST publish (
+	RD publish /S /Q
+)
+
+dotnet publish -c Release -r win-x64 --no-self-contained
+
 CD ../../Services/SeelansTyres.Services.OrderService
 
 ECHO.
@@ -125,6 +127,9 @@ XCOPY /S /Q Frontend\SeelansTyres.Mvc\publish\ publish\SeelansTyres.Mvc\
 ECHO.
 
 XCOPY /S /Q Services\SeelansTyres.Services.AddressService\publish\ publish\SeelansTyres.Services.AddressService\
+ECHO.
+
+XCOPY /S /Q Services\SeelansTyres.Services.IdentityService\publish\ publish\SeelansTyres.Services.IdentityService\
 ECHO.
 
 XCOPY /S /Q Services\SeelansTyres.Services.OrderService\publish\ publish\SeelansTyres.Services.OrderService\

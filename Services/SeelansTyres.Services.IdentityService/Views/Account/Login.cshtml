@@ -1,0 +1,91 @@
+@model LoginViewModel
+@inject IConfiguration Configuration
+
+<div class="login-page">
+    <div class="lead">
+        <h1>Login</h1>
+        <p>Choose how to login</p>
+    </div>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+
+        @if (Model.EnableLocalLogin)
+        {
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Local Account</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <form asp-route="Login">
+                            <input type="hidden" asp-for="ReturnUrl" />
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" asp-for="Username">Email</label>
+                                <input class="form-control" type="email" asp-for="Username" palceholder="Username" autofocus>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" asp-for="Password">Password</label>
+                                <input class="form-control" type="password" asp-for="Password" placeholder="Password">
+                            </div>
+
+                            @if (Model.AllowRememberLogin)
+                            {
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" asp-for="RememberLogin">
+                                    <label class="form-check-label" asp-for="RememberLogin">Remember Me</label>
+                                </div>
+                            }
+
+                            <button class="btn btn-primary" name="button" value="login">Login</button>
+                            <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
+                        </form>
+                        <hr class="mt-4" />
+                        <div class="text-center mb-2">
+                            <a class="w-50 text-decoration-none" href="@($"{Configuration["SeelansTyresMvcClient:Url"]}/Account/ResetPassword")">I forgot my password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.VisibleExternalProviders.Any())
+        {
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>External Account</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-inline">
+                            @foreach (var provider in Model.VisibleExternalProviders)
+                            {
+                                <li class="list-inline-item">
+                                    <a class="btn btn-secondary"
+                                       asp-controller="External"
+                                       asp-action="Challenge"
+                                       asp-route-scheme="@provider.AuthenticationScheme"
+                                       asp-route-returnUrl="@Model.ReturnUrl">
+                                        @provider.DisplayName
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+        {
+            <div class="alert alert-warning">
+                <strong>Invalid login request</strong>
+                There are no login schemes configured for this request.
+            </div>
+        }
+    </div>
+</div>

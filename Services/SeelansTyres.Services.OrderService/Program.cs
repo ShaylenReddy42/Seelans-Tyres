@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SeelansTyres.Services.OrderService.Authorization;
 using SeelansTyres.Services.OrderService.Data;
 using SeelansTyres.Services.OrderService.Services;
 using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,15 +48,29 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(configure =>
     {
-        configure.TokenValidationParameters = new()
-        {
-            ValidIssuer = builder.Configuration["Token:Issuer"],
-            ValidAudience = "OrderService",
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"]))
-        };
+        configure.Authority = builder.Configuration["TokenIssuer"];
+        configure.Audience = "OrderService";
     });
+
+builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
+builder.Services.AddTransient<IAuthorizationHandler, MustSatisfyOrderRetrievalRulesHandler>();
+
+builder.Services.AddAuthorization(configure =>
+{
+    configure.AddPolicy("MustBeAnAdministrator", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.AddRequirements(new MustBeAnAdministratorRequirement());
+    });
+
+    configure.AddPolicy("MustSatisfyOrderRetrievalRules", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.AddRequirements(new MustSatisfyOrderRetrievalRulesRequirement());
+    });
+});
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -70,6 +84,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

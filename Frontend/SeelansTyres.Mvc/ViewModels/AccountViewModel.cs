@@ -1,5 +1,4 @@
-﻿using SeelansTyres.Mvc.Models;
-using SeelansTyres.Mvc.Models.External;
+﻿using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.ViewModels;
 

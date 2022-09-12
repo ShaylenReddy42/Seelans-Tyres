@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RazorLight;
-using SeelansTyres.Mvc.Data.Entities;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Models.External;
 using SeelansTyres.Mvc.Services;
@@ -16,24 +14,24 @@ public class ShoppingController : Controller
     private readonly ILogger<ShoppingController> logger;
     private readonly IAddressService addressService;
     private readonly ICartService cartService;
+    private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
     private readonly IEmailService emailService;
-    private readonly UserManager<Customer> userManager;
 
     public ShoppingController(
         ILogger<ShoppingController> logger,
         IAddressService addressService,
         ICartService cartService,
+        ICustomerService customerService,
         IOrderService orderService,
-        IEmailService emailService,
-        UserManager<Customer> userManager)
+        IEmailService emailService)
     {
         this.logger = logger;
         this.addressService = addressService;
         this.cartService = cartService;
+        this.customerService = customerService;
         this.orderService = orderService;
         this.emailService = emailService;
-        this.userManager = userManager;
     }
     
     public async Task<IActionResult> Cart()
@@ -87,9 +85,11 @@ public class ShoppingController : Controller
     {
         var cartItems = cartService.Retrieve();
 
-        var customer = await userManager.GetUserAsync(User);
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var addresses = await addressService.RetrieveAllAsync(customer.Id);
+        var customer = await customerService.RetrieveSingleAsync(customerId);
+
+        var addresses = await addressService.RetrieveAllAsync(customerId);
 
         var preferredAddress = addresses!.Single(address => address.PreferredAddress is true);
 
@@ -97,7 +97,7 @@ public class ShoppingController : Controller
         {
             Id = 0,
             OrderPlaced = DateTime.Now,
-            CustomerId = customer.Id.ToString(),
+            CustomerId = customerId.ToString(),
             FirstName = customer.FirstName,
             LastName = customer.LastName,
             Email = customer.Email,

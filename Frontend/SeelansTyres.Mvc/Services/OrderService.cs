@@ -14,7 +14,16 @@ public class OrderService : IOrderService
     {
         this.client = client;
         this.logger = logger;
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
+
+        if (httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated is true)
+        {
+            var roleClaim = httpContextAccessor.HttpContext!.User.Claims.SingleOrDefault(claim => claim.Type.EndsWith("role"));
+
+            if (roleClaim is not null && roleClaim.Value is "Administrator")
+            {
+                client.DefaultRequestHeaders.Add("X-User-Role", "Administrator");
+            }
+        }
     }
 
     public async Task<IEnumerable<OrderModel>> RetrieveAllAsync(Guid? customerId = null, bool notDeliveredOnly = false)

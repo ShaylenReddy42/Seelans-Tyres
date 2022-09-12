@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SeelansTyres.Services.TyresService.Authorization;
 using SeelansTyres.Services.TyresService.Data;
 using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
@@ -48,15 +50,22 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(configure =>
     {
-        configure.TokenValidationParameters = new()
-        {
-            ValidIssuer = builder.Configuration["Token:Issuer"],
-            ValidAudience = "TyresService",
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"]))
-        };
+        configure.Authority = builder.Configuration["TokenIssuer"];
+        configure.Audience = "TyresService";
     });
+
+builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
+
+builder.Services.AddAuthorization(configure =>
+{
+    configure.AddPolicy("MustBeAnAdministrator", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.AddRequirements(new MustBeAnAdministratorRequirement());
+    });
+});
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

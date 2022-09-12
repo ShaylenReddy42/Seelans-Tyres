@@ -73,6 +73,10 @@ configure_file(
 	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.AddressService/Properties/AssemblyInfo.cs")
 
 configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.IdentityService.AssemblyInfo.cs.in" 
+	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.IdentityService/Properties/AssemblyInfo.cs")
+
+configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.OrderService.AssemblyInfo.cs.in" 
 	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.OrderService/Properties/AssemblyInfo.cs")
 

@@ -1,73 +1,60 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Mvc.Data.Entities;
 using SeelansTyres.Mvc.Models;
+using SeelansTyres.Mvc.Models.External;
 using SeelansTyres.Mvc.Services;
 using SeelansTyres.Mvc.ViewModels;
+using System.Security.Cryptography;
 
 namespace SeelansTyres.Mvc.Controllers;
 
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> logger;
-    private readonly SignInManager<Customer> signInManager;
-    private readonly UserManager<Customer> userManager;
     private readonly IAddressService addressService;
     private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
     private readonly IEmailService emailService;
-    private readonly ITokenService tokenService;
 
     public AccountController(
         ILogger<AccountController> logger,
-        SignInManager<Customer> signInManager,
-        UserManager<Customer> userManager,
         IAddressService addressService,
         ICustomerService customerService,
         IOrderService orderService,
-        IEmailService emailService,
-        ITokenService tokenService)
+        IEmailService emailService)
     {
         this.logger = logger;
-        this.signInManager = signInManager;
-        this.userManager = userManager;
         this.addressService = addressService;
         this.customerService = customerService;
         this.orderService = orderService;
         this.emailService = emailService;
-        this.tokenService = tokenService;
     }
-    
+
     [Authorize]
     public async Task<IActionResult> Index()
     {
-        var customer = await userManager.GetUserAsync(User);
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var customerModel = new CustomerModel
-        {
-            Id = customer.Id,
-            FirstName = customer.FirstName,
-            LastName = customer.LastName,
-            Email = customer.Email,
-            PhoneNumber = customer.PhoneNumber
-        };
+        var customer = customerService.RetrieveSingleAsync(customerId);
+        var addresses = addressService.RetrieveAllAsync(customerId);
+        var orders = orderService.RetrieveAllAsync(customerId: customerId);
 
-        var addresses = addressService.RetrieveAllAsync(customer.Id);
-        var orders = orderService.RetrieveAllAsync(customerId: customer.Id);
-
-        await Task.WhenAll(addresses, orders);
+        await Task.WhenAll(customer, addresses, orders);
 
         var accountViewModel = new AccountViewModel
         {
-            Customer = customerModel,
+            Customer = customer.Result,
             Addresses = addresses.Result!,
             Orders = orders.Result!
         };
-        
+
         return View(accountViewModel);
     }
 
+    [Authorize]
     public IActionResult Login()
     {
         if (User.Identity!.IsAuthenticated)
@@ -78,44 +65,10 @@ public class AccountController : Controller
         return View();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginModel model)
+    public async Task Logout()
     {
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-
-                if (result.Succeeded)
-                {
-                    var customer = await userManager.FindByEmailAsync(model.UserName);
-
-                    tokenService.GenerateApiAuthToken(customer, await userManager.IsInRoleAsync(customer, "Administrator"));
-
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Login attempt failed!");
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                logger.LogError(ex, "The database is unavailable");
-                ModelState.AddModelError(string.Empty, "Database is not connected, please try again later");
-            }
-        }
-
-        return View();
-    }
-
-    public async Task<IActionResult> Logout()
-    {
-        await signInManager.SignOutAsync();
-        HttpContext.Session.Remove("ApiAuthToken");
-
-        return RedirectToAction("Index", "Home");
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
     }
 
     public IActionResult Register()
@@ -137,11 +90,7 @@ public class AccountController : Controller
 
             if (succeeded is true && newCustomer is not null)
             {
-                await signInManager.SignInAsync(newCustomer, isPersistent: false);
-
-                tokenService.GenerateApiAuthToken(newCustomer, await userManager.IsInRoleAsync(newCustomer, "Administrator"));
-
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(Login));
             }
             else
             {
@@ -157,7 +106,7 @@ public class AccountController : Controller
     {
         await customerService.UpdateAsync(model.UpdateAccountModel);
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -167,11 +116,10 @@ public class AccountController : Controller
 
         if (succeeded is true)
         {
-            await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Logout));
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -190,7 +138,7 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -200,7 +148,7 @@ public class AccountController : Controller
 
         _ = await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult ResetPassword()
@@ -213,7 +161,7 @@ public class AccountController : Controller
     {
         if (model.SendCodeModel is not null)
         {
-            var customer = await userManager.FindByEmailAsync(model.SendCodeModel.Email);
+            var customer = await customerService.RetrieveSingleAsync(model.SendCodeModel.Email);
 
             if (customer is null)
             {
@@ -221,7 +169,9 @@ public class AccountController : Controller
                 return View(model);
             }
 
-            string token = await userManager.GeneratePasswordResetTokenAsync(customer);
+            string token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(256));
+
+            HttpContext.Session.SetString("ResetPasswordToken", token);
 
             await emailService.SendResetPasswordTokenAsync(
                 email: model.SendCodeModel.Email,
@@ -238,28 +188,20 @@ public class AccountController : Controller
         }
         else if (model.ResetPasswordModel is not null)
         {
-            var customer = await userManager.FindByEmailAsync(model.ResetPasswordModel.Email);
+            var customer = await customerService.RetrieveSingleAsync(model.ResetPasswordModel.Email);
 
-            var resetPasswordResult =
-                await userManager
-                    .ResetPasswordAsync(
-                        user: customer,
-                        token: model.ResetPasswordModel.Token,
-                        newPassword: model.ResetPasswordModel.Password);
-
-            if (resetPasswordResult.Succeeded is false)
+            if (model.ResetPasswordModel.Token != HttpContext.Session.GetString("ResetPasswordToken"))
             {
-                foreach (var error in resetPasswordResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelError(string.Empty, "Invalid token!");
 
                 return View(model);
             }
 
-            await signInManager.PasswordSignInAsync(customer, model.ResetPasswordModel.Password, false, false);
+            HttpContext.Session.Remove("ResetPasswordToken");
 
-            return RedirectToAction("Index", "Home");
+            await customerService.ResetPasswordAsync(customer!.Id, model.ResetPasswordModel.Password);
+
+            return RedirectToAction(nameof(Login));
         }
 
         return View(model);

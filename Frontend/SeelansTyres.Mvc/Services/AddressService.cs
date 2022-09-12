@@ -14,7 +14,6 @@ public class AddressService : IAddressService
     {
         this.client = client;
         this.logger = logger;
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {httpContextAccessor.HttpContext!.Session.GetString("ApiAuthToken")}");
     }
 
     public async Task<bool> CreateAsync(AddressModel address, Guid customerId)

@@ -1,16 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Identity
 
-@inject SignInManager<Customer> SignInManager
-@inject UserManager<Customer> UserManager
+@inject ICustomerService customerService
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
+@if (User.Identity!.IsAuthenticated)
 {
-    var user = await UserManager.GetUserAsync(User);
-    string firstName = user.FirstName,
-            lastName = user.LastName;
+    var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+    var customer = await customerService.RetrieveSingleAsync(customerId);
+    var (firstName, lastName) = (customer.FirstName, customer.LastName);
 
-    if (await SignInManager.UserManager.IsInRoleAsync(user, "Administrator") is false)
+    if (User.IsInRole("Administrator") is false)
     {
         <li class="nav-item ms-2 ms-md-0">
             <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">@($"{firstName} {lastName}")</a>

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SeelansTyres.Services.AddressService.Authorization;
 using SeelansTyres.Services.AddressService.Data;
 using SeelansTyres.Services.AddressService.Services;
 using System.Reflection;
@@ -48,24 +49,22 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(configure =>
     {
-        configure.TokenValidationParameters = new()
-        {
-            ValidIssuer = builder.Configuration["Token:Issuer"],
-            ValidAudience = "AddressService",
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"]))
-        };
+        configure.Authority = builder.Configuration["TokenIssuer"];
+        configure.Audience = "AddressService";
     });
+
+builder.Services.AddTransient<IAuthorizationHandler, MustBeARegularCustomerHandler>();
 
 builder.Services.AddAuthorization(configure =>
 {
     configure.AddPolicy("MustBeARegularCustomer", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireAssertion(handler => handler.User.IsInRole("Administrator") is false);
+        policy.AddRequirements(new MustBeARegularCustomerRequirement());
     });
 });
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
