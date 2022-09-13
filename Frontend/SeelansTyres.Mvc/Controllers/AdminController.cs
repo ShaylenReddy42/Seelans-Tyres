@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Models.External;
 using SeelansTyres.Mvc.Services;
+using SeelansTyres.Mvc.ViewModels;
 
 namespace SeelansTyres.Mvc.Controllers;
 
@@ -26,9 +27,22 @@ public class AdminController : Controller
         this.tyresService = tyresService;
     }
     
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var brands = tyresService.RetrieveAllBrandsAsync();
+        var orders = orderService.RetrieveAllAsync();
+        var tyres = tyresService.RetrieveAllTyresAsync(false);
+
+        await Task.WhenAll(brands, orders, tyres);
+
+        var adminPortalViewModel = new AdminPortalViewModel
+        {
+            Brands = brands.Result,
+            Orders = orders.Result,
+            Tyres = tyres.Result
+        };
+        
+        return View(adminPortalViewModel);
     }
 
     public IActionResult AddTyre()

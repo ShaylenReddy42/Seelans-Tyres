@@ -1,8 +1,4 @@
-﻿@inject ITyresService tyresService
-
-@{
-    var tyres = await tyresService.RetrieveAllTyresAsync(false);
-}
+﻿@model IEnumerable<TyreModel>
 
 <table class="table table-bordered table-responsive mb-4">
     <caption hidden>Tyres</caption>
@@ -34,7 +30,7 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var tyre in tyres!)
+    @foreach (var tyre in Model)
     {
         <tr>
             <th scope="col">@tyre.Name</th>

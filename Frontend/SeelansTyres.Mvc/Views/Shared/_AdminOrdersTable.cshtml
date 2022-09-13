@@ -1,8 +1,4 @@
-﻿@inject IOrderService orderService
-
-@{
-    var orders = await orderService.RetrieveAllAsync(notDeliveredOnly: ViewData["NotDeliveredOnly"] is true);
-}
+﻿@model IEnumerable<OrderModel>
 
 <table class="table table-bordered table-responsive-lg mb-4">
     <caption hidden>Orders</caption>
@@ -36,7 +32,7 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var order in orders!)
+    @foreach (var order in Model)
     {
         <tr>
             <th scope="row">@order.Id</th>
