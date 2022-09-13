@@ -54,13 +54,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddTransient<IAuthorizationHandler, MustBeARegularCustomerHandler>();
+builder.Services.AddTransient<IAuthorizationHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler>();
 
 builder.Services.AddAuthorization(configure =>
 {
     configure.AddPolicy("MustBeARegularCustomer", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.AddRequirements(new MustBeARegularCustomerRequirement());
+        policy.AddRequirements(
+            new MustBeARegularCustomerRequirement(),
+            new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement());
     });
 });
 
