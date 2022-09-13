@@ -1,4 +1,5 @@
-﻿using SeelansTyres.Mvc.Models;
+﻿using Microsoft.Extensions.Caching.Memory;
+using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Models.External;
 
 namespace SeelansTyres.Mvc.Services;
@@ -7,11 +8,13 @@ public class CustomerService : ICustomerService
 {
     private readonly HttpContext httpContext;
     private readonly HttpClient client;
+    private readonly IMemoryCache cache;
 
     public CustomerService(
         HttpClient client,
-        IHttpContextAccessor httpContextAccessor) => 
-            (this.client, httpContext) = (client, httpContextAccessor.HttpContext!);
+        IHttpContextAccessor httpContextAccessor,
+        IMemoryCache cache) => 
+            (this.client, httpContext, this.cache) = (client, httpContextAccessor.HttpContext!, cache);
 
     public async Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
     {
@@ -44,9 +47,18 @@ public class CustomerService : ICustomerService
 
     public async Task<CustomerModel> RetrieveSingleAsync(Guid customerId)
     {
-        var response = await client.GetAsync($"api/customers/{customerId}");
+        if (cache.TryGetValue(customerId, out CustomerModel? customer) is false)
+        {
+            var response = await client.GetAsync($"api/customers/{customerId}");
 
-        var customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
+            customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
+
+            var cacheEntryOptions =
+                new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
+            cache.Set(customerId, customer, cacheEntryOptions);
+        }
 
         return customer!;
     }
@@ -68,7 +80,13 @@ public class CustomerService : ICustomerService
     {
         var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(updateAccountModel));
+        var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(updateAccountModel));
+
+        // Upon success, remove the model from the cache because it's outdated
+        if (response.IsSuccessStatusCode is true)
+        {
+            cache.Remove(customerId);
+        }
     }
 
     public async Task<bool> DeleteAsync(string password)
