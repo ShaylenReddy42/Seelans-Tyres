@@ -88,17 +88,18 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost("{id}/verifypassword")]
-    public async Task<ActionResult> VerifyPasswordAsync(Guid id, PasswordModel deleteAccountModel)
+    public async Task<ActionResult> VerifyPasswordAsync(Guid id, PasswordModel passwordModel)
     {
-        var result = await customerService.VerifyPasswordAsync(id, deleteAccountModel.Password);
+        var result = await customerService.VerifyPasswordAsync(id, passwordModel.Password);
 
         return result is true ? Ok() : BadRequest();
     }
 
     [HttpPut("{id}/resetpassword")]
-    public async Task<ActionResult> ResetPasswordAsync(Guid id, PasswordModel deleteAccountModel)
+    [AllowAnonymous]
+    public async Task<ActionResult> ResetPasswordAsync(Guid id, PasswordModel passwordModel)
     {
-        await customerService.ResetPasswordAsync(id, deleteAccountModel.Password);
+        await customerService.ResetPasswordAsync(id, passwordModel.Password);
 
         return Ok();
     }
