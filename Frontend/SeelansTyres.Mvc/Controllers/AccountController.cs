@@ -55,15 +55,8 @@ public class AccountController : Controller
     }
 
     [Authorize]
-    public IActionResult Login()
-    {
-        if (User.Identity!.IsAuthenticated)
-        {
-            return RedirectToAction("Index", "Home");
-        }
-
-        return View();
-    }
+    public IActionResult Login() =>
+        RedirectToAction("Index", "Home");
 
     public async Task Logout()
     {
