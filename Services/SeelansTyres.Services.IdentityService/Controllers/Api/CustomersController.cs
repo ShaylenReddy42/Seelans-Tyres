@@ -10,7 +10,7 @@ namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CustomersController : ControllerBase
 {
     private readonly ICustomerService customerService;
@@ -25,7 +25,7 @@ public class CustomersController : ControllerBase
     }
     
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Policy = "CreateAccountPolicy")]
     public async Task<ActionResult> CreateAsync(RegisterModel registerModel)
     {
         var customer = await customerService.RetrieveSingleAsync(registerModel.Email);
@@ -50,7 +50,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize(Policy = "RetrieveSingleByEmailPolicy")]
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(string email)
     {
         if (string.IsNullOrEmpty(email) is true)
@@ -64,6 +64,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "RetrieveSingleAsync")]
+    [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(Guid id)
     {
         var customer = await customerService.RetrieveSingleAsync(id);
@@ -72,6 +73,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult> UpdateAsync(Guid id, UpdateAccountModel updateAccountModel)
     {
         await customerService.UpdateAsync(id, updateAccountModel);
@@ -80,6 +82,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
         await customerService.DeleteAsync(await customerService.RetrieveSingleAsync(id));
@@ -88,6 +91,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost("{id}/verifypassword")]
+    [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult> VerifyPasswordAsync(Guid id, PasswordModel passwordModel)
     {
         var result = await customerService.VerifyPasswordAsync(id, passwordModel.Password);
@@ -96,7 +100,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPut("{id}/resetpassword")]
-    [AllowAnonymous]
+    [Authorize(Policy = "ResetPasswordPolicy")]
     public async Task<ActionResult> ResetPasswordAsync(Guid id, PasswordModel passwordModel)
     {
         await customerService.ResetPasswordAsync(id, passwordModel.Password);

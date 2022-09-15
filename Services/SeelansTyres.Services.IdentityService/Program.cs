@@ -108,6 +108,24 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAuthenticatedUser();
         policy.AddRequirements(new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement());
     });
+
+    options.AddPolicy("CreateAccountPolicy", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "CustomerService.createaccount");
+    });
+
+    options.AddPolicy("RetrieveSingleByEmailPolicy", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "CustomerService.retrievesinglebyemail");
+    });
+
+    options.AddPolicy("ResetPasswordPolicy", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "CustomerService.resetpassword");
+    });
 });
 
 builder.Services.AddHttpContextAccessor();

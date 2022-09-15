@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using IdentityModel.Client;
+using Microsoft.Extensions.Caching.Memory;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Models.External;
 
@@ -8,13 +9,16 @@ public class CustomerService : ICustomerService
 {
     private readonly HttpContext httpContext;
     private readonly HttpClient client;
+    private readonly IConfiguration configuration;
     private readonly IMemoryCache cache;
 
     public CustomerService(
         HttpClient client,
         IHttpContextAccessor httpContextAccessor,
+        IConfiguration configuration,
         IMemoryCache cache) => 
-            (this.client, httpContext, this.cache) = (client, httpContextAccessor.HttpContext!, cache);
+            (this.client, httpContext, this.configuration, this.cache) = 
+            (client, httpContextAccessor.HttpContext!, configuration, cache);
 
     public async Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
     {
@@ -24,6 +28,7 @@ public class CustomerService : ICustomerService
 
         try
         {
+            client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.createaccount"));
             var response = await client.PostAsync("api/customers", JsonContent.Create(registerModel));
 
             if (response.IsSuccessStatusCode)
@@ -65,6 +70,7 @@ public class CustomerService : ICustomerService
 
     public async Task<CustomerModel?> RetrieveSingleAsync(string email)
     {
+        client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.retrievesinglebyemail"));
         var response = await client.GetAsync($"api/customers?email={email}");
 
         var customer = response.IsSuccessStatusCode switch
@@ -93,9 +99,9 @@ public class CustomerService : ICustomerService
     {
         var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var deleteAccountModel = new PasswordModel { Password = password };
+        var passwordModel = new PasswordModel { Password = password };
 
-        var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(deleteAccountModel));
+        var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(passwordModel));
 
         if (response.IsSuccessStatusCode)
         {
@@ -108,8 +114,27 @@ public class CustomerService : ICustomerService
 
     public async Task ResetPasswordAsync(Guid customerId, string password)
     {
-        var deleteAccountModel = new PasswordModel { Password = password };
+        client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.resetpassword"));
 
-        await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(deleteAccountModel));
+        var passwordModel = new PasswordModel { Password = password };
+
+        await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(passwordModel));
+    }
+
+    private async Task<string> GetClientAccessTokenAsync(string scope)
+    {
+        var discoveryDocument = await client.GetDiscoveryDocumentAsync();
+
+        var tokenResponse =
+            await client.RequestClientCredentialsTokenAsync(
+                new ClientCredentialsTokenRequest
+                {
+                    ClientId = configuration["ClientCredentials:ClientId"],
+                    ClientSecret = configuration["ClientCredentials:ClientSecret"],
+                    Address = discoveryDocument.TokenEndpoint,
+                    Scope = scope
+                });
+
+        return tokenResponse.AccessToken;
     }
 }

@@ -21,6 +21,9 @@ public static class Config
     {
         new ApiScope("AddressService.fullaccess"),
         new ApiScope("CustomerService.fullaccess"),
+        new ApiScope("CustomerService.createaccount"),
+        new ApiScope("CustomerService.retrievesinglebyemail"),
+        new ApiScope("CustomerService.resetpassword"),
         new ApiScope("OrderService.fullaccess"),
         new ApiScope("TyresService.fullaccess"),
     };
@@ -33,7 +36,13 @@ public static class Config
         },
         new ApiResource("CustomerService", "Customer Microservice")
         {
-            Scopes = { "CustomerService.fullaccess" }
+            Scopes = 
+            { 
+                "CustomerService.fullaccess",
+                "CustomerService.createaccount",
+                "CustomerService.retrievesinglebyemail",
+                "CustomerService.resetpassword",
+            }
         },
         new ApiResource("OrderService", "Order Microservice")
         {
@@ -62,6 +71,9 @@ public static class Config
                 "openid", "profile", "role",
                 "AddressService.fullaccess",
                 "CustomerService.fullaccess",
+                "CustomerService.createaccount",
+                "CustomerService.retrievesinglebyemail",
+                "CustomerService.resetpassword",
                 "OrderService.fullaccess",
                 "TyresService.fullaccess"
             }
