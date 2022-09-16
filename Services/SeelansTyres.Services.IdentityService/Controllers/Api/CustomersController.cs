@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Services.IdentityService.Data.Entities;
+using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Services.IdentityService.Models;
 using SeelansTyres.Services.IdentityService.Services;
 
@@ -14,20 +16,30 @@ namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 public class CustomersController : ControllerBase
 {
     private readonly ICustomerService customerService;
+    private readonly ISigningCredentialStore signingCredentialStore;
     private readonly IMapper mapper;
 
     public CustomersController(
         ICustomerService customerService,
+        ISigningCredentialStore signingCredentialStore,
         IMapper mapper)
     {
         this.customerService = customerService;
+        this.signingCredentialStore = signingCredentialStore;
         this.mapper = mapper;
     }
     
     [HttpPost]
     [Authorize(Policy = "CreateAccountPolicy")]
-    public async Task<ActionResult> CreateAsync(RegisterModel registerModel)
+    public async Task<ActionResult> CreateAsync(EncryptedDataModel encryptedDataModel)
     {
+        var registerModel = await encryptedDataModel.DecryptAsync<RegisterModel>(signingCredentialStore);
+
+        if (registerModel is null)
+        {
+            return BadRequest("Data got corrupted in transit, decryption failed!");
+        }
+        
         var customer = await customerService.RetrieveSingleAsync(registerModel.Email);
 
         if (customer is not null)
@@ -74,8 +86,15 @@ public class CustomersController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
-    public async Task<ActionResult> UpdateAsync(Guid id, UpdateAccountModel updateAccountModel)
+    public async Task<ActionResult> UpdateAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
+        var updateAccountModel = await encryptedDataModel.DecryptAsync<UpdateAccountModel>(signingCredentialStore);
+
+        if (updateAccountModel is null)
+        {
+            return BadRequest("Data got corrupted in transit, decryption failed!");
+        }
+        
         await customerService.UpdateAsync(id, updateAccountModel);
 
         return NoContent();
@@ -92,8 +111,15 @@ public class CustomersController : ControllerBase
 
     [HttpPost("{id}/verifypassword")]
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
-    public async Task<ActionResult> VerifyPasswordAsync(Guid id, PasswordModel passwordModel)
+    public async Task<ActionResult> VerifyPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
+        var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore);
+
+        if (passwordModel is null)
+        {
+            return BadRequest("Data got corrupted in transit, decryption failed!");
+        }
+        
         var result = await customerService.VerifyPasswordAsync(id, passwordModel.Password);
 
         return result is true ? Ok() : BadRequest();
@@ -101,8 +127,15 @@ public class CustomersController : ControllerBase
 
     [HttpPut("{id}/resetpassword")]
     [Authorize(Policy = "ResetPasswordPolicy")]
-    public async Task<ActionResult> ResetPasswordAsync(Guid id, PasswordModel passwordModel)
+    public async Task<ActionResult> ResetPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
+        var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore);
+
+        if (passwordModel is null)
+        {
+            return BadRequest("Data got corrupted in transit, decryption failed!");
+        }
+
         await customerService.ResetPasswordAsync(id, passwordModel.Password);
 
         return Ok();

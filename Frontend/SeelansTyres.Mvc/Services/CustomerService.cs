@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.Extensions.Caching.Memory;
+using SeelansTyres.Mvc.Extensions;
 using SeelansTyres.Mvc.Models;
 using SeelansTyres.Mvc.Models.External;
 
@@ -29,7 +30,7 @@ public class CustomerService : ICustomerService
         try
         {
             client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.createaccount"));
-            var response = await client.PostAsync("api/customers", JsonContent.Create(registerModel));
+            var response = await client.PostAsync("api/customers", JsonContent.Create(await registerModel.EncryptAsync(client)));
 
             if (response.IsSuccessStatusCode)
             {
@@ -86,7 +87,7 @@ public class CustomerService : ICustomerService
     {
         var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(updateAccountModel));
+        var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(await updateAccountModel.EncryptAsync(client)));
 
         // Upon success, remove the model from the cache because it's outdated
         if (response.IsSuccessStatusCode is true)
@@ -101,7 +102,7 @@ public class CustomerService : ICustomerService
 
         var passwordModel = new PasswordModel { Password = password };
 
-        var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(passwordModel));
+        var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(await passwordModel.EncryptAsync(client)));
 
         if (response.IsSuccessStatusCode)
         {
@@ -118,7 +119,7 @@ public class CustomerService : ICustomerService
 
         var passwordModel = new PasswordModel { Password = password };
 
-        await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(passwordModel));
+        await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(await passwordModel.EncryptAsync(client)));
     }
 
     private async Task<string> GetClientAccessTokenAsync(string scope)
