@@ -10,7 +10,7 @@ public static class CryptographyExtensions
 {
     public static async Task<T?> DecryptAsync<T>(
         this EncryptedDataModel encryptedDataModel, 
-        ISigningCredentialStore signingCredentialStore)
+        ISigningCredentialStore signingCredentialStore) where T : class
     {
         var jsonWebKey = (JsonWebKey)(await signingCredentialStore.GetSigningCredentialsAsync()).Key;
 

@@ -8,7 +8,7 @@ namespace SeelansTyres.Mvc.Extensions;
 
 public static class CryptographyExtensions
 {
-    public static async Task<EncryptedDataModel> EncryptAsync<T>(this T model, HttpClient client)
+    public static async Task<EncryptedDataModel> EncryptAsync<T>(this T model, HttpClient client) where T : class
     {
         var modelAsJson = JsonSerializer.SerializeToUtf8Bytes(model);
 
@@ -26,11 +26,13 @@ public static class CryptographyExtensions
             ciphertext: encryptedDataModel.AesGcmCipherText, 
             tag: encryptedDataModel.AesGcmTag);
 
-        var discoveryDocument = await client.GetDiscoveryDocumentAsync();
-        
-        var jsonWebKeySetResponse = await client.GetJsonWebKeySetAsync(discoveryDocument.JwksUri);
+        using var hmac = new HMACSHA256(aesKey);
 
-        var jsonWebKey = jsonWebKeySetResponse.KeySet.Keys[0];
+        encryptedDataModel.HmacOfCipherText = hmac.ComputeHash(encryptedDataModel.AesGcmCipherText);
+
+        var discoveryDocument = await client.GetDiscoveryDocumentAsync();
+
+        var jsonWebKey = discoveryDocument.KeySet.Keys[0];
 
         var rsaParameters = new RSAParameters
         {
@@ -41,10 +43,6 @@ public static class CryptographyExtensions
         var rsa = RSA.Create(rsaParameters);
 
         encryptedDataModel.EncryptedAesKey = rsa.Encrypt(aesKey, RSAEncryptionPadding.OaepSHA256);
-
-        using var hmac = new HMACSHA256(aesKey);
-
-        encryptedDataModel.HmacOfCipherText = hmac.ComputeHash(encryptedDataModel.AesGcmCipherText);
 
         return encryptedDataModel;
     }
