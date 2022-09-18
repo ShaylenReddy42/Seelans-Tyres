@@ -6,7 +6,7 @@ namespace IdentityServerHost.Quickstart.UI
 {
     public class DeviceAuthorizationViewModel : ConsentViewModel
     {
-        public string UserCode { get; set; }
+        public string UserCode { get; set; } = string.Empty;
         public bool ConfirmUserCode { get; set; }
     }
 }

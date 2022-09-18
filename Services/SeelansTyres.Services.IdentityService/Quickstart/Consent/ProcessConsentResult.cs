@@ -8,14 +8,14 @@ namespace IdentityServerHost.Quickstart.UI
 {
     public class ProcessConsentResult
     {
-        public bool IsRedirect => RedirectUri != null;
-        public string RedirectUri { get; set; }
-        public Client Client { get; set; }
+        public bool IsRedirect => RedirectUri is not "";
+        public string RedirectUri { get; set; } = string.Empty;
+        public Client Client { get; set; } = new Client();
 
         public bool ShowView => ViewModel != null;
-        public ConsentViewModel ViewModel { get; set; }
+        public ConsentViewModel? ViewModel { get; set; }
 
         public bool HasValidationError => ValidationError != null;
-        public string ValidationError { get; set; }
+        public string? ValidationError { get; set; }
     }
 }

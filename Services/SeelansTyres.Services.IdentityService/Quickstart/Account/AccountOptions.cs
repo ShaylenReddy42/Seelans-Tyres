@@ -4,15 +4,15 @@
 
 namespace IdentityServerHost.Quickstart.UI
 {
-    public class AccountOptions
+    public static class AccountOptions
     {
-        public static bool AllowLocalLogin = true;
-        public static bool AllowRememberLogin = true;
-        public static TimeSpan RememberMeLoginDuration = TimeSpan.FromDays(30);
+        public static bool AllowLocalLogin { get; set; } = true;
+        public static bool AllowRememberLogin { get; set; } = true;
+        public static TimeSpan RememberMeLoginDuration { get; set; } = TimeSpan.FromDays(30);
 
-        public static bool ShowLogoutPrompt = true;
-        public static bool AutomaticRedirectAfterSignOut = true;
+        public static bool ShowLogoutPrompt { get; set; } = true;
+        public static bool AutomaticRedirectAfterSignOut { get; set; } = true;
 
-        public static string InvalidCredentialsErrorMessage = "Invalid username or password";
+        public static string InvalidCredentialsErrorMessage { get; set; } = "Invalid username or password";
     }
 }

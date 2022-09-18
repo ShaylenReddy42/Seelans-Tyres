@@ -66,14 +66,14 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Callback(DeviceAuthorizationInputModel model)
+        public Task<IActionResult> Callback(DeviceAuthorizationInputModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var result = await ProcessConsent(model);
-            if (result.HasValidationError) return View("Error");
+            var result = ProcessConsent(model).Result;
+            if (result.HasValidationError) return Task.FromResult<IActionResult>(View("Error"));
 
-            return View("Success");
+            return Task.FromResult<IActionResult>(View("Success"));
         }
 
         private async Task<ProcessConsentResult> ProcessConsent(DeviceAuthorizationInputModel model)
@@ -83,7 +83,7 @@ namespace IdentityServerHost.Quickstart.UI
             var request = await _interaction.GetAuthorizationContextAsync(model.UserCode);
             if (request == null) return result;
 
-            ConsentResponse grantedConsent = null;
+            ConsentResponse? grantedConsent = null;
 
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model.Button == "no")
@@ -100,7 +100,7 @@ namespace IdentityServerHost.Quickstart.UI
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
                 {
                     var scopes = model.ScopesConsented;
-                    if (ConsentOptions.EnableOfflineAccess == false)
+                    if (ConsentOptions.EnableOfflineAccess is false)
                     {
                         scopes = scopes.Where(x => x != IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess);
                     }
@@ -143,7 +143,7 @@ namespace IdentityServerHost.Quickstart.UI
             return result;
         }
 
-        private async Task<DeviceAuthorizationViewModel> BuildViewModelAsync(string userCode, DeviceAuthorizationInputModel model = null)
+        private async Task<DeviceAuthorizationViewModel?> BuildViewModelAsync(string userCode, DeviceAuthorizationInputModel? model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(userCode);
             if (request != null)
@@ -154,12 +154,12 @@ namespace IdentityServerHost.Quickstart.UI
             return null;
         }
 
-        private DeviceAuthorizationViewModel CreateConsentViewModel(string userCode, DeviceAuthorizationInputModel model, DeviceFlowAuthorizationRequest request)
+        private DeviceAuthorizationViewModel CreateConsentViewModel(string userCode, DeviceAuthorizationInputModel? model, DeviceFlowAuthorizationRequest request)
         {
             var vm = new DeviceAuthorizationViewModel
             {
                 UserCode = userCode,
-                Description = model?.Description,
+                Description = model?.Description ?? string.Empty,
 
                 RememberConsent = model?.RememberConsent ?? true,
                 ScopesConsented = model?.ScopesConsented ?? Enumerable.Empty<string>(),
@@ -209,7 +209,6 @@ namespace IdentityServerHost.Quickstart.UI
             return new ScopeViewModel
             {
                 Value = parsedScopeValue.RawValue,
-                // todo: use the parsed scope value in the display?
                 DisplayName = apiScope.DisplayName ?? apiScope.Name,
                 Description = apiScope.Description,
                 Emphasize = apiScope.Emphasize,

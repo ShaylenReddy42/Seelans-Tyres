@@ -167,7 +167,7 @@ public class AccountController : Controller
             HttpContext.Session.SetString("ResetPasswordToken", token);
 
             await emailService.SendResetPasswordTokenAsync(
-                email: model.SendCodeModel.Email,
+                customerEmail: model.SendCodeModel.Email,
                 firstName: customer.FirstName,
                 lastName: customer.LastName,
                 token: token);

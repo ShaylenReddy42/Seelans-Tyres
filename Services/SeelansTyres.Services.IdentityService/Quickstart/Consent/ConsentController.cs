@@ -79,7 +79,7 @@ namespace IdentityServerHost.Quickstart.UI
 
             if (result.HasValidationError)
             {
-                ModelState.AddModelError(string.Empty, result.ValidationError);
+                ModelState.AddModelError(string.Empty, result.ValidationError!);
             }
 
             if (result.ShowView)
@@ -101,7 +101,7 @@ namespace IdentityServerHost.Quickstart.UI
             var request = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             if (request == null) return result;
 
-            ConsentResponse grantedConsent = null;
+            ConsentResponse? grantedConsent = null;
 
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model?.Button == "no")
@@ -118,7 +118,7 @@ namespace IdentityServerHost.Quickstart.UI
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
                 {
                     var scopes = model.ScopesConsented;
-                    if (ConsentOptions.EnableOfflineAccess == false)
+                    if (ConsentOptions.EnableOfflineAccess is false)
                     {
                         scopes = scopes.Where(x => x != IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess);
                     }
@@ -149,19 +149,19 @@ namespace IdentityServerHost.Quickstart.UI
                 await _interaction.GrantConsentAsync(request, grantedConsent);
 
                 // indicate that's it ok to redirect back to authorization endpoint
-                result.RedirectUri = model.ReturnUrl;
+                result.RedirectUri = model!.ReturnUrl;
                 result.Client = request.Client;
             }
             else
             {
                 // we need to redisplay the consent UI
-                result.ViewModel = await BuildViewModelAsync(model.ReturnUrl, model);
+                result.ViewModel = await BuildViewModelAsync(model!.ReturnUrl, model);
             }
 
             return result;
         }
 
-        private async Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, ConsentInputModel model = null)
+        private async Task<ConsentViewModel?> BuildViewModelAsync(string returnUrl, ConsentInputModel? model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (request != null)
@@ -177,14 +177,14 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         private ConsentViewModel CreateConsentViewModel(
-            ConsentInputModel model, string returnUrl,
+            ConsentInputModel? model, string returnUrl,
             AuthorizationRequest request)
         {
             var vm = new ConsentViewModel
             {
                 RememberConsent = model?.RememberConsent ?? true,
                 ScopesConsented = model?.ScopesConsented ?? Enumerable.Empty<string>(),
-                Description = model?.Description,
+                Description = model?.Description ?? string.Empty,
 
                 ReturnUrl = returnUrl,
 

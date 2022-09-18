@@ -121,7 +121,7 @@ public class AccountController : Controller
                         IsPersistent = true,
                         ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
                     };
-                };
+                }
 
                 // issue authentication cookie with subject ID and username
                 var isuser = new IdentityServerUser(customer.Id.ToString())
@@ -156,7 +156,7 @@ public class AccountController : Controller
                 else
                 {
                     // user might have clicked on a malicious link - should be logged
-                    throw new Exception("invalid return URL");
+                    throw new ArgumentException("invalid return URL");
                 }
             }
 
@@ -179,7 +179,7 @@ public class AccountController : Controller
         // build a model so the logout page knows what to display
         var vm = await BuildLogoutViewModelAsync(logoutId);
 
-        if (vm.ShowLogoutPrompt == false)
+        if (vm.ShowLogoutPrompt is false)
         {
             // if the request for logout was properly authenticated from IdentityServer, then
             // we don't need to show the prompt and can just log the user out directly.
@@ -199,7 +199,7 @@ public class AccountController : Controller
         // build a model so the logged out page knows what to display
         var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
 
-        if (User.Identity!.IsAuthenticated == true)
+        if (User.Identity!.IsAuthenticated is true)
         {
             // delete local authentication cookie
             await _signInManager.SignOutAsync();
@@ -217,7 +217,7 @@ public class AccountController : Controller
             string url = Url.Action("Logout", new { logoutId = vm.LogoutId })!;
 
             // this triggers a redirect to the external provider for sign-out
-            return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
+            return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme!);
         }
 
         return View("LoggedOut", vm);
@@ -332,7 +332,7 @@ public class AccountController : Controller
         {
             AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
             PostLogoutRedirectUri = logout?.PostLogoutRedirectUri!,
-            ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId! : logout?.ClientName!,
+            ClientName = logout?.ClientName ?? logout?.ClientId!,
             SignOutIframeUrl = logout?.SignOutIFrameUrl!,
             LogoutId = logoutId
         };

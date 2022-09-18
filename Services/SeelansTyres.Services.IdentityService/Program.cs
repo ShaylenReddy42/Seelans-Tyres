@@ -135,9 +135,8 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 var app = builder.Build();
 
 app.Urls.Clear();
-
 app.Urls.Add("https://localhost:5005");
-app.Urls.Add("https://localhost:4005");
+app.Urls.Add("http://localhost:4005");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() is false)
