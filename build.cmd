@@ -47,10 +47,22 @@ ECHO Run CMake
 ECHO.
 cmake -G "Visual Studio 17" -S . -B build
 
-CD Frontend/SeelansTyres.Mvc
+CD Frontends/SeelansTyres.Frontends.Mvc
 
 ECHO.
-ECHO SeelansTyres.Mvc
+ECHO SeelansTyres.Frontends.Mvc
+ECHO.
+
+IF EXIST publish (
+	RD publish /S /Q
+)
+
+dotnet publish -c Release -r win-x64 --no-self-contained
+
+CD ../../Gateways/SeelansTyres.Gateways.MvcBff
+
+ECHO.
+ECHO SeelansTyres.Gateways.MvcBff
 ECHO.
 
 IF EXIST publish (
@@ -123,7 +135,10 @@ IF EXIST publish (
 	MD publish
 )
 
-XCOPY /S /Q Frontend\SeelansTyres.Mvc\publish\ publish\SeelansTyres.Mvc\
+XCOPY /S /Q Frontends\SeelansTyres.Frontends.Mvc\publish\ publish\SeelansTyres.Frontends.Mvc\
+ECHO.
+
+XCOPY /S /Q Gateways\SeelansTyres.Gateways.MvcBff\publish\ publish\SeelansTyres.Gateways.MvcBff\
 ECHO.
 
 XCOPY /S /Q Services\SeelansTyres.Services.AddressService\publish\ publish\SeelansTyres.Services.AddressService\

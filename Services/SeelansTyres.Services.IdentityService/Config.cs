@@ -19,6 +19,7 @@ public static class Config
 
     public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
     {
+        new ApiScope("SeelansTyresMvcBff.fullaccess"),
         new ApiScope("AddressService.fullaccess"),
         new ApiScope("CustomerService.fullaccess"),
         new ApiScope("CustomerService.createaccount"),
@@ -30,6 +31,10 @@ public static class Config
 
     public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
     {
+        new ApiResource("SeelansTyresMvcBff", "Seelan's Tyres Mvc Bff")
+        {
+            Scopes = { "SeelansTyresMvcBff.fullaccess" }
+        },
         new ApiResource("AddressService", "Address Microservice")
         {
             Scopes = { "AddressService.fullaccess" }
@@ -58,22 +63,34 @@ public static class Config
     {
         new Client
         {
-            ClientId = Configuration!["SeelansTyresMvcClient:ClientId"],
+            ClientId = Configuration!["Clients:SeelansTyresMvcClient:ClientId"],
             ClientName = "Seelan's Tyres Mvc Frontend",
-            ClientSecrets = { new Secret(Configuration!["SeelansTyresMvcClient:ClientSecret"].Sha256()) },
+            ClientSecrets = { new Secret(Configuration!["Clients:SeelansTyresMvcClient:ClientSecret"].Sha256()) },
             AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-            RedirectUris = { $"{Configuration!["SeelansTyresMvcClient:Url"]}/signin-oidc" },
-            PostLogoutRedirectUris = { $"{Configuration!["SeelansTyresMvcClient:Url"]}/signout-callback-oidc" },
+            RedirectUris = { $"{Configuration!["Clients:SeelansTyresMvcClient:Url"]}/signin-oidc" },
+            PostLogoutRedirectUris = { $"{Configuration!["Clients:SeelansTyresMvcClient:Url"]}/signout-callback-oidc" },
             AlwaysSendClientClaims = true,
             AllowOfflineAccess = true,
             AllowedScopes = 
             { 
                 "openid", "profile", "role",
-                "AddressService.fullaccess",
-                "CustomerService.fullaccess",
+                "SeelansTyresMvcBff.fullaccess",
                 "CustomerService.createaccount",
                 "CustomerService.retrievesinglebyemail",
-                "CustomerService.resetpassword",
+                "CustomerService.resetpassword"
+            }
+        },
+        new Client
+        {
+            ClientId = Configuration!["Clients:SeelansTyresMvcBffClient:ClientId"],
+            ClientName = "Seelan's Tyres Mvc Bff to Downstream",
+            ClientSecrets = { new Secret(Configuration!["Clients:SeelansTyresMvcBffClient:ClientSecret"].Sha256()) },
+            AllowedGrantTypes = { "urn:ietf:params:oauth:grant-type:token-exchange" },
+            AllowedScopes =
+            {
+                "openid", "profile",
+                "AddressService.fullaccess",
+                "CustomerService.fullaccess",
                 "OrderService.fullaccess",
                 "TyresService.fullaccess"
             }

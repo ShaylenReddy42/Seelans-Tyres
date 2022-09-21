@@ -2,7 +2,6 @@ using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Rsk.TokenExchange.IdentityServer4;
 using SeelansTyres.Services.IdentityService.Authorization;
 using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Data.Entities;
@@ -89,7 +88,7 @@ builder.Services.AddIdentityServer(options =>
         options.EnableTokenCleanup = true;
     })
     .AddAspNetIdentity<Customer>()
-    .AddTokenExchange()
+    .AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>()
     .AddDeveloperSigningCredential();
 
 builder.Services.AddAuthentication()

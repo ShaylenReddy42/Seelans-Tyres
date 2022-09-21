@@ -28,7 +28,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
-    <PackageReference Include="Rsk.TokenExchange.IdentityServer4" Version="1.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
   </ItemGroup>
 

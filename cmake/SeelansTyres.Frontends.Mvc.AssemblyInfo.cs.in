@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Seelan's Tyres: Tyres Microservice")]
+[assembly: AssemblyTitle("Seelan's Tyres: Mvc Frontend")]
 [assembly: AssemblyCompany("Shaylen Reddy")]
-[assembly: AssemblyProduct("Seelan's Tyres: Tyres Microservice")]
+[assembly: AssemblyProduct("Seelan's Tyres: Mvc Frontend")]
 [assembly: AssemblyCopyright("Shaylen Reddy: MIT License")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b6615e3a-9c7e-42fe-8ad0-447253fe9aad")]
+[assembly: Guid("05ae4c8f-4685-4168-9716-d5dbef8f5fc2")]
 
 // Version information for an assembly consists of the following four values:
 //
