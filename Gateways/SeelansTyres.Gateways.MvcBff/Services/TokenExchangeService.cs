@@ -13,22 +13,18 @@ public class TokenExchangeService : ITokenExchangeService
         IConfiguration configuration) =>
             (this.client, this.configuration) = (client, configuration);
 
-    public async Task<AuthenticationHeaderValue> PerformTokenExchangeAsync(string incomingAccessToken, string additionalScopes)
+    public async Task<AuthenticationHeaderValue> PerformTokenExchangeAsync(HttpRequestMessage incomingRequest, string additionalScopes)
     {
-        var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServerUrl"]);
+        var incomingAccessToken = incomingRequest.Headers.Authorization!.Parameter;
 
-        var customParameters = new Parameters
-        {
-            new("subject_token_type", "urn:ietf:params:oauth:token-type:access_token"),
-            new("subject_token", incomingAccessToken),
-            new("scope", $"openid profile {additionalScopes}")
-        };
+        var discoveryDocument = await client.GetDiscoveryDocumentAsync();
 
-        var tokenResponse = await client.RequestTokenAsync(new TokenRequest
+        var tokenResponse = await client.RequestTokenExchangeTokenAsync(new TokenExchangeTokenRequest
         {
             Address = discoveryDocument.TokenEndpoint,
-            Parameters = customParameters,
-            GrantType = "urn:ietf:params:oauth:grant-type:token-exchange",
+            SubjectTokenType = "urn:ietf:params:oauth:token-type:access_token",
+            SubjectToken = incomingAccessToken,
+            Scope = $"openid profile {additionalScopes}",
             ClientId = configuration["ClientCredentials:ClientId"],
             ClientSecret = configuration["ClientCredentials:ClientSecret"]
         });

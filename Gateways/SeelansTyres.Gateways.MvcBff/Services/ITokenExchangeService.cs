@@ -4,5 +4,5 @@ namespace SeelansTyres.Gateways.MvcBff.Services;
 
 public interface ITokenExchangeService
 {
-    Task<AuthenticationHeaderValue> PerformTokenExchangeAsync(string incomingAccessToken, string additionalScopes);
+    Task<AuthenticationHeaderValue> PerformTokenExchangeAsync(HttpRequestMessage incomingRequest, string additionalScopes);
 }

@@ -13,11 +13,9 @@ public class TyresServiceDelegatingHandler : DelegatingHandler
         HttpRequestMessage request, 
         CancellationToken cancellationToken)
     {
-        var incomingAccessToken = request.Headers.Authorization!.Parameter;
-
         var additionalScopes = "TyresService.fullaccess";
         
-        request.Headers.Authorization = await tokenExchangeService.PerformTokenExchangeAsync(incomingAccessToken!, additionalScopes);
+        request.Headers.Authorization = await tokenExchangeService.PerformTokenExchangeAsync(request, additionalScopes);
         
         return await base.SendAsync(request, cancellationToken);
     }

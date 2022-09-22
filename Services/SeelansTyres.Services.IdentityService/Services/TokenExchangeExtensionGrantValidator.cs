@@ -23,13 +23,16 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
 
         var tokenValidationResult = await _validator.ValidateAccessTokenAsync(subjectToken);
 
+        var subjectClaim = tokenValidationResult.Claims.SingleOrDefault(claim => claim.Type is "sub");
+
         object[,] validationArray =
         {
-            { string.IsNullOrWhiteSpace(requestedGrant) || requestedGrant != GrantType, "Invalid grant"              },
-            { string.IsNullOrWhiteSpace(subjectToken),                                  "Subject token missing"      },
-            { string.IsNullOrWhiteSpace(subjectTokenType),                              "Subject token type missing" },
-            { subjectTokenType != AccessTokenType,                                      "Subject token type invalid" },
-            { tokenValidationResult.IsError,                                            "Subject token invalid"      }
+            { string.IsNullOrWhiteSpace(requestedGrant) || requestedGrant != GrantType, "Invalid grant"                        },
+            { string.IsNullOrWhiteSpace(subjectToken),                                  "Subject token missing"                },
+            { string.IsNullOrWhiteSpace(subjectTokenType),                              "Subject token type missing"           },
+            { subjectTokenType != AccessTokenType,                                      "Subject token type invalid"           },
+            { tokenValidationResult.IsError,                                            "Subject token invalid"                },
+            { subjectClaim is null,                                                     "Subject token must contain sub value" }
         };
 
         for (int i = 0; i < validationArray.GetLength(0); i++)
@@ -45,21 +48,9 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
             }
         }
 
-        var subjectClaim = tokenValidationResult.Claims.SingleOrDefault(claim => claim.Type is "sub");
-
-        if (subjectClaim is null)
-        {
-            context.Result =
-                new GrantValidationResult(
-                    TokenRequestErrors.InvalidRequest,
-                    "Subject token must contain sub value");
-
-            return;
-        }
-
         context.Result = 
             new GrantValidationResult(
-                subject: subjectClaim.Value, 
+                subject: subjectClaim!.Value, 
                 authenticationMethod: "access_token",
                 claims: tokenValidationResult.Claims);
     }
