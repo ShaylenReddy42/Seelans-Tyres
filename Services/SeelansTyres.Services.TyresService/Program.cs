@@ -1,13 +1,12 @@
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SeelansTyres.Services.TyresService.Authorization;
 using SeelansTyres.Services.TyresService.Data;
 using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,7 +66,14 @@ builder.Services.AddAuthorization(configure =>
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddProblemDetails(configure =>
+{
+    configure.IncludeExceptionDetails = (httpContext, exception) => false;
+});
+
 var app = builder.Build();
+
+app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

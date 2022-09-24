@@ -63,6 +63,8 @@ The WebApi will be split into microservices that has its own databases using Dom
   * Author: [Kevin Dockx](https://app.pluralsight.com/profile/author/kevin-dockx)
 * [Cryptography in .NET 6](https://www.pluralsight.com/courses/dot-net-6-cryptography)
   * Author: [Stephen Haunts](https://app.pluralsight.com/profile/author/stephen-haunts)
+* [Logging and Monitoring in ASP.NET Core 6](https://www.pluralsight.com/courses/logging-monitoring-aspdotnet-core-6)
+  * Author: [Erik Dahl](https://app.pluralsight.com/profile/author/erik-dahl)
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
 * [Microsoft Docs](https://docs.microsoft.com/en-us/)

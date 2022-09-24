@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -72,7 +73,14 @@ builder.Services.AddAuthorization(configure =>
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddProblemDetails(configure =>
+{
+    configure.IncludeExceptionDetails = (httpContext, exception) => false;
+});
+
 var app = builder.Build();
+
+app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
