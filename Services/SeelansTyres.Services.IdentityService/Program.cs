@@ -1,43 +1,63 @@
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.EntityFramework.DbContexts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using SeelansTyres.Services.IdentityService.Authorization;
 using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Services;
 using Serilog;
 using Serilog.Events;
+using Serilog.Exceptions;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Reflection;
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-    .MinimumLevel.Override("System", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
-    .CreateLogger();
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog();
+builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
+{
+    loggerConfiguration
+        .MinimumLevel.Debug()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+        .MinimumLevel.Override("System", LogEventLevel.Warning)
+        .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+        .Enrich.FromLogContext()
+        .Enrich.WithExceptionDetails()
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code);
+});
 
 var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
 var assemblyName = typeof(Program).Assembly.GetName().Name;
 
-try
-{
-    Log.Information("Starting host...");
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Host terminated unexpectedly.");
-}
-
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(setup =>
+{
+    setup.AddSecurityDefinition("CustomerServiceAuth", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Input a valid token to access this API"
+    });
+
+    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {{
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "CustomerServiceAuth"
+            }
+        },
+        new List<string>()
+    }});
+});
 
 builder.Services.AddDbContext<CustomerContext>(options =>
 {
@@ -131,7 +151,14 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+builder.Services.AddProblemDetails(configure =>
+{
+    configure.IncludeExceptionDetails = (httpContext, exception) => false;
+});
+
 var app = builder.Build();
+
+app.UseProblemDetails();
 
 app.Urls.Clear();
 app.Urls.Add("https://localhost:5005");
@@ -143,6 +170,11 @@ if (app.Environment.IsDevelopment() is false)
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
