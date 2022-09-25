@@ -12,26 +12,46 @@ using SeelansTyres.Services.IdentityService.Services;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
+using Serilog.Sinks.Elasticsearch;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+
+var assembly = typeof(Program).Assembly;
+
 builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
 {
     loggerConfiguration
-        .MinimumLevel.Debug()
-        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-        .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-        .MinimumLevel.Override("System", LogEventLevel.Warning)
-        .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+        .ReadFrom.Configuration(hostBuilderContext.Configuration)
         .Enrich.FromLogContext()
         .Enrich.WithExceptionDetails()
-        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code);
-});
+        .Enrich.WithProperty("Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
+        .Enrich.WithProperty("Descriptive Application Name", assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product)
+        .Enrich.WithProperty("Codebase Version", $"v{assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion}")
+        .WriteTo.Console(
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
+            theme: AnsiConsoleTheme.Code);
 
-var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
-var assemblyName = typeof(Program).Assembly.GetName().Name;
+    var metadata = assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
+
+    metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty(attribute.Key, attribute.Value));
+
+    if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled") is true)
+    {
+        loggerConfiguration
+            .WriteTo.Elasticsearch(
+                new ElasticsearchSinkOptions(new Uri(hostBuilderContext.Configuration["LoggingSinks:Elasticsearch:Url"]))
+                {
+                    AutoRegisterTemplate = true,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                    IndexFormat = "seelanstyres-logs-{0:yyyy.MM.dd}",
+                    MinimumLogEventLevel = LogEventLevel.Debug
+                });
+    }
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -58,6 +78,9 @@ builder.Services.AddSwaggerGen(setup =>
         new List<string>()
     }});
 });
+
+var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
+var assemblyName = assembly.GetName().Name;
 
 builder.Services.AddDbContext<CustomerContext>(options =>
 {

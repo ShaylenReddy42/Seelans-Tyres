@@ -27,3 +27,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("@FILE_VERSION@")]
 [assembly: AssemblyFileVersion("@FILE_VERSION@")]
 [assembly: AssemblyInformationalVersion("@INFORMATIONAL_VERSION@")]
+
+// Custom Metadata
+[assembly: AssemblyMetadata("Commit Url", "@COMMIT_URL@")]

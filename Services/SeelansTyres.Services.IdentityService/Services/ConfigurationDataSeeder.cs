@@ -1,6 +1,5 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
-using Serilog;
 
 namespace SeelansTyres.Services.IdentityService.Services;
 
@@ -8,17 +7,19 @@ public class ConfigurationDataSeeder
 {
 	private readonly ConfigurationDbContext context;
     private readonly IConfiguration configuration;
+    private readonly ILogger<ConfigurationDataSeeder> logger;
 
     public ConfigurationDataSeeder(
         ConfigurationDbContext context,
-        IConfiguration configuration) =>
-		    (this.context, this.configuration) = (context, configuration);
+        IConfiguration configuration,
+        ILogger<ConfigurationDataSeeder> logger) =>
+		    (this.context, this.configuration, this.logger) = (context, configuration, logger);
 
     public async Task SeedConfigurationDataAsync()
     {
         Config.Configuration = configuration;
         
-        Log.Debug("Clients being populated");
+        logger.LogDebug("Clients being populated");
         Config.Clients.ToList().ForEach(client =>
         {
             var clientEntity =
@@ -32,7 +33,7 @@ public class ConfigurationDataSeeder
         });
         await context.SaveChangesAsync();
 
-        Log.Debug("IdentityResources being populated");
+        logger.LogDebug("IdentityResources being populated");
         Config.IdentityResources.ToList().ForEach(identityResource =>
         {
             var identityResourceEntity =
@@ -46,7 +47,7 @@ public class ConfigurationDataSeeder
         });
         await context.SaveChangesAsync();
 
-        Log.Debug("ApiScopes being populated");
+        logger.LogDebug("ApiScopes being populated");
         Config.ApiScopes.ToList().ForEach(apiScope =>
         {
             var apiScopeEntity =
@@ -60,7 +61,7 @@ public class ConfigurationDataSeeder
         });
         await context.SaveChangesAsync();
 
-        Log.Debug("ApiResources being populated");
+        logger.LogDebug("ApiResources being populated");
         Config.ApiResources.ToList().ForEach(apiResource =>
         {
             var apiResourceEntity =

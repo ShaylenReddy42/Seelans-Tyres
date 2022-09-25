@@ -60,6 +60,7 @@ endif()
 
 set(FILE_VERSION "${TAG}.${REVISION}")
 set(INFORMATIONAL_VERSION "${TAG}+${REVISION}-${COMMIT_ID}")
+set(COMMIT_URL "https://github.com/ShaylenReddy42/Seelans-Tyres/commit/${COMMIT_ID}")
 
 message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
