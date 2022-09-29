@@ -4,6 +4,7 @@ using SeelansTyres.Frontends.Mvc.Models;
 using SeelansTyres.Frontends.Mvc.Models.External;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
+using System.Diagnostics;
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
@@ -14,6 +15,7 @@ public class AdminController : Controller
     private readonly IImageService imageService;
     private readonly IOrderService orderService;
     private readonly ITyresService tyresService;
+    private readonly Stopwatch stopwatch = new();
 
     public AdminController(
         ILogger<AdminController> logger,
@@ -29,8 +31,18 @@ public class AdminController : Controller
     
     public async Task<IActionResult> Index()
     {
+        stopwatch.Start();
+
+        logger.LogInformation("Controller => Retrieving all brands");
+        
         var brands = tyresService.RetrieveAllBrandsAsync();
+
+        logger.LogInformation("Controller => Retrieving all orders");
+
         var orders = orderService.RetrieveAllAsync();
+
+        logger.LogInformation("Controller => Retrieving all tyres including unavailable");
+
         var tyres = tyresService.RetrieveAllTyresAsync(false);
 
         await Task.WhenAll(brands, orders, tyres);
@@ -41,6 +53,12 @@ public class AdminController : Controller
             Orders = orders.Result,
             Tyres = tyres.Result
         };
+
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "Building the Admin Portal View Model took {stopwatchElapsedTime}ms to complete",
+            stopwatch.ElapsedMilliseconds);
         
         return View(adminPortalViewModel);
     }
@@ -58,9 +76,13 @@ public class AdminController : Controller
             return View(model);
         }
 
+        logger.LogInformation("Controller => Administrator is attempting to add a new tyre");
+
         // integrate with azure storage later on.
         // upload the file to azure storage, get the url
         // and set the ImageUrl
+
+        logger.LogInformation("Attempting to upload image");
 
         var imageUrl = await imageService.UploadAsync(model.Image, "/images/no-image.png");
 
@@ -82,9 +104,18 @@ public class AdminController : Controller
 
         if (requestSucceeded is false)
         {
+            logger.LogError(
+                "{announcement}: Attempt to add a new tyre was unsuccessful",
+                "FAILED");
+            
             ModelState.AddModelError(string.Empty, "API is not available");
+
             return View(model);
         }
+
+        logger.LogInformation(
+            "{announcement}: Attempt to add a new tyre completed successfully",
+            "SUCCEEDED");
 
         return RedirectToAction("Index");
     }
@@ -92,6 +123,10 @@ public class AdminController : Controller
     [HttpGet("Admin/UpdateTyre/{tyreId}")]
     public async Task<IActionResult> UpdateTyre(Guid tyreId)
     {
+        logger.LogInformation(
+            "Controller => Administrator is attempting to retrieve tyre {tyreId} for update",
+            tyreId);
+
         var tyre = await tyresService.RetrieveSingleTyreAsync(tyreId);
         
         var mvcTyreModel = new MvcTyreModel
@@ -119,6 +154,12 @@ public class AdminController : Controller
             return View(model);
         }
 
+        logger.LogInformation(
+            "Controller => Administrator is attempting to update tyre {tyreId}",
+            model.Id);
+
+        logger.LogInformation("Attempting to upload image");
+
         var imageUrl = await imageService.UploadAsync(model.Image, model.OriginalImageUrl!);
 
         var updateTyreModel = new TyreModel
@@ -139,9 +180,17 @@ public class AdminController : Controller
 
         if (requestSucceeded is false)
         {
+            logger.LogError(
+                "{announcement}: Attempt to update tyre {tyreId} was unsuccessful",
+                "FAILED", model.Id);
+
             ModelState.AddModelError(string.Empty, "API is not available");
             return View(model);
         }
+
+        logger.LogError(
+            "{announcement}: Attempt to update tyre {tyreId} completed successfully",
+            "SUCCEEDED", model.Id);
 
         return RedirectToAction("Index");
     }
@@ -149,6 +198,10 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> MarkOrderAsDelivered(int orderId)
     {
+        logger.LogInformation(
+            "Controller => Administrator is attempting to mark order {orderId} as delivered",
+            orderId);
+        
         _ = await orderService.MarkOrderAsDeliveredAsync(orderId);
 
         return RedirectToAction("Index");

@@ -5,6 +5,7 @@ using SeelansTyres.Frontends.Mvc.Models;
 using SeelansTyres.Frontends.Mvc.Models.External;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
@@ -17,6 +18,7 @@ public class ShoppingController : Controller
     private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
     private readonly IEmailService emailService;
+    private readonly Stopwatch stopwatch = new();
 
     public ShoppingController(
         ILogger<ShoppingController> logger,
@@ -36,6 +38,8 @@ public class ShoppingController : Controller
     
     public async Task<IActionResult> Cart()
     {
+        stopwatch.Start();
+        
         var cartItems = cartService.Retrieve();
 
         var numberOfAddresses = 0;
@@ -52,6 +56,12 @@ public class ShoppingController : Controller
             CartItems = cartItems,
             NumberOfAddresses = numberOfAddresses
         };
+
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "Building the Cart View Model took {stopwatchElapsedTime}ms to complete",
+            stopwatch.ElapsedMilliseconds);
         
         return View(cartViewModel);
     }
@@ -59,6 +69,10 @@ public class ShoppingController : Controller
     [HttpPost]
     public IActionResult AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
     {
+        logger.LogInformation(
+            "Controller => Adding tyre {tyreId} to cart with quantity {quantity}",
+            tyreId, quantity);
+        
         var cartItem = new CartItemModel
         {
             TyreId = tyreId,
@@ -75,6 +89,10 @@ public class ShoppingController : Controller
     [HttpPost]
     public IActionResult RemoveTyreFromCart(Guid tyreId)
     {
+        logger.LogInformation(
+            "Controller => Removing tyre {tyreId} from cart",
+            tyreId);
+
         cartService.DeleteItem(tyreId);
 
         return RedirectToAction("Cart");
@@ -83,9 +101,15 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<IActionResult> Checkout()
     {
+        stopwatch.Start();
+        
         var cartItems = cartService.Retrieve();
 
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        logger.LogInformation(
+            "Controller => Attempting to place an order for customer {customerId}",
+            customerId);
 
         var customer = await customerService.RetrieveSingleAsync(customerId);
 
@@ -128,8 +152,24 @@ public class ShoppingController : Controller
         {
             cartService.Delete();
 
+            logger.LogInformation(
+                "{announcement}: Attempt to place an order for customer {customerId} completed successfully",
+                "SUCCEEDED", customerId);
+
             await emailService.SendReceiptAsync(placedOrder);
         }
+        else
+        {
+            logger.LogInformation(
+                "{announcement}: Attempt to place an order for customer {customerId} was unsuccessful",
+                "FAILED", customerId);
+        }
+
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "Placing an order for customer {customerId} took {stopwatchElapsedTime}ms to complete",
+            customerId, stopwatch.ElapsedMilliseconds);
 
         return RedirectToAction("Index", "Home");
     }
@@ -138,6 +178,10 @@ public class ShoppingController : Controller
     [HttpPost]
     public async Task<string> ViewReceipt(int orderId)
     {
+        logger.LogInformation(
+            "Controller => Attempting to retrieve order {orderId}",
+            orderId);
+        
         var order = await orderService.RetrieveSingleAsync(orderId);
 
         var engine = new RazorLightEngineBuilder()
@@ -145,6 +189,19 @@ public class ShoppingController : Controller
             .UseMemoryCachingProvider()
             .Build();
 
-        return order is not null ? await engine.CompileRenderAsync("Receipt", order) : "";
+        if (order is null)
+        {
+            logger.LogWarning(
+                "{announcement}: Order {orderId} does not exist!",
+                "NULL", orderId);
+            
+            return string.Empty;
+        }
+
+        logger.LogInformation(
+            "{SUCCEEDED}: Attempt to retrieve order {orderId} completed successfully",
+            orderId);
+
+        return await engine.CompileRenderAsync("Receipt", order);
     }
 }

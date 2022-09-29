@@ -31,6 +31,10 @@ public class OrdersController : ControllerBase
     [Authorize(Policy = "MustSatisfyOrderRetrievalRules")]
     public async Task<ActionResult<IEnumerable<OrderModel>>> RetrieveAll(Guid? customerId = null, bool notDeliveredOnly = false)
     {
+        logger.LogInformation(
+            "API => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
+            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "");
+
         var orders = await orderRepository.RetrieveAllAsync(customerId, notDeliveredOnly);
 
         return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderModel>>(orders));
@@ -39,6 +43,10 @@ public class OrdersController : ControllerBase
     [HttpGet("{id}", Name = "GetOrderById")]
     public async Task<ActionResult<OrderModel>> RetrieveSingle(int id)
     {
+        logger.LogInformation(
+            "API => Attempting to retrieve order {orderId}",
+            id);
+
         var order = await orderRepository.RetrieveSingleAsync(id);
 
         return order is not null ? Ok(mapper.Map<Order, OrderModel>(order)) : NotFound();
@@ -47,6 +55,8 @@ public class OrdersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<OrderModel>> Create(OrderModel newOrder)
     {
+        logger.LogInformation("API => Attempting to place a new order");
+
         var order = mapper.Map<OrderModel, Order>(newOrder);
 
         await orderRepository.CreateAsync(order);
@@ -65,10 +75,18 @@ public class OrdersController : ControllerBase
     [Authorize(Policy = "MustBeAnAdministrator")]
     public async Task<ActionResult> MarkOrderAsDelivered(int id, bool delivered = true)
     {
+        logger.LogInformation(
+            "API => Attempting to mark order {orderId} as delivered",
+            id);
+
         var order = await orderRepository.RetrieveSingleAsync(id);
 
         if (order is null)
         {
+            logger.LogWarning(
+                "{announcement}: Order {orderId} does not exist!",
+                "NULL", id);
+            
             return NotFound();
         }
 

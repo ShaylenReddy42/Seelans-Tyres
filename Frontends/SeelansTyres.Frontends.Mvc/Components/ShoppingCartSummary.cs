@@ -15,6 +15,8 @@ public class ShoppingCartSummary : ViewComponent
 
     public IViewComponentResult Invoke()
     {
+        logger.LogInformation("ViewComponent => Retrieving cart to extract the number of items in it");
+        
         var cartItemCount = cartService.Retrieve().Count;
         
         ViewData["CartItemsCount"] = cartItemCount;

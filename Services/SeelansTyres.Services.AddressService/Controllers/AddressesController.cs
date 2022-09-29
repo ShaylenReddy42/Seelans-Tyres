@@ -28,24 +28,45 @@ public class AddressesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AddressModel>>> RetrieveAll(Guid customerId)
+    public async Task<ActionResult<IEnumerable<AddressModel>>> RetrieveAllAsync(Guid customerId)
     {
+        logger.LogInformation(
+            "API => Retrieving addresses for customer {customerId}", 
+            customerId);
+
         var addresses = await addressRepository.RetrieveAllAsync(customerId);
 
         return Ok(mapper.Map<IEnumerable<Address>, IEnumerable<AddressModel>>(addresses));
     }
 
     [HttpGet("{addressId}", Name = "GetAddressForCustomer")]
-    public async Task<ActionResult<AddressModel>> RetrieveSingle(Guid customerId, Guid addressId)
+    public async Task<ActionResult<AddressModel>> RetrieveSingleAsync(Guid customerId, Guid addressId)
     {
+        logger.LogInformation(
+            "API => Retrieving address {addressId} for customer {customerId}", 
+            addressId, customerId);
+
         var address = await addressRepository.RetrieveSingleAsync(customerId, addressId);
 
-        return Ok(mapper.Map<Address, AddressModel>(address!));
+        if (address is null)
+        {
+            logger.LogWarning(
+                "{announcement}: Address {addressId} for customer {customerId} does not exist!",
+                "NULL", addressId, customerId);
+
+            return NotFound();
+        }
+
+        return Ok(mapper.Map<Address, AddressModel>(address));
     }
 
     [HttpPost]
-    public async Task<ActionResult<AddressModel>> Create(Guid customerId, AddressModel newAddress)
+    public async Task<ActionResult<AddressModel>> CreateAsync(Guid customerId, AddressModel newAddress)
     {
+        logger.LogInformation(
+            "API => Adding a new address for customer {customerId}", 
+            customerId);
+
         var addressEntity = mapper.Map<AddressModel, Address>(newAddress);
 
         await addressRepository.CreateAsync(customerId, addressEntity);
@@ -61,12 +82,20 @@ public class AddressesController : ControllerBase
     }
 
     [HttpPut("{addressId}")]
-    public async Task<ActionResult> MarkAddressAsPreffered(Guid customerId, Guid addressId, bool markAsPreffered)
+    public async Task<ActionResult> MarkAddressAsPrefferedAsync(Guid customerId, Guid addressId, bool markAsPreffered)
     {
+        logger.LogInformation(
+            "API => Marking address {addressId} as preferred for customer {customerId}",
+            addressId, customerId);
+
         var address = await addressRepository.RetrieveSingleAsync(customerId, addressId);
 
         if (address is null)
         {
+            logger.LogWarning(
+                "{announcement}: Address {addressId} for customer {customerId} does not exist!",
+                "NULL", addressId, customerId);
+
             return NotFound();
         }
 

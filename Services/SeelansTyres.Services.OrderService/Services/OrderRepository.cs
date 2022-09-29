@@ -1,46 +1,134 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Services.OrderService.Data.Entities;
 using SeelansTyres.Services.OrderService.Data;
+using System.Diagnostics;
 
 namespace SeelansTyres.Services.OrderService.Services;
 
 public class OrderRepository : IOrderRepository
 {
     private readonly OrdersContext context;
+    private readonly ILogger<OrderRepository> logger;
+    private readonly Stopwatch stopwatch = new();
 
-    public OrderRepository(OrdersContext context) =>
-            this.context = context;
+    public OrderRepository(
+        OrdersContext context,
+        ILogger<OrderRepository> logger)
+    {
+        this.context = context;
+        this.logger = logger;
+    }
 
-    public async Task CreateAsync(Order newOrder) => 
-        await context.Orders.AddAsync(newOrder);
+    public async Task CreateAsync(Order order)
+    {
+        logger.LogInformation("Repository => Attempting to place a new order");
+
+        stopwatch.Start();
+        try
+        {
+            await context.Orders.AddAsync(order);
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order was unsuccessful",
+                "FAILED", stopwatch.ElapsedMilliseconds);
+
+            throw ex.GetBaseException();
+        }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order completed successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
+    }
 
     public async Task<IEnumerable<Order>> RetrieveAllAsync(Guid? customerId, bool notDeliveredOnly)
     {
-        var collection = notDeliveredOnly switch
-        {
-            true  => context.Orders
-                .Include(order => order.OrderItems)
-                .Where(order => !order.Delivered),
-            false => context.Orders
-                .Include(order => order.OrderItems)
-        };
+        logger.LogInformation(
+            "Repository => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
+            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "");
 
-        var orders = customerId switch
+        IEnumerable<Order> orders = Enumerable.Empty<Order>();
+
+        stopwatch.Start();
+        try
         {
-            null => await collection
-                .ToListAsync(),
-            _    => await collection
-                .Where(order => order.CustomerId == customerId)
-                .ToListAsync()
-        };
+            var collection = notDeliveredOnly switch
+            {
+                true  => context.Orders.Include(order => order.OrderItems).Where(order => !order.Delivered),
+                false => context.Orders.Include(order => order.OrderItems)
+            };
+
+            orders = customerId switch
+            {
+                null => await collection
+                                .ToListAsync(),
+                _    => await collection
+                                .Where(order => order.CustomerId == customerId)
+                                .ToListAsync()
+            };
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} was unsuccessful",
+                "FAILED", stopwatch.ElapsedMilliseconds,
+                customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "");
+
+            throw ex.GetBaseException();
+        }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds,
+            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "",
+            orders.Count());
 
         return orders;
     }
 
-    public async Task<Order?> RetrieveSingleAsync(int id) => 
-        await context.Orders
-            .Include(order => order.OrderItems)
-            .SingleOrDefaultAsync(order => order.Id == id);
+    public async Task<Order?> RetrieveSingleAsync(int id)
+    {
+        logger.LogInformation(
+            "Repository => Attempting to retrieve order {orderId}",
+            id);
+
+        Order? order = null;
+
+        stopwatch.Start();
+        try
+        {
+            order = await context.Orders
+                            .Include(order => order.OrderItems)
+                            .SingleOrDefaultAsync(order => order.Id == id);
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} was unsuccessful",
+                "FAILED", stopwatch.ElapsedMilliseconds, id);
+            
+            throw ex.GetBaseException();
+        }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} completed successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds, id);
+
+        return order;
+    }
 
     public async Task<bool> SaveChangesAsync() =>
         await context.SaveChangesAsync() >= 0;

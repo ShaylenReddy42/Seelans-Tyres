@@ -212,6 +212,8 @@ app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
 
+app.Logger.LogInformation("Program => Migrating and seeding databases");
+
 await RunSeeders();
 
 app.Run();

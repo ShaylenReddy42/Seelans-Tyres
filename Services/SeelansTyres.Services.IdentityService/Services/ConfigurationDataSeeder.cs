@@ -17,6 +17,8 @@ public class ConfigurationDataSeeder
 
     public async Task SeedConfigurationDataAsync()
     {
+        logger.LogInformation("Service => Seeding configuration data");
+        
         Config.Configuration = configuration;
         
         logger.LogDebug("Clients being populated");
@@ -74,5 +76,7 @@ public class ConfigurationDataSeeder
             }
         });
         await context.SaveChangesAsync();
+
+        logger.LogInformation("Configuration data seeded successfully");
     }
 }

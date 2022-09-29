@@ -21,13 +21,44 @@ public class OrderService : IOrderService
 
             if (roleClaim is not null && roleClaim.Value is "Administrator")
             {
+                logger.LogInformation("Currently logged in user is an administrator. Adding custom X-User-Role header to all requests");
+
                 client.DefaultRequestHeaders.Add("X-User-Role", "Administrator");
             }
         }
     }
 
+    public async Task<OrderModel?> CreateAsync(OrderModel order)
+    {
+        logger.LogInformation("Service => Attempting to place a new order");
+
+        try
+        {
+            var response = await client.PostAsync("api/orders", JsonContent.Create(order));
+
+            logger.LogInformation(
+                "{announcement}: Attempt to place a new order completed successfully",
+                "SUCCEEDED");
+
+            return await response.Content.ReadFromJsonAsync<OrderModel>();
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
+
+            return null;
+        }
+    }
+
     public async Task<IEnumerable<OrderModel>> RetrieveAllAsync(Guid? customerId = null, bool notDeliveredOnly = false)
     {
+        logger.LogInformation(
+            "Service => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
+            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "");
+
         try
         {
             var response = customerId switch
@@ -46,57 +77,76 @@ public class OrderService : IOrderService
 
             var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
 
+            logger.LogInformation(
+                "{announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
+                "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", 
+                notDeliveredOnly is true ? " except delivered ones" : "", orders!.Count());
+
             return orders!;
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex, "The API is unavailable");
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
+
             return new List<OrderModel>();
         }
     }
 
     public async Task<OrderModel?> RetrieveSingleAsync(int orderId)
     {
+        logger.LogInformation(
+            "Service => Attempting to retrieve order {orderId}",
+            orderId);
+
         try
         {
             var response = await client.GetAsync($"api/orders/{orderId}");
             var order = await response.Content.ReadFromJsonAsync<OrderModel>();
 
+            logger.LogInformation(
+                "{announcement}: Attempt to retrieve order {orderId} completed successfully",
+                "SUCCEEDED", orderId);
+
             return order!;
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex, "The API is unavailable");
-            return null;
+            logger.LogError(
+				ex, 
+				"{announcement}: The API is unavailable",
+				"FAILED");
+
+			return null;
         }
     }
 
     public async Task<bool> MarkOrderAsDeliveredAsync(int orderId)
     {
+        logger.LogInformation(
+            "Service => Attempting to mark order {orderId} as delivered",
+            orderId);
+
         try
         {
             _ = await client.PutAsync($"api/orders/{orderId}?delivered=true", new StringContent(""));
+
+            logger.LogInformation(
+                "Attempt to mark order {orderId} as delivered completed successfully",
+                orderId);
+
             return true;
         }
         catch (HttpRequestException ex)
         {
-            logger.LogError(ex, "The API is unavailable");
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
+
             return false;
-        }
-    }
-
-    public async Task<OrderModel?> CreateAsync(OrderModel order)
-    {
-        try
-        {
-            var response = await client.PostAsync("api/orders", JsonContent.Create(order));
-
-            return await response.Content.ReadFromJsonAsync<OrderModel>();
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex, "The API is unavailable");
-            return null;
         }
     }
 }

@@ -25,8 +25,10 @@ public class BrandsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BrandModel>>> RetrieveAll()
+    public async Task<ActionResult<IEnumerable<BrandModel>>> RetrieveAllAsync()
     {
+        logger.LogInformation("API => Attempting to retrieve all brands");
+        
         var brands = await tyresRepository.RetrieveAllBrandsAsync();
         
         return Ok(mapper.Map<IEnumerable<Brand>, IEnumerable<BrandModel>>(brands));

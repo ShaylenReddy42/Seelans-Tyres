@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SeelansTyres.Services.IdentityService.Data.Entities;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -11,6 +12,7 @@ public class AdminAccountSeeder
     private readonly IConfiguration configuration;
     private readonly RoleManager<IdentityRole<Guid>> roleManager;
     private readonly UserManager<Customer> userManager;
+    private readonly Stopwatch stopwatch = new();
 
     public AdminAccountSeeder(
         ILogger<AdminAccountSeeder> logger,
@@ -26,12 +28,21 @@ public class AdminAccountSeeder
 
     public async Task CreateAdminAsync()
     {
+        logger.LogInformation("Service => Attempting to create the administrator account");
+
+        stopwatch.Start();
         try
         {
             var administrators = await userManager!.GetUsersInRoleAsync("Administrator");
 
             if (administrators.Count is not 0)
             {
+                stopwatch.Stop();
+
+                logger.LogWarning(
+                    "{announcement} ({stopwatchElapsedTime}ms): Administrator account already exists",
+                    "ABORTED", stopwatch.ElapsedMilliseconds);
+                
                 return;
             }
 
@@ -39,6 +50,10 @@ public class AdminAccountSeeder
 
             if (roleExists is false)
             {
+                logger.LogInformation(
+                    "Creating role {role} because it doesn't exist", 
+                    "Administrator");
+                
                 await roleManager.CreateAsync(
                     new IdentityRole<Guid>
                     {
@@ -68,7 +83,19 @@ public class AdminAccountSeeder
         }
         catch (InvalidOperationException ex)
         {
-            logger.LogError(ex, "The database is unavailable");
+            stopwatch.Stop();
+            
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): The database is unavailable",
+                "FAILED", stopwatch.ElapsedMilliseconds);
+
+            throw;
         }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to create an administrator account completed successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 }

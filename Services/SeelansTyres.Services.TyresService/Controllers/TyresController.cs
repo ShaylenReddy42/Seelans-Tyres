@@ -27,56 +27,78 @@ public class TyresController : ControllerBase
         this.mapper = mapper;
     }
 
+    [HttpPost]
+    public async Task<ActionResult<TyreModel>> CreateAsync(TyreModel tyreModel)
+    {
+        logger.LogInformation("API => Attempting to add a new tyre");
+        
+        var tyre = mapper.Map<TyreModel, Tyre>(tyreModel);
+
+        await tyresRepository.CreateTyreAsync(tyre);
+
+        await tyresRepository.SaveChangesAsync();
+
+        var createdTyre = mapper.Map<Tyre, TyreModel>(tyre);
+
+        return CreatedAtRoute(
+            "RetrieveSingleAsync",
+            new { id = createdTyre.Id },
+            createdTyre);
+    }
+
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<TyreModel>>> RetrieveAll(bool availableOnly = true)
+    public async Task<ActionResult<IEnumerable<TyreModel>>> RetrieveAllAsync(bool availableOnly = true)
     {
+        logger.LogInformation(
+            "API => Attempting to retrieve all tyres{includingUnavailable}",
+            availableOnly is false ? " including unavailable" : "");
+        
         var tyres = await tyresRepository.RetrieveAllTyresAsync(availableOnly);
 
         return Ok(mapper.Map<IEnumerable<Tyre>, IEnumerable<TyreModel>>(tyres));
     }
 
-    [HttpGet("{id}", Name = "GetTyreById")]
-    public async Task<ActionResult<TyreModel>> RetrieveSingle(Guid id)
+    [HttpGet("{id}", Name = "RetrieveSingleAsync")]
+    public async Task<ActionResult<TyreModel>> RetrieveSingleAsync(Guid id)
     {
-        var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
-
-        if (tyre is not null)
-        {
-            return Ok(mapper.Map<Tyre, TyreModel>(tyre));
-        }
-
-        return NotFound();
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<TyreModel>> Create(TyreModel model)
-    {
-        var tyreEntity = mapper.Map<TyreModel, Tyre>(model);
-
-        await tyresRepository.CreateTyreAsync(tyreEntity);
-
-        await tyresRepository.SaveChangesAsync();
-
-        var createdTyre = mapper.Map<Tyre, TyreModel>(tyreEntity);
-
-        return CreatedAtRoute(
-            "GetTyreById",
-            new { id = createdTyre.Id },
-            createdTyre);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<ActionResult> Update(TyreModel model, Guid id)
-    {
+        logger.LogInformation(
+            "API => Attempting to retrieve tyre {tyreId}",
+            id);
+        
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
 
         if (tyre is null)
         {
+            logger.LogWarning(
+                "{announcement}: Tyre {tyreId} does not exist!",
+                "NULL", id);
+            
             return NotFound();
         }
 
-        mapper.Map(model, tyre);
+        return Ok(mapper.Map<Tyre, TyreModel>(tyre));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateAsync(TyreModel tyreModel, Guid id)
+    {
+        logger.LogInformation(
+            "API => Attempting to update tyre {tyreId}",
+            id);
+        
+        var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
+
+        if (tyre is null)
+        {
+            logger.LogWarning(
+                "{announcement}: Tyre {tyreId} does not exist!",
+                "NULL", id);
+
+            return NotFound();
+        }
+
+        mapper.Map(tyreModel, tyre);
 
         tyre.Brand = 
             (await tyresRepository.RetrieveAllBrandsAsync())

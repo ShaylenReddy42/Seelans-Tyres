@@ -18,25 +18,34 @@ public class CustomersController : ControllerBase
     private readonly ICustomerService customerService;
     private readonly ISigningCredentialStore signingCredentialStore;
     private readonly IMapper mapper;
+    private readonly ILogger<CustomersController> logger;
 
     public CustomersController(
         ICustomerService customerService,
         ISigningCredentialStore signingCredentialStore,
-        IMapper mapper)
+        IMapper mapper,
+        ILogger<CustomersController> logger)
     {
         this.customerService = customerService;
         this.signingCredentialStore = signingCredentialStore;
         this.mapper = mapper;
+        this.logger = logger;
     }
     
     [HttpPost]
     [Authorize(Policy = "CreateAccountPolicy")]
     public async Task<ActionResult> CreateAsync(EncryptedDataModel encryptedDataModel)
     {
-        var registerModel = await encryptedDataModel.DecryptAsync<RegisterModel>(signingCredentialStore);
+        logger.LogInformation("API => Attempting to create a new customer account, decryption required");
+        
+        var registerModel = await encryptedDataModel.DecryptAsync<RegisterModel>(signingCredentialStore, logger);
 
         if (registerModel is null)
         {
+            logger.LogWarning(
+                "{announcement}: Decryption process failed",
+                "NULL");
+            
             return BadRequest("Data got corrupted in transit, decryption failed!");
         }
         
@@ -44,7 +53,11 @@ public class CustomersController : ControllerBase
 
         if (customer is not null)
         {
-            return BadRequest();
+            logger.LogWarning(
+                "{announcement}: Customer with email {customerEmail} already exists",
+                "ABORTED", "***REDACTED***");
+
+            return BadRequest("Customer already exists");
         }
 
         customer = mapper.Map<RegisterModel, Customer>(registerModel);
@@ -65,8 +78,16 @@ public class CustomersController : ControllerBase
     [Authorize(Policy = "RetrieveSingleByEmailPolicy")]
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(string email)
     {
-        if (string.IsNullOrEmpty(email) is true)
+        logger.LogInformation(
+            "API => Attempting to retrieve customer by email {customerEmail}",
+            "***REDACTED***");
+        
+        if (string.IsNullOrEmpty(email.Trim()) is true)
         {
+            logger.LogWarning(
+                "{announcement}: Authenticated user using client '{clientId}' attempted to retrieve all customers by not specifying an email",
+                "FAILED", User.Claims.Single(claim => claim.Type is "client_id").Value);
+
             return BadRequest();
         }
 
@@ -79,6 +100,10 @@ public class CustomersController : ControllerBase
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(Guid id)
     {
+        logger.LogInformation(
+            "API => Attempting to retrieve customer by Id {customerId}",
+            id);
+        
         var customer = await customerService.RetrieveSingleAsync(id);
 
         return Ok(mapper.Map<Customer, CustomerModel>(customer));
@@ -88,10 +113,18 @@ public class CustomersController : ControllerBase
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult> UpdateAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
-        var updateAccountModel = await encryptedDataModel.DecryptAsync<UpdateAccountModel>(signingCredentialStore);
+        logger.LogInformation(
+            "API => Attempting to update account for customer {customerId}, decryption required",
+            id);
+
+        var updateAccountModel = await encryptedDataModel.DecryptAsync<UpdateAccountModel>(signingCredentialStore, logger);
 
         if (updateAccountModel is null)
         {
+            logger.LogWarning(
+                "{announcement}: Decryption process failed",
+                "NULL");
+
             return BadRequest("Data got corrupted in transit, decryption failed!");
         }
         
@@ -104,6 +137,10 @@ public class CustomersController : ControllerBase
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
+        logger.LogInformation(
+            "API => Attempting to delete account for customer {customerId}",
+            id);
+
         await customerService.DeleteAsync(await customerService.RetrieveSingleAsync(id));
 
         return NoContent();
@@ -113,10 +150,18 @@ public class CustomersController : ControllerBase
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
     public async Task<ActionResult> VerifyPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
-        var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore);
+        logger.LogInformation(
+            "API => Attempting a password verification process for customer {customerId}, decryption required",
+            id);
+
+        var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore, logger);
 
         if (passwordModel is null)
         {
+            logger.LogWarning(
+                "{announcement}: Decryption process failed",
+                "NULL");
+
             return BadRequest("Data got corrupted in transit, decryption failed!");
         }
         
@@ -129,10 +174,18 @@ public class CustomersController : ControllerBase
     [Authorize(Policy = "ResetPasswordPolicy")]
     public async Task<ActionResult> ResetPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
-        var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore);
+        logger.LogInformation(
+            "API => Attempting a password reset operation for customer {customerId}, decryption required",
+            id);
+
+        var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore, logger);
 
         if (passwordModel is null)
         {
+            logger.LogWarning(
+                "{announcement}: Decryption process failed",
+                "NULL");
+
             return BadRequest("Data got corrupted in transit, decryption failed!");
         }
 

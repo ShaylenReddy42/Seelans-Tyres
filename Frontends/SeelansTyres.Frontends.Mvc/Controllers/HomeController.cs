@@ -32,6 +32,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Shop()
     {
+        logger.LogInformation("Controller => Retrieving all tyres");
+        
         var tyres = await tyresService.RetrieveAllTyresAsync();
 
         return View(tyres);
@@ -50,6 +52,11 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var errorViewModel = new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        };
+        
+        return View(errorViewModel);
     }
 }

@@ -7,6 +7,7 @@ using SeelansTyres.Frontends.Mvc.Models;
 using SeelansTyres.Frontends.Mvc.Models.External;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
+using System.Diagnostics;
 using System.Security.Cryptography;
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
@@ -18,6 +19,7 @@ public class AccountController : Controller
     private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
     private readonly IEmailService emailService;
+    private readonly Stopwatch stopwatch = new();
 
     public AccountController(
         ILogger<AccountController> logger,
@@ -36,10 +38,26 @@ public class AccountController : Controller
     [Authorize]
     public async Task<IActionResult> Index()
     {
+        stopwatch.Start();
+        
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
+        logger.LogInformation(
+            "Controller => Retrieving information for customer {customerId}",
+            customerId);
+
         var customer = customerService.RetrieveSingleAsync(customerId);
+
+        logger.LogInformation(
+            "Controller => Retrieving all addresses for customer {customerId}",
+            customerId);
+
         var addresses = addressService.RetrieveAllAsync(customerId);
+
+        logger.LogInformation(
+            "Controller => Retrieving all orders for customer {customerId}",
+            customerId);
+
         var orders = orderService.RetrieveAllAsync(customerId: customerId);
 
         await Task.WhenAll(customer, addresses, orders);
@@ -51,6 +69,12 @@ public class AccountController : Controller
             Orders = orders.Result!
         };
 
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "Building the Account View Model for customer {customer} took {stopwatchElapsedTime}ms to complete",
+            stopwatch.ElapsedMilliseconds);
+
         return View(accountViewModel);
     }
 
@@ -60,6 +84,23 @@ public class AccountController : Controller
 
     public async Task Logout()
     {
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        var isAdmin = User.IsInRole("Administrator") is true;
+
+        if (isAdmin is true)
+        {
+            logger.LogInformation(
+                "Logging out the administrator",
+                customerId);
+        }
+        else
+        {
+            logger.LogInformation(
+                "Logging out customer {customerId}",
+                customerId);
+        }
+
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
     }
@@ -68,6 +109,8 @@ public class AccountController : Controller
     {
         if (User.Identity!.IsAuthenticated)
         {
+            logger.LogInformation("An authenticated user tried to access the register view. Redirecting them");
+            
             return RedirectToAction("Index", "Home");
         }
 
@@ -77,19 +120,30 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-        if (ModelState.IsValid)
+        if (ModelState.IsValid is false)
         {
-            var (newCustomer, succeeded, errors) = await customerService.CreateAsync(model);
-
-            if (succeeded is true && newCustomer is not null)
-            {
-                return RedirectToAction(nameof(Login));
-            }
-            else
-            {
-                errors.ForEach(error => ModelState.AddModelError(string.Empty, error));
-            }
+            return View();
         }
+
+        logger.LogInformation(
+            "Controller => Attempting to create a new customer account");
+
+        var (newCustomer, succeeded, errors) = await customerService.CreateAsync(model);
+
+        if (succeeded is true && newCustomer is not null)
+        {
+            logger.LogInformation(
+                "{announcement}: Attempt to create a new customer account completed successfully",
+                "SUCCEEDED");
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        logger.LogWarning(
+            "{announcement}: Attempt to create a new customer account was unsuccessful",
+            "FAILED");
+
+        errors.ForEach(error => ModelState.AddModelError(string.Empty, error));
 
         return View();
     }
@@ -97,6 +151,12 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateAccount(AccountViewModel model)
     {
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        logger.LogInformation(
+            "Controller => Attempting to update account for customer {customerId}. Encryption required",
+            customerId);
+        
         await customerService.UpdateAsync(model.UpdateAccountModel);
 
         return RedirectToAction(nameof(Index));
@@ -105,10 +165,20 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteAccount(string password)
     {
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        logger.LogInformation(
+            "Controller => Attempting to delete account for customer {customerId}. Encryption required",
+            customerId);
+
         var succeeded = await customerService.DeleteAsync(password);
 
         if (succeeded is true)
         {
+            logger.LogInformation(
+                "{announcement}: Attempt to delete account for customer {customerId} completed successfully. Logging them out",
+                customerId);
+
             return RedirectToAction(nameof(Logout));
         }
 
@@ -118,18 +188,30 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> AddNewAddress(AccountViewModel model)
     {
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        logger.LogInformation(
+            "Controller => Attempting to add a new address for customer {customerId}",
+            customerId);
+
         var addressModel = model.AddressModel;
 
         addressModel.Id = Guid.Empty;
-
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         var requestSucceeded = await addressService.CreateAsync(addressModel, customerId);
 
         if (requestSucceeded is false)
         {
+            logger.LogError(
+                "{announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
+                "FAILED", customerId);
+            
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
         }
+
+        logger.LogInformation(
+            "{announcement}: Attempt to add a new address for customer {customerId} completed successfully",
+            "SUCCEEDED", customerId);
 
         return RedirectToAction(nameof(Index));
     }
@@ -138,6 +220,10 @@ public class AccountController : Controller
     public async Task<IActionResult> MarkAddressAsPreferred(Guid addressId)
     {
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        logger.LogInformation(
+            "Controller => Attempting to mark address {addressId} for customer {customerId} as preferred",
+            addressId, customerId);
 
         _ = await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
 
@@ -154,23 +240,50 @@ public class AccountController : Controller
     {
         if (model.SendCodeModel is not null)
         {
+            logger.LogInformation(
+                "Controller => Starting a reset password operation for customer with email {customerEmail}",
+                "***REDACTED***");
+            
             var customer = await customerService.RetrieveSingleAsync(model.SendCodeModel.Email);
 
             if (customer is null)
             {
+                logger.LogWarning(
+                    "Customer with email {customerEmail} does not exist!",
+                    "***REDACTED***");
+                
                 ModelState.AddModelError(string.Empty, $"Customer with email {model.SendCodeModel.Email} does not exist!");
+
                 return View(model);
             }
+
+            logger.LogInformation("Randomly generating a reset password token of size 256 bytes");
 
             string token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(256));
 
             HttpContext.Session.SetString("ResetPasswordToken", token);
 
-            await emailService.SendResetPasswordTokenAsync(
-                customerEmail: model.SendCodeModel.Email,
-                firstName: customer.FirstName,
-                lastName: customer.LastName,
-                token: token);
+            logger.LogInformation(
+                "Sending token to customer with email {customerEmail}",
+                "***REDACTED***");
+
+             var result = 
+                await emailService.SendResetPasswordTokenAsync(
+                    customerEmail: model.SendCodeModel.Email,
+                    firstName: customer.FirstName,
+                    lastName: customer.LastName,
+                    token: token);
+
+            if (result is false)
+            {
+                logger.LogError(
+                    "{announcement}: The system failed to send the token to customer with email {customerEmail}",
+                    "FAILED", "***REDACTED***");
+                
+                ModelState.AddModelError(string.Empty, "The system failed to send you an email with the token,\nplease resubmit and try again");
+
+                return View(model);
+            }
 
             model.ResetPasswordModel = new ResetPasswordModel
             {
@@ -185,10 +298,18 @@ public class AccountController : Controller
 
             if (model.ResetPasswordModel.Token != HttpContext.Session.GetString("ResetPasswordToken"))
             {
+                logger.LogError(
+                    "{announcement}: Customer with email {customerEmail} entered an invalid token to try and reset their password",
+                    "FAILED", "***REDACTED***");
+                
                 ModelState.AddModelError(string.Empty, "Invalid token!");
 
                 return View(model);
             }
+
+            logger.LogError(
+                "{announcement}: Customer with email {customerEmail} entered a valid token. The reset password operation will begin",
+                "SUCCEEDED", "***REDACTED***");
 
             HttpContext.Session.Remove("ResetPasswordToken");
 
