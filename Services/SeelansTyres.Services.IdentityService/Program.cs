@@ -1,9 +1,11 @@
+using ConfigurationSubstitution;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SeelansTyres.Services.IdentityService.Authorization;
 using SeelansTyres.Services.IdentityService.Data;
@@ -15,8 +17,11 @@ using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Reflection;
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
 
 builder.Logging.ClearProviders();
 
@@ -109,6 +114,21 @@ builder.Services.AddScoped<AdminAccountSeeder>();
 builder.Services.AddScoped<ConfigurationDataSeeder>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
+var rsaSecurityKey = new RsaSecurityKey(
+    new RSAParameters
+    {
+        D = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:D"]),
+        DP = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:DP"]),
+        DQ = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:DQ"]),
+        Exponent = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Exponent"]),
+        InverseQ = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:InverseQ"]),
+        Modulus = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Modulus"]),
+        P = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:P"]),
+        Q = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Q"])
+    });
+
+var signingCredentials = new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256);
+
 builder.Services.AddIdentityServer(options =>
 {
     options.Events.RaiseErrorEvents = true;
@@ -132,12 +152,12 @@ builder.Services.AddIdentityServer(options =>
     })
     .AddAspNetIdentity<Customer>()
     .AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>()
-    .AddDeveloperSigningCredential();
+    .AddSigningCredential(signingCredentials);
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(configure =>
     {
-        configure.Authority = "https://localhost:5005";
+        configure.Authority = builder.Configuration["BaseUrl"];
         configure.Audience = "CustomerService";
     });
 

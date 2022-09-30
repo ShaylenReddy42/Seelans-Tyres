@@ -22,25 +22,11 @@ public static class CryptographyExtensions
             "Beginning decryption process for model of type {modelType}", 
             typeof(T).Name);
 
-        logger.LogDebug("Retrieving the Json Web Key from the signing credential store");
+        logger.LogDebug("Retrieving the RSA Security Key from the signing credential store");
         
-        var jsonWebKey = (JsonWebKey)(await signingCredentialStore.GetSigningCredentialsAsync()).Key;
+        var rsaSecurityKey = (RsaSecurityKey)(await signingCredentialStore.GetSigningCredentialsAsync()).Key;
 
-        logger.LogDebug("Converting the Json Web Key to an RSA private key. Values were encoded in base64url according to the documentation");
-
-        var rsaParameters = new RSAParameters
-        {
-            D = Base64UrlEncoder.DecodeBytes(jsonWebKey.D),
-            DP = Base64UrlEncoder.DecodeBytes(jsonWebKey.DP),
-            DQ = Base64UrlEncoder.DecodeBytes(jsonWebKey.DQ),
-            Exponent = Base64UrlEncoder.DecodeBytes(jsonWebKey.E),
-            InverseQ = Base64UrlEncoder.DecodeBytes(jsonWebKey.QI),
-            Modulus = Base64UrlEncoder.DecodeBytes(jsonWebKey.N),
-            P = Base64UrlEncoder.DecodeBytes(jsonWebKey.P),
-            Q = Base64UrlEncoder.DecodeBytes(jsonWebKey.Q)
-        };
-
-        var rsa = RSA.Create(rsaParameters);
+        var rsa = RSA.Create(rsaSecurityKey.Parameters);
 
         logger.LogDebug("Decrypting the encrypted Aes key");
 

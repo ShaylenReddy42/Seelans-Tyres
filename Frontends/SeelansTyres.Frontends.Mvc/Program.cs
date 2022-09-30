@@ -1,3 +1,4 @@
+using ConfigurationSubstitution;
 using SeelansTyres.Frontends.Mvc.Services;
 using System.Net;
 using System.Net.Mail;
@@ -13,6 +14,8 @@ using Serilog.Events;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
 
 builder.Logging.ClearProviders();
 
