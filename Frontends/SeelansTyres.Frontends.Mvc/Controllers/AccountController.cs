@@ -72,8 +72,8 @@ public class AccountController : Controller
         stopwatch.Stop();
 
         logger.LogInformation(
-            "Building the Account View Model for customer {customer} took {stopwatchElapsedTime}ms to complete",
-            stopwatch.ElapsedMilliseconds);
+            "Building the Account View Model for customer {customerId} took {stopwatchElapsedTime}ms to complete",
+            customerId, stopwatch.ElapsedMilliseconds);
 
         return View(accountViewModel);
     }
