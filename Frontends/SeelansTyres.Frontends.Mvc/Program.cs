@@ -136,6 +136,10 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+app.Urls.Clear();
+app.Urls.Add("https://localhost:5001");
+app.Urls.Add("http://localhost:4001");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() is false)
 {

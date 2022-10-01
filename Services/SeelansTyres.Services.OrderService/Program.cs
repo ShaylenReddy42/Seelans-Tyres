@@ -122,6 +122,10 @@ var app = builder.Build();
 
 app.UseProblemDetails();
 
+app.Urls.Clear();
+app.Urls.Add("https://localhost:5012");
+app.Urls.Add("http://localhost:4012");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

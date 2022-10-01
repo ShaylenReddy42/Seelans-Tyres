@@ -76,6 +76,10 @@ builder.Services.AddOcelot()
 
 var app = builder.Build();
 
+app.Urls.Clear();
+app.Urls.Add("https://localhost:5050");
+app.Urls.Add("http://localhost:4050");
+
 app.UseAuthentication();
 
 await app.UseOcelot();

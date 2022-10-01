@@ -90,9 +90,7 @@ public class AccountController : Controller
 
         if (isAdmin is true)
         {
-            logger.LogInformation(
-                "Logging out the administrator",
-                customerId);
+            logger.LogInformation("Logging out the administrator");
         }
         else
         {
@@ -208,10 +206,12 @@ public class AccountController : Controller
             
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
         }
-
-        logger.LogInformation(
-            "{announcement}: Attempt to add a new address for customer {customerId} completed successfully",
-            "SUCCEEDED", customerId);
+        else
+        {
+            logger.LogInformation(
+                "{announcement}: Attempt to add a new address for customer {customerId} completed successfully",
+                "SUCCEEDED", customerId);
+        }
 
         return RedirectToAction(nameof(Index));
     }
