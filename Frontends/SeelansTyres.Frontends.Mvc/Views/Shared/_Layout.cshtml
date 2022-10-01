@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration Configuration
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,6 +12,22 @@
 </head>
 <body class="w-100 h-100 m-0 p-0">
     <header>
+        @if (Configuration.GetValue<bool>("SystemDegraded") is true)
+        {
+            <div class="alert alert-danger text-center p-0" role="alert">
+                <div class="d-inline-flex py-3">
+                    <div>
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                    </div>
+                    <div>
+                        <p class="text-start m-0">
+                            System Degraded: Parts of the system are down and we are trying our best to resolve this.<br>
+                            Sorry for the inconvenience caused
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
         <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom">
             <div class="container-fluid">
                 <a class="navbar-brand seelanstyres-color m-2" asp-controller="Home" asp-action="Index">Seelan's Tyres</a>
