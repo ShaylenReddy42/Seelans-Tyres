@@ -3,6 +3,7 @@ using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,7 @@ using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Services;
 using Serilog;
+using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
@@ -20,6 +22,14 @@ using System.Reflection;
 using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenLocalhost(5005);
+    });
+}
 
 builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
 
@@ -33,16 +43,17 @@ builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
         .ReadFrom.Configuration(hostBuilderContext.Configuration)
         .Enrich.FromLogContext()
         .Enrich.WithExceptionDetails()
-        .Enrich.WithProperty("Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
-        .Enrich.WithProperty("Descriptive Application Name", assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product)
-        .Enrich.WithProperty("Codebase Version", $"v{assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion}")
+        .Enrich.With<ActivityEnricher>()
+        .Enrich.WithProperty("Custom: Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
+        .Enrich.WithProperty("Custom: Descriptive Application Name", assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product)
+        .Enrich.WithProperty("Custom: Codebase Version", $"v{assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion}")
         .WriteTo.Console(
             outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
             theme: AnsiConsoleTheme.Code);
 
     var metadata = assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
 
-    metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty(attribute.Key, attribute.Value));
+    metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value));
 
     if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled") is true)
     {
@@ -137,6 +148,8 @@ builder.Services.AddIdentityServer(options =>
     options.Events.RaiseSuccessEvents = true;
 
     options.EmitStaticAudienceClaim = true;
+
+    options.Authentication.CookieSameSiteMode = SameSiteMode.None;
 })
     .AddConfigurationStore(options =>
     {
@@ -159,6 +172,7 @@ builder.Services.AddAuthentication()
     {
         configure.Authority = builder.Configuration["BaseUrl"];
         configure.Audience = "CustomerService";
+        configure.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddTransient<IAuthorizationHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler>();
@@ -201,26 +215,24 @@ builder.Services.AddProblemDetails(configure =>
 
 var app = builder.Build();
 
-app.UseProblemDetails();
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
+});
 
-app.Urls.Clear();
-app.Urls.Add("https://localhost:5005");
-app.Urls.Add("http://localhost:4005");
+app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() is false)
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
 }
 else
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 

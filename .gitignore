@@ -2,10 +2,12 @@
 .vs/
 .vscode/
 build/
+docker/
 publish/
 
 #Files
 efbundle.exe
 
 # File extensions
+.env
 *.user

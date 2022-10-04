@@ -2,50 +2,7 @@
 
 CD "%~dp0"
 
-MORE RequiredEnvironmentVariables.txt
-
-ECHO.
-PAUSE
-
-ECHO.
-ECHO Restore dotnet tools
-ECHO.
-dotnet tool restore
-
-ECHO.
-ECHO Create EF Core Bundle for SeelansTyres.Services.AddressService
-ECHO.
-dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o efbundle.exe
-
-ECHO.
-ECHO Execute EF Core Bundle against configured database connection
-ECHO.
-efbundle.exe --connection "%SeelansTyresAddressContext%"
-
-ECHO.
-ECHO Create EF Core Bundle for SeelansTyres.Services.OrderService
-ECHO.
-dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o efbundle.exe
-
-ECHO.
-ECHO Execute EF Core Bundle against configured database connection
-ECHO.
-efbundle.exe --connection "%SeelansTyresOrderContext%"
-
-ECHO.
-ECHO Create EF Core Bundle for SeelansTyres.Services.TyresService
-ECHO.
-dotnet tool run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o efbundle.exe
-
-ECHO.
-ECHO Execute EF Core Bundle against configured database connection
-ECHO.
-efbundle.exe --connection "%SeelansTyresTyresContext%"
-
-ECHO.
-ECHO Run CMake
-ECHO.
-cmake -G "Visual Studio 17" -S . -B build
+CALL prebuild.cmd
 
 CD Frontends/SeelansTyres.Frontends.Mvc
 
@@ -151,6 +108,24 @@ XCOPY /S /Q Services\SeelansTyres.Services.OrderService\publish\ publish\Seelans
 ECHO.
 
 XCOPY /S /Q Services\SeelansTyres.Services.TyresService\publish\ publish\SeelansTyres.Services.TyresService\
+ECHO.
+
+COPY /V /Y scripts\run\SeelansTyres.Frontends.Mvc.cmd publish\SeelansTyres.Frontends.Mvc\run.cmd
+ECHO.
+
+COPY /V /Y scripts\run\SeelansTyres.Gateways.MvcBff.cmd publish\SeelansTyres.Gateways.MvcBff\run.cmd
+ECHO.
+
+COPY /V /Y scripts\run\SeelansTyres.Services.AddressService.cmd publish\SeelansTyres.Services.AddressService\run.cmd
+ECHO.
+
+COPY /V /Y scripts\run\SeelansTyres.Services.IdentityService.cmd publish\SeelansTyres.Services.IdentityService\run.cmd
+ECHO.
+
+COPY /V /Y scripts\run\SeelansTyres.Services.OrderService.cmd publish\SeelansTyres.Services.OrderService\run.cmd
+ECHO.
+
+COPY /V /Y scripts\run\SeelansTyres.Services.TyresService.cmd publish\SeelansTyres.Services.TyresService\run.cmd
 ECHO.
 
 PAUSE

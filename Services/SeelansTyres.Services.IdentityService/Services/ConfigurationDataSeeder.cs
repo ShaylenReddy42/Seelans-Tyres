@@ -28,10 +28,12 @@ public class ConfigurationDataSeeder
                 context.Clients.SingleOrDefault(
                     entity => entity.ClientId == client.ClientId);
 
-            if (clientEntity is null)
+            if (clientEntity is not null)
             {
-                context.Clients.Add(client.ToEntity());
+                context.Clients.Remove(clientEntity);
             }
+
+            context.Clients.Add(client.ToEntity());
         });
         await context.SaveChangesAsync();
 

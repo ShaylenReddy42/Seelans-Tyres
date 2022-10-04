@@ -8,19 +8,35 @@
 
 ## What's the purpose of this project?
 
-This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which, compared to this, was very poorly written and insecure. Originally it was written with PHP as the backend, this project is written using ASP.NET Core 6
+This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which, compared to this, was very poorly written and insecure
 
-It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifcations and needed a way to prove my skills with a project. As of right now, the solution is not cloud-native yet, it isn't even in its final architecture
+Originally it was written with PHP as the backend, this is written using ASP.NET Core 6
 
-Since this project is a proof of concept, the payment system isn't integrated
+It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifcations and needed a way to prove my skills with a project
 
-## Current Architecture
+As of right now, the solution is not cloud-native yet
 
-Currently, there's an MVC project that acts as the frontend with a WebApi for data access from a SQL Server database. Both projects utilize the same database. It's created using the code-first approach of Entity Framework Core. Right now, the whole solution has to be deployed as one, even though I added some error handling in the MVC project so it can work without the api, but it obviously cannot function well and there's other errors it will encounter regarding being unauthorized to use the api once it does come online
+Since this project is a proof-of-concept, the payment system isn't integrated
 
-## Desired Architecture
+## Architecture
 
-The WebApi will be split into microservices that has its own databases using Domain-Driven Design. It seems that each controller in the api can be its own service. This will allow most of the site to work even if one service is down and be cloud-native with the site and its services hosted on Azure Kubernetes Services
+### Where it started
+
+In the beginning, it was a distributed monolith with a frontend and backend API with a single database shared between both the projects
+
+### Where it is
+
+The API has been broken down into microservices which then invited a backend-for-frontend to have a single point of entry into the microservices from the frontend
+
+So far, the solution comprises of 6 projects and isn't even done
+
+### Where it's going
+
+The solution looks complete but it isn't, data synchronization between the microservices hasn't been implemented yet
+
+To solve this, a messaging service will come into play and invite workers into the solution, restructuring the entire solution
+
+The workers will listen in on dedicated queues for updates and update their copy of the data
 
 ## Features
 
@@ -77,9 +93,26 @@ The WebApi will be split into microservices that has its own databases using Dom
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * [An Instance of SQL Server 2019 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## Build instructions
 
+* NOTE: If you use `build-with-docker.cmd`, I recommend you pull these images beforehand:
+  * [elasticsearch:7.17.6](https://hub.docker.com/_/elasticsearch/)
+  * [kibana:7.17.6](https://hub.docker.com/_/kibana/)
+  * [mcr.microsoft.com/dotnet/aspnet:6.0](https://mcr.microsoft.com/en-us/product/dotnet/aspnet/about)
+  * [mcr.microsoft.com/dotnet/sdk:6.0](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
+  * [mcr.microsoft.com/mssql/server:2019-latest](https://hub.docker.com/_/microsoft-mssql-server)
+* If you use `build-with-loggingsinks.cmd`, pull only these images beforehand:
+  * [elasticsearch:7.17.6](https://hub.docker.com/_/elasticsearch/)
+  * [kibana:7.17.6](https://hub.docker.com/_/kibana/)
+
 * Ensure to set environment variables listed in the `RequiredEnvironmentVariables.txt` file
   * Press the Win Key and search for `Edit environment variables for your account`
-* Run `build.cmd` and it will create an ef core bundle to apply migrations, publish each runnable project and copies them to a publish dir at the root. Run each project and use the site however you like
+  * When setting this for the first time, restart your computer
+* All build scripts are in the `scripts` folder
+* In order to build, I've provided three options for you:
+  * `build.cmd` which is the regular build
+  * `build-with-docker.cmd` just to see what it looks like orchestrated with docker compose
+  * `build-with-loggingsinks.cmd` which is the regular build + elasticsearch and kibana orchestrated with docker compose
+* Once you run either `build.cmd` or `build-with-loggingsinks.cmd`, run `runall.cmd` which will start all applications minimized and launch the site, simulating orchestration

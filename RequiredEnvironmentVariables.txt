@@ -10,6 +10,11 @@ AdminCredentials__Password
 
 	Password used to create the account
 
+envUseElasticsearch -- true
+
+	Set this to true to override appsettings.json and enable logging to Elasticsearch.
+	Only do this if you have Docker Desktop installed and running
+
 EmailCredentials__Email [Requires a real email account]
 
 	Email used to Send emails

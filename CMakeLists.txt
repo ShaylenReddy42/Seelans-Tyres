@@ -66,6 +66,10 @@ message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 
 configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/.env.in" 
+	"${CMAKE_SOURCE_DIR}/.env")
+
+configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Frontends.Mvc.AssemblyInfo.cs.in" 
 	"${CMAKE_SOURCE_DIR}/Frontends/SeelansTyres.Frontends.Mvc/Properties/AssemblyInfo.cs")
 

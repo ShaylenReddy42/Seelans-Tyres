@@ -8,12 +8,21 @@ using SeelansTyres.Services.OrderService.Authorization;
 using SeelansTyres.Services.OrderService.Data;
 using SeelansTyres.Services.OrderService.Services;
 using Serilog;
+using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenLocalhost(5012);
+    });
+}
 
 builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
 
@@ -27,14 +36,15 @@ builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
         .ReadFrom.Configuration(hostBuilderContext.Configuration)
         .Enrich.FromLogContext()
         .Enrich.WithExceptionDetails()
-        .Enrich.WithProperty("Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
-        .Enrich.WithProperty("Descriptive Application Name", assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product)
-        .Enrich.WithProperty("Codebase Version", $"v{assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion}")
+        .Enrich.With<ActivityEnricher>()
+        .Enrich.WithProperty("Custom: Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
+        .Enrich.WithProperty("Custom: Descriptive Application Name", assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product)
+        .Enrich.WithProperty("Custom: Codebase Version", $"v{assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion}")
         .WriteTo.Console();
 
     var metadata = assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
 
-    metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty(attribute.Key, attribute.Value));
+    metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value));
 
     if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled") is true)
     {
@@ -91,6 +101,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["TokenIssuer"];
         configure.Audience = "OrderService";
+        configure.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
@@ -122,10 +133,6 @@ var app = builder.Build();
 
 app.UseProblemDetails();
 
-app.Urls.Clear();
-app.Urls.Add("https://localhost:5012");
-app.Urls.Add("http://localhost:4012");
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -133,12 +140,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
+if (app.Configuration.GetValue<bool>("UseDocker") is true)
+{
+    await MigrateDatabase();
+}
+
 app.Run();
+
+Task MigrateDatabase()
+{
+    using var scope = app.Services.CreateScope();
+    var ordersContext = scope.ServiceProvider.GetService<OrdersContext>();
+    ordersContext!.Database.Migrate();
+
+    return Task.CompletedTask;
+}
