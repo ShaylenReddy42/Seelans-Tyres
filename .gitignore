@@ -4,6 +4,7 @@
 build/
 docker/
 publish/
+scripts/run/
 
 #Files
 efbundle.exe
