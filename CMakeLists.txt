@@ -65,6 +65,23 @@ set(COMMIT_URL "https://github.com/ShaylenReddy42/Seelans-Tyres/commit/${COMMIT_
 message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 
+set(
+	PROJECTS
+	"SeelansTyres.Frontends.Mvc"
+	"SeelansTyres.Gateways.MvcBff"
+	"SeelansTyres.Services.AddressService"
+	"SeelansTyres.Services.IdentityService"
+	"SeelansTyres.Services.OrderService"
+	"SeelansTyres.Services.TyresService"
+)
+
+foreach(PROJECT IN LISTS PROJECTS)
+	configure_file(
+		"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
+		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT}.cmd"
+	)
+endforeach()
+
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/.env.in" 
 	"${CMAKE_SOURCE_DIR}/.env")
