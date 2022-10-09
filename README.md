@@ -12,7 +12,7 @@ This project is a rewrite of my [original college project](https://bitbucket.org
 
 Originally it was written with PHP as the backend, this is written using ASP.NET Core 6
 
-It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifcations and needed a way to prove my skills with a project
+It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifications and needed a way to prove my skills with a project
 
 As of right now, the solution is not cloud-native yet
 
@@ -116,3 +116,13 @@ The workers will listen in on dedicated queues for updates and update their copy
   * `build-with-docker.cmd` just to see what it looks like orchestrated with docker compose
   * `build-with-loggingsinks.cmd` which is the regular build + elasticsearch and kibana orchestrated with docker compose
 * Once you run either `build.cmd` or `build-with-loggingsinks.cmd`, run `runall.cmd` which will start all applications minimized and launch the site, simulating orchestration
+
+## Demos
+
+### Setting up Kibana and demonstrating distributed tracing
+
+NOTE: GitHub doesn't show the video in the readme so go to docs/demos and download it or just clone the whole repo
+
+<video controls>
+  <source src="docs/demos/kibana.mp4" type="video/mp4">
+</video>
