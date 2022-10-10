@@ -12,6 +12,7 @@ project(
 set(TAG "0.0.0")
 set(REVISION "0")
 set(COMMIT_ID "unknown")
+set(COMMIT_URL "https://github.com/ShaylenReddy42/Seelans-Tyres")
 
 if(${GIT_FOUND} AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 	execute_process(
@@ -60,10 +61,14 @@ endif()
 
 set(FILE_VERSION "${TAG}.${REVISION}")
 set(INFORMATIONAL_VERSION "${TAG}+${REVISION}-${COMMIT_ID}")
-set(COMMIT_URL "https://github.com/ShaylenReddy42/Seelans-Tyres/commit/${COMMIT_ID}")
+
+if(NOT COMMIT_ID STREQUAL "unknown")
+	string(APPEND COMMIT_URL "/commit/${COMMIT_ID}")
+endif()
 
 message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
+message(STATUS "Commit Url: ${COMMIT_URL}")
 
 set(
 	PROJECTS
