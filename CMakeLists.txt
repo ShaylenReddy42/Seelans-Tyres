@@ -75,6 +75,8 @@ set(
 	"SeelansTyres.Services.TyresService"
 )
 
+set(COPY_TEMPLATE "")
+
 foreach(PROJECT IN LISTS PROJECTS)
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
@@ -87,11 +89,20 @@ foreach(PROJECT IN LISTS PROJECTS)
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/${PROJECT}.AssemblyInfo.cs.in" 
 		"${CMAKE_SOURCE_DIR}/${SOLUTION_FOLDER}/${PROJECT}/Properties/AssemblyInfo.cs")
+
+	set(COPY_PUBLISH_TEMPLATE "XCOPY /S /Q ${SOLUTION_FOLDER}\\${PROJECT}\\publish\\ publish\\${PROJECT}\\ \nECHO. \n\n")
+	set(COPY_RUN_TEMPLATE "COPY /V /Y scripts\\run\\${PROJECT}.cmd publish\\${PROJECT}\\run.cmd \nECHO. \n\n")
+
+	string(APPEND COPY_TEMPLATE ${COPY_PUBLISH_TEMPLATE} ${COPY_RUN_TEMPLATE})
 endforeach()
 
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/.env.in" 
 	"${CMAKE_SOURCE_DIR}/.env")
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/copy-publish-files.cmd.in" 
+	"${CMAKE_SOURCE_DIR}/scripts/copy-publish-files.cmd")
 
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 

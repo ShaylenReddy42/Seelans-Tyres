@@ -1,0 +1,7 @@
+@ECHO off
+
+CD "%~dp0"
+
+CD ..
+
+@COPY_TEMPLATE@

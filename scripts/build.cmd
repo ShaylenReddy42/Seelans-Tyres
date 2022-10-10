@@ -92,40 +92,8 @@ IF EXIST publish (
 	MD publish
 )
 
-XCOPY /S /Q Frontends\SeelansTyres.Frontends.Mvc\publish\ publish\SeelansTyres.Frontends.Mvc\
-ECHO.
+CD "%~dp0"
 
-XCOPY /S /Q Gateways\SeelansTyres.Gateways.MvcBff\publish\ publish\SeelansTyres.Gateways.MvcBff\
-ECHO.
-
-XCOPY /S /Q Services\SeelansTyres.Services.AddressService\publish\ publish\SeelansTyres.Services.AddressService\
-ECHO.
-
-XCOPY /S /Q Services\SeelansTyres.Services.IdentityService\publish\ publish\SeelansTyres.Services.IdentityService\
-ECHO.
-
-XCOPY /S /Q Services\SeelansTyres.Services.OrderService\publish\ publish\SeelansTyres.Services.OrderService\
-ECHO.
-
-XCOPY /S /Q Services\SeelansTyres.Services.TyresService\publish\ publish\SeelansTyres.Services.TyresService\
-ECHO.
-
-COPY /V /Y scripts\run\SeelansTyres.Frontends.Mvc.cmd publish\SeelansTyres.Frontends.Mvc\run.cmd
-ECHO.
-
-COPY /V /Y scripts\run\SeelansTyres.Gateways.MvcBff.cmd publish\SeelansTyres.Gateways.MvcBff\run.cmd
-ECHO.
-
-COPY /V /Y scripts\run\SeelansTyres.Services.AddressService.cmd publish\SeelansTyres.Services.AddressService\run.cmd
-ECHO.
-
-COPY /V /Y scripts\run\SeelansTyres.Services.IdentityService.cmd publish\SeelansTyres.Services.IdentityService\run.cmd
-ECHO.
-
-COPY /V /Y scripts\run\SeelansTyres.Services.OrderService.cmd publish\SeelansTyres.Services.OrderService\run.cmd
-ECHO.
-
-COPY /V /Y scripts\run\SeelansTyres.Services.TyresService.cmd publish\SeelansTyres.Services.TyresService\run.cmd
-ECHO.
+CALL copy-publish-files.cmd
 
 PAUSE
