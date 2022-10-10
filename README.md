@@ -121,8 +121,4 @@ The workers will listen in on dedicated queues for updates and update their copy
 
 ### Setting up Kibana and demonstrating distributed tracing
 
-NOTE: GitHub doesn't show the video in the readme so go to docs/demos and download it or just clone the whole repo
-
-<video controls>
-  <source src="docs/demos/kibana.mp4" type="video/mp4">
-</video>
+[![Kibana Thumbnail](docs/demos/kibana-thumbnail.png)](https://drive.google.com/file/d/1aVM_LosrVu2S6ZnN9Vc6IdDNI87_28la/view "Setting Up Kibana and Demonstrating Distributed Tracing")
