@@ -79,35 +79,19 @@ foreach(PROJECT IN LISTS PROJECTS)
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
 		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT}.cmd")
+
+	string(REPLACE "." ";" TEMP_LIST ${PROJECT})
+
+	list(GET TEMP_LIST 1 SOLUTION_FOLDER)
+
+	configure_file(
+		"${CMAKE_SOURCE_DIR}/cmake/${PROJECT}.AssemblyInfo.cs.in" 
+		"${CMAKE_SOURCE_DIR}/${SOLUTION_FOLDER}/${PROJECT}/Properties/AssemblyInfo.cs")
 endforeach()
 
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/.env.in" 
 	"${CMAKE_SOURCE_DIR}/.env")
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Frontends.Mvc.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Frontends/SeelansTyres.Frontends.Mvc/Properties/AssemblyInfo.cs")
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Gateways.MvcBff.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Gateways/SeelansTyres.Gateways.MvcBff/Properties/AssemblyInfo.cs")
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.AddressService.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.AddressService/Properties/AssemblyInfo.cs")
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.IdentityService.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.IdentityService/Properties/AssemblyInfo.cs")
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.OrderService.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.OrderService/Properties/AssemblyInfo.cs")
-
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/SeelansTyres.Services.TyresService.AssemblyInfo.cs.in" 
-	"${CMAKE_SOURCE_DIR}/Services/SeelansTyres.Services.TyresService/Properties/AssemblyInfo.cs")
 
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 
