@@ -115,7 +115,9 @@ The workers will listen in on dedicated queues for updates and update their copy
   * `build.cmd` which is the regular build
   * `build-with-docker.cmd` just to see what it looks like orchestrated with docker compose
   * `build-with-loggingsinks.cmd` which is the regular build + elasticsearch and kibana orchestrated with docker compose
-* Once you run either `build.cmd` or `build-with-loggingsinks.cmd`, run `runall.cmd` which will start all applications minimized and launch the site, simulating orchestration
+
+* Once you run either `build.cmd` or `build-with-loggingsinks.cmd`, CMake will generate `run-all.cmd`
+* Thereafter, run `run-all.cmd` which will start all applications minimized and launch the site, simulating orchestration
 
 ## Demos
 

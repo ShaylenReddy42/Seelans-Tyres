@@ -9,6 +9,7 @@ scripts/run/
 #Files
 efbundle.exe
 scripts/copy-publish-files.cmd
+scripts/run-all.cmd
 
 # File extensions
 .env

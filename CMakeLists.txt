@@ -76,6 +76,7 @@ set(
 )
 
 set(COPY_TEMPLATE "")
+set(RUNALL_TEMPLATE "")
 
 foreach(PROJECT IN LISTS PROJECTS)
 	configure_file(
@@ -94,6 +95,10 @@ foreach(PROJECT IN LISTS PROJECTS)
 	set(COPY_RUN_TEMPLATE "COPY /V /Y scripts\\run\\${PROJECT}.cmd publish\\${PROJECT}\\run.cmd \nECHO. \n\n")
 
 	string(APPEND COPY_TEMPLATE ${COPY_PUBLISH_TEMPLATE} ${COPY_RUN_TEMPLATE})
+
+	set(RUN_TEMPLATE "START /min CMD /c ${PROJECT}\\run.cmd \n\n")
+
+	string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
 endforeach()
 
 configure_file(
@@ -103,6 +108,10 @@ configure_file(
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/copy-publish-files.cmd.in" 
 	"${CMAKE_SOURCE_DIR}/scripts/copy-publish-files.cmd")
+
+configure_file(
+	"${CMAKE_SOURCE_DIR}/cmake/run-all.cmd.in" 
+	"${CMAKE_SOURCE_DIR}/scripts/run-all.cmd")
 
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 
