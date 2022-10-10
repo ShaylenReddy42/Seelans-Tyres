@@ -78,8 +78,7 @@ set(
 foreach(PROJECT IN LISTS PROJECTS)
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
-		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT}.cmd"
-	)
+		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT}.cmd")
 endforeach()
 
 configure_file(
