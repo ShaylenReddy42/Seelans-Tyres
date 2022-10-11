@@ -74,6 +74,7 @@ set(
 	PROJECTS
 	"SeelansTyres.Frontends.Mvc"
 	"SeelansTyres.Gateways.MvcBff"
+	"SeelansTyres.Libraries.Shared"
 	"SeelansTyres.Services.AddressService"
 	"SeelansTyres.Services.IdentityService"
 	"SeelansTyres.Services.OrderService"
@@ -95,15 +96,17 @@ foreach(PROJECT IN LISTS PROJECTS)
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/${PROJECT}.AssemblyInfo.cs.in" 
 		"${CMAKE_SOURCE_DIR}/${SOLUTION_FOLDER}/${PROJECT}/Properties/AssemblyInfo.cs")
+	
+	if(NOT SOLUTION_FOLDER STREQUAL "Libraries")
+		set(COPY_PUBLISH_TEMPLATE "XCOPY /S /Q ${SOLUTION_FOLDER}\\${PROJECT}\\publish\\ publish\\${PROJECT}\\ \nECHO. \n\n")
+		set(COPY_RUN_TEMPLATE "COPY /V /Y scripts\\run\\${PROJECT}.cmd publish\\${PROJECT}\\run.cmd \nECHO. \n\n")
 
-	set(COPY_PUBLISH_TEMPLATE "XCOPY /S /Q ${SOLUTION_FOLDER}\\${PROJECT}\\publish\\ publish\\${PROJECT}\\ \nECHO. \n\n")
-	set(COPY_RUN_TEMPLATE "COPY /V /Y scripts\\run\\${PROJECT}.cmd publish\\${PROJECT}\\run.cmd \nECHO. \n\n")
+		string(APPEND COPY_TEMPLATE ${COPY_PUBLISH_TEMPLATE} ${COPY_RUN_TEMPLATE})
 
-	string(APPEND COPY_TEMPLATE ${COPY_PUBLISH_TEMPLATE} ${COPY_RUN_TEMPLATE})
+		set(RUN_TEMPLATE "START /min CMD /c ${PROJECT}\\run.cmd \n\n")
 
-	set(RUN_TEMPLATE "START /min CMD /c ${PROJECT}\\run.cmd \n\n")
-
-	string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
+		string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
+	endif()
 endforeach()
 
 configure_file(

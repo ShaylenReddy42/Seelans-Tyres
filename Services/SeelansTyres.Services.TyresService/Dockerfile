@@ -6,14 +6,15 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ["Libraries/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SeelansTyres.Libraries.Shared/"]
 COPY ["Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj", "Services/SeelansTyres.Services.TyresService/"]
 RUN dotnet restore "Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj"
 COPY . .
 WORKDIR "/src/Services/SeelansTyres.Services.TyresService"
-RUN dotnet build "SeelansTyres.Services.TyresService.csproj" -c Release -r linux-x64 -o /app/build
+RUN dotnet build "SeelansTyres.Services.TyresService.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SeelansTyres.Services.TyresService.csproj" -c Release -r linux-x64 /p:UseAppHost=false
+RUN dotnet publish "SeelansTyres.Services.TyresService.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

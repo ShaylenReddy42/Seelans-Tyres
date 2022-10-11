@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{CC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Gateways.MvcBff", "Gateways\SeelansTyres.Gateways.MvcBff\SeelansTyres.Gateways.MvcBff.csproj", "{1CB8AD49-C9E8-407B-9E88-D2DFCBEB6D05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{C0D2A10C-64F4-4A78-A0D5-8C74C0FAF7C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Libraries.Shared", "Libraries\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj", "{076E0771-AEC1-4693-8869-97E9FE458634}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{1CB8AD49-C9E8-407B-9E88-D2DFCBEB6D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CB8AD49-C9E8-407B-9E88-D2DFCBEB6D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CB8AD49-C9E8-407B-9E88-D2DFCBEB6D05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{076E0771-AEC1-4693-8869-97E9FE458634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{076E0771-AEC1-4693-8869-97E9FE458634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{076E0771-AEC1-4693-8869-97E9FE458634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{076E0771-AEC1-4693-8869-97E9FE458634}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{108D593A-5141-4005-BA3D-801FAE819B63} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 		{B2C9FAC3-F99E-4D35-BECB-B320054A8430} = {EDF1CEF6-FC00-46F6-A75D-64F9C52935B6}
 		{1CB8AD49-C9E8-407B-9E88-D2DFCBEB6D05} = {CC13D708-8320-4B4E-B747-F7C3F924847C}
+		{076E0771-AEC1-4693-8869-97E9FE458634} = {C0D2A10C-64F4-4A78-A0D5-8C74C0FAF7C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C5A8447-9A96-4A1C-AD8D-D29233AA88E4}

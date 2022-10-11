@@ -28,7 +28,7 @@ In the beginning, it was a distributed monolith with a frontend and backend API 
 
 The API has been broken down into microservices which then invited a backend-for-frontend to have a single point of entry into the microservices from the frontend
 
-So far, the solution comprises of 6 projects and isn't even done
+So far, the solution comprises of 6 runnable projects and isn't even done
 
 ### Where it's going
 

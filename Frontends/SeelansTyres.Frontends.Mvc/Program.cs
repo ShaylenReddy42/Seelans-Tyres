@@ -7,13 +7,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using Serilog;
-using Serilog.Exceptions;
-using Serilog.Sinks.Elasticsearch;
-using Serilog.Events;
-using System.Reflection;
 using Microsoft.AspNetCore.CookiePolicy;
-using Serilog.Enrichers.Span;
+using SeelansTyres.Libraries.Shared.Models;
+using SeelansTyres.Libraries.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,35 +27,13 @@ builder.Logging.ClearProviders();
 
 var assembly = typeof(Program).Assembly;
 
-builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
+var serilogModel = new SerilogModel
 {
-    loggerConfiguration
-        .ReadFrom.Configuration(hostBuilderContext.Configuration)
-        .Enrich.FromLogContext()
-        .Enrich.WithExceptionDetails()
-        .Enrich.With<ActivityEnricher>()
-        .Enrich.WithProperty("Custom: Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
-        .Enrich.WithProperty("Custom: Descriptive Application Name", assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product)
-        .Enrich.WithProperty("Custom: Codebase Version", $"v{assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion}")
-        .WriteTo.Console();
+    Assembly = assembly,
+    DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Frontend"
+};
 
-    var metadata = assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
-
-    metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value));
-
-    if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled") is true)
-    {
-        loggerConfiguration
-            .WriteTo.Elasticsearch(
-                new ElasticsearchSinkOptions(new Uri(hostBuilderContext.Configuration["LoggingSinks:Elasticsearch:Url"]))
-                {
-                    AutoRegisterTemplate = true,
-                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                    IndexFormat = "seelanstyres-logs-{0:yyyy.MM.dd}",
-                    MinimumLogEventLevel = LogEventLevel.Debug
-                });
-    }
-});
+builder.Host.UseCommonSerilog(serilogModel);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

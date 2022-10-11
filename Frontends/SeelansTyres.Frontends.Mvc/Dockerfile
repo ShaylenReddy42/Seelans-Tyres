@@ -6,14 +6,15 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ["Libraries/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SeelansTyres.Libraries.Shared/"]
 COPY ["Frontends/SeelansTyres.Frontends.Mvc/SeelansTyres.Frontends.Mvc.csproj", "Frontends/SeelansTyres.Frontends.Mvc/"]
 RUN dotnet restore "Frontends/SeelansTyres.Frontends.Mvc/SeelansTyres.Frontends.Mvc.csproj"
 COPY . .
 WORKDIR "/src/Frontends/SeelansTyres.Frontends.Mvc"
-RUN dotnet build "SeelansTyres.Frontends.Mvc.csproj" -c Release -r linux-x64 -o /app/build
+RUN dotnet build "SeelansTyres.Frontends.Mvc.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SeelansTyres.Frontends.Mvc.csproj" -c Release -r linux-x64 /p:UseAppHost=false
+RUN dotnet publish "SeelansTyres.Frontends.Mvc.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
