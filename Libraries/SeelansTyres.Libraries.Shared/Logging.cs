@@ -19,7 +19,7 @@ public static class Logging
                                          ?? serilogModel.DefaultDescriptiveApplicationName;
 
         string codebaseVersion = serilogModel.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
-                              ?? "v0.0.0+0-unknown";
+                              ?? "0.0.0+0-unknown";
 
 
         hostBuilder.UseSerilog((hostBuilderContext, loggerConfiguration) =>
@@ -31,7 +31,7 @@ public static class Logging
                 .Enrich.With<ActivityEnricher>()
                 .Enrich.WithProperty("Custom: Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
                 .Enrich.WithProperty("Custom: Descriptive Application Name", descriptiveApplicationName)
-                .Enrich.WithProperty("Custom: Codebase Version", codebaseVersion);
+                .Enrich.WithProperty("Custom: Codebase Version", $"v{codebaseVersion}");
             
             if (hostBuilderContext.HostingEnvironment.ApplicationName.EndsWith("IdentityService") is true)
             {
