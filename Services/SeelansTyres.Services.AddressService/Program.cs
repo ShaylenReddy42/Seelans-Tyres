@@ -3,7 +3,6 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Services.AddressService.Authorization;
@@ -38,30 +37,8 @@ builder.Host.UseCommonSerilog(serilogModel);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setup =>
-{
-    setup.AddSecurityDefinition("AddressServiceAuth", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        Description = "Input a valid token to access this API"
-    });
 
-    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {{
-        new OpenApiSecurityScheme
-        {
-            Reference = new OpenApiReference
-            {
-                Type = ReferenceType.SecurityScheme,
-                Id = "AddressServiceAuth"
-            }
-        },
-        new List<string>()
-    }});
-});
+builder.Services.AddCommonSwaggerGen();
 
 builder.Services.AddDbContext<AddressContext>(options =>
     options.UseSqlServer(
@@ -107,8 +84,7 @@ app.UseProblemDetails();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCommonSwagger();
 }
 
 app.UseAuthentication();

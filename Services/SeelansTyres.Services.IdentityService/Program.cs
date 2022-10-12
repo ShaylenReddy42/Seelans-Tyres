@@ -1,13 +1,11 @@
 using ConfigurationSubstitution;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.EntityFramework.DbContexts;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Services.IdentityService.Authorization;
@@ -43,29 +41,7 @@ builder.Host.UseCommonSerilog(serilogModel);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setup =>
-{
-    setup.AddSecurityDefinition("CustomerServiceAuth", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        Description = "Input a valid token to access this API"
-    });
-
-    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {{
-        new OpenApiSecurityScheme
-        {
-            Reference = new OpenApiReference
-            {
-                Type = ReferenceType.SecurityScheme,
-                Id = "CustomerServiceAuth"
-            }
-        },
-        new List<string>()
-    }});
-});
+builder.Services.AddCommonSwaggerGen();
 
 var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
 var assemblyName = assembly.GetName().Name;
@@ -202,8 +178,7 @@ if (app.Environment.IsDevelopment() is false)
 }
 else
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCommonSwagger();
 }
 
 app.UseStaticFiles();
