@@ -4,79 +4,13 @@ CD "%~dp0"
 
 CALL prebuild.cmd
 
-CD Frontends/SeelansTyres.Frontends.Mvc
+CD "%~dp0"
 
-ECHO.
-ECHO SeelansTyres.Frontends.Mvc
-ECHO.
+CALL publish-all.cmd
 
-IF EXIST publish (
-	RD publish /S /Q
-)
+CD "%~dp0"
 
-dotnet publish -c Release -r win-x64 --no-self-contained
-
-CD ../../Gateways/SeelansTyres.Gateways.MvcBff
-
-ECHO.
-ECHO SeelansTyres.Gateways.MvcBff
-ECHO.
-
-IF EXIST publish (
-	RD publish /S /Q
-)
-
-dotnet publish -c Release -r win-x64 --no-self-contained
-
-CD ../../Services/SeelansTyres.Services.AddressService
-
-ECHO.
-ECHO SeelansTyres.Services.AddressService
-ECHO.
-
-IF EXIST publish (
-	RD publish /S /Q
-)
-
-dotnet publish -c Release -r win-x64 --no-self-contained
-
-CD ../../Services/SeelansTyres.Services.IdentityService
-
-ECHO.
-ECHO SeelansTyres.Services.IdentityService
-ECHO.
-
-IF EXIST publish (
-	RD publish /S /Q
-)
-
-dotnet publish -c Release -r win-x64 --no-self-contained
-
-CD ../../Services/SeelansTyres.Services.OrderService
-
-ECHO.
-ECHO SeelansTyres.Services.OrderService
-ECHO.
-
-IF EXIST publish (
-	RD publish /S /Q
-)
-
-dotnet publish -c Release -r win-x64 --no-self-contained
-
-CD ../../Services/SeelansTyres.Services.TyresService
-
-ECHO.
-ECHO SeelansTyres.Services.TyresService
-ECHO.
-
-IF EXIST publish (
-	RD publish /S /Q
-)
-
-dotnet publish -c Release -r win-x64 --no-self-contained
-
-CD ../..
+CD ..
 
 ECHO.
 ECHO Cleanup

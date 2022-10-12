@@ -8,7 +8,9 @@ scripts/run/
 
 #Files
 efbundle.exe
+
 scripts/copy-publish-files.cmd
+scripts/publish-all.cmd
 scripts/run-all.cmd
 
 # File extensions

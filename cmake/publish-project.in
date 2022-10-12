@@ -1,0 +1,14 @@
+CD "%~dp0"
+
+CD ../@SOLUTION_FOLDER@/@PROJECT@
+
+ECHO.
+ECHO @PROJECT@
+ECHO.
+
+IF EXIST publish (
+	RD publish /S /Q
+)
+
+dotnet publish -c Release -r win-x64 --no-self-contained
+
