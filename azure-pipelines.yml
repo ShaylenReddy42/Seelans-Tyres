@@ -86,77 +86,47 @@ steps:
     arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
     workingDirectory: '$(workDir)'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 --no-self-contained
-  displayName: 'Publish SeelansTyres.Frontends.Mvc'
-  workingDirectory: '$(workDir)\Frontends\SeelansTyres.Frontends.Mvc'
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Frontends
+    project: SeelansTyres.Frontends.Mvc
+    workDir: '$(workDir)'
 
-- task: ArchiveFiles@2
-  displayName: 'Archive SeelansTyres.Frontends.Mvc'
-  inputs:
-    rootFolderOrFile: '$(workDir)\Frontends\SeelansTyres.Frontends.Mvc\publish'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Frontends.Mvc.zip'
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Gateways
+    project: SeelansTyres.Gateways.MvcBff
+    workDir: '$(workDir)'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 -p:PublishSingleFile=true --no-self-contained
-  displayName: 'Publish SeelansTyres.Gateways.MvcBff'
-  workingDirectory: '$(workDir)\Gateways\SeelansTyres.Gateways.MvcBff'
-  
-- task: ArchiveFiles@2
-  displayName: 'Archive SeelansTyres.Gateways.MvcBff'
-  inputs:
-    rootFolderOrFile: '$(workDir)\Gateways\SeelansTyres.Gateways.MvcBff\publish'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Gateways.MvcBff.zip'
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Services
+    project: SeelansTyres.Services.AddressService
+    workDir: '$(workDir)'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 -p:PublishSingleFile=true --no-self-contained
-  displayName: 'Publish SeelansTyres.Services.AddressService'
-  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.AddressService'
-  
-- task: ArchiveFiles@2
-  displayName: 'Archive SeelansTyres.Services.AddressService'
-  inputs:
-    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.AddressService\publish'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.AddressService.zip'
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Services
+    project: SeelansTyres.Services.IdentityService
+    workDir: '$(workDir)'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 -p:PublishSingleFile=true --no-self-contained
-  displayName: 'Publish SeelansTyres.Services.IdentityService'
-  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.IdentityService'
-  
-- task: ArchiveFiles@2
-  displayName: 'Archive SeelansTyres.Services.IdentityService'
-  inputs:
-    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.IdentityService\publish'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.IdentityService.zip'
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Services
+    project: SeelansTyres.Services.OrderService
+    workDir: '$(workDir)'
 
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 -p:PublishSingleFile=true --no-self-contained
-  displayName: 'Publish SeelansTyres.Services.OrderService'
-  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.OrderService'
-  
-- task: ArchiveFiles@2
-  displayName: 'Archive SeelansTyres.Services.OrderService'
-  inputs:
-    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.OrderService\publish'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.OrderService.zip'
-
-- script: dotnet publish -c $(buildConfiguration) -r win-x64 -p:PublishSingleFile=true --no-self-contained
-  displayName: 'Publish SeelansTyres.Services.TyresService'
-  workingDirectory: '$(workDir)\Services\SeelansTyres.Services.TyresService'
-  
-- task: ArchiveFiles@2
-  displayName: 'Archive SeelansTyres.Services.TyresService'
-  inputs:
-    rootFolderOrFile: '$(workDir)\Services\SeelansTyres.Services.TyresService\publish'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)\SeelansTyres.Services.TyresService.zip'
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Services
+    project: SeelansTyres.Services.TyresService
+    workDir: '$(workDir)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts'
