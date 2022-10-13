@@ -72,6 +72,7 @@ message(STATUS "Commit Url: ${COMMIT_URL}")
 
 set(
 	PROJECTS
+	"SeelansTyres.Frontends.HealthChecksUI"
 	"SeelansTyres.Frontends.Mvc"
 	"SeelansTyres.Gateways.MvcBff"
 	"SeelansTyres.Libraries.Shared"

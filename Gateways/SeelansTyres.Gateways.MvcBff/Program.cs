@@ -7,6 +7,9 @@ using SeelansTyres.Gateways.MvcBff.Services;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using static System.Net.Mime.MediaTypeNames;
+using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SeelansTyres.Gateways.MvcBff.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,10 +62,39 @@ builder.Services.AddOcelot()
     .AddDelegatingHandler<OrderServiceDelegatingHandler>()
     .AddDelegatingHandler<TyresServiceDelegatingHandler>();
 
+var healthChecksModel = new HealthChecksModel
+{
+    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+};
+
+builder.Services.AddHealthChecks()
+    .AddCommonChecks(healthChecksModel)
+    .AddIdentityServer(
+        idSvrUri: new(builder.Configuration["IdentityServerUrl"]),
+        name: "identityServer",
+        failureStatus: HealthStatus.Unhealthy)
+    .AddDownstreamChecks(builder.Configuration);
+
 var app = builder.Build();
 
 app.UseAuthentication();
 
-await app.UseOcelot();
+await app.UseOcelot(ocelotPipelineConfiguration =>
+{
+    ocelotPipelineConfiguration.PreErrorResponderMiddleware = async (httpContext, next) =>
+    {
+        if (httpContext.Request.Path.Equals(new(app.Configuration["HealthCheckEndpoint"])) is true)
+        {
+            var healthCheckService = app.Services.GetService<HealthCheckService>();
+
+            await UIResponseWriter.WriteHealthCheckUIResponse(httpContext, await healthCheckService!.CheckHealthAsync());
+        }
+        else
+        {
+            await next.Invoke();
+        }
+    };
+});
 
 app.Run();

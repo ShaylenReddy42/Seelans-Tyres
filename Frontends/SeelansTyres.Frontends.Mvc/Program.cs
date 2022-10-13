@@ -10,6 +10,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.CookiePolicy;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,6 +122,28 @@ builder.Services.AddAuthentication(options =>
         options.ClaimActions.MapUniqueJsonKey(ClaimTypes.Role, ClaimTypes.Role);
     });
 
+var healthChecksModel = new HealthChecksModel
+{
+    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+};
+
+builder.Services.AddHealthChecks()
+    .AddCommonChecks(healthChecksModel)
+    .AddUrlGroup(
+        uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["HealthCheckEndpoint"]}"),
+        name: "gateway",
+        failureStatus: HealthStatus.Unhealthy);
+
+if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+{
+    builder.Services.AddHealthChecks()
+        .AddIdentityServer(
+            idSvrUri: new(builder.Configuration["IdentityServerUrl"]),
+            name: "identityServer",
+            failureStatus: HealthStatus.Unhealthy);
+}
+
 var app = builder.Build();
 
 app.UseCookiePolicy(new CookiePolicyOptions
@@ -144,5 +169,10 @@ app.UseAuthorization();
 app.UseSession();
 
 app.MapDefaultControllerRoute();
+
+app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

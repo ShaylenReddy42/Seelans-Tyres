@@ -14,6 +14,9 @@ using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Services;
 using System.Reflection;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -161,6 +164,18 @@ builder.Services.AddProblemDetails(configure =>
     configure.IncludeExceptionDetails = (httpContext, exception) => false;
 });
 
+var healthChecksModel = new HealthChecksModel
+{
+    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+};
+
+builder.Services.AddHealthChecks()
+    .AddCommonChecks(healthChecksModel)
+    .AddDbContextCheck<CustomerContext>(
+        name: "database",
+        failureStatus: HealthStatus.Unhealthy);
+
 var app = builder.Build();
 
 app.UseCookiePolicy(new CookiePolicyOptions
@@ -190,6 +205,11 @@ app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
+
+app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Logger.LogInformation("Program => Migrating and seeding databases");
 

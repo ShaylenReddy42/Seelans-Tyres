@@ -1,6 +1,25 @@
 version: '3.8'
 
 services:
+  seelanstyres-frontends-healthchecksui:
+    build:
+      context: .
+      dockerfile: 'Frontends/SeelansTyres.Frontends.HealthChecksUI/Dockerfile'
+    container_name: 'seelanstyresfrontendshealthchecksui'
+    image: 'seelanstyresfrontendshealthchecksui:${TAG}'
+    ports:
+      - 5000:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - envUseElasticsearch=true
+      - envElasticsearchUrl=${ELASTICSEARCH}
+      - GlobalHealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - envHost=${HOST}
+      - UseDocker=true
+    restart: always
+    networks:
+      - seelanstyres-network
+  
   seelanstyres-frontends-mvc:
     build:
       context: .
@@ -17,6 +36,7 @@ services:
       - envMvcBffUrl=http://${HOST}:5050
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - UseDocker=true
     restart: always
     networks:
@@ -40,6 +60,7 @@ services:
       - envIdentityServerUrl=http://${HOST}:5005
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - UseDocker=true
     restart: always
     networks:
@@ -58,6 +79,7 @@ services:
       - SeelansTyresAddressContext=${CONTEXT}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envTokenIssuer=http://${HOST}:5005
       - UseDocker=true
     depends_on:
@@ -81,6 +103,7 @@ services:
       - SeelansTyresIdentityContext=${CONTEXT}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envBaseUrl=http://${HOST}:5005
       - envSeelansTyresMvcClientUrl=http://${HOST}:5001
       - UseDocker=true
@@ -104,6 +127,7 @@ services:
       - envTokenIssuer=http://${HOST}:5005
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - UseDocker=true
     depends_on:
       - sqlserver
@@ -125,6 +149,7 @@ services:
       - envTokenIssuer=http://${HOST}:5005
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - UseDocker=true
     depends_on:
       - sqlserver

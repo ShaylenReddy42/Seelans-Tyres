@@ -1,8 +1,11 @@
 using ConfigurationSubstitution;
+using HealthChecks.UI.Client;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Services.AddressService.Authorization;
@@ -77,6 +80,18 @@ builder.Services.AddProblemDetails(configure =>
     configure.IncludeExceptionDetails = (httpContext, exception) => false;
 });
 
+var healthChecksModel = new HealthChecksModel
+{
+    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+};
+
+builder.Services.AddHealthChecks()
+    .AddCommonChecks(healthChecksModel)
+    .AddDbContextCheck<AddressContext>(
+        name: "database",
+        failureStatus: HealthStatus.Unhealthy);
+
 var app = builder.Build();
 
 app.UseProblemDetails();
@@ -92,6 +107,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {

@@ -28,7 +28,7 @@ In the beginning, it was a distributed monolith with a frontend and backend API 
 
 The API has been broken down into microservices which then invited a backend-for-frontend to have a single point of entry into the microservices from the frontend
 
-So far, the solution comprises of 6 runnable projects and isn't even done
+So far, the solution comprises of 7 runnable projects and isn't even done
 
 ### Where it's going
 
@@ -82,6 +82,8 @@ The workers will listen in on dedicated queues for updates and update their copy
 * [Logging and Monitoring in ASP.NET Core 6](https://www.pluralsight.com/courses/logging-monitoring-aspdotnet-core-6)
   * Author: [Erik Dahl](https://app.pluralsight.com/profile/author/erik-dahl)
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
+  * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
+* [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
 * [Microsoft Docs](https://docs.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]

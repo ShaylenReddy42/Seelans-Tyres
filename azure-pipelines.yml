@@ -90,6 +90,13 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Frontends
+    project: SeelansTyres.Frontends.HealthChecksUI
+    workDir: '$(workDir)'
+
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Frontends
     project: SeelansTyres.Frontends.Mvc
     workDir: '$(workDir)'
 
