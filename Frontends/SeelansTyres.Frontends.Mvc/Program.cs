@@ -130,19 +130,14 @@ var healthChecksModel = new HealthChecksModel
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
+    .AddIdentityServer(
+        idSvrUri: new(builder.Configuration["IdentityServerUrl"]),
+        name: "identityServer",
+        failureStatus: HealthStatus.Unhealthy)
     .AddUrlGroup(
         uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["HealthCheckEndpoint"]}"),
         name: "gateway",
         failureStatus: HealthStatus.Unhealthy);
-
-if (builder.Configuration.GetValue<bool>("UseDocker") is false)
-{
-    builder.Services.AddHealthChecks()
-        .AddIdentityServer(
-            idSvrUri: new(builder.Configuration["IdentityServerUrl"]),
-            name: "identityServer",
-            failureStatus: HealthStatus.Unhealthy);
-}
 
 var app = builder.Build();
 
