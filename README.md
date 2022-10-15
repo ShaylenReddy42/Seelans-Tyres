@@ -90,8 +90,8 @@ The workers will listen in on dedicated queues for updates and update their copy
 
 ## Required local setup to build and run
 
-* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
-* [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) 6.0.400
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.3.6 or later
+* [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) 6.0.402
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * [An Instance of SQL Server 2019 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
