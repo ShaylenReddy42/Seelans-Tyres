@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <!-- Manually added PropertyGroup for reducing files created during publishing -->
@@ -15,9 +17,6 @@
     <SelfContained>false</SelfContained>
     <PublishDir>publish</PublishDir>
     <PublishReadyToRun>true</PublishReadyToRun>
-    <UserSecretsId>04acbf4e-6e03-4eae-b466-025abac3f5b9</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
