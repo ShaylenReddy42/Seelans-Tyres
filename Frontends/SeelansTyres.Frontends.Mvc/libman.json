@@ -35,7 +35,7 @@
       ]
     },
     {
-      "library": "bootstrap@5.2.0",
+      "library": "bootstrap@5.2.2",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
         "dist/css/bootstrap-grid.css",
@@ -82,7 +82,8 @@
         "dist/js/bootstrap.js.map",
         "dist/js/bootstrap.min.js",
         "dist/js/bootstrap.min.js.map",
-        "LICENSE"
+        "LICENSE",
+        "README.md"
       ]
     }
   ]
