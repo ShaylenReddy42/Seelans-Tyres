@@ -36,8 +36,8 @@ steps:
     projectKey: 'ShaylenReddy42_Seelans-Tyres'
     projectName: 'Seelans-Tyres'
     extraProperties: |
-      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**IdentityService/Quickstart/**,**IdentityService/Views/**
-      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**IdentityService/Quickstart/**,**IdentityService/Views/**
+      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**
+      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
