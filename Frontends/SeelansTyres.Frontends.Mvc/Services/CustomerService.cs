@@ -57,7 +57,7 @@ public class CustomerService : ICustomerService
             {
                 logger.LogInformation(
                     "Customer with email {customerEmail} already exists",
-                    registerModel.Email);
+                    "***REDACTED***");
                 
                 errors.Add($"Customer with email {registerModel.Email} already exists");
             }
