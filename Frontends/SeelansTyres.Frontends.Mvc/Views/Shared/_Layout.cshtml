@@ -1,5 +1,18 @@
 ﻿@inject IConfiguration Configuration
 
+@{
+    var assembly = Assembly.GetExecutingAssembly();
+
+    var informationalVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+                            ?? "0.0.0+0-unknown";
+
+    var commitUrl =
+        assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>().ToList()
+            .SingleOrDefault(attribute => attribute.Key.EndsWith("Commit Url"))?.Value
+                ?? "https://github.com/ShaylenReddy42/Seelans-Tyres";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +93,8 @@
     @RenderBody()
 
     <footer class="border-top w-100 p-5 text-muted text-center">
-        &copy; 2022 - Seelan's Tyres
+        Shaylen Reddy: MIT License<br>
+        <a href="@commitUrl" target="_blank">@($"v{informationalVersion}")</a>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
