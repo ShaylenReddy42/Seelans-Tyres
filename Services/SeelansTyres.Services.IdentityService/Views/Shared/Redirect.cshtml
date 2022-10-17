@@ -7,5 +7,6 @@
     </div>
 </div>
 
-<meta http-equiv="refresh" content="0;url=@Model.RedirectUrl" data-url="@Model.RedirectUrl">
-<script src="~/js/signin-redirect.js"></script>
+<script>
+    window.location.href = "@Model.RedirectUrl";
+</script>
