@@ -29,7 +29,7 @@
                 <td>@($"{item.TotalItemPrice:R0.00}")</td>
                 <td class="text-center">
                     <form method="post" asp-controller="Shopping" asp-action="RemoveTyreFromCart" asp-route-tyreId="@item.TyreId">
-                        <button class="btn btn-sm btn-danger w-75"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-sm btn-danger w-75"><span class="fas fa-trash-alt"></span></button>
                     </form>
                 </td>
             </tr>
