@@ -84,15 +84,32 @@ await app.UseOcelot(ocelotPipelineConfiguration =>
 {
     ocelotPipelineConfiguration.PreErrorResponderMiddleware = async (httpContext, next) =>
     {
-        if (httpContext.Request.Path.Equals(new(app.Configuration["HealthCheckEndpoint"])) is true)
-        {
-            var healthCheckService = app.Services.GetService<HealthCheckService>();
+        var requestPath = httpContext.Request.Path.ToString();
+        var healthCheckService = app.Services.GetService<HealthCheckService>();
 
-            await UIResponseWriter.WriteHealthCheckUIResponse(httpContext, await healthCheckService!.CheckHealthAsync());
-        }
-        else
+        var healthCheckEndpoints = new List<string>()
+        {
+            app.Configuration["HealthCheckEndpoint"],
+            app.Configuration["LivenessCheckEndpoint"],
+        };
+
+        if (healthCheckEndpoints.Contains(requestPath) is false)
         {
             await next.Invoke();
+        }
+        else if (requestPath == app.Configuration["LivenessCheckEndpoint"])
+        {
+            await UIResponseWriter.WriteHealthCheckUIResponse(
+                httpContext, 
+                await healthCheckService!.CheckHealthAsync(
+                    healthCheckRegistration =>  
+                        healthCheckRegistration.Tags.Contains("self")));
+        }
+        else if (requestPath == app.Configuration["HealthCheckEndpoint"])
+        {
+            await UIResponseWriter.WriteHealthCheckUIResponse(
+                httpContext, 
+                await healthCheckService!.CheckHealthAsync());
         }
     };
 });

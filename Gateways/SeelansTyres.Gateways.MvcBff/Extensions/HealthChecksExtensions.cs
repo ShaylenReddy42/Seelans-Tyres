@@ -23,7 +23,7 @@ public static class HealthChecksExtensions
 
             healthChecks
                 .AddUrlGroup(
-                    uri: new($"{serviceUrl}{configuration["HealthCheckEndpoint"]}"),
+                    uri: new($"{serviceUrl}{configuration["LivenessCheckEndpoint"]}"),
                     name: service,
                     failureStatus: HealthStatus.Degraded);
         });

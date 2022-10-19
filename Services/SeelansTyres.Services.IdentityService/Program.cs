@@ -15,8 +15,6 @@ using SeelansTyres.Services.IdentityService.Services;
 using System.Reflection;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -206,10 +204,7 @@ app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
 
-app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.MapCommonHealthChecks();
 
 app.Logger.LogInformation("Program => Migrating and seeding databases");
 

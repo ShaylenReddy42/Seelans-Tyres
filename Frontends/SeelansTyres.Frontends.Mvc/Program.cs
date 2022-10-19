@@ -10,8 +10,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.CookiePolicy;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -135,7 +133,7 @@ builder.Services.AddHealthChecks()
         name: "identityServer",
         failureStatus: HealthStatus.Unhealthy)
     .AddUrlGroup(
-        uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["HealthCheckEndpoint"]}"),
+        uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
         name: "gateway",
         failureStatus: HealthStatus.Unhealthy);
 
@@ -165,9 +163,6 @@ app.UseSession();
 
 app.MapDefaultControllerRoute();
 
-app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.MapCommonHealthChecks();
 
 app.Run();

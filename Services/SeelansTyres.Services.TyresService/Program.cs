@@ -10,8 +10,6 @@ using SeelansTyres.Services.TyresService.Data;
 using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,10 +103,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.MapCommonHealthChecks();
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {

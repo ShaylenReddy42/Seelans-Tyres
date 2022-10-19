@@ -1,9 +1,7 @@
 using ConfigurationSubstitution;
-using HealthChecks.UI.Client;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Libraries.Shared;
@@ -108,10 +106,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.MapCommonHealthChecks();
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {
