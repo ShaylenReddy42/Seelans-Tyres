@@ -37,10 +37,15 @@ public static class Swagger
         return services;
     }
 
-    public static IApplicationBuilder UseCommonSwagger(this IApplicationBuilder app)
+    public static WebApplication UseCommonSwagger(this WebApplication app)
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+
+        if (app.Environment.ApplicationName.EndsWith("IdentityService") is false)
+        {
+            app.Map("/", httpContext => Task.Run(() => httpContext.Response.Redirect("/swagger")));
+        }
 
         return app;
     }
