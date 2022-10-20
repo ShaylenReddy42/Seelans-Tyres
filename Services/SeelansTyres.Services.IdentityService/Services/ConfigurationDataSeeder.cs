@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using System.Diagnostics;
 
 namespace SeelansTyres.Services.IdentityService.Services;
 
@@ -8,6 +9,7 @@ public class ConfigurationDataSeeder
 	private readonly ConfigurationDbContext context;
     private readonly IConfiguration configuration;
     private readonly ILogger<ConfigurationDataSeeder> logger;
+    private readonly Stopwatch stopwatch = new();
 
     public ConfigurationDataSeeder(
         ConfigurationDbContext context,
@@ -18,6 +20,8 @@ public class ConfigurationDataSeeder
     public async Task SeedConfigurationDataAsync()
     {
         logger.LogInformation("Service => Seeding configuration data");
+
+        stopwatch.Start();
         
         Config.Configuration = configuration;
         
@@ -79,6 +83,10 @@ public class ConfigurationDataSeeder
         });
         await context.SaveChangesAsync();
 
-        logger.LogInformation("Configuration data seeded successfully");
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Configuration data seeded successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 }
