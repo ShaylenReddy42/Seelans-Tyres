@@ -114,16 +114,7 @@ app.MapCommonHealthChecks();
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {
-    await MigrateDatabase();
+    await app.MigrateDatabaseAsync<OrdersContext>();
 }
 
 app.Run();
-
-Task MigrateDatabase()
-{
-    using var scope = app.Services.CreateScope();
-    var ordersContext = scope.ServiceProvider.GetService<OrdersContext>();
-    ordersContext!.Database.Migrate();
-
-    return Task.CompletedTask;
-}
