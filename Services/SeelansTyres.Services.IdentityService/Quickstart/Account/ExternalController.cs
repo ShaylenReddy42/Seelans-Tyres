@@ -82,14 +82,7 @@ public class ExternalController : Controller
         }
 
         // lookup our user and external provider info
-        var (user, provider, providerUserId, claims) = FindUserFromExternalProvider(result);
-
-        if (_logger.IsEnabled(LogLevel.Trace))
-        {
-            // Done to remove the code smell from sonarcloud
-            claims.ToList()
-                .ForEach(claim => _logger.LogTrace("{claimType}: {claimValue}", claim.Type, claim.Value));
-        }
+        var (user, provider, providerUserId, _) = FindUserFromExternalProvider(result);
 
         // this allows us to collect any additional claims or properties
         // for the specific protocols used and store them in the local auth cookie.
