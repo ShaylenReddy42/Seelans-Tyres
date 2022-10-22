@@ -45,12 +45,6 @@ public static class CryptographyExtensions
             ciphertext: encryptedDataModel.AesGcmCipherText, 
             tag: encryptedDataModel.AesGcmTag);
 
-        logger.LogDebug("Computing the hash of the encrypted data using the Aes key");
-
-        using var hmac = new HMACSHA256(aesKey);
-
-        encryptedDataModel.HmacOfCipherText = hmac.ComputeHash(encryptedDataModel.AesGcmCipherText);
-
         logger.LogDebug("Attempting to retrieve the discovery document from IdentityServer4");
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServerUrl"]);

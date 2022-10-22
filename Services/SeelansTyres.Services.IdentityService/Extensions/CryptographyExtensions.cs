@@ -32,23 +32,6 @@ public static class CryptographyExtensions
 
         var aesKey = rsa.Decrypt(encryptedDataModel.EncryptedAesKey, RSAEncryptionPadding.OaepSHA256);
 
-        logger.LogDebug("Recomputing the hash of the encrypted data using the Aes key");
-
-        using var hmac = new HMACSHA256(aesKey);
-
-        var recomputedHmac = hmac.ComputeHash(encryptedDataModel.AesGcmCipherText);
-
-        if (Convert.ToBase64String(recomputedHmac) != Convert.ToBase64String(encryptedDataModel.HmacOfCipherText))
-        {
-            stopwatch.Stop();
-            
-            logger.LogWarning(
-                "{announcement} ({stopwatchElapsedTime}ms): Decryption failed, integrity of the Aes key or data compromised",
-                "FAILED", stopwatch.ElapsedMilliseconds);
-            
-            return default;
-        }
-
         logger.LogDebug("Creating a byte array to hold the decrypted data");
         
         var modelAsBytes = new byte[encryptedDataModel.AesGcmCipherText.Length];
