@@ -24,16 +24,19 @@ public class LocalImageService : IImageService
             return defaultImage;
         }
 
+        var directory = Path.Combine(environment.WebRootPath, "images", "uploaded");
+
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
 
-        var filePath = Path.Combine(environment.WebRootPath, "images", fileName);
+        var filePath = Path.Combine(directory, fileName);
 
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        {
-            await image.CopyToAsync(fileStream);
-        }
+        Directory.CreateDirectory(directory);
 
-        filePath = $"/images/{fileName}";
+        using var fileStream = new FileStream(filePath, FileMode.Create);
+
+        await image.CopyToAsync(fileStream);
+
+        filePath = $"/images/uploaded/{fileName}";
 
         return filePath;
     }
