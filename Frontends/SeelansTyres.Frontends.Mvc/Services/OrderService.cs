@@ -74,6 +74,7 @@ public class OrderService : IOrderService
                     false => await client.GetAsync($"api/orders?customerId={customerId}")
                 }
             };
+            response.EnsureSuccessStatusCode();
 
             var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
 
@@ -104,6 +105,8 @@ public class OrderService : IOrderService
         try
         {
             var response = await client.GetAsync($"api/orders/{orderId}");
+            response.EnsureSuccessStatusCode();
+
             var order = await response.Content.ReadFromJsonAsync<OrderModel>();
 
             logger.LogInformation(

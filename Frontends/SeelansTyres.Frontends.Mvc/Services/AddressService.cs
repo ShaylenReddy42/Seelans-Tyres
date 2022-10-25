@@ -51,6 +51,8 @@ public class AddressService : IAddressService
         try
         {
             var response = await client.GetAsync($"api/customers/{customerId}/addresses");
+            response.EnsureSuccessStatusCode();
+
             var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
             logger.LogInformation(

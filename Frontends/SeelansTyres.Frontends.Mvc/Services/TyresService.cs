@@ -61,6 +61,8 @@ public class TyresService : ITyresService
         try
 		{
 			var response = await client.GetAsync("api/brands");
+            response.EnsureSuccessStatusCode();
+
 			var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
 
             logger.LogInformation(
@@ -91,6 +93,8 @@ public class TyresService : ITyresService
         try
         {
             var response = await client.GetAsync($"api/tyres?availableOnly={availableOnly}");
+            response.EnsureSuccessStatusCode();
+
             var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
 
             logger.LogInformation(
@@ -119,7 +123,9 @@ public class TyresService : ITyresService
         try
 		{
 			var response = await client.GetAsync($"api/tyres/{tyreId}");
-			var tyre = await response.Content.ReadFromJsonAsync<TyreModel>();
+            response.EnsureSuccessStatusCode();
+
+            var tyre = await response.Content.ReadFromJsonAsync<TyreModel>();
 
             logger.LogInformation(
 				"{announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
