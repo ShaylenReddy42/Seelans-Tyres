@@ -70,16 +70,21 @@ message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 message(STATUS "Commit Url: ${COMMIT_URL}")
 
+#Key: Solution Folder | Solution Subfolder | Project Name | Is Runnable ?
+
 set(
 	PROJECTS
-	"SeelansTyres.Frontends.HealthChecksUI"
-	"SeelansTyres.Frontends.Mvc"
-	"SeelansTyres.Gateways.MvcBff"
-	"SeelansTyres.Libraries.Shared"
-	"SeelansTyres.Services.AddressService"
-	"SeelansTyres.Services.IdentityService"
-	"SeelansTyres.Services.OrderService"
-	"SeelansTyres.Services.TyresService"
+	"Frontends | HealthChecksUISolution | SeelansTyres.Frontends.HealthChecksUI | Yes"
+	"Frontends | MvcSolution | SeelansTyres.Frontends.Mvc | Yes"
+
+	"Gateways | MvcBffSolution | SeelansTyres.Gateways.MvcBff | Yes"
+
+	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No"
+
+	"Services | AddressServiceSolution | SeelansTyres.Services.AddressService | Yes"
+	"Services | IdentityServiceSolution | SeelansTyres.Services.IdentityService | Yes"
+	"Services | OrderServiceSolution | SeelansTyres.Services.OrderService | Yes"
+	"Services | TyresServiceSolution | SeelansTyres.Services.TyresService | Yes"
 )
 
 set(PUBLISHALL "@ECHO off \n\n")
@@ -87,30 +92,34 @@ set(COPY_TEMPLATE "")
 set(RUNALL_TEMPLATE "")
 
 foreach(PROJECT IN LISTS PROJECTS)
+	string(REPLACE " | " ";" TEMP_LIST ${PROJECT})
+
+	list(GET TEMP_LIST 0 SOLUTION_FOLDER)
+	list(GET TEMP_LIST 1 SOLUTION_SUBFOLDER)
+	list(GET TEMP_LIST 2 PROJECT_NAME)
+	list(GET TEMP_LIST 3 IS_RUNNABLE)
+
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
-		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT}.cmd")
-
-	string(REPLACE "." ";" TEMP_LIST ${PROJECT})
-
-	list(GET TEMP_LIST 1 SOLUTION_FOLDER)
+		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT_NAME}.cmd")
 
 	configure_file(
-		"${CMAKE_SOURCE_DIR}/cmake/${PROJECT}.AssemblyInfo.cs.in" 
-		"${CMAKE_SOURCE_DIR}/${SOLUTION_FOLDER}/${PROJECT}/Properties/AssemblyInfo.cs")
+		"${CMAKE_SOURCE_DIR}/cmake/AssemblyInfo/${PROJECT_NAME}.in" 
+		"${CMAKE_SOURCE_DIR}/src/${SOLUTION_FOLDER}/${SOLUTION_SUBFOLDER}/${PROJECT_NAME}/Properties/AssemblyInfo.cs")
 	
-	if(NOT SOLUTION_FOLDER STREQUAL "Libraries")
+	if(IS_RUNNABLE STREQUAL "Yes")
 		file(READ "${CMAKE_SOURCE_DIR}/cmake/publish-project.in" PUBLISH_PROJECT)
 		string(REPLACE "@SOLUTION_FOLDER@" "${SOLUTION_FOLDER}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
-		string(REPLACE "@PROJECT@" "${PROJECT}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
+		string(REPLACE "@SOLUTION_SUBFOLDER@" "${SOLUTION_SUBFOLDER}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
+		string(REPLACE "@PROJECT_NAME@" "${PROJECT_NAME}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
 		string(APPEND PUBLISHALL "${PUBLISH_PROJECT}")
 
-		set(COPY_PUBLISH_TEMPLATE "XCOPY /S /Q ${SOLUTION_FOLDER}\\${PROJECT}\\publish\\ publish\\${PROJECT}\\ \nECHO. \n\n")
-		set(COPY_RUN_TEMPLATE "COPY /V /Y scripts\\run\\${PROJECT}.cmd publish\\${PROJECT}\\run.cmd \nECHO. \n\n")
+		set(COPY_PUBLISH_TEMPLATE "XCOPY /S /Q src\\${SOLUTION_FOLDER}\\${SOLUTION_SUBFOLDER}\\${PROJECT_NAME}\\publish\\ publish\\${PROJECT_NAME}\\ \nECHO. \n\n")
+		set(COPY_RUN_TEMPLATE "COPY /V /Y scripts\\run\\${PROJECT_NAME}.cmd publish\\${PROJECT_NAME}\\run.cmd \nECHO. \n\n")
 
 		string(APPEND COPY_TEMPLATE ${COPY_PUBLISH_TEMPLATE} ${COPY_RUN_TEMPLATE})
 
-		set(RUN_TEMPLATE "START /min CMD /c ${PROJECT}\\run.cmd \n\n")
+		set(RUN_TEMPLATE "START /min CMD /c ${PROJECT_NAME}\\run.cmd \n\n")
 
 		string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
 	endif()
@@ -118,7 +127,7 @@ endforeach()
 
 configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/.env.in" 
-	"${CMAKE_SOURCE_DIR}/.env")
+	"${CMAKE_SOURCE_DIR}/orchestration/docker-compose/.env")
 
 file(WRITE "${CMAKE_SOURCE_DIR}/scripts/publish-all.cmd" ${PUBLISHALL})
 

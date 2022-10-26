@@ -2,8 +2,8 @@
 
 CD "%~dp0"
 
-TITLE @PROJECT@
+TITLE @PROJECT_NAME@
 
 SET ASPNETCORE_ENVIRONMENT=Development
 
-dotnet @PROJECT@.dll
+dotnet @PROJECT_NAME@.dll

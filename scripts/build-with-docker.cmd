@@ -24,7 +24,7 @@ ECHO Then any key to remove all the containers
 ECHO.
 ECHO.
 
-docker compose -f ../docker-compose-all.yml up
+docker compose -f ../orchestration/docker-compose/docker-compose-all.yml up
 
 ECHO.
 ECHO Continuing will run "docker compose down" to remove all the containers
@@ -32,7 +32,7 @@ ECHO.
 
 PAUSE
 
-docker compose -f ../docker-compose-all.yml down
+docker compose -f ../orchestration/docker-compose/docker-compose-all.yml down
 
 ECHO.
 ECHO The containers have been removed

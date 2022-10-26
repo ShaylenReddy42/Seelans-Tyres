@@ -5,6 +5,9 @@ parameters:
 - name: solutionFolder
   type: string
 
+- name: solutionSubfolder
+  type: string
+
 - name: project
   type: string
 
@@ -14,12 +17,12 @@ parameters:
 steps:
 - script: dotnet publish -c ${{ parameters.buildConfiguration }} -r win-x64 --no-self-contained
   displayName: 'Publish ${{ parameters.project }}'
-  workingDirectory: '${{ parameters.workDir }}\${{ parameters.solutionFolder }}\${{ parameters.project }}'
+  workingDirectory: '${{ parameters.workDir }}\src\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}'
 
 - task: ArchiveFiles@2
   displayName: 'Archive ${{ parameters.project }}'
   inputs:
-    rootFolderOrFile: '${{ parameters.workDir }}\${{ parameters.solutionFolder }}\${{ parameters.project }}\publish'
+    rootFolderOrFile: '${{ parameters.workDir }}\src\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}\publish'
     includeRootFolder: false
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)\${{ parameters.project }}.zip'

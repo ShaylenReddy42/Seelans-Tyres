@@ -25,7 +25,7 @@ steps:
   inputs:
     command: restore
     arguments: -c $(buildConfiguration)
-    workingDirectory: $(workDir)
+    projects: '$(workDir)/src/SeelansTyres.sln'
 
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud for Analysis'
@@ -44,7 +44,7 @@ steps:
   inputs:
     command: build
     arguments: -c $(buildConfiguration)
-    workingDirectory: $(workDir)
+    projects: '$(workDir)/src/SeelansTyres.sln'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
@@ -67,7 +67,7 @@ steps:
   inputs:
     command: custom
     custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project Services/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresAddressContext.exe"
+    arguments: run dotnet-ef migrations bundle --force --project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresAddressContext.exe"
     workingDirectory: '$(workDir)'
 
 - task: DotNetCoreCLI@2
@@ -75,7 +75,7 @@ steps:
   inputs:
     command: custom
     custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project Services/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderContext.exe"
+    arguments: run dotnet-ef migrations bundle --force --project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderContext.exe"
     workingDirectory: '$(workDir)'
 
 - task: DotNetCoreCLI@2
@@ -83,13 +83,14 @@ steps:
   inputs:
     command: custom
     custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project Services/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
+    arguments: run dotnet-ef migrations bundle --force --project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
     workingDirectory: '$(workDir)'
 
 - template: .pipelines/templates/publishProject.yml
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Frontends
+    solutionSubfolder: HealthChecksUISolution
     project: SeelansTyres.Frontends.HealthChecksUI
     workDir: '$(workDir)'
 
@@ -97,6 +98,7 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Frontends
+    solutionSubfolder: MvcSolution
     project: SeelansTyres.Frontends.Mvc
     workDir: '$(workDir)'
 
@@ -104,6 +106,7 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Gateways
+    solutionSubfolder: MvcBffSolution
     project: SeelansTyres.Gateways.MvcBff
     workDir: '$(workDir)'
 
@@ -111,6 +114,7 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Services
+    solutionSubfolder: AddressServiceSolution
     project: SeelansTyres.Services.AddressService
     workDir: '$(workDir)'
 
@@ -118,6 +122,7 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Services
+    solutionSubfolder: IdentityServiceSolution
     project: SeelansTyres.Services.IdentityService
     workDir: '$(workDir)'
 
@@ -125,6 +130,7 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Services
+    solutionSubfolder: OrderServiceSolution
     project: SeelansTyres.Services.OrderService
     workDir: '$(workDir)'
 
@@ -132,6 +138,7 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Services
+    solutionSubfolder: TyresServiceSolution
     project: SeelansTyres.Services.TyresService
     workDir: '$(workDir)'
 
