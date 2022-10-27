@@ -3,8 +3,8 @@ version: '3.8'
 services:
   seelanstyres-frontends-healthchecksui:
     build:
-      context: ../../
-      dockerfile: 'src/Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/Dockerfile'
     container_name: 'seelanstyresfrontendshealthchecksui'
     image: 'seelanstyresfrontendshealthchecksui:${TAG}'
     ports:
@@ -22,8 +22,8 @@ services:
   
   seelanstyres-frontends-mvc:
     build:
-      context: ../../
-      dockerfile: 'src/Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/Dockerfile'
     container_name: 'seelanstyresfrontendsmvc'
     image: 'seelanstyresfrontendsmvc:${TAG}'
     ports:
@@ -45,8 +45,8 @@ services:
 
   seelanstyres-gateways-mvcbff:
     build:
-      context: ../../
-      dockerfile: 'src/Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/Dockerfile'
     container_name: 'seelanstyresgatewaysmvcbff'
     image: 'seelanstyresgatewaysmvcbff:${TAG}'
     ports:
@@ -69,8 +69,8 @@ services:
 
   seelanstyres-services-addressservice:
     build:
-      context: ../../
-      dockerfile: 'src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Services/AddressServiceSolution/SeelansTyres.Services.AddressService/Dockerfile'
     container_name: 'seelanstyresservicesaddressservice'
     image: 'seelanstyresservicesaddressservice:${TAG}'
     ports:
@@ -91,8 +91,8 @@ services:
 
   seelanstyres-services-identityservice:
     build:
-      context: ../../
-      dockerfile: 'src/Services/IdentityServiceSolution/SeelansTyres.Services.IdentityService/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Services/IdentityServiceSolution/SeelansTyres.Services.IdentityService/Dockerfile'
     container_name: 'seelanstyresservicesidentityservice'
     image: 'seelanstyresservicesidentityservice:${TAG}'
     ports:
@@ -116,8 +116,8 @@ services:
 
   seelanstyres-services-orderservice:
     build:
-      context: ../../
-      dockerfile: 'src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Services/OrderServiceSolution/SeelansTyres.Services.OrderService/Dockerfile'
     container_name: 'seelanstyresservicesorderservice'
     image: 'seelanstyresservicesorderservice:${TAG}'
     ports:
@@ -138,8 +138,8 @@ services:
 
   seelanstyres-services-tyresservice:
     build:
-      context: ../../
-      dockerfile: 'src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/Dockerfile'
+      context: ../../src/
+      dockerfile: 'Services/TyresServiceSolution/SeelansTyres.Services.TyresService/Dockerfile'
     container_name: 'seelanstyresservicestyresservice'
     image: 'seelanstyresservicestyresservice:${TAG}'
     ports:

@@ -6,8 +6,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
-COPY ["src/Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/SeelansTyres.Frontends.Mvc.csproj", "Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/"]
+COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
+COPY ["Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/SeelansTyres.Frontends.Mvc.csproj", "Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/"]
 RUN dotnet restore "Frontends/MvcSolution/SeelansTyres.Frontends.Mvc/SeelansTyres.Frontends.Mvc.csproj"
 COPY . .
 WORKDIR "/src/Frontends/MvcSolution/SeelansTyres.Frontends.Mvc"

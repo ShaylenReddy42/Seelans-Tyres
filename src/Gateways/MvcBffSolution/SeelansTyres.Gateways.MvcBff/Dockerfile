@@ -6,8 +6,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
-COPY ["src/Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/SeelansTyres.Gateways.MvcBff.csproj", "Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/"]
+COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
+COPY ["Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/SeelansTyres.Gateways.MvcBff.csproj", "Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/"]
 RUN dotnet restore "Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/SeelansTyres.Gateways.MvcBff.csproj"
 COPY . .
 WORKDIR "/src/Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff"

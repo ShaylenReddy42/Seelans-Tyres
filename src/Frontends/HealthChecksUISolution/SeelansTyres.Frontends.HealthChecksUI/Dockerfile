@@ -6,8 +6,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
-COPY ["src/Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/SeelansTyres.Frontends.HealthChecksUI.csproj", "Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/"]
+COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
+COPY ["Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/SeelansTyres.Frontends.HealthChecksUI.csproj", "Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/"]
 RUN dotnet restore "Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/SeelansTyres.Frontends.HealthChecksUI.csproj"
 COPY . .
 WORKDIR "/src/Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI"
