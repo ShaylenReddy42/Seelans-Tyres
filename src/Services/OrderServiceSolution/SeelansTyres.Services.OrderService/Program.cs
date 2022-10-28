@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Services.OrderService.Authorization;
-using SeelansTyres.Services.OrderService.Data;
+using SeelansTyres.Data.OrderData;
 using SeelansTyres.Services.OrderService.Services;
 using System.Reflection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;

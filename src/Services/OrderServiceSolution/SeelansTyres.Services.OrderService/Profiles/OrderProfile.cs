@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SeelansTyres.Services.OrderService.Data.Entities;
+using SeelansTyres.Data.OrderData.Entities;
 using SeelansTyres.Services.OrderService.Models;
 
 namespace SeelansTyres.Services.OrderService.Profiles

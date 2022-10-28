@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\SharedLibrarySolution\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj" />
+    <ProjectReference Include="..\SeelansTyres.Data.OrderData\SeelansTyres.Data.OrderData.csproj" />
   </ItemGroup>
 
 </Project>

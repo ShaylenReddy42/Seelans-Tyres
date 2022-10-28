@@ -70,7 +70,7 @@ message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 message(STATUS "Commit Url: ${COMMIT_URL}")
 
-#Key: Solution Folder | Solution Subfolder | Project Name | Is Runnable ?
+# Key: Solution Folder | Solution Subfolder | Project Name | Is Runnable ?
 
 set(
 	PROJECTS
@@ -81,9 +81,14 @@ set(
 
 	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No"
 
+	"Services | AddressServiceSolution | SeelansTyres.Data.AddressData | No"
 	"Services | AddressServiceSolution | SeelansTyres.Services.AddressService | Yes"
+
 	"Services | IdentityServiceSolution | SeelansTyres.Services.IdentityService | Yes"
+
+	"Services | OrderServiceSolution | SeelansTyres.Data.OrderData | No"
 	"Services | OrderServiceSolution | SeelansTyres.Services.OrderService | Yes"
+
 	"Services | TyresServiceSolution | SeelansTyres.Services.TyresService | Yes"
 )
 

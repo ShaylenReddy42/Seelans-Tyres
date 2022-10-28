@@ -7,7 +7,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Services.AddressService.Authorization;
-using SeelansTyres.Services.AddressService.Data;
+using SeelansTyres.Data.AddressData;
 using SeelansTyres.Services.AddressService.Services;
 using System.Reflection;
 

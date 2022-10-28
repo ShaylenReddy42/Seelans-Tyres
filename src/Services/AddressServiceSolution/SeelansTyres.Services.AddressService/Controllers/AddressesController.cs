@@ -4,7 +4,7 @@ using SeelansTyres.Services.AddressService.Services;
 using SeelansTyres.Services.AddressService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using SeelansTyres.Services.AddressService.Data.Entities;
+using SeelansTyres.Data.AddressData.Entities;
 
 namespace SeelansTyres.Services.AddressService.Controllers;
 

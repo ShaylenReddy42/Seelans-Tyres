@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SeelansTyres.Services.AddressService.Data;
+using SeelansTyres.Data.AddressData;
 
 #nullable disable
 
-namespace SeelansTyres.Services.AddressService.Migrations
+namespace SeelansTyres.Data.AddressData.Migrations
 {
     [DbContext(typeof(AddressContext))]
     [Migration("20220907061444_Initial")]
@@ -24,7 +24,7 @@ namespace SeelansTyres.Services.AddressService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SeelansTyres.Services.AddressService.Data.Entities.Address", b =>
+            modelBuilder.Entity("SeelansTyres.Data.AddressData.Entities.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

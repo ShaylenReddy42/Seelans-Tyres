@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Services.OrderService.Data.Entities;
+﻿using SeelansTyres.Data.OrderData.Entities;
 
 namespace SeelansTyres.Services.OrderService.Services;
 

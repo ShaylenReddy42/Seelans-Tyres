@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Services.AddressService.Data.Entities;
+﻿using SeelansTyres.Data.AddressData.Entities;
 
 namespace SeelansTyres.Services.AddressService.Services;
 

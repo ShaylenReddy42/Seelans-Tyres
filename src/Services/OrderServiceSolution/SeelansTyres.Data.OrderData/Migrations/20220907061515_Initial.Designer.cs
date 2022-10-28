@@ -3,17 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SeelansTyres.Services.OrderService.Data;
+using SeelansTyres.Data.OrderData;
 
 #nullable disable
 
-namespace SeelansTyres.Services.OrderService.Migrations
+namespace SeelansTyres.Data.OrderData.Migrations
 {
     [DbContext(typeof(OrdersContext))]
-    partial class OrdersContextModelSnapshot : ModelSnapshot
+    [Migration("20220907061515_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace SeelansTyres.Services.OrderService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SeelansTyres.Services.OrderService.Data.Entities.Order", b =>
+            modelBuilder.Entity("SeelansTyres.Data.OrderData.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +88,7 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("SeelansTyres.Services.OrderService.Data.Entities.OrderItem", b =>
+            modelBuilder.Entity("SeelansTyres.Data.OrderData.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,9 +119,9 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("SeelansTyres.Services.OrderService.Data.Entities.OrderItem", b =>
+            modelBuilder.Entity("SeelansTyres.Data.OrderData.Entities.OrderItem", b =>
                 {
-                    b.HasOne("SeelansTyres.Services.OrderService.Data.Entities.Order", "Order")
+                    b.HasOne("SeelansTyres.Data.OrderData.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -128,7 +130,7 @@ namespace SeelansTyres.Services.OrderService.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("SeelansTyres.Services.OrderService.Data.Entities.Order", b =>
+            modelBuilder.Entity("SeelansTyres.Data.OrderData.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });

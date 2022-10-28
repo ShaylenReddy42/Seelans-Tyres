@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Services.AddressService.Data.Entities;
+namespace SeelansTyres.Data.AddressData.Entities;
 
 [Index(nameof(CustomerId), IsUnique = false, Name = "IX_Addresses_CustomerId")]
 public class Address

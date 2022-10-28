@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Services.AddressService.Data.Entities;
+using SeelansTyres.Data.AddressData.Entities;
 
-namespace SeelansTyres.Services.AddressService.Data;
+namespace SeelansTyres.Data.AddressData;
 
 public class AddressContext : DbContext
 {

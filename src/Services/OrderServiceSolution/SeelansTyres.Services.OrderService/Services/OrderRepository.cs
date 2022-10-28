@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Services.OrderService.Data.Entities;
-using SeelansTyres.Services.OrderService.Data;
+using SeelansTyres.Data.OrderData.Entities;
+using SeelansTyres.Data.OrderData;
 using System.Diagnostics;
 
 namespace SeelansTyres.Services.OrderService.Services;

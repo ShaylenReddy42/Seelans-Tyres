@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Services.OrderService.Data.Entities;
+namespace SeelansTyres.Data.OrderData.Entities;
 
 [Index(nameof(TyreId), IsUnique = false, Name = "IX_OrderItems_TyreId")]
 public class OrderItem

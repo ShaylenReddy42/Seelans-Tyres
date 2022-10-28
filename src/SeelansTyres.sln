@@ -35,9 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Gateways.MvcBf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Libraries.Shared", "Libraries\SharedLibrarySolution\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj", "{B1FA8818-FA6D-4DFF-A9B9-09865651C106}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Data.AddressData", "Services\AddressServiceSolution\SeelansTyres.Data.AddressData\SeelansTyres.Data.AddressData.csproj", "{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.AddressService", "Services\AddressServiceSolution\SeelansTyres.Services.AddressService\SeelansTyres.Services.AddressService.csproj", "{ADE4E8AD-1C91-4164-97E1-9B60F8630B53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.IdentityService", "Services\IdentityServiceSolution\SeelansTyres.Services.IdentityService\SeelansTyres.Services.IdentityService.csproj", "{098CCB99-C91A-4691-BF90-18C2333A1F8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Data.OrderData", "Services\OrderServiceSolution\SeelansTyres.Data.OrderData\SeelansTyres.Data.OrderData.csproj", "{B8B6D831-97FC-41BA-B241-DBE402484020}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.OrderService", "Services\OrderServiceSolution\SeelansTyres.Services.OrderService\SeelansTyres.Services.OrderService.csproj", "{EEA61368-1628-43CA-8250-600D43EF3A1E}"
 EndProject
@@ -81,6 +85,14 @@ Global
 		{45B9FB16-7653-4E98-960E-FCC729518500}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45B9FB16-7653-4E98-960E-FCC729518500}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45B9FB16-7653-4E98-960E-FCC729518500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B6D831-97FC-41BA-B241-DBE402484020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B6D831-97FC-41BA-B241-DBE402484020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B6D831-97FC-41BA-B241-DBE402484020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B6D831-97FC-41BA-B241-DBE402484020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +114,8 @@ Global
 		{098CCB99-C91A-4691-BF90-18C2333A1F8A} = {899BC933-AF64-4538-964A-099D62B9C4B4}
 		{EEA61368-1628-43CA-8250-600D43EF3A1E} = {95FD6BD0-055B-45DD-8C5D-9E4D658286CD}
 		{45B9FB16-7653-4E98-960E-FCC729518500} = {A6C72CD9-B808-45A7-AF2F-293E9B3BEA6F}
+		{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D} = {EA4547CE-9EAB-4C95-B9A5-86E46643ABB9}
+		{B8B6D831-97FC-41BA-B241-DBE402484020} = {95FD6BD0-055B-45DD-8C5D-9E4D658286CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4F587D2-262F-419C-912E-C6E20259288D}

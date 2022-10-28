@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SeelansTyres.Services.OrderService.Migrations
+namespace SeelansTyres.Data.OrderData.Migrations
 {
     public partial class Initial : Migration
     {

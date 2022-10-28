@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Services.OrderService.Data.Entities;
+using SeelansTyres.Data.OrderData.Entities;
 using SeelansTyres.Services.OrderService.Models;
 using SeelansTyres.Services.OrderService.Services;
 

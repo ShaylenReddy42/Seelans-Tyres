@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SeelansTyres.Services.AddressService.Migrations
+namespace SeelansTyres.Data.AddressData.Migrations
 {
     public partial class Initial : Migration
     {

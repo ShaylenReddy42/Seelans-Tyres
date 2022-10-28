@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Services.AddressService.Data.Entities;
-using SeelansTyres.Services.AddressService.Data;
+using SeelansTyres.Data.AddressData.Entities;
+using SeelansTyres.Data.AddressData;
 using System.Diagnostics;
 
 namespace SeelansTyres.Services.AddressService.Services;
