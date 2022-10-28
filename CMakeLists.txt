@@ -105,14 +105,14 @@ foreach(PROJECT IN LISTS PROJECTS)
 	list(GET TEMP_LIST 3 IS_RUNNABLE)
 
 	configure_file(
-		"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
-		"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT_NAME}.cmd")
-
-	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/AssemblyInfo/${PROJECT_NAME}.in" 
 		"${CMAKE_SOURCE_DIR}/src/${SOLUTION_FOLDER}/${SOLUTION_SUBFOLDER}/${PROJECT_NAME}/Properties/AssemblyInfo.cs")
 	
 	if(IS_RUNNABLE STREQUAL "Yes")
+		configure_file(
+			"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
+			"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT_NAME}.cmd")
+
 		file(READ "${CMAKE_SOURCE_DIR}/cmake/publish-project.in" PUBLISH_PROJECT)
 		string(REPLACE "@SOLUTION_FOLDER@" "${SOLUTION_FOLDER}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
 		string(REPLACE "@SOLUTION_SUBFOLDER@" "${SOLUTION_SUBFOLDER}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
