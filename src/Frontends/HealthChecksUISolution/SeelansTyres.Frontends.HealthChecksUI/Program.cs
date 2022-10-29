@@ -1,16 +1,13 @@
 using SeelansTyres.Libraries.Shared;
-using SeelansTyres.Libraries.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
+builder.AddCommonBuilderConfiguration(new()
 {
     KestrelLocalhostPortNumber = 5000,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Health Checks UI"
-};
-
-builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
+});
 
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 

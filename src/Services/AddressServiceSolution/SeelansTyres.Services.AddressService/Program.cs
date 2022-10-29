@@ -12,14 +12,12 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
+builder.AddCommonBuilderConfiguration(new()
 {
     KestrelLocalhostPortNumber = 5011,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Address Microservice"
-};
-
-builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
+});
 
 // Add services to the container.
 

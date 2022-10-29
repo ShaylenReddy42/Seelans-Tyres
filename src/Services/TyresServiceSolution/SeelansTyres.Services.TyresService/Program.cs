@@ -12,14 +12,12 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
+builder.AddCommonBuilderConfiguration(new()
 {
     KestrelLocalhostPortNumber = 5013,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Tyres Microservice"
-};
-
-builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
+});
 
 // Add services to the container.
 

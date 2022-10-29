@@ -12,14 +12,12 @@ using SeelansTyres.Gateways.MvcBff.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
+builder.AddCommonBuilderConfiguration(new()
 {
     KestrelLocalhostPortNumber = 5050,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Backend-for-Frontend"
-};
-
-builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
+});
 
 var authenticationScheme = "SeelansTyresMvcBffAuthenticationScheme";
 

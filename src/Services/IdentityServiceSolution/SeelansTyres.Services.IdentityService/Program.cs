@@ -17,14 +17,12 @@ using SeelansTyres.Services.IdentityService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
+builder.AddCommonBuilderConfiguration(new()
 {
     KestrelLocalhostPortNumber = 5005,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Identity / Customer Microservice"
-};
-
-builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
+});
 
 builder.Services.AddControllersWithViews();
 
