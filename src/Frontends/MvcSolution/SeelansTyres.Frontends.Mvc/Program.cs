@@ -1,4 +1,3 @@
-using ConfigurationSubstitution;
 using SeelansTyres.Frontends.Mvc.Services;
 using System.Net;
 using System.Net.Mail;
@@ -14,27 +13,14 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
 {
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenLocalhost(5001);
-    });
-}
-
-builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
-
-builder.Logging.ClearProviders();
-
-var assembly = typeof(Program).Assembly;
-
-var serilogModel = new SerilogModel
-{
-    Assembly = assembly,
+    KestrelLocalhostPortNumber = 5001,
+    OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Frontend"
 };
 
-builder.Host.UseCommonSerilog(serilogModel);
+builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

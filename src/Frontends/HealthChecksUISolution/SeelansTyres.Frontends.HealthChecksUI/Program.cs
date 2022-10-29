@@ -1,30 +1,16 @@
-using ConfigurationSubstitution;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Libraries.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
 {
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenLocalhost(5000);
-    });
-}
-
-builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
-
-builder.Logging.ClearProviders();
-
-var assembly = typeof(Program).Assembly;
-
-var serilogModel = new SerilogModel
-{
-    Assembly = assembly,
+    KestrelLocalhostPortNumber = 5000,
+    OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Health Checks UI"
 };
 
-builder.Host.UseCommonSerilog(serilogModel);
+builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
 
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 

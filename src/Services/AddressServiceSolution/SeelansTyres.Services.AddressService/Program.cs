@@ -1,4 +1,3 @@
-using ConfigurationSubstitution;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,27 +12,14 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
 {
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenLocalhost(5011);
-    });
-}
-
-builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
-
-builder.Logging.ClearProviders();
-
-var assembly = typeof(Program).Assembly;
-
-var serilogModel = new SerilogModel
-{
-    Assembly = assembly,
+    KestrelLocalhostPortNumber = 5011,
+    OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Address Microservice"
 };
 
-builder.Host.UseCommonSerilog(serilogModel);
+builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
 
 // Add services to the container.
 

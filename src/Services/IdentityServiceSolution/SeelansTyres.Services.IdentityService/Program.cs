@@ -1,4 +1,3 @@
-using ConfigurationSubstitution;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -18,34 +17,21 @@ using SeelansTyres.Services.IdentityService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
 {
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenLocalhost(5005);
-    });
-}
-
-builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
-
-builder.Logging.ClearProviders();
-
-var assembly = typeof(Program).Assembly;
-
-var serilogModel = new SerilogModel
-{
-    Assembly = assembly,
+    KestrelLocalhostPortNumber = 5005,
+    OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Identity / Customer Microservice"
 };
 
-builder.Host.UseCommonSerilog(serilogModel);
+builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
 
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddCommonSwaggerGen();
 
 var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
-var assemblyName = assembly.GetName().Name;
+var assemblyName = typeof(Program).Assembly.GetName().Name;
 
 builder.Services.AddDbContext<CustomerContext>(options =>
 {

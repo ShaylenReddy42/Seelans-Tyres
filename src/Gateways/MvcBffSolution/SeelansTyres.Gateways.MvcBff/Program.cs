@@ -1,4 +1,3 @@
-using ConfigurationSubstitution;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -13,27 +12,14 @@ using SeelansTyres.Gateways.MvcBff.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+var commonBuilderConfigurationBuilderModel = new CommonBuilderConfigurationModel
 {
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenLocalhost(5050);
-    });
-}
-
-builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
-
-builder.Logging.ClearProviders();
-
-var assembly = typeof(Program).Assembly;
-
-var serilogModel = new SerilogModel
-{
-    Assembly = assembly,
+    KestrelLocalhostPortNumber = 5050,
+    OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Backend-for-Frontend"
 };
 
-builder.Host.UseCommonSerilog(serilogModel);
+builder.AddCommonBuilderConfiguration(commonBuilderConfigurationBuilderModel);
 
 var authenticationScheme = "SeelansTyresMvcBffAuthenticationScheme";
 

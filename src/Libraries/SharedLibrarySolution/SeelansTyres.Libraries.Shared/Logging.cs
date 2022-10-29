@@ -13,14 +13,19 @@ namespace SeelansTyres.Libraries.Shared;
 
 public static class Logging
 {
-    public static IHostBuilder UseCommonSerilog(this IHostBuilder hostBuilder, SerilogModel serilogModel)
+    public static IHostBuilder UseCommonSerilog(
+        this IHostBuilder hostBuilder, 
+        CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
-        string descriptiveApplicationName = serilogModel.Assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product
-                                         ?? serilogModel.DefaultDescriptiveApplicationName;
+        string descriptiveApplicationName = 
+            commonBuilderConfigurationModel.OriginAssembly
+                .GetCustomAttribute<AssemblyProductAttribute>()?.Product
+                    ?? commonBuilderConfigurationModel.DefaultDescriptiveApplicationName;
 
-        string codebaseVersion = serilogModel.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
-                              ?? "0.0.0+0-unknown";
-
+        string codebaseVersion = 
+            commonBuilderConfigurationModel.OriginAssembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+                    ?? "0.0.0+0-unknown";
 
         hostBuilder.UseSerilog((hostBuilderContext, loggerConfiguration) =>
         {
@@ -46,7 +51,9 @@ public static class Logging
                     .WriteTo.Console();
             }
 
-            var metadata = serilogModel.Assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
+            var metadata =
+                commonBuilderConfigurationModel.OriginAssembly
+                    .GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
 
             metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value));
 
