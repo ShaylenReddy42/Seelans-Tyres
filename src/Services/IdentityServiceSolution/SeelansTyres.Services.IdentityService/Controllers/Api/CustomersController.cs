@@ -1,12 +1,18 @@
 ﻿using AutoMapper;
 using IdentityServer4.Stores;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SeelansTyres.Libraries.Shared.Messages;
+using SeelansTyres.Libraries.Shared.Models;
+using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Services.IdentityService.Models;
 using SeelansTyres.Services.IdentityService.Services;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 
@@ -19,17 +25,33 @@ public class CustomersController : ControllerBase
     private readonly ISigningCredentialStore signingCredentialStore;
     private readonly IMapper mapper;
     private readonly ILogger<CustomersController> logger;
+    private readonly IConfiguration configuration;
+    private readonly IMessagingServicePublisher messagingServicePublisher;
+    private readonly RabbitMQSettingsModel rabbitMQSettingsModel;
 
     public CustomersController(
         ICustomerService customerService,
         ISigningCredentialStore signingCredentialStore,
         IMapper mapper,
-        ILogger<CustomersController> logger)
+        ILogger<CustomersController> logger,
+        IConfiguration configuration,
+        IMessagingServicePublisher messagingServicePublisher)
     {
         this.customerService = customerService;
         this.signingCredentialStore = signingCredentialStore;
         this.mapper = mapper;
         this.logger = logger;
+        this.configuration = configuration;
+        this.messagingServicePublisher = messagingServicePublisher;
+
+        rabbitMQSettingsModel = new()
+        {
+            UserName = configuration["RabbitMQ:Credentials:UserName"],
+            Password = configuration["RabbitMQ:Credentials:Password"],
+
+            HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
+            Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port")
+        };
     }
     
     [HttpPost]
@@ -130,6 +152,20 @@ public class CustomersController : ControllerBase
         
         await customerService.UpdateAsync(id, updateAccountModel);
 
+        logger.LogInformation("Preparing to publish the update for other microservices");
+
+        var baseMessage = new BaseMessage
+        {
+            ActivityTraceId = Activity.Current!.TraceId.ToString(),
+            AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
+            SerializedModel = JsonSerializer.SerializeToUtf8Bytes(updateAccountModel),
+            IdOfEntityToUpdate = id
+        };
+
+        rabbitMQSettingsModel.Exchange = configuration["RabbitMQ:Exchanges:UpdateAccount"];
+
+        await messagingServicePublisher.PublishMessageAsync(baseMessage, rabbitMQSettingsModel);
+
         return NoContent();
     }
 
@@ -142,6 +178,19 @@ public class CustomersController : ControllerBase
             id);
 
         await customerService.DeleteAsync(await customerService.RetrieveSingleAsync(id));
+
+        logger.LogInformation("Preparing to publish the update for other microservices");
+
+        var baseMessage = new BaseMessage
+        {
+            ActivityTraceId = Activity.Current!.TraceId.ToString(),
+            AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
+            IdOfEntityToUpdate = id
+        };
+
+        rabbitMQSettingsModel.Exchange = configuration["RabbitMQ:Exchanges:DeleteAccount"];
+
+        await messagingServicePublisher.PublishMessageAsync(baseMessage, rabbitMQSettingsModel);
 
         return NoContent();
     }

@@ -5,6 +5,12 @@ using SeelansTyres.Services.TyresService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SeelansTyres.Services.TyresService.Data.Entities;
+using SeelansTyres.Libraries.Shared.Services;
+using SeelansTyres.Libraries.Shared.Models;
+using Microsoft.AspNetCore.Authentication;
+using SeelansTyres.Libraries.Shared.Messages;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 
@@ -16,15 +22,31 @@ public class TyresController : ControllerBase
     private readonly ILogger<TyresController> logger;
     private readonly ITyresRepository tyresRepository;
     private readonly IMapper mapper;
+    private readonly IConfiguration configuration;
+    private readonly IMessagingServicePublisher messagingServicePublisher;
+    private readonly RabbitMQSettingsModel rabbitMQSettingsModel;
 
     public TyresController(
         ILogger<TyresController> logger,
         ITyresRepository tyresRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IConfiguration configuration,
+        IMessagingServicePublisher messagingServicePublisher)
     {
         this.logger = logger;
         this.tyresRepository = tyresRepository;
         this.mapper = mapper;
+        this.configuration = configuration;
+        this.messagingServicePublisher = messagingServicePublisher;
+
+        rabbitMQSettingsModel = new()
+        {
+            UserName = configuration["RabbitMQ:Credentials:UserName"],
+            Password = configuration["RabbitMQ:Credentials:Password"],
+
+            HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
+            Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port")
+        };
     }
 
     [HttpPost]
@@ -105,6 +127,20 @@ public class TyresController : ControllerBase
                 .Single(brand => brand.Id == tyre.BrandId);
 
         await tyresRepository.SaveChangesAsync();
+
+        logger.LogInformation("Preparing to publish the update for other microservices");
+
+        var baseMessage = new BaseMessage
+        {
+            ActivityTraceId = Activity.Current!.TraceId.ToString(),
+            AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
+            SerializedModel = JsonSerializer.SerializeToUtf8Bytes(tyreModel),
+            IdOfEntityToUpdate = id
+        };
+
+        rabbitMQSettingsModel.Exchange = configuration["RabbitMQ:Exchanges:UpdateTyre"];
+
+        await messagingServicePublisher.PublishMessageAsync(baseMessage, rabbitMQSettingsModel);
 
         return NoContent();
     }

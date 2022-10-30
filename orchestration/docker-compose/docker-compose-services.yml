@@ -20,7 +20,7 @@ services:
     volumes:
       - ../../docker/elasticsearch:/usr/share/elasticsearch/data
     networks:
-      - loggingsinks-network
+      - services-network
 
   kibana:
     image: kibana:7.17.6
@@ -29,9 +29,24 @@ services:
       - 5602:5601
     restart: always
     networks:
-      - loggingsinks-network
+      - services-network
+  
+  rabbitmq:
+    build:
+      context: ../custom-images/rabbitmq/
+      dockerfile: Dockerfile
+    container_name: rabbitmq
+    image: customrabbitmq
+    ports:
+      - 5673:5672
+      - 15673:15672
+    environment:
+      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
+    restart: always
+    networks:
+      - services-network
 
 networks:
-  loggingsinks-network:
+  services-network:
     driver: bridge
-    name: loggingsinks-network
+    name: services-network

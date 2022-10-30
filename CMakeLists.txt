@@ -83,11 +83,13 @@ set(
 
 	"Services | AddressServiceSolution | SeelansTyres.Data.AddressData | No"
 	"Services | AddressServiceSolution | SeelansTyres.Services.AddressService | Yes"
+	"Services | AddressServiceSolution | SeelansTyres.Workers.AddressWorker | Yes"
 
 	"Services | IdentityServiceSolution | SeelansTyres.Services.IdentityService | Yes"
 
 	"Services | OrderServiceSolution | SeelansTyres.Data.OrderData | No"
 	"Services | OrderServiceSolution | SeelansTyres.Services.OrderService | Yes"
+	"Services | OrderServiceSolution | SeelansTyres.Workers.OrderWorker | Yes"
 
 	"Services | TyresServiceSolution | SeelansTyres.Services.TyresService | Yes"
 )

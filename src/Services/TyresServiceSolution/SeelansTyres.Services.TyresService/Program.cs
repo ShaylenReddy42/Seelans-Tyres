@@ -9,6 +9,7 @@ using SeelansTyres.Services.TyresService.Data;
 using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SeelansTyres.Libraries.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         configure.RequireHttpsMetadata = false;
     });
 
+builder.Services.AddSingleton<IMessagingServicePublisher, RabbitMQMessagingServicePublisher>();
+
 builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
 
 builder.Services.AddAuthorization(configure =>
@@ -65,11 +68,18 @@ var healthChecksModel = new HealthChecksModel
     ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
 };
 
+var rabbitMQConnectionString = 
+    $"amqp://{builder.Configuration["RabbitMQ:ConnectionProperties:HostName"]}:{builder.Configuration["RabbitMQ:ConnectionProperties:Port"]}";
+
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
     .AddDbContextCheck<TyresContext>(
         name: "database",
-        failureStatus: HealthStatus.Unhealthy);
+        failureStatus: HealthStatus.Unhealthy)
+    .AddRabbitMQ(
+        name: "rabbitmq",
+        rabbitConnectionString: rabbitMQConnectionString,
+        failureStatus: HealthStatus.Degraded);
 
 var app = builder.Build();
 

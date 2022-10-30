@@ -81,12 +81,19 @@ The workers will listen in on dedicated queues for updates and update their copy
   * Author: [Stephen Haunts](https://app.pluralsight.com/profile/author/stephen-haunts)
 * [Logging and Monitoring in ASP.NET Core 6](https://www.pluralsight.com/courses/logging-monitoring-aspdotnet-core-6)
   * Author: [Erik Dahl](https://app.pluralsight.com/profile/author/erik-dahl)
+* [RabbitMQ by Example](https://www.pluralsight.com/courses/rabbitmq-by-example)
+  * Author: [Stephen Haunts](https://app.pluralsight.com/profile/author/stephen-haunts)
+* [Building ASP.NET Core 3 Hosted Services and .NET Core 3 Worker Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services)
+  * [Steve Gordan](https://www.pluralsight.com/authors/steve-gordon)
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
+* [RabbitMQ Custom Docker Image with Custom Configuration and Definitions](https://www.youtube.com/watch?v=I8QHPfMhqAU)
+  * Author: [Mike Møller Nielsen](https://www.youtube.com/c/MikeM%C3%B8llerNielsen)
 * [Microsoft Docs](https://docs.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]
+* [How export or import RabbitMQ configuration](https://sleeplessbeastie.eu/2020/03/18/how-export-or-import-rabbitmq-configuration/)
 
 ## Required local setup to build and run
 
@@ -102,12 +109,14 @@ The workers will listen in on dedicated queues for updates and update their copy
 * NOTE: If you use `build-with-docker.cmd`, I recommend you pull these images beforehand:
   * [elasticsearch:7.17.6](https://hub.docker.com/_/elasticsearch/)
   * [kibana:7.17.6](https://hub.docker.com/_/kibana/)
+  * [rabbitmq:3-management](https://hub.docker.com/_/rabbitmq/)
   * [mcr.microsoft.com/dotnet/aspnet:6.0](https://mcr.microsoft.com/en-us/product/dotnet/aspnet/about)
   * [mcr.microsoft.com/dotnet/sdk:6.0](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
   * [mcr.microsoft.com/mssql/server:2019-latest](https://hub.docker.com/_/microsoft-mssql-server)
-* If you use `build-with-loggingsinks.cmd`, pull only these images beforehand:
+* If you use `build-with-services.cmd`, pull only these images beforehand:
   * [elasticsearch:7.17.6](https://hub.docker.com/_/elasticsearch/)
   * [kibana:7.17.6](https://hub.docker.com/_/kibana/)
+  * [rabbitmq:3-management](https://hub.docker.com/_/rabbitmq/)
 
 * Ensure to set environment variables listed in the `RequiredEnvironmentVariables.txt` file
   * Press the Win Key and search for `Edit environment variables for your account`
@@ -116,9 +125,9 @@ The workers will listen in on dedicated queues for updates and update their copy
 * In order to build, I've provided three options for you:
   * `build.cmd` which is the regular build
   * `build-with-docker.cmd` just to see what it looks like orchestrated with docker compose
-  * `build-with-loggingsinks.cmd` which is the regular build + elasticsearch and kibana orchestrated with docker compose
+  * `build-with-services.cmd` which is the regular build + elasticsearch, kibana and rabbitmq orchestrated with docker compose
 
-* Once you run either `build.cmd` or `build-with-loggingsinks.cmd`, CMake will generate `run-all.cmd`
+* Once you run either `build.cmd` or `build-with-services.cmd`, CMake will generate `run-all.cmd`
 * Thereafter, run `run-all.cmd` which will start all applications minimized and launch the site, simulating orchestration
 
 ## Demos

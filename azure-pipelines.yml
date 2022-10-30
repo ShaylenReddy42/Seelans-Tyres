@@ -122,6 +122,14 @@ steps:
   parameters:
     buildConfiguration: $(buildConfiguration)
     solutionFolder: Services
+    solutionSubfolder: AddressServiceSolution
+    project: SeelansTyres.Workers.AddressWorker
+    workDir: '$(workDir)'
+
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Services
     solutionSubfolder: IdentityServiceSolution
     project: SeelansTyres.Services.IdentityService
     workDir: '$(workDir)'
@@ -132,6 +140,14 @@ steps:
     solutionFolder: Services
     solutionSubfolder: OrderServiceSolution
     project: SeelansTyres.Services.OrderService
+    workDir: '$(workDir)'
+
+- template: .pipelines/templates/publishProject.yml
+  parameters:
+    buildConfiguration: $(buildConfiguration)
+    solutionFolder: Services
+    solutionSubfolder: OrderServiceSolution
+    project: SeelansTyres.Workers.OrderWorker
     workDir: '$(workDir)'
 
 - template: .pipelines/templates/publishProject.yml

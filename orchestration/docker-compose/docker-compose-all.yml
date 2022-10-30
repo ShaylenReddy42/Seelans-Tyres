@@ -89,6 +89,30 @@ services:
     networks:
       - seelanstyres-network
 
+  seelanstyres-services-addressworker:
+    build:
+      context: ../../src/
+      dockerfile: 'Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/Dockerfile'
+    container_name: 'seelanstyresworkersaddressworker'
+    image: 'seelanstyresworkersaddressworker:${TAG}'
+    ports:
+      - 5011:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SeelansTyresAddressContext=${CONTEXT}
+      - envUseElasticsearch=true
+      - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - envRabbitMQHost=${HOST}
+      - envRabbitMQPort=5672
+      - envTokenIssuer=http://${HOST}:5005
+      - UseDocker=true
+    depends_on:
+      - rabbitmq
+    restart: always
+    networks:
+      - seelanstyres-network
+
   seelanstyres-services-identityservice:
     build:
       context: ../../src/
@@ -107,9 +131,12 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envBaseUrl=http://${HOST}:5005
       - envSeelansTyresMvcClientUrl=http://${HOST}:5001
+      - envRabbitMQHost=${HOST}
+      - envRabbitMQPort=5672
       - UseDocker=true
     depends_on:
       - sqlserver
+      - rabbitmq
     restart: always
     networks:
       - seelanstyres-network
@@ -136,6 +163,30 @@ services:
     networks:
       - seelanstyres-network
 
+  seelanstyres-services-orderworker:
+    build:
+      context: ../../src/
+      dockerfile: 'Services/OrderServiceSolution/SeelansTyres.Workers.OrderWorker/Dockerfile'
+    container_name: 'seelanstyresworkersorderworker'
+    image: 'seelanstyresworkersorderworker:${TAG}'
+    ports:
+      - 5022:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SeelansTyresOrderContext=${CONTEXT}
+      - envUseElasticsearch=true
+      - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - envRabbitMQHost=${HOST}
+      - envRabbitMQPort=5672
+      - envTokenIssuer=http://${HOST}:5005
+      - UseDocker=true
+    depends_on:
+      - rabbitmq
+    restart: always
+    networks:
+      - seelanstyres-network
+
   seelanstyres-services-tyresservice:
     build:
       context: ../../src/
@@ -151,9 +202,12 @@ services:
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - envRabbitMQHost=${HOST}
+      - envRabbitMQPort=5672
       - UseDocker=true
     depends_on:
       - sqlserver
+      - rabbitmq
     restart: always
     networks:
       - seelanstyres-network
@@ -200,6 +254,21 @@ services:
     container_name: kibana
     ports:
       - 5601:5601
+    restart: always
+    networks:
+      - seelanstyres-network
+  
+  rabbitmq:
+    build:
+      context: ../custom-images/rabbitmq/
+      dockerfile: Dockerfile
+    container_name: rabbitmq
+    image: customrabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
     restart: always
     networks:
       - seelanstyres-network
