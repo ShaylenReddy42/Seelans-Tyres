@@ -156,7 +156,8 @@ public class CustomersController : ControllerBase
 
         var baseMessage = new BaseMessage
         {
-            ActivityTraceId = Activity.Current!.TraceId.ToString(),
+            TraceId = Activity.Current!.TraceId.ToString(),
+            SpanId = Activity.Current!.SpanId.ToString(),
             AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
             SerializedModel = JsonSerializer.SerializeToUtf8Bytes(updateAccountModel),
             IdOfEntityToUpdate = id
@@ -183,7 +184,8 @@ public class CustomersController : ControllerBase
 
         var baseMessage = new BaseMessage
         {
-            ActivityTraceId = Activity.Current!.TraceId.ToString(),
+            TraceId = Activity.Current!.TraceId.ToString(),
+            SpanId = Activity.Current!.SpanId.ToString(),
             AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
             IdOfEntityToUpdate = id
         };

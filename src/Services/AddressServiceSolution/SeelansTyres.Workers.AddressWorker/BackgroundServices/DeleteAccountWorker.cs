@@ -5,6 +5,7 @@ using SeelansTyres.Workers.AddressWorker.Services;
 using RabbitMQ.Client.Events;
 using System.Text.Json;
 using SeelansTyres.Libraries.Shared.Services;
+using System.Diagnostics;
 
 namespace SeelansTyres.Workers.AddressWorker.BackgroundServices;
 
@@ -59,9 +60,13 @@ public class DeleteAccountWorker : BackgroundService
         {
             var baseMessage = JsonSerializer.Deserialize<BaseMessage>(args.Body.ToArray());
 
-            logger.BeginScope("{TraceId}", baseMessage!.ActivityTraceId);
+            var activity = new Activity("Processing Message");
+            activity.SetParentId(
+                traceId: ActivityTraceId.CreateFromString(baseMessage!.TraceId),
+                spanId: ActivitySpanId.CreateFromString(baseMessage!.SpanId));
+            activity.Start();
 
-            logger.LogInformation("Attempting to validate the access token");
+            logger.LogInformation("Worker => Attempting to validate the access token");
 
             var tokenIsValid = 
                 await tokenValidationService.ValidateTokenAsync(

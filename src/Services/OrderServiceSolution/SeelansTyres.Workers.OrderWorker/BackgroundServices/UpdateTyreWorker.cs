@@ -5,6 +5,7 @@ using RabbitMQ.Client.Events;
 using System.Text.Json;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Workers.OrderWorker.Services;
+using System.Diagnostics;
 
 namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 
@@ -59,9 +60,13 @@ public class UpdateTyreWorker : BackgroundService
         {
             var baseMessage = JsonSerializer.Deserialize<BaseMessage>(args.Body.ToArray());
 
-            logger.BeginScope("{TraceId}", baseMessage!.ActivityTraceId);
+            var activity = new Activity("Processing Message");
+            activity.SetParentId(
+                traceId: ActivityTraceId.CreateFromString(baseMessage!.TraceId),
+                spanId: ActivitySpanId.CreateFromString(baseMessage!.SpanId));
+            activity.Start();
 
-            logger.LogInformation("Attempting to validate the access token");
+            logger.LogInformation("Worker => Attempting to validate the access token");
 
             var tokenIsValid = 
                 await tokenValidationService.ValidateTokenAsync(
