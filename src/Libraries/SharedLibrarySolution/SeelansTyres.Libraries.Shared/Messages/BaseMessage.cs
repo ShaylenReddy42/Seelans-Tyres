@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace SeelansTyres.Libraries.Shared.Messages;
+﻿namespace SeelansTyres.Libraries.Shared.Messages;
 
 public class BaseMessage
 {
