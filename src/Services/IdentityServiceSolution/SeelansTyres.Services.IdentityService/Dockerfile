@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
+COPY ["Services/IdentityServiceSolution/SeelansTyres.Models.IdentityModels/SeelansTyres.Models.IdentityModels.csproj", "Services/IdentityServiceSolution/SeelansTyres.Models.IdentityModels/"]
 COPY ["Services/IdentityServiceSolution/SeelansTyres.Services.IdentityService/SeelansTyres.Services.IdentityService.csproj", "Services/IdentityServiceSolution/SeelansTyres.Services.IdentityService/"]
 RUN dotnet restore "Services/IdentityServiceSolution/SeelansTyres.Services.IdentityService/SeelansTyres.Services.IdentityService.csproj"
 COPY . .

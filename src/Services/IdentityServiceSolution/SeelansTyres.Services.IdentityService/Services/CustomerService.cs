@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SeelansTyres.Models.IdentityModels.V1;
 using SeelansTyres.Services.IdentityService.Data.Entities;
-using SeelansTyres.Services.IdentityService.Models;
 using System.Diagnostics;
 
 namespace SeelansTyres.Services.IdentityService.Services;

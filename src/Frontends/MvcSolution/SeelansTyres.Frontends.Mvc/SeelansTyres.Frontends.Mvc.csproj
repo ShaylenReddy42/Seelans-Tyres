@@ -50,6 +50,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\SharedLibrarySolution\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj" />
+    <ProjectReference Include="..\..\..\Services\AddressServiceSolution\SeelansTyres.Models.AddressModels\SeelansTyres.Models.AddressModels.csproj" />
+    <ProjectReference Include="..\..\..\Services\IdentityServiceSolution\SeelansTyres.Models.IdentityModels\SeelansTyres.Models.IdentityModels.csproj" />
+    <ProjectReference Include="..\..\..\Services\OrderServiceSolution\SeelansTyres.Models.OrderModels\SeelansTyres.Models.OrderModels.csproj" />
+    <ProjectReference Include="..\..\..\Services\TyresServiceSolution\SeelansTyres.Models.TyresModels\SeelansTyres.Models.TyresModels.csproj" />
   </ItemGroup>
 
 </Project>

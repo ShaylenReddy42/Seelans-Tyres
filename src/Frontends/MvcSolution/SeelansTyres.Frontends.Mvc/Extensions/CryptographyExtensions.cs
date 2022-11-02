@@ -1,6 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Frontends.Mvc.Models.External;
+using SeelansTyres.Libraries.Shared.Models;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.Json;

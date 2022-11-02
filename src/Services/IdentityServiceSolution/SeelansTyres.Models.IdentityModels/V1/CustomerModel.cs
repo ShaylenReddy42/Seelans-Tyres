@@ -1,4 +1,4 @@
-﻿namespace SeelansTyres.Services.IdentityService.Models;
+﻿namespace SeelansTyres.Models.IdentityModels.V1;
 
 public class CustomerModel
 {

@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Services.TyresService.Services;
-using SeelansTyres.Services.TyresService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SeelansTyres.Services.TyresService.Data.Entities;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Libraries.Shared.Models;
-using Microsoft.AspNetCore.Authentication;
 using SeelansTyres.Libraries.Shared.Messages;
 using System.Diagnostics;
 using System.Text.Json;
+using SeelansTyres.Models.TyresModels.V1;
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 

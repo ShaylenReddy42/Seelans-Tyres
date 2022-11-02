@@ -37,17 +37,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Libraries.Shar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Data.AddressData", "Services\AddressServiceSolution\SeelansTyres.Data.AddressData\SeelansTyres.Data.AddressData.csproj", "{91F1AA1F-3C2C-4022-8278-761BC8EC4A6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Models.AddressModels", "Services\AddressServiceSolution\SeelansTyres.Models.AddressModels\SeelansTyres.Models.AddressModels.csproj", "{302D3115-A6BE-41CD-A180-063AE17B6552}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.AddressService", "Services\AddressServiceSolution\SeelansTyres.Services.AddressService\SeelansTyres.Services.AddressService.csproj", "{ADE4E8AD-1C91-4164-97E1-9B60F8630B53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Workers.AddressWorker", "Services\AddressServiceSolution\SeelansTyres.Workers.AddressWorker\SeelansTyres.Workers.AddressWorker.csproj", "{8EBC1ECA-2F2A-4370-BE91-BAC1C59EFD42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Models.IdentityModels", "Services\IdentityServiceSolution\SeelansTyres.Models.IdentityModels\SeelansTyres.Models.IdentityModels.csproj", "{E99C9BBB-CCBC-4A7D-BF15-D6C724748FE6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.IdentityService", "Services\IdentityServiceSolution\SeelansTyres.Services.IdentityService\SeelansTyres.Services.IdentityService.csproj", "{098CCB99-C91A-4691-BF90-18C2333A1F8A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Data.OrderData", "Services\OrderServiceSolution\SeelansTyres.Data.OrderData\SeelansTyres.Data.OrderData.csproj", "{B8B6D831-97FC-41BA-B241-DBE402484020}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Models.OrderModels", "Services\OrderServiceSolution\SeelansTyres.Models.OrderModels\SeelansTyres.Models.OrderModels.csproj", "{4124A237-6A30-4978-97D5-3669903C6805}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.OrderService", "Services\OrderServiceSolution\SeelansTyres.Services.OrderService\SeelansTyres.Services.OrderService.csproj", "{EEA61368-1628-43CA-8250-600D43EF3A1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Workers.OrderWorker", "Services\OrderServiceSolution\SeelansTyres.Workers.OrderWorker\SeelansTyres.Workers.OrderWorker.csproj", "{26FED2E3-DB13-47FB-BD18-C615F65D0971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Workers.OrderWorker", "Services\OrderServiceSolution\SeelansTyres.Workers.OrderWorker\SeelansTyres.Workers.OrderWorker.csproj", "{26FED2E3-DB13-47FB-BD18-C615F65D0971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeelansTyres.Models.TyresModels", "Services\TyresServiceSolution\SeelansTyres.Models.TyresModels\SeelansTyres.Models.TyresModels.csproj", "{24896A7F-8BAA-4F0C-84C7-B91C2C8B5EF6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Services.TyresService", "Services\TyresServiceSolution\SeelansTyres.Services.TyresService\SeelansTyres.Services.TyresService.csproj", "{45B9FB16-7653-4E98-960E-FCC729518500}"
 EndProject
@@ -97,14 +105,30 @@ Global
 		{EEA61368-1628-43CA-8250-600D43EF3A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEA61368-1628-43CA-8250-600D43EF3A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEA61368-1628-43CA-8250-600D43EF3A1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45B9FB16-7653-4E98-960E-FCC729518500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45B9FB16-7653-4E98-960E-FCC729518500}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45B9FB16-7653-4E98-960E-FCC729518500}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45B9FB16-7653-4E98-960E-FCC729518500}.Release|Any CPU.Build.0 = Release|Any CPU
 		{26FED2E3-DB13-47FB-BD18-C615F65D0971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{26FED2E3-DB13-47FB-BD18-C615F65D0971}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26FED2E3-DB13-47FB-BD18-C615F65D0971}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26FED2E3-DB13-47FB-BD18-C615F65D0971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45B9FB16-7653-4E98-960E-FCC729518500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45B9FB16-7653-4E98-960E-FCC729518500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45B9FB16-7653-4E98-960E-FCC729518500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45B9FB16-7653-4E98-960E-FCC729518500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{302D3115-A6BE-41CD-A180-063AE17B6552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302D3115-A6BE-41CD-A180-063AE17B6552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302D3115-A6BE-41CD-A180-063AE17B6552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302D3115-A6BE-41CD-A180-063AE17B6552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E99C9BBB-CCBC-4A7D-BF15-D6C724748FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E99C9BBB-CCBC-4A7D-BF15-D6C724748FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E99C9BBB-CCBC-4A7D-BF15-D6C724748FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E99C9BBB-CCBC-4A7D-BF15-D6C724748FE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4124A237-6A30-4978-97D5-3669903C6805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4124A237-6A30-4978-97D5-3669903C6805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4124A237-6A30-4978-97D5-3669903C6805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4124A237-6A30-4978-97D5-3669903C6805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24896A7F-8BAA-4F0C-84C7-B91C2C8B5EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24896A7F-8BAA-4F0C-84C7-B91C2C8B5EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24896A7F-8BAA-4F0C-84C7-B91C2C8B5EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24896A7F-8BAA-4F0C-84C7-B91C2C8B5EF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,8 +152,12 @@ Global
 		{098CCB99-C91A-4691-BF90-18C2333A1F8A} = {899BC933-AF64-4538-964A-099D62B9C4B4}
 		{B8B6D831-97FC-41BA-B241-DBE402484020} = {95FD6BD0-055B-45DD-8C5D-9E4D658286CD}
 		{EEA61368-1628-43CA-8250-600D43EF3A1E} = {95FD6BD0-055B-45DD-8C5D-9E4D658286CD}
-		{45B9FB16-7653-4E98-960E-FCC729518500} = {A6C72CD9-B808-45A7-AF2F-293E9B3BEA6F}
 		{26FED2E3-DB13-47FB-BD18-C615F65D0971} = {95FD6BD0-055B-45DD-8C5D-9E4D658286CD}
+		{45B9FB16-7653-4E98-960E-FCC729518500} = {A6C72CD9-B808-45A7-AF2F-293E9B3BEA6F}
+		{302D3115-A6BE-41CD-A180-063AE17B6552} = {EA4547CE-9EAB-4C95-B9A5-86E46643ABB9}
+		{E99C9BBB-CCBC-4A7D-BF15-D6C724748FE6} = {899BC933-AF64-4538-964A-099D62B9C4B4}
+		{4124A237-6A30-4978-97D5-3669903C6805} = {95FD6BD0-055B-45DD-8C5D-9E4D658286CD}
+		{24896A7F-8BAA-4F0C-84C7-B91C2C8B5EF6} = {A6C72CD9-B808-45A7-AF2F-293E9B3BEA6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4F587D2-262F-419C-912E-C6E20259288D}

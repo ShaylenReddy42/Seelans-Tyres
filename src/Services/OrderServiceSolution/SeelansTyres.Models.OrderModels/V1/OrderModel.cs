@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Frontends.Mvc.Models.External;
+namespace SeelansTyres.Models.OrderModels.V1;
 
 public class OrderModel
 {

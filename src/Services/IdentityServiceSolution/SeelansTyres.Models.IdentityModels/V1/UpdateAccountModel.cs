@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Workers.OrderWorker.Models.External;
+namespace SeelansTyres.Models.IdentityModels.V1;
 
 public class UpdateAccountModel
 {

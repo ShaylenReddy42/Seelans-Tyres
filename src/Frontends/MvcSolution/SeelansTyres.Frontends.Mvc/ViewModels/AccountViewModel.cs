@@ -1,4 +1,6 @@
-﻿using SeelansTyres.Frontends.Mvc.Models.External;
+﻿using SeelansTyres.Models.AddressModels.V1;
+using SeelansTyres.Models.IdentityModels.V1;
+using SeelansTyres.Models.OrderModels.V1;
 
 namespace SeelansTyres.Frontends.Mvc.ViewModels;
 

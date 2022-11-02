@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Data.OrderData;
 using SeelansTyres.Libraries.Shared.Messages;
-using SeelansTyres.Workers.OrderWorker.Models.External;
+using SeelansTyres.Models.IdentityModels.V1;
+using SeelansTyres.Models.TyresModels.V1;
 using System.Diagnostics;
 using System.Text.Json;
 

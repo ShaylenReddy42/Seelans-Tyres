@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Frontends.Mvc.Models;
-using SeelansTyres.Frontends.Mvc.Models.External;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
+using SeelansTyres.Models.IdentityModels.V1;
 using System.Diagnostics;
 using System.Security.Cryptography;
 

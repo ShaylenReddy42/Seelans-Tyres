@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace SeelansTyres.Frontends.Mvc.Models.External;
+namespace SeelansTyres.Libraries.Shared.Models;
 
 public class EncryptedDataModel
 {

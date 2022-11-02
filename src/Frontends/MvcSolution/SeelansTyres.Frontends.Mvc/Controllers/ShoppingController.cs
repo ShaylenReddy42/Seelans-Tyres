@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RazorLight;
 using SeelansTyres.Frontends.Mvc.Models;
-using SeelansTyres.Frontends.Mvc.Models.External;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
+using SeelansTyres.Models.OrderModels.V1;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -136,7 +136,7 @@ public class ShoppingController : Controller
 
         foreach (var item in cartItems!)
         {
-            order.OrderItems.Add(new OrderItemModel
+            order.OrderItems.Add(new()
             {
                 Id = Guid.Empty,
                 TyreId = item.TyreId,

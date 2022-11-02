@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Services.IdentityService.Models;
+namespace SeelansTyres.Models.IdentityModels.V1;
 
 public class RegisterModel
 {

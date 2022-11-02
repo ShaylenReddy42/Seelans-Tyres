@@ -33,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\SharedLibrarySolution\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj" />
     <ProjectReference Include="..\SeelansTyres.Data.AddressData\SeelansTyres.Data.AddressData.csproj" />
+    <ProjectReference Include="..\SeelansTyres.Models.AddressModels\SeelansTyres.Models.AddressModels.csproj" />
   </ItemGroup>
 
 </Project>

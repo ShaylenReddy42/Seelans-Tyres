@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using IdentityServer4.Stores;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Libraries.Shared.Messages;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared.Services;
+using SeelansTyres.Models.IdentityModels.V1;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Extensions;
-using SeelansTyres.Services.IdentityService.Models;
 using SeelansTyres.Services.IdentityService.Services;
 using System.Diagnostics;
 using System.Text.Json;

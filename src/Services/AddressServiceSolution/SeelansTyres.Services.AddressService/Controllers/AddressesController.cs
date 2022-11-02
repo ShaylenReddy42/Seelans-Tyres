@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Services.AddressService.Services;
-using SeelansTyres.Services.AddressService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SeelansTyres.Data.AddressData.Entities;
+using SeelansTyres.Models.AddressModels.V1;
 
 namespace SeelansTyres.Services.AddressService.Controllers;
 

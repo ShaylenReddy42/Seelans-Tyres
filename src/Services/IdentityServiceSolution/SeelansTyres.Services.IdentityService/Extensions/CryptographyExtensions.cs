@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Stores;
 using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Services.IdentityService.Models;
+using SeelansTyres.Libraries.Shared.Models;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.Json;

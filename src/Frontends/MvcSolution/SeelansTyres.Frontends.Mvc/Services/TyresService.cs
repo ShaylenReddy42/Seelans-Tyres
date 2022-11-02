@@ -1,5 +1,4 @@
-﻿using SeelansTyres.Frontends.Mvc.Models.External;
-using System.Diagnostics;
+﻿using SeelansTyres.Models.TyresModels.V1;
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 

@@ -1,8 +1,7 @@
 ﻿using IdentityModel.Client;
 using Microsoft.Extensions.Caching.Memory;
 using SeelansTyres.Frontends.Mvc.Extensions;
-using SeelansTyres.Frontends.Mvc.Models;
-using SeelansTyres.Frontends.Mvc.Models.External;
+using SeelansTyres.Models.IdentityModels.V1;
 using System.Diagnostics;
 
 namespace SeelansTyres.Frontends.Mvc.Services;

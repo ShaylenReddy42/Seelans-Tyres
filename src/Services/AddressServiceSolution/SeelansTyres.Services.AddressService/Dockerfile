@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
 COPY ["Services/AddressServiceSolution/SeelansTyres.Data.AddressData/SeelansTyres.Data.AddressData.csproj", "Services/AddressServiceSolution/SeelansTyres.Data.AddressData/"]
+COPY ["Services/AddressServiceSolution/SeelansTyres.Models.AddressModels/SeelansTyres.Models.AddressModels.csproj", "Services/AddressServiceSolution/SeelansTyres.Models.AddressModels/"]
 COPY ["Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj", "Services/AddressServiceSolution/SeelansTyres.Services.AddressService/"]
 RUN dotnet restore "Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj"
 COPY . .

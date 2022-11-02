@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\SharedLibrarySolution\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj" />
+    <ProjectReference Include="..\..\IdentityServiceSolution\SeelansTyres.Models.IdentityModels\SeelansTyres.Models.IdentityModels.csproj" />
+    <ProjectReference Include="..\..\TyresServiceSolution\SeelansTyres.Models.TyresModels\SeelansTyres.Models.TyresModels.csproj" />
     <ProjectReference Include="..\SeelansTyres.Data.OrderData\SeelansTyres.Data.OrderData.csproj" />
   </ItemGroup>
 
