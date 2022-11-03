@@ -27,8 +27,6 @@ public class UpdateAccountWorker : BackgroundService
         this.configuration = configuration;
         this.serviceScopeFactory = serviceScopeFactory;
         this.tokenValidationService = tokenValidationService;
-
-        ConfigureConsumer();
     }
 
     private void ConfigureConsumer()
