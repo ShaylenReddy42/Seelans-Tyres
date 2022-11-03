@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SeelansTyres.Models.TyresModels.V1;
 using SeelansTyres.Services.TyresService.Data.Entities;
 
 namespace SeelansTyres.Services.TyresService.Profiles;

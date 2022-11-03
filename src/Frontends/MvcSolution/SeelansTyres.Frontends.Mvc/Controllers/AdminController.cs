@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Frontends.Mvc.Models;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
-using SeelansTyres.Models.TyresModels.V1;
 using System.Diagnostics;
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;

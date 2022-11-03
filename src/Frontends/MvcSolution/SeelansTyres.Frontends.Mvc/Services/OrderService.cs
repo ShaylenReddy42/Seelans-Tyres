@@ -1,6 +1,4 @@
-﻿using SeelansTyres.Models.OrderModels.V1;
-
-namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.Services;
 
 public class OrderService : IOrderService
 {

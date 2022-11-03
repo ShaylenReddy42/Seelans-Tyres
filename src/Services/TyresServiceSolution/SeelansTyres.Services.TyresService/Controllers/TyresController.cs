@@ -9,7 +9,6 @@ using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared.Messages;
 using System.Diagnostics;
 using System.Text.Json;
-using SeelansTyres.Models.TyresModels.V1;
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 

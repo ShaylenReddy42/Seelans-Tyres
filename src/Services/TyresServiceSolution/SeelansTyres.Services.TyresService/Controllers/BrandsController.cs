@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Services.TyresService.Services;
 using SeelansTyres.Services.TyresService.Data.Entities;
-using SeelansTyres.Models.TyresModels.V1;
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 

@@ -1,7 +1,4 @@
-﻿using SeelansTyres.Models.OrderModels.V1;
-using SeelansTyres.Models.TyresModels.V1;
-
-namespace SeelansTyres.Frontends.Mvc.ViewModels;
+﻿namespace SeelansTyres.Frontends.Mvc.ViewModels;
 
 public class AdminPortalViewModel
 {

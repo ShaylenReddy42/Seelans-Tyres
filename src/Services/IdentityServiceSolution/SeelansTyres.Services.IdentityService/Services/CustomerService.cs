@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SeelansTyres.Models.IdentityModels.V1;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using System.Diagnostics;
 

@@ -1,5 +1,4 @@
 ﻿using FluentEmail.Core;
-using SeelansTyres.Models.OrderModels.V1;
 using System.Diagnostics;
 using System.Reflection;
 
