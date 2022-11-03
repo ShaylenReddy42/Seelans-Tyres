@@ -37,9 +37,6 @@ var healthChecksModel = new HealthChecksModel
     ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
 };
 
-var rabbitMQConnectionString =
-    $"amqp://{builder.Configuration["RabbitMQ:ConnectionProperties:HostName"]}:{builder.Configuration["RabbitMQ:ConnectionProperties:Port"]}";
-
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
     .AddDbContextCheck<OrdersContext>(
@@ -47,13 +44,11 @@ builder.Services.AddHealthChecks()
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(
         name: "rabbitmq",
-        rabbitConnectionString: rabbitMQConnectionString,
+        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"],
         failureStatus: HealthStatus.Degraded);
 
 var app = builder.Build();
 
 app.MapCommonHealthChecks();
-
-Thread.Sleep(5_000);
 
 app.Run();

@@ -1,5 +1,4 @@
 ﻿using RabbitMQ.Client;
-using static SeelansTyres.Libraries.Shared.RabbitMQ;
 using SeelansTyres.Libraries.Shared.Messages;
 using SeelansTyres.Workers.AddressWorker.Services;
 using RabbitMQ.Client.Events;
@@ -36,26 +35,16 @@ public class DeleteAccountWorker : BackgroundService
     {
         try
         {
-            ConfigureCommonRabbitMQConnection(
-                settings: new()
-                {
-                    UserName = configuration["RabbitMQ:Credentials:UserName"],
-                    Password = configuration["RabbitMQ:Credentials:Password"],
-
-                    HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
-                    Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port"),
-
-                    Exchange = configuration["RabbitMQ:Bindings:DeleteAccount:Exchange"],
-                    Queue = configuration["RabbitMQ:Bindings:DeleteAccount:Queue"]
-                },
-                channel: out channel);
+            configuration.ConfigureCommonRabbitMQConsumer(
+                eventName: "DeleteAccount",
+                channel: out channel,
+                consumer: out consumer);
         }
         catch (Exception)
         {
             return;
         }
 
-        consumer = new EventingBasicConsumer(channel);
         consumer.Received += async (sender, args) =>
         {
             var baseMessage = JsonSerializer.Deserialize<BaseMessage>(args.Body.ToArray());
@@ -101,11 +90,13 @@ public class DeleteAccountWorker : BackgroundService
     {
         await Task.Yield();
 
-        if (channel is null)
+        while (channel is null)
         {
-            return;
+            ConfigureConsumer();
+
+            Thread.Sleep(5_000);
         }
-        
+
         channel.BasicConsume(
             queue: configuration["RabbitMQ:Bindings:DeleteAccount:Queue"],
             autoAck: false,

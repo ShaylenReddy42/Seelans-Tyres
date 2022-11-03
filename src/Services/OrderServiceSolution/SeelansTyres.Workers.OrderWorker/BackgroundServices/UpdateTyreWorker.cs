@@ -1,5 +1,4 @@
 ﻿using RabbitMQ.Client;
-using static SeelansTyres.Libraries.Shared.RabbitMQ;
 using SeelansTyres.Libraries.Shared.Messages;
 using RabbitMQ.Client.Events;
 using System.Text.Json;
@@ -28,34 +27,22 @@ public class UpdateTyreWorker : BackgroundService
         this.configuration = configuration;
         this.serviceScopeFactory = serviceScopeFactory;
         this.tokenValidationService = tokenValidationService;
-
-        ConfigureConsumer();
     }
 
     private void ConfigureConsumer()
     {
         try
         {
-            ConfigureCommonRabbitMQConnection(
-                settings: new()
-                {
-                    UserName = configuration["RabbitMQ:Credentials:UserName"],
-                    Password = configuration["RabbitMQ:Credentials:Password"],
-
-                    HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
-                    Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port"),
-
-                    Exchange = configuration["RabbitMQ:Bindings:UpdateTyre:Exchange"],
-                    Queue = configuration["RabbitMQ:Bindings:UpdateTyre:Queue"]
-                },
-                channel: out channel);
+            configuration.ConfigureCommonRabbitMQConsumer(
+                eventName: "UpdateTyre",
+                channel: out channel,
+                consumer: out consumer);
         }
         catch (Exception)
         {
             return;
         }
 
-        consumer = new EventingBasicConsumer(channel);
         consumer.Received += async (sender, args) =>
         {
             var baseMessage = JsonSerializer.Deserialize<BaseMessage>(args.Body.ToArray());
@@ -101,9 +88,11 @@ public class UpdateTyreWorker : BackgroundService
     {
         await Task.Yield();
 
-        if (channel is null)
+        while (channel is null)
         {
-            return;
+            ConfigureConsumer();
+
+            Thread.Sleep(5_000);
         }
         
         channel.BasicConsume(

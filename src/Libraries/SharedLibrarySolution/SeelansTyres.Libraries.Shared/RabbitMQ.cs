@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using SeelansTyres.Libraries.Shared.Models;
 
 namespace SeelansTyres.Libraries.Shared;
@@ -35,5 +37,30 @@ public static class RabbitMQ
                 exchange: settings.Exchange,
                 routingKey: string.Empty);
         }
+    }
+
+    public static IConfiguration ConfigureCommonRabbitMQConsumer(
+        this IConfiguration configuration,
+        string eventName,
+        out IModel channel,
+        out EventingBasicConsumer consumer)
+    {
+        ConfigureCommonRabbitMQConnection(
+            settings: new()
+            {
+                UserName = configuration["RabbitMQ:Credentials:UserName"],
+                Password = configuration["RabbitMQ:Credentials:Password"],
+
+                HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
+                Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port"),
+
+                Exchange = configuration[$"RabbitMQ:Bindings:{eventName}:Exchange"],
+                Queue = configuration[$"RabbitMQ:Bindings:{eventName}:Queue"]
+            },
+            channel: out channel);
+
+        consumer = new(channel);
+
+        return configuration;
     }
 }
