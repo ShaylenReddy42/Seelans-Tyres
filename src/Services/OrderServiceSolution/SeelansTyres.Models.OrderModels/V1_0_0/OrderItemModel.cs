@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Models.OrderModels.V1;
+namespace SeelansTyres.Models.OrderModels.V1_0_0;
 
 public class OrderItemModel
 {

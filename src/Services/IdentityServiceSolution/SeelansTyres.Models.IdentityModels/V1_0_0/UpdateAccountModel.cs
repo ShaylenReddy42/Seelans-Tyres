@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Models.IdentityModels.V1;
+namespace SeelansTyres.Models.IdentityModels.V1_0_0;
 
 public class UpdateAccountModel
 {

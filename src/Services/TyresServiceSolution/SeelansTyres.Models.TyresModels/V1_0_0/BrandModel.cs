@@ -1,4 +1,4 @@
-﻿namespace SeelansTyres.Models.TyresModels.V1;
+﻿namespace SeelansTyres.Models.TyresModels.V1_0_0;
 
 public class BrandModel
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SeelansTyres.Models.AddressModels.V1;
+namespace SeelansTyres.Models.AddressModels.V1_0_0;
 
 public class AddressModel
 {

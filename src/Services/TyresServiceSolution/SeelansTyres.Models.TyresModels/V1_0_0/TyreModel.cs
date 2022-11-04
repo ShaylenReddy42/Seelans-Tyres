@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeelansTyres.Models.TyresModels.V1;
+namespace SeelansTyres.Models.TyresModels.V1_0_0;
 
 public class TyreModel
 {

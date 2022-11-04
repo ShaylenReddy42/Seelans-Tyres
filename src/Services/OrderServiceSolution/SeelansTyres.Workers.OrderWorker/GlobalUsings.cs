@@ -1,2 +1,2 @@
-﻿global using SeelansTyres.Models.IdentityModels.V1;
-global using SeelansTyres.Models.TyresModels.V1;
+﻿global using SeelansTyres.Models.IdentityModels.V1_0_0;
+global using SeelansTyres.Models.TyresModels.V1_0_0;
