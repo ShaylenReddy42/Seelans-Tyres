@@ -1,6 +1,6 @@
 ﻿namespace SeelansTyres.Models.IdentityModels;
 
-public static class Constants
+internal static class Constants
 {
-    public static string CurrentVersion => "v1.0.0";
+    internal static string CurrentVersion => "v1.0.0";
 }
