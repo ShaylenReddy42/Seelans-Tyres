@@ -41,12 +41,34 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * Add and update tyre catalog with the ability to add and update images
     * View undelivered orders and mark them as delivered
     * View the receipt of an order
+  * Related commits:
+    * [admin: efficiently use the partial view for the tyres table](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/7b3f628fee9f311cf9e6faff5dba51d7aba1694e)
+    * [implement functionality to add tyres](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/2ae5c6541bd3c6679948e2ab3df4b9cfff2af7ae)
+    * [implement functionality for updating tyres](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/402361b0a1e389c102b2dbe2538d0ae6c32dfd98)
+    * [implement the logic for the shopping cart and the placing of orders](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/4b50f068b9f3919ba83bc8cb8875e514b67ee97d)
+    * [implement the viewing of orders in the admin portal](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/d8590b24c3ee38a02470083e68afe05dad58aa11)
+    * [implement the viewing of receipts from the admin portal](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/908746b5c182d5872553938b3284e091ffd01b77)
+    * [admin portal: use restful routing for updating a tyre](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/a57625efb6dd5110f226d5830dbfef1207e19b0b)
+    * [add a missing feature to set the tyre's availability and adjust what customers see accordingly](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/8209ac8a41e6cd6ce76a038621c3c8d17babfecf)
+    * [create an image service](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/0f3c1cca9777e1e38bf9bda8f67172e1367ab956)
 * A custom footer with a link to the commit on GitHub referencing the version its built on
+  * Related commits:
+    * [update the footer to include the version and a link to the commit in github](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/1322343c75e48a07223633ec7e1841cbf0e503c9)
 * Customers can perform updates to their account, add addresses, view their previous orders, reset their password and delete their account
+  * Related commits:
+    * [implement the logic for addresses in the account](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/a8d41adcefcaa2f0a495643fa3afa4ceb962bb29)
+    * [fix the post request for add new address](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/fae3a5fb89edf71098061e90386981f55fb6fbcf)
+    * [implement the logic for the shopping cart and the placing of orders](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/4b50f068b9f3919ba83bc8cb8875e514b67ee97d)
+    * [implement the viewing of orders on the account](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b09d30c2877563e5feaa587708a134c4fcd428c5)
+    * [account: ensure a customer makes their first address a preferred one](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/e7674dd8a519f8963f4b813bd34578cd4e7d7efc)
+    * [implement the functionality to reset password](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/1186c2967f6a8eda1e3a244718137e80e2d7ad31)
 * An email service that sends emails with FluentEmail using embedded razor templates
   * Emails sent:
     * A receipt when a user completes an order
     * Sends the user a token to reset their password
+  * Related commits:
+    * [:D send an email when a customer completes an order](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/dc525ca49350d4c00c24d8fb9daaf53bf1c406da)
+    * [implement the functionality to reset password](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/1186c2967f6a8eda1e3a244718137e80e2d7ad31)
 
 ### Security features
 
@@ -69,6 +91,9 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 * Utilizing the repository pattern to access the database and perform CRUD operations
 * AutoMapper is used to map between database entities and models returned to the client
+* Using middleware to return a ProblemDetails model when a non-success status code is returned
+  * Related commits:
+    * [improve the error responses returned from the microservices](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/7741813f0c61d8191a33397cc56b19c375d7ac37)
 * Protected by IdentityServer4 and custom authorization policies
   * Related commits:
     * [implement identityserver4](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6d1255cd3d4a1aafe97b50f8227b7de548328a23)
@@ -95,15 +120,23 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
     * [implement a more correct way to maintain distributed tracing over a message bus](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/88030bd61445d5ffcd447529f7a799f20fbd80e3)
     * [okay, duplication is a bit too high](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b808f4f94ad323df019d156223c3b8c06f541e50)
-  * The codebase version with a link to the commit on GitHub is used to enrich the logs. This is useful in the following ways:
-    * Tracing back to new code that's causing failures to occur
-    * In a system where security is a priority, if a developer goes rogue and decides to allow fraud to occur by modifying the code, it can be traced back to them and can be under investigation
-      * CODE REVIEWS ARE IMPORTANT
-    * Related commits:
-      * [prep for centralized logging with serilog and elasticsearch](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/08bd63d906e416078cdd01d3db82c099a1e35922)
-  * Implementation of an efficient data synchronization strategy across microservices
-    * Related commits:
-      * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
+* The codebase version with a link to the commit on GitHub is used to enrich the logs. This is useful in the following ways:
+  * Tracing back to new code that's causing failures to occur
+  * In a system where security is a priority, if a developer goes rogue and decides to allow fraud to occur by modifying the code, it can be traced back to them and can be under investigation
+    * CODE REVIEWS ARE IMPORTANT
+  * Related commits:
+    * [prep for centralized logging with serilog and elasticsearch](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/08bd63d906e416078cdd01d3db82c099a1e35922)
+* Implementation of an efficient data synchronization strategy across microservices
+  * Related commits:
+    * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
+* Site Reliability Engineering possibilities like creating an actionable alerting strategy and monitoring application health
+  * Related commits:
+    * [the days and nights were long and so too, was the logging spree](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/3fe627984d17f80bdc38ad73a2f5e43480ae5f88)
+    * [communicate to users that the system is degraded](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/1d9b24774178902cbc0336221933f358b7f67a47)
+    * [implement application health checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/254d8c94aaff44964f56b31dafe1fb10fbc93de5)
+    * [enable the system degraded state by default when using docker compose](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b26dac1ac5ff811be2a8711ca31fd290379fe1bb)
+    * [implement liveness checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/8e5581c21e91ae2ce6f255bd1e92d617277ac6b0)
+    * [perform the liveness checks from the health checks ui](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/59f1d9694ee5200d9e068a8839f072132012bc5a)
 
 ### Codebase / Build System features
 
