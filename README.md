@@ -28,32 +28,95 @@ In the beginning, it was a distributed monolith with a frontend and backend API 
 
 The API has been broken down into microservices which then invited a backend-for-frontend to have a single point of entry into the microservices from the frontend
 
-So far, the solution comprises of 7 runnable projects and isn't even done
-
-### Where it's going
-
-The solution looks complete but it isn't, data synchronization between the microservices hasn't been implemented yet
-
-To solve this, a messaging service will come into play and invite workers into the solution, restructuring the entire solution
-
-The workers will listen in on dedicated queues for updates and update their copy of the data
+So far, the solution comprises of 9 runnable projects with 16 projects in total with only one left, the System Degraded Toggler Azure Function App
 
 ## Features
 
-* Utilizes some functionality of ASP.NET Core Identity
-* Email service that sends emails with FluentEmail using embedded razor templates
+### Website features
+
+* A very simple and easy to navigate user interface
+* An Admin Portal protected by ASP.NET Core Identity
+  * Admin Portal features:
+    * View the database structure [even though it's split]
+    * Add and update tyre catalog with the ability to add and update images
+    * View undelivered orders and mark them as delivered
+    * View the receipt of an order
+* A custom footer with a link to the commit on GitHub referencing the version its built on
+* Customers can perform updates to their account, add addresses, view their previous orders, reset their password and delete their account
+* An email service that sends emails with FluentEmail using embedded razor templates
   * Emails sent:
     * A receipt when a user completes an order
     * Sends the user a token to reset their password
-* JWT Bearer Authentication for the api
-* The api makes use of AutoMapper to map between database entities and models returned to the client
-* The api utilizes the repository pattern to access the database
-* The application contains an admin portal protected by ASP.NET Core Identity. This, however, may be removed into its own project because it isn't a good idea to use the same login for customers and admins even if it is virtually impossible for a customer to access it since it would require them to have an Administrator role which is never given to a customer
-* Secrets Management
-* Versioning with Git
+
+### Security features
+
+* The entire architecture is protected using IdentityServer4
+  * Related commits:
+    * [implement identityserver4](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6d1255cd3d4a1aafe97b50f8227b7de548328a23)
+    * [implement an api gateway with ocelot](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/ce2817ea68efdd1de72d4b941d654d09cfe1d537)
+    * [cleanup the token exchange logic](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/8a95649f643a3cedabfb6718b1399c87a133c412)
+* User login session management
+* Hybrid-encryption for customer data on POST and PUT requests
+  * Related commits:
+    * [secure the customers api with hybrid encryption](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/88c0a20ddbd5e696753647ef96bec54a30cbb25c)
+    * [make some slight improvements](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/90c9cca1ecefd3d3fd8d1f629b5db33d9f478183)
+    * [cryptography: remove hmac computation](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/565576215da7ca38124c64456e3a9656d7396101)
+* Custom authorization requirements and policies for customers and the administrator. Customers can only access their own data
+  * Related commits:
+    * [implement identityserver4](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6d1255cd3d4a1aafe97b50f8227b7de548328a23)
+
+### API features
+
+* Utilizing the repository pattern to access the database and perform CRUD operations
+* AutoMapper is used to map between database entities and models returned to the client
+* Protected by IdentityServer4 and custom authorization policies
+  * Related commits:
+    * [implement identityserver4](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6d1255cd3d4a1aafe97b50f8227b7de548328a23)
+* [WIP] An efficient API versioning strategy
+  * Related commits:
+    * [resolve some of the duplication](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/e6c595302a3290ba0e7610bbade60d53c8df9081)
+    * [cleanup: centralize models-library using statements in a globalusings.cs file](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/4c43efca9f119a64a8ba8f0cd97dc2ae958ecec1)
+    * [models: align with the semver versioning strategy and introduce model wrappers](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/12f290fde2fe1bb56775a1e5f4d3b6af10cd4f6c)
+    * [models: allow backwards compatibility](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/0dc1973606c16aad47c5a1f82d2bf0af3256ee42)
+    * [models: introduce a static class called AvailableModels that's tied to a version of the models and allow the model type to be specified in the model wrapper](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/7e312938d05680a8298b70bae294221a4f75dbdc)
+    * [models: the model version doesn't need to be static](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b8b3ef04004ca5e9b6d6854bebaba0ac539671da)
+
+### Architecture features
+
+* An API Gateway to have a single point of entry into the microservices as exposing the APIs to the world without it is not a best practice
+  * Related commits:
+    * [implement an api gateway with ocelot](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/ce2817ea68efdd1de72d4b941d654d09cfe1d537)
+* Effectively dealing with cross-cutting concerns like logging and distributed tracing
+  * Related commits:
+    * [prep for centralized logging with serilog and elasticsearch](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/08bd63d906e416078cdd01d3db82c099a1e35922)
+    * [the days and nights were long and so too, was the logging spree](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/3fe627984d17f80bdc38ad73a2f5e43480ae5f88)
+    * [containerize and MOSTLY orchestrate the solution locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/673d44990c0a2b778a3f97ad6a27cddb41d2ad9d)
+    * [centralize the logging configuration in a shared library](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/811c326c95d489c3f8fd2566bb9cc7c581d0cdbf)
+    * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
+    * [implement a more correct way to maintain distributed tracing over a message bus](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/88030bd61445d5ffcd447529f7a799f20fbd80e3)
+    * [okay, duplication is a bit too high](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b808f4f94ad323df019d156223c3b8c06f541e50)
+  * The codebase version with a link to the commit on GitHub is used to enrich the logs. This is useful in the following ways:
+    * Tracing back to new code that's causing failures to occur
+    * In a system where security is a priority, if a developer goes rogue and decides to allow fraud to occur by modifying the code, it can be traced back to them and can be under investigation
+      * CODE REVIEWS ARE IMPORTANT
+    * Related commits:
+      * [prep for centralized logging with serilog and elasticsearch](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/08bd63d906e416078cdd01d3db82c099a1e35922)
+  * Implementation of an efficient data synchronization strategy across microservices
+    * Related commits:
+      * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
+
+### Codebase / Build System features
+
+* An easy-to-maintain codebase that's polyrepo-ready
+* A build system optimized with CMake to make the local building and running of the solution seamless
+* All projects are versioned according to the codebase version
+* Little (unavoidable) technical debt due to necessary code duplication
+* Sonarcloud is used to provide feedback on technical debt to which I take and clean up the solution
 
 ## Resources that helped me skill up to rewrite this project
 
+* [C# 10 and .NET 6](https://www.amazon.com/10-NET-Cross-Platform-Development-websites-ebook/dp/B09JV37DM6)
+  * Author: [Mark J. Price](https://www.amazon.com/Mark-J-Price/e/B071DW3QGN/ref=aufs_dp_fta_dsk)
 * [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://www.pluralsight.com/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
   * Author: [Shawn Wildermuth](https://app.pluralsight.com/profile/author/shawn-wildermuth)
 * [ASP.NET Core 6 Web API Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-web-api-fundamentals)
@@ -84,14 +147,14 @@ The workers will listen in on dedicated queues for updates and update their copy
 * [RabbitMQ by Example](https://www.pluralsight.com/courses/rabbitmq-by-example)
   * Author: [Stephen Haunts](https://app.pluralsight.com/profile/author/stephen-haunts)
 * [Building ASP.NET Core 3 Hosted Services and .NET Core 3 Worker Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services)
-  * [Steve Gordan](https://www.pluralsight.com/authors/steve-gordon)
+  * Author: [Steve Gordan](https://www.pluralsight.com/authors/steve-gordon)
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
   * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
 * [RabbitMQ Custom Docker Image with Custom Configuration and Definitions](https://www.youtube.com/watch?v=I8QHPfMhqAU)
   * Author: [Mike Møller Nielsen](https://www.youtube.com/c/MikeM%C3%B8llerNielsen)
-* [Microsoft Docs](https://docs.microsoft.com/en-us/)
+* [Microsoft Docs / Learn](https://learn.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]
 * [How export or import RabbitMQ configuration](https://sleeplessbeastie.eu/2020/03/18/how-export-or-import-rabbitmq-configuration/)
 
