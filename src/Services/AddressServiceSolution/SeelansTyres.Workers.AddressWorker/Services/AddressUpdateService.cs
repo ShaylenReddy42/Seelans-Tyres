@@ -7,12 +7,12 @@ namespace SeelansTyres.Workers.AddressWorker.Services;
 public class AddressUpdateService : IAddressUpdateService
 {
     private readonly ILogger<AddressUpdateService> logger;
-    private readonly AddressContext context;
+    private readonly AddressDbContext context;
     private readonly Stopwatch stopwatch = new();
 
     public AddressUpdateService(
         ILogger<AddressUpdateService> logger,
-        AddressContext context)
+        AddressDbContext context)
     {
         this.logger = logger;
         this.context = context;

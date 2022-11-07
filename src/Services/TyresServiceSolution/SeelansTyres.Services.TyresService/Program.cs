@@ -26,9 +26,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddCommonSwaggerGen();
 
-builder.Services.AddDbContext<TyresContext>(options =>
+builder.Services.AddDbContext<TyresDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresTyresContext"]));
+        builder.Configuration["SeelansTyresTyresContext"],
+        options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<ITyresRepository, TyresRepository>();
 
@@ -68,17 +69,14 @@ var healthChecksModel = new HealthChecksModel
     ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
 };
 
-var rabbitMQConnectionString = 
-    $"amqp://{builder.Configuration["RabbitMQ:ConnectionProperties:HostName"]}:{builder.Configuration["RabbitMQ:ConnectionProperties:Port"]}";
-
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
-    .AddDbContextCheck<TyresContext>(
+    .AddDbContextCheck<TyresDbContext>(
         name: "database",
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(
         name: "rabbitmq",
-        rabbitConnectionString: rabbitMQConnectionString,
+        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"],
         failureStatus: HealthStatus.Degraded);
 
 var app = builder.Build();
@@ -101,7 +99,7 @@ app.MapCommonHealthChecks();
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {
-    await app.MigrateDatabaseAsync<TyresContext>();
+    await app.MigrateDatabaseAsync<TyresDbContext>();
 }
 
 app.Run();

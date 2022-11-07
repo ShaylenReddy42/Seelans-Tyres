@@ -11,7 +11,7 @@ using SeelansTyres.Data.AddressData;
 
 namespace SeelansTyres.Data.AddressData.Migrations
 {
-    [DbContext(typeof(AddressContext))]
+    [DbContext(typeof(AddressDbContext))]
     [Migration("20220907061444_Initial")]
     partial class Initial
     {

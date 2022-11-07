@@ -7,11 +7,11 @@ namespace SeelansTyres.Services.AddressService.Services;
 
 public class AddressRepository : IAddressRepository
 {
-    private readonly AddressContext context;
+    private readonly AddressDbContext context;
     private readonly ILogger<AddressRepository> logger;
     private readonly Stopwatch stopwatch = new();
 
-    public AddressRepository(AddressContext context, ILogger<AddressRepository> logger) => 
+    public AddressRepository(AddressDbContext context, ILogger<AddressRepository> logger) => 
         (this.context, this.logger) = (context, logger);
 
     public async Task<IEnumerable<Address>> RetrieveAllAsync(Guid customerId)

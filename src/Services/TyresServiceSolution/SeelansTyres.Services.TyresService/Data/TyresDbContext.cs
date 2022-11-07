@@ -3,9 +3,9 @@ using SeelansTyres.Services.TyresService.Data.Entities;
 
 namespace SeelansTyres.Services.TyresService.Data;
 
-public class TyresContext : DbContext
+public class TyresDbContext : DbContext
 {
-	public TyresContext(DbContextOptions<TyresContext> options) : base(options) { }
+	public TyresDbContext(DbContextOptions<TyresDbContext> options) : base(options) { }
 
 	public DbSet<Tyre> Tyres => Set<Tyre>();
 	public DbSet<Brand> Brands => Set<Brand>();

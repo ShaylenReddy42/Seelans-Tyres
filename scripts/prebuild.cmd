@@ -37,6 +37,7 @@ ECHO.
 efbundle.exe --connection "%SeelansTyresOrderContext%"
 
 SET PROJECT=src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj
+SET RabbitMQ__ConnectionProperties__ConnectionString=amqp://localhost:5673
 
 ECHO.
 ECHO Create EF Core Bundle for SeelansTyres.Services.TyresService

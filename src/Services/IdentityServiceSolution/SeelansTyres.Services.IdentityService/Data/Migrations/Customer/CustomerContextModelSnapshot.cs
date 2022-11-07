@@ -10,7 +10,7 @@ using SeelansTyres.Services.IdentityService.Data;
 
 namespace SeelansTyres.Services.IdentityService.Migrations.Customer
 {
-    [DbContext(typeof(CustomerContext))]
+    [DbContext(typeof(CustomerDbContext))]
     partial class CustomerContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

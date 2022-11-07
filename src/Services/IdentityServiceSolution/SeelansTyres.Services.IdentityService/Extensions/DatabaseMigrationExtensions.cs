@@ -18,7 +18,7 @@ public static class DatabaseMigrationExtensions
 
         var configurationDbContext = scope.ServiceProvider.GetService<ConfigurationDbContext>();
         var persistedGrantDbContext = scope.ServiceProvider.GetService<PersistedGrantDbContext>();
-        var customerContext = scope.ServiceProvider.GetService<CustomerContext>();
+        var customerContext = scope.ServiceProvider.GetService<CustomerDbContext>();
 
         stopwatch.Start();
         try

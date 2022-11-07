@@ -10,7 +10,7 @@ using SeelansTyres.Data.OrderData;
 
 namespace SeelansTyres.Data.OrderData.Migrations
 {
-    [DbContext(typeof(OrdersContext))]
+    [DbContext(typeof(OrderDbContext))]
     partial class OrdersContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

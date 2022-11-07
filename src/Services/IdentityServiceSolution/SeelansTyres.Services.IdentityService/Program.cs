@@ -32,13 +32,13 @@ builder.Services.AddCommonSwaggerGen();
 var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
 var assemblyName = typeof(Program).Assembly.GetName().Name;
 
-builder.Services.AddDbContext<CustomerContext>(options =>
+builder.Services.AddDbContext<CustomerDbContext>(options =>
 {
     options.UseSqlServer(connectionString, options => options.MigrationsAssembly(assemblyName));
 });
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<CustomerContext>()
+    .AddEntityFrameworkStores<CustomerDbContext>()
     .AddRoles<IdentityRole<Guid>>()
     .AddDefaultTokenProviders();
 
@@ -160,7 +160,7 @@ var rabbitMQConnectionString =
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
-    .AddDbContextCheck<CustomerContext>(
+    .AddDbContextCheck<CustomerDbContext>(
         name: "database",
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(

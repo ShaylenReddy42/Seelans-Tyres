@@ -10,7 +10,7 @@ using SeelansTyres.Data.AddressData;
 
 namespace SeelansTyres.Data.AddressData.Migrations
 {
-    [DbContext(typeof(AddressContext))]
+    [DbContext(typeof(AddressDbContext))]
     partial class AddressContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

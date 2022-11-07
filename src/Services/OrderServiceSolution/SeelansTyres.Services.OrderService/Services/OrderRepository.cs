@@ -7,12 +7,12 @@ namespace SeelansTyres.Services.OrderService.Services;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly OrdersContext context;
+    private readonly OrderDbContext context;
     private readonly ILogger<OrderRepository> logger;
     private readonly Stopwatch stopwatch = new();
 
     public OrderRepository(
-        OrdersContext context,
+        OrderDbContext context,
         ILogger<OrderRepository> logger)
     {
         this.context = context;

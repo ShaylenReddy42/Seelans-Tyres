@@ -11,7 +11,7 @@ using SeelansTyres.Services.IdentityService.Data;
 
 namespace SeelansTyres.Services.IdentityService.Migrations.Customer
 {
-    [DbContext(typeof(CustomerContext))]
+    [DbContext(typeof(CustomerDbContext))]
     [Migration("20220910032156_InitialCustomer")]
     partial class InitialCustomer
     {

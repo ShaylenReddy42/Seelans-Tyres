@@ -5,9 +5,9 @@ using SeelansTyres.Services.IdentityService.Data.Entities;
 
 namespace SeelansTyres.Services.IdentityService.Data;
 
-public class CustomerContext : IdentityDbContext<Customer, IdentityRole<Guid>, Guid>
+public class CustomerDbContext : IdentityDbContext<Customer, IdentityRole<Guid>, Guid>
 {
-    public CustomerContext(DbContextOptions<CustomerContext> options) : base(options) { }
+    public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options) { }
 
     public DbSet<Customer> Customers => Set<Customer>();
 }

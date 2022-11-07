@@ -7,12 +7,12 @@ namespace SeelansTyres.Services.TyresService.Services;
 
 public class TyresRepository : ITyresRepository
 {
-    private readonly TyresContext context;
+    private readonly TyresDbContext context;
     private readonly ILogger<TyresRepository> logger;
     private readonly Stopwatch stopwatch = new();
 
     public TyresRepository(
-        TyresContext context, 
+        TyresDbContext context, 
         ILogger<TyresRepository> logger)
     {
         this.context = context;

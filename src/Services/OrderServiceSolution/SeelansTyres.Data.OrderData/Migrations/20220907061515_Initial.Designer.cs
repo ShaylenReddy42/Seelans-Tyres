@@ -11,7 +11,7 @@ using SeelansTyres.Data.OrderData;
 
 namespace SeelansTyres.Data.OrderData.Migrations
 {
-    [DbContext(typeof(OrdersContext))]
+    [DbContext(typeof(OrderDbContext))]
     [Migration("20220907061515_Initial")]
     partial class Initial
     {

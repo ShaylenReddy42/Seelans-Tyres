@@ -10,7 +10,7 @@ using SeelansTyres.Services.TyresService.Data;
 
 namespace SeelansTyres.Services.TyresService.Migrations
 {
-    [DbContext(typeof(TyresContext))]
+    [DbContext(typeof(TyresDbContext))]
     partial class TyresContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

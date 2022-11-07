@@ -25,9 +25,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddCommonSwaggerGen();
 
-builder.Services.AddDbContext<OrdersContext>(options =>
+builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresOrderContext"]));
+        builder.Configuration["SeelansTyresOrderContext"],
+        options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
@@ -74,7 +75,7 @@ var healthChecksModel = new HealthChecksModel
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
-    .AddDbContextCheck<OrdersContext>(
+    .AddDbContextCheck<OrderDbContext>(
         name: "database",
         failureStatus: HealthStatus.Unhealthy);
 
@@ -98,7 +99,7 @@ app.MapCommonHealthChecks();
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {
-    await app.MigrateDatabaseAsync<OrdersContext>();
+    await app.MigrateDatabaseAsync<OrderDbContext>();
 }
 
 app.Run();

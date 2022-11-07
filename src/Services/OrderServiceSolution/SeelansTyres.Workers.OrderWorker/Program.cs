@@ -17,7 +17,7 @@ builder.AddCommonBuilderConfiguration(new()
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Order Worker Service"
 });
 
-builder.Services.AddDbContext<OrdersContext>(options =>
+builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration["SeelansTyresOrderContext"]));
 
@@ -39,7 +39,7 @@ var healthChecksModel = new HealthChecksModel
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
-    .AddDbContextCheck<OrdersContext>(
+    .AddDbContextCheck<OrderDbContext>(
         name: "database",
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(

@@ -9,12 +9,12 @@ namespace SeelansTyres.Workers.OrderWorker.Services;
 public class OrderUpdateService : IOrderUpdateService
 {
     private readonly ILogger<OrderUpdateService> logger;
-    private readonly OrdersContext context;
+    private readonly OrderDbContext context;
     private readonly Stopwatch stopwatch = new();
 
     public OrderUpdateService(
         ILogger<OrderUpdateService> logger,
-        OrdersContext context)
+        OrderDbContext context)
     {
         this.logger = logger;
         this.context = context;

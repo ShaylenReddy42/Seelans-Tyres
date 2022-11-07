@@ -25,9 +25,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddCommonSwaggerGen();
 
-builder.Services.AddDbContext<AddressContext>(options =>
+builder.Services.AddDbContext<AddressDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresAddressContext"]));
+        builder.Configuration["SeelansTyresAddressContext"],
+        options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
@@ -70,7 +71,7 @@ var healthChecksModel = new HealthChecksModel
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
-    .AddDbContextCheck<AddressContext>(
+    .AddDbContextCheck<AddressDbContext>(
         name: "database",
         failureStatus: HealthStatus.Unhealthy);
 
@@ -94,7 +95,7 @@ app.MapCommonHealthChecks();
 
 if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {
-    await app.MigrateDatabaseAsync<AddressContext>();
+    await app.MigrateDatabaseAsync<AddressDbContext>();
 }
 
 app.Run();

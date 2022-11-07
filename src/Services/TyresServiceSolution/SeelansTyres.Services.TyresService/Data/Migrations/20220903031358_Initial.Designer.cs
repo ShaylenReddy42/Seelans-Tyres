@@ -11,7 +11,7 @@ using SeelansTyres.Services.TyresService.Data;
 
 namespace SeelansTyres.Services.TyresService.Migrations
 {
-    [DbContext(typeof(TyresContext))]
+    [DbContext(typeof(TyresDbContext))]
     [Migration("20220903031358_Initial")]
     partial class Initial
     {
