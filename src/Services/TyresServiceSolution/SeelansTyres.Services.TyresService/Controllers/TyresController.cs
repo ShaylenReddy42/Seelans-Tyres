@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SeelansTyres.Services.TyresService.Data.Entities;
 using SeelansTyres.Libraries.Shared.Services;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared.Messages;
 using System.Diagnostics;
 using System.Text.Json;
@@ -22,7 +21,6 @@ public class TyresController : ControllerBase
     private readonly IMapper mapper;
     private readonly IConfiguration configuration;
     private readonly IMessagingServicePublisher messagingServicePublisher;
-    private readonly RabbitMQSettingsModel rabbitMQSettingsModel;
 
     public TyresController(
         ILogger<TyresController> logger,
@@ -36,15 +34,6 @@ public class TyresController : ControllerBase
         this.mapper = mapper;
         this.configuration = configuration;
         this.messagingServicePublisher = messagingServicePublisher;
-
-        rabbitMQSettingsModel = new()
-        {
-            UserName = configuration["RabbitMQ:Credentials:UserName"],
-            Password = configuration["RabbitMQ:Credentials:Password"],
-
-            HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
-            Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port")
-        };
     }
 
     [HttpPost]
@@ -137,9 +126,7 @@ public class TyresController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        rabbitMQSettingsModel.Exchange = configuration["RabbitMQ:Exchanges:UpdateTyre"];
-
-        await messagingServicePublisher.PublishMessageAsync(baseMessage, rabbitMQSettingsModel);
+        await messagingServicePublisher.PublishMessageAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]);
 
         return NoContent();
     }

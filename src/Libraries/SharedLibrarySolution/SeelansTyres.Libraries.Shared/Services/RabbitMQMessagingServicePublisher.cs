@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using SeelansTyres.Libraries.Shared.Messages;
-using SeelansTyres.Libraries.Shared.Models;
 using System.Text.Json;
 
 namespace SeelansTyres.Libraries.Shared.Services;
@@ -9,26 +9,39 @@ namespace SeelansTyres.Libraries.Shared.Services;
 public class RabbitMQMessagingServicePublisher : IMessagingServicePublisher
 {
     private readonly ILogger<RabbitMQMessagingServicePublisher> logger;
+    private readonly IConfiguration configuration;
 
-    public RabbitMQMessagingServicePublisher(ILogger<RabbitMQMessagingServicePublisher> logger)
+    public RabbitMQMessagingServicePublisher(
+        ILogger<RabbitMQMessagingServicePublisher> logger,
+        IConfiguration configuration)
     {
         this.logger = logger;
+        this.configuration = configuration;
     }
 
-    public Task PublishMessageAsync(BaseMessage message, RabbitMQSettingsModel settings)
+    public Task PublishMessageAsync(BaseMessage message, string destination)
     {
         logger.LogInformation("Configuring RabbitMQ Connection");
 
         RabbitMQ.ConfigureCommonRabbitMQConnection(
-            settings: settings,
+            settings: new()
+            {
+                UserName = configuration["RabbitMQ:Credentials:UserName"],
+                Password = configuration["RabbitMQ:Credentials:Password"],
+
+                HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
+                Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port"),
+
+                Exchange = destination
+            },
             channel: out var channel);
 
         logger.LogInformation(
             "Publishing message to {RabbitMQExchange} exchange",
-            settings.Exchange);
+            destination);
 
         channel.BasicPublish(
-            exchange: settings.Exchange,
+            exchange: destination,
             routingKey: string.Empty,
             basicProperties: null,
             body: JsonSerializer.SerializeToUtf8Bytes(message));

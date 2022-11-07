@@ -25,7 +25,6 @@ public class CustomersController : ControllerBase
     private readonly ILogger<CustomersController> logger;
     private readonly IConfiguration configuration;
     private readonly IMessagingServicePublisher messagingServicePublisher;
-    private readonly RabbitMQSettingsModel rabbitMQSettingsModel;
 
     public CustomersController(
         ICustomerService customerService,
@@ -41,15 +40,6 @@ public class CustomersController : ControllerBase
         this.logger = logger;
         this.configuration = configuration;
         this.messagingServicePublisher = messagingServicePublisher;
-
-        rabbitMQSettingsModel = new()
-        {
-            UserName = configuration["RabbitMQ:Credentials:UserName"],
-            Password = configuration["RabbitMQ:Credentials:Password"],
-
-            HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
-            Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port")
-        };
     }
     
     [HttpPost]
@@ -161,9 +151,7 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        rabbitMQSettingsModel.Exchange = configuration["RabbitMQ:Exchanges:UpdateAccount"];
-
-        await messagingServicePublisher.PublishMessageAsync(baseMessage, rabbitMQSettingsModel);
+        await messagingServicePublisher.PublishMessageAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]);
 
         return NoContent();
     }
@@ -188,9 +176,7 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        rabbitMQSettingsModel.Exchange = configuration["RabbitMQ:Exchanges:DeleteAccount"];
-
-        await messagingServicePublisher.PublishMessageAsync(baseMessage, rabbitMQSettingsModel);
+        await messagingServicePublisher.PublishMessageAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]);
 
         return NoContent();
     }
