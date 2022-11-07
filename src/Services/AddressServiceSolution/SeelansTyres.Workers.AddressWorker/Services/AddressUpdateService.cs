@@ -44,10 +44,10 @@ public class AddressUpdateService : IAddressUpdateService
         }
         stopwatch.Stop();
 
+        await context.SaveChangesAsync();
+
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
-
-        await context.SaveChangesAsync();
     }
 }

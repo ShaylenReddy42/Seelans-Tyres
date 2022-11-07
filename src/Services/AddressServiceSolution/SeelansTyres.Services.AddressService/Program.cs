@@ -28,7 +28,7 @@ builder.Services.AddCommonSwaggerGen();
 builder.Services.AddDbContext<AddressDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration["SeelansTyresAddressContext"],
-        options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
+        options => options.MigrationsAssembly(typeof(AddressDbContext).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 

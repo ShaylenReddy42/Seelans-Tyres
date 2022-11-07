@@ -46,11 +46,11 @@ public class OrderUpdateService : IOrderUpdateService
         }
         stopwatch.Stop();
 
+        await context.SaveChangesAsync();
+
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
-
-        await context.SaveChangesAsync();
     }
 
     public async Task UpdateAccountAsync(BaseMessage message)
@@ -86,11 +86,11 @@ public class OrderUpdateService : IOrderUpdateService
         }
         stopwatch.Stop();
 
+        await context.SaveChangesAsync();
+
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
-
-        await context.SaveChangesAsync();
     }
 
     public async Task UpdateTyreAsync(BaseMessage message)
@@ -125,10 +125,10 @@ public class OrderUpdateService : IOrderUpdateService
         }
         stopwatch.Stop();
 
+        await context.SaveChangesAsync();
+
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to update update all orders with tyre {tyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
-
-        await context.SaveChangesAsync();
     }
 }
