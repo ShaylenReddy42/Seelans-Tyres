@@ -6,13 +6,13 @@ using System.Text.Json;
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
-public class RabbitMQMessagingServicePublisher : IMessagingServicePublisher
+public class RabbitMQPublisher : IMessagingServicePublisher
 {
-    private readonly ILogger<RabbitMQMessagingServicePublisher> logger;
+    private readonly ILogger<RabbitMQPublisher> logger;
     private readonly IConfiguration configuration;
 
-    public RabbitMQMessagingServicePublisher(
-        ILogger<RabbitMQMessagingServicePublisher> logger,
+    public RabbitMQPublisher(
+        ILogger<RabbitMQPublisher> logger,
         IConfiguration configuration)
     {
         this.logger = logger;

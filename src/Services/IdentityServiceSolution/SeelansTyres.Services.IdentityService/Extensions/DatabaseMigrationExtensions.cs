@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using SeelansTyres.Libraries.Shared.DbContexts;
 using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Services;
 using System.Diagnostics;
@@ -18,7 +19,8 @@ public static class DatabaseMigrationExtensions
 
         var configurationDbContext = scope.ServiceProvider.GetService<ConfigurationDbContext>();
         var persistedGrantDbContext = scope.ServiceProvider.GetService<PersistedGrantDbContext>();
-        var customerContext = scope.ServiceProvider.GetService<CustomerDbContext>();
+        var customerDbContext = scope.ServiceProvider.GetService<CustomerDbContext>();
+        var unpublishedUpdateDbContext = scope.ServiceProvider.GetService<UnpublishedUpdateDbContext>();
 
         stopwatch.Start();
         try
@@ -26,7 +28,8 @@ public static class DatabaseMigrationExtensions
             await Task.WhenAll(
                 Task.Run(() => configurationDbContext!.Database.MigrateAsync()),
                 Task.Run(() => persistedGrantDbContext!.Database.MigrateAsync()),
-                Task.Run(() => customerContext!.Database.MigrateAsync()));
+                Task.Run(() => customerDbContext!.Database.MigrateAsync()),
+                Task.Run(() => unpublishedUpdateDbContext!.Database.MigrateAsync()));
         }
         catch (Exception ex)
         {

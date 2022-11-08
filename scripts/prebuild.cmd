@@ -42,7 +42,7 @@ SET RabbitMQ__ConnectionProperties__ConnectionString=amqp://localhost:5673
 ECHO.
 ECHO Create EF Core Bundle for SeelansTyres.Services.TyresService
 ECHO.
-dotnet tool run dotnet-ef migrations bundle --force --project "%PROJECT%" --startup-project "%PROJECT%" -o efbundle.exe
+dotnet tool run dotnet-ef migrations bundle --force --project "%PROJECT%" --startup-project "%PROJECT%" --context TyresDbContext -o efbundle.exe
 
 ECHO.
 ECHO Execute EF Core Bundle against configured database connection

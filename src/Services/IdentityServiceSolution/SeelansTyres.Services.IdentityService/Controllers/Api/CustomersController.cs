@@ -3,9 +3,9 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SeelansTyres.Libraries.Shared.Channels;
 using SeelansTyres.Libraries.Shared.Messages;
 using SeelansTyres.Libraries.Shared.Models;
-using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Services.IdentityService.Services;
@@ -24,7 +24,7 @@ public class CustomersController : ControllerBase
     private readonly IMapper mapper;
     private readonly ILogger<CustomersController> logger;
     private readonly IConfiguration configuration;
-    private readonly IMessagingServicePublisher messagingServicePublisher;
+    private readonly PublishUpdateChannel publishUpdateChannel;
 
     public CustomersController(
         ICustomerService customerService,
@@ -32,14 +32,14 @@ public class CustomersController : ControllerBase
         IMapper mapper,
         ILogger<CustomersController> logger,
         IConfiguration configuration,
-        IMessagingServicePublisher messagingServicePublisher)
+        PublishUpdateChannel publishUpdateChannel)
     {
         this.customerService = customerService;
         this.signingCredentialStore = signingCredentialStore;
         this.mapper = mapper;
         this.logger = logger;
         this.configuration = configuration;
-        this.messagingServicePublisher = messagingServicePublisher;
+        this.publishUpdateChannel = publishUpdateChannel;
     }
     
     [HttpPost]
@@ -151,7 +151,7 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        await messagingServicePublisher.PublishMessageAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]);
 
         return NoContent();
     }
@@ -176,7 +176,7 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        await messagingServicePublisher.PublishMessageAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]);
 
         return NoContent();
     }

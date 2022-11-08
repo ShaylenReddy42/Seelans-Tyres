@@ -10,6 +10,7 @@ using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Libraries.Shared.Services;
+using SeelansTyres.Libraries.Shared.DbContexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         configure.RequireHttpsMetadata = false;
     });
 
-builder.Services.AddSingleton<IMessagingServicePublisher, RabbitMQMessagingServicePublisher>();
+builder.Services.AddSingleton<IMessagingServicePublisher, RabbitMQPublisher>();
 
 builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
 
@@ -79,6 +80,9 @@ builder.Services.AddHealthChecks()
         rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"],
         failureStatus: HealthStatus.Degraded);
 
+builder.Services.AddCommonUnpublishedUpdatesManagementServices(
+    databaseConnectionString: builder.Configuration["SeelansTyresTyresContext"]);
+
 var app = builder.Build();
 
 app.UseProblemDetails();
@@ -101,5 +105,7 @@ if (app.Configuration.GetValue<bool>("UseDocker") is true)
 {
     await app.MigrateDatabaseAsync<TyresDbContext>();
 }
+
+await app.MigrateDatabaseAsync<UnpublishedUpdateDbContext>();
 
 app.Run();

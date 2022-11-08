@@ -4,7 +4,7 @@ using SeelansTyres.Services.TyresService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SeelansTyres.Services.TyresService.Data.Entities;
-using SeelansTyres.Libraries.Shared.Services;
+using SeelansTyres.Libraries.Shared.Channels;
 using SeelansTyres.Libraries.Shared.Messages;
 using System.Diagnostics;
 using System.Text.Json;
@@ -20,20 +20,20 @@ public class TyresController : ControllerBase
     private readonly ITyresRepository tyresRepository;
     private readonly IMapper mapper;
     private readonly IConfiguration configuration;
-    private readonly IMessagingServicePublisher messagingServicePublisher;
+    private readonly PublishUpdateChannel publishUpdateChannel;
 
     public TyresController(
         ILogger<TyresController> logger,
         ITyresRepository tyresRepository,
         IMapper mapper,
         IConfiguration configuration,
-        IMessagingServicePublisher messagingServicePublisher)
+        PublishUpdateChannel publishUpdateChannel)
     {
         this.logger = logger;
         this.tyresRepository = tyresRepository;
         this.mapper = mapper;
         this.configuration = configuration;
-        this.messagingServicePublisher = messagingServicePublisher;
+        this.publishUpdateChannel = publishUpdateChannel;
     }
 
     [HttpPost]
@@ -126,7 +126,7 @@ public class TyresController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        await messagingServicePublisher.PublishMessageAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]);
 
         return NoContent();
     }
