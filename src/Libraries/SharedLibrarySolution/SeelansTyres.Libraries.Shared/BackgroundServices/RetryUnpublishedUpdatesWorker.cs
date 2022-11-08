@@ -52,7 +52,10 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
 
                     unpublishedUpdateRepository.DeleteAsync(unpublishedUpdate);
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "The message bus is unavailable");
+                }
             });
 
             await unpublishedUpdateRepository.SaveChangesAsync();

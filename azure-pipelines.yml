@@ -83,7 +83,7 @@ steps:
   inputs:
     command: custom
     custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
+    arguments: run dotnet-ef migrations bundle --force --project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj  --context TyresDbContext -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
     workingDirectory: '$(workDir)'
 
 - template: .pipelines/templates/publishProject.yml

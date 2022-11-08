@@ -129,6 +129,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 * Implementation of an efficient data synchronization strategy across microservices
   * Related commits:
     * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
+    * [rework how updates are published by making it more resilient to failure](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/74779db7ad0f933d613037e405aca1eb1abdd3e0)
 * Site Reliability Engineering possibilities like creating an actionable alerting strategy and monitoring application health
   * Related commits:
     * [the days and nights were long and so too, was the logging spree](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/3fe627984d17f80bdc38ad73a2f5e43480ae5f88)
@@ -148,7 +149,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 ## Resources that helped me skill up to rewrite this project
 
-* [C# 10 and .NET 6](https://www.amazon.com/10-NET-Cross-Platform-Development-websites-ebook/dp/B09JV37DM6)
+* [C# 10 and .NET 6 [Paperback]](https://www.amazon.com/10-NET-Cross-Platform-Development-websites/dp/1801077363/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=)
   * Author: [Mark J. Price](https://www.amazon.com/Mark-J-Price/e/B071DW3QGN/ref=aufs_dp_fta_dsk)
 * [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://www.pluralsight.com/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
   * Author: [Shawn Wildermuth](https://app.pluralsight.com/profile/author/shawn-wildermuth)
