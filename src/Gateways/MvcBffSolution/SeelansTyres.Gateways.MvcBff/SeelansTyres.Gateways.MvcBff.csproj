@@ -21,7 +21,6 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.OpenIdConnectServer" Version="6.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Ocelot" Version="18.0.0" />
   </ItemGroup>
