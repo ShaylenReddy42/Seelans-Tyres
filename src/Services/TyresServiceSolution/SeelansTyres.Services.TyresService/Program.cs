@@ -44,8 +44,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         configure.RequireHttpsMetadata = false;
     });
 
-builder.Services.AddSingleton<IMessagingServicePublisher, RabbitMQPublisher>();
-
 builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
 
 builder.Services.AddAuthorization(configure =>
@@ -80,7 +78,7 @@ builder.Services.AddHealthChecks()
         rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"],
         failureStatus: HealthStatus.Degraded);
 
-builder.Services.AddCommonUnpublishedUpdatesManagementServices(
+builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(
     databaseConnectionString: builder.Configuration["SeelansTyresTyresContext"]);
 
 var app = builder.Build();

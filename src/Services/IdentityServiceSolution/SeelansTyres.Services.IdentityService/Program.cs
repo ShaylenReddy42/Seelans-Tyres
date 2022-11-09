@@ -109,8 +109,6 @@ builder.Services.AddAuthentication()
         configure.RequireHttpsMetadata = false;
     });
 
-builder.Services.AddSingleton<IMessagingServicePublisher, RabbitMQPublisher>();
-
 builder.Services.AddTransient<IAuthorizationHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler>();
 
 builder.Services.AddAuthorization(options =>
@@ -168,7 +166,7 @@ builder.Services.AddHealthChecks()
         rabbitConnectionString: rabbitMQConnectionString,
         failureStatus: HealthStatus.Degraded);
 
-builder.Services.AddCommonUnpublishedUpdatesManagementServices(
+builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(
     databaseConnectionString: connectionString);
 
 var app = builder.Build();

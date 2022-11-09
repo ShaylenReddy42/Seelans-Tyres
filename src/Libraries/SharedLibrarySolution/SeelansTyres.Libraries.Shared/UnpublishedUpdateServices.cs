@@ -9,9 +9,9 @@ namespace SeelansTyres.Libraries.Shared;
 
 public static class UnpublishedUpdateServices
 {
-    public static IServiceCollection AddCommonUnpublishedUpdatesManagementServices(
+    public static IServiceCollection AddCommonUnpublishedUpdatesManagementServices<TImplementation>(
         this IServiceCollection services,
-        string databaseConnectionString)
+        string databaseConnectionString) where TImplementation : class, IMessagingServicePublisher
     {
         services.AddDbContext<UnpublishedUpdateDbContext>(options =>
             options.UseSqlServer(
@@ -20,6 +20,8 @@ public static class UnpublishedUpdateServices
 
         services.AddScoped<IUnpublishedUpdateRepository, UnpublishedUpdateRepository>();
 
+        services.AddSingleton<IMessagingServicePublisher, TImplementation>();
+        
         services.AddSingleton<PublishUpdateChannel>();
         services.AddHostedService<PublishUpdateChannelReaderBackgroundService>();
         services.AddHostedService<RetryUnpublishedUpdatesWorker>();
