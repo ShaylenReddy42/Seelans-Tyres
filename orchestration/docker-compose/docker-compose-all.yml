@@ -213,7 +213,7 @@ services:
       - seelanstyres-network
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     expose:
       - 1433
@@ -229,7 +229,7 @@ services:
       - seelanstyres-network
 
   elasticsearch:
-    image: elasticsearch:7.17.6
+    image: elasticsearch:7.17.7
     container_name: elasticsearch
     ports:
       - 9200:9200
@@ -250,7 +250,7 @@ services:
       - seelanstyres-network
 
   kibana:
-    image: kibana:7.17.6
+    image: kibana:7.17.7
     container_name: kibana
     ports:
       - 5601:5601

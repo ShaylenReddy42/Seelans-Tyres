@@ -204,16 +204,27 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 ## Build instructions
 
 * NOTE: If you use `build-with-docker.cmd`, I recommend you pull these images beforehand:
-  * [elasticsearch:7.17.6](https://hub.docker.com/_/elasticsearch/)
-  * [kibana:7.17.6](https://hub.docker.com/_/kibana/)
-  * [rabbitmq:3-management](https://hub.docker.com/_/rabbitmq/)
-  * [mcr.microsoft.com/dotnet/aspnet:6.0](https://mcr.microsoft.com/en-us/product/dotnet/aspnet/about)
-  * [mcr.microsoft.com/dotnet/sdk:6.0](https://mcr.microsoft.com/en-us/product/dotnet/sdk/about)
-  * [mcr.microsoft.com/mssql/server:2019-latest](https://hub.docker.com/_/microsoft-mssql-server)
+
+``` bat
+
+docker pull elasticsearch:7.17.7
+docker pull kibana:7.17.7
+docker pull rabbitmq:3-management
+docker pull mcr.microsoft.com/dotnet/aspnet:6.0
+docker pull mcr.microsoft.com/dotnet/sdk:6.0
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+
+```
+
 * If you use `build-with-services.cmd`, pull only these images beforehand:
-  * [elasticsearch:7.17.6](https://hub.docker.com/_/elasticsearch/)
-  * [kibana:7.17.6](https://hub.docker.com/_/kibana/)
-  * [rabbitmq:3-management](https://hub.docker.com/_/rabbitmq/)
+
+``` bat
+
+docker pull elasticsearch:7.17.7
+docker pull kibana:7.17.7
+docker pull rabbitmq:3-management
+
+```
 
 * Ensure to set environment variables listed in the `RequiredEnvironmentVariables.txt` file
   * Press the Win Key and search for `Edit environment variables for your account`
