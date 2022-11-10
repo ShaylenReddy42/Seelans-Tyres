@@ -22,22 +22,12 @@ EmailCredentials__Email [Requires a real email account]
 EmailCredentials__Password
 
 	This is a generated app password
-	On the email [gmail] account you choose to use, 
-	two-factor authentication has to be enabled
-	on your google account to show app passwords. 
-	You would then generate
-	a custom app password. Don't specify the
-	platform and give it any name you want.
+	On your gmail account, two-factor authentication 
+	has to be enabled to show app passwords. 
+	You would then generate a custom app password.
+	Don't specify the platform and give it any name you want.
 	Copy that as your password
 
-SeelansTyresAddressContext -- e.g. Server=localhost;Initial Catalog=SeelansTyresAddressDb;Trusted_Connection=true;MultipleActiveResultSets=true
+Database__ConnectionString -- Server=localhost;Initial Catalog=$(Database:Name);Trusted_Connection=true;MultipleActiveResultSets=true;TrustServerCertificate=true
 
-	Connection String to the SQL Server Database for the Address Microservice database
-
-SeelansTyresOrderContext -- e.g. Server=localhost;Initial Catalog=SeelansTyresOrderDb;Trusted_Connection=true;MultipleActiveResultSets=true
-
-	Connection String to the SQL Server Database for the Order Microservice database
-
-SeelansTyresTyresContext -- e.g. Server=localhost;Initial Catalog=SeelansTyresTyresDb;Trusted_Connection=true;MultipleActiveResultSets=true
-
-	Connection String to the SQL Server Database for the Tyres Microservice database
+	The main database connection string for all databases, taking advantage of ConfigurationSubstitutor

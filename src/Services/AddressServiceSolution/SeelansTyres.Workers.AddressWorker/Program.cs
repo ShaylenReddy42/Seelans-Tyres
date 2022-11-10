@@ -19,7 +19,7 @@ builder.AddCommonBuilderConfiguration(new()
 
 builder.Services.AddDbContext<AddressDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresAddressContext"]));
+        builder.Configuration["Database:ConnectionString"]));
 
 builder.Services.AddScoped<IAddressUpdateService, AddressUpdateService>();
 builder.Services.AddHostedService<DeleteAccountWorker>();

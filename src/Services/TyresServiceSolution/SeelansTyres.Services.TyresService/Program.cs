@@ -29,7 +29,7 @@ builder.Services.AddCommonSwaggerGen();
 
 builder.Services.AddDbContext<TyresDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresTyresContext"],
+        builder.Configuration["Database:ConnectionString"],
         options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<ITyresRepository, TyresRepository>();
@@ -79,7 +79,7 @@ builder.Services.AddHealthChecks()
         failureStatus: HealthStatus.Degraded);
 
 builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(
-    databaseConnectionString: builder.Configuration["SeelansTyresTyresContext"]);
+    databaseConnectionString: builder.Configuration["Database:ConnectionString"]);
 
 var app = builder.Build();
 

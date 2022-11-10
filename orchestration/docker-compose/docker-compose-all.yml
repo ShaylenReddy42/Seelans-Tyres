@@ -77,7 +77,7 @@ services:
       - 5011:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - SeelansTyresAddressContext=${CONTEXT}
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -99,7 +99,7 @@ services:
       - 5021:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - SeelansTyresAddressContext=${CONTEXT}
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -125,7 +125,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - AdminCredentials__Email=${AdminCredentials__Email}
       - AdminCredentials__Password=${AdminCredentials__Password}
-      - SeelansTyresIdentityContext=${CONTEXT}
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -151,7 +151,7 @@ services:
       - 5012:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - SeelansTyresOrderContext=${CONTEXT}
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envTokenIssuer=http://${HOST}:5005
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -173,7 +173,7 @@ services:
       - 5022:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - SeelansTyresOrderContext=${CONTEXT}
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -197,7 +197,7 @@ services:
       - 5013:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - SeelansTyresTyresContext=${CONTEXT}
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envTokenIssuer=http://${HOST}:5005
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}

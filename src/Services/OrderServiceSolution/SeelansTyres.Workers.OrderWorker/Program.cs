@@ -19,7 +19,7 @@ builder.AddCommonBuilderConfiguration(new()
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresOrderContext"]));
+        builder.Configuration["Database:ConnectionString"]));
 
 builder.Services.AddScoped<IOrderUpdateService, OrderUpdateService>();
 builder.Services.AddHostedService<DeleteAccountWorker>();

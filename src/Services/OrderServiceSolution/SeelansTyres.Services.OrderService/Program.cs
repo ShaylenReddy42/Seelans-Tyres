@@ -27,7 +27,7 @@ builder.Services.AddCommonSwaggerGen();
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["SeelansTyresOrderContext"],
+        builder.Configuration["Database:ConnectionString"],
         options => options.MigrationsAssembly(typeof(OrderDbContext).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();

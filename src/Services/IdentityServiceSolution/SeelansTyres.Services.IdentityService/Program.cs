@@ -29,7 +29,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddCommonSwaggerGen();
 
-var connectionString = builder.Configuration["SeelansTyresIdentityContext"];
+var connectionString = builder.Configuration["Database:ConnectionString"];
 var assemblyName = typeof(Program).Assembly.GetName().Name;
 
 builder.Services.AddDbContext<CustomerDbContext>(options =>
