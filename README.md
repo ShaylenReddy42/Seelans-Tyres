@@ -1,7 +1,5 @@
 # Seelan's Tyres
 
-## Badges
-
 [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/ShaylenReddy42.Seelans-Tyres?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=5&branchName=master)
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=ShaylenReddy42_Seelans-Tyres)
@@ -88,6 +86,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
   * Related commits:
     * [secure the customers api with hybrid encryption](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/88c0a20ddbd5e696753647ef96bec54a30cbb25c)
     * [make some slight improvements](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/90c9cca1ecefd3d3fd8d1f629b5db33d9f478183)
+    * [prep for containerization and orchestration locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/2ef94c9565db5e77a8532aa69e54954bab1dc9f4)
     * [cryptography: remove hmac computation](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/565576215da7ca38124c64456e3a9656d7396101)
 * Custom authorization requirements and policies for customers and the administrator. Customers can only access their own data
   * Related commits:
@@ -148,10 +147,20 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 ### Codebase / Build System features
 
 * An easy-to-maintain codebase that's polyrepo-ready
+  * Related commits:
+    * [restructure and reorganize the entire solution](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/14c11fb8414c71f03fa8ad7d60cf828cb1dcb58a)
 * A build system optimized with CMake to make the local building and running of the solution seamless
+  * Related commits:
+    * [cmake: templatize the run script](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6b204c9581c4d4fbf96e00c26a52c0e9aebb36ac)
+    * [cmake: make the configure files more maintainable](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/bc683f940094e80e3dfbe2ec00da93c5f49f3195)
+    * [cmake: templatize the copying of publish files](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9d8708cd1ca47ea28c513352eac491bb7db8298f)
+    * [cmake: templatize runall.cmd](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b7ff17c81d99b8d2f35a341c420ac023844b1f6a)
+    * [cmake: templatize the publishing of a project](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/eea327d6d3909cc081039b5182b69e748cb98926)
 * All projects are versioned according to the codebase version
 * Little (unavoidable) technical debt due to necessary code duplication
 * Sonarcloud is used to provide feedback on technical debt to which I take and clean up the solution
+  * Related commits:
+    * [integrate sonarcloud](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/a01b34b3c0b412652a896c1bf14cc8b65c5735db)
 
 ## Resources that helped me skill up to rewrite this project
 
