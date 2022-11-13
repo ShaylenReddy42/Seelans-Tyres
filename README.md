@@ -8,15 +8,21 @@
 
 ## What's the purpose of this project?
 
-This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which, compared to this, was very poorly written and insecure
+This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which - compared to this - was very poorly written and insecure
 
-Originally it was written with PHP as the backend, this is written using ASP.NET Core 6
+Originally, it was written using PHP. This is written using C# and .NET 6
 
 It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifications and needed a way to prove my skills with a project
 
-As of right now, the solution is not cloud-native yet
+View the AZ-400 that I prepared for and took [here](docs/az-400/README.md)
 
-Since this project is a proof-of-concept, the payment system isn't integrated
+As of right now, the solution is completed locally and is almost ready for Azure
+
+Initially I intended to make it cloud-native but I'd rather have it cloud-ready since "native" means it only runs in the cloud
+
+The definition of "cloud-native" seems to be up for debate from what I've seen and it makes sense as to why it is one
+
+NOTE: Since this project is a proof-of-concept, the payment system isn't integrated
 
 ## Architecture
 
