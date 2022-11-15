@@ -27,7 +27,3 @@ EmailCredentials__Password
 	You would then generate a custom app password.
 	Don't specify the platform and give it any name you want.
 	Copy that as your password
-
-Database__ConnectionString -- Server=localhost;Initial Catalog=$(Database:Name);Trusted_Connection=true;MultipleActiveResultSets=true;TrustServerCertificate=true
-
-	The main database connection string for all databases, taking advantage of ConfigurationSubstitutor
