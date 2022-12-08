@@ -27,28 +27,28 @@ builder.Services.AddAccessTokenManagement();
 
 builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["Services:AddressService"]);
+    client.BaseAddress = new Uri(builder.Configuration["Services:AddressService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler();
 
 builder.Services.AddHttpClient<ICustomerService, CustomerService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["Services:CustomerService"]);
+    client.BaseAddress = new Uri(builder.Configuration["Services:CustomerService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler();
 
 builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["Services:OrderService"]);
+    client.BaseAddress = new Uri(builder.Configuration["Services:OrderService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler();
 
 builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["Services:TyresService"]);
+    client.BaseAddress = new Uri(builder.Configuration["Services:TyresService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler();
@@ -107,13 +107,13 @@ builder.Services.AddAuthentication(options =>
 var healthChecksModel = new HealthChecksModel
 {
     EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!
 };
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
     .AddIdentityServer(
-        idSvrUri: new(builder.Configuration["IdentityServerUrl"]),
+        idSvrUri: new(builder.Configuration["IdentityServerUrl"]!),
         name: "identityServer",
         failureStatus: HealthStatus.Unhealthy)
     .AddUrlGroup(

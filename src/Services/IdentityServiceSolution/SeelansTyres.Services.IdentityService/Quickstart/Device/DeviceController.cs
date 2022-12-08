@@ -35,7 +35,7 @@ public class DeviceController : Controller
     public async Task<IActionResult> Index()
     {
         string userCodeParamName = _options.Value.UserInteraction.DeviceVerificationUserCodeParameter;
-        string userCode = Request.Query[userCodeParamName];
+        string userCode = Request.Query[userCodeParamName]!;
         if (string.IsNullOrWhiteSpace(userCode)) return View("UserCodeCapture");
 
         var vm = await BuildViewModelAsync(userCode);

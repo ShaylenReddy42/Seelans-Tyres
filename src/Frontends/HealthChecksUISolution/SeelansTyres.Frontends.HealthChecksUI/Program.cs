@@ -13,8 +13,6 @@ builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 var app = builder.Build();
 
-app.UseRouting();
-
 app.MapHealthChecksUI(options =>
 {
     options.UIPath = "/";

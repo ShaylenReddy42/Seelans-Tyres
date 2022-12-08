@@ -48,13 +48,13 @@ public static class RabbitMQ
         ConfigureCommonRabbitMQConnection(
             settings: new()
             {
-                UserName = configuration["RabbitMQ:Credentials:UserName"],
-                Password = configuration["RabbitMQ:Credentials:Password"],
+                UserName = configuration["RabbitMQ:Credentials:UserName"]!,
+                Password = configuration["RabbitMQ:Credentials:Password"]!,
 
-                HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
+                HostName = configuration["RabbitMQ:ConnectionProperties:HostName"]!,
                 Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port"),
 
-                Exchange = configuration[$"RabbitMQ:Bindings:{eventName}:Exchange"],
+                Exchange = configuration[$"RabbitMQ:Bindings:{eventName}:Exchange"]!,
                 Queue = configuration[$"RabbitMQ:Bindings:{eventName}:Queue"]
             },
             channel: out channel);

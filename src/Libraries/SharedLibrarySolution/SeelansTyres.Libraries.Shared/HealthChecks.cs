@@ -30,12 +30,12 @@ public static class HealthChecks
 
     public static WebApplication MapCommonHealthChecks(this WebApplication app)
     {
-        app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"], new HealthCheckOptions
+        app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"]!, new HealthCheckOptions
         {
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
 
-        app.MapHealthChecks(app.Configuration["LivenessCheckEndpoint"], new HealthCheckOptions
+        app.MapHealthChecks(app.Configuration["LivenessCheckEndpoint"]!, new HealthCheckOptions
         {
             Predicate = healthCheckRegistration => healthCheckRegistration.Tags.Contains("self"),
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

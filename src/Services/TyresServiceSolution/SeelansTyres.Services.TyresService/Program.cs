@@ -29,7 +29,7 @@ builder.Services.AddCommonSwaggerGen();
 
 builder.Services.AddDbContext<TyresDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["Database:ConnectionString"],
+        builder.Configuration["Database:ConnectionString"]!,
         options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<ITyresRepository, TyresRepository>();
@@ -65,7 +65,7 @@ builder.Services.AddProblemDetails(configure =>
 var healthChecksModel = new HealthChecksModel
 {
     EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!
 };
 
 builder.Services.AddHealthChecks()
@@ -75,11 +75,11 @@ builder.Services.AddHealthChecks()
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(
         name: "rabbitmq",
-        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"],
+        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
         failureStatus: HealthStatus.Degraded);
 
 builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(
-    databaseConnectionString: builder.Configuration["Database:ConnectionString"]);
+    databaseConnectionString: builder.Configuration["Database:ConnectionString"]!);
 
 var app = builder.Build();
 

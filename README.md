@@ -165,52 +165,43 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 ## Resources that helped me skill up to rewrite this project
 
 * [C# 10 and .NET 6 [Paperback]](https://www.amazon.com/10-NET-Cross-Platform-Development-websites/dp/1801077363/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=)
-  * Author: [Mark J. Price](https://www.amazon.com/Mark-J-Price/e/B071DW3QGN/ref=aufs_dp_fta_dsk)
+  * Author: Mark J. Price
 * [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://www.pluralsight.com/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
-  * Author: [Shawn Wildermuth](https://app.pluralsight.com/profile/author/shawn-wildermuth)
+  * Author: Shawn Wildermuth
 * [ASP.NET Core 6 Web API Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-web-api-fundamentals)
-  * Author: [Kevin Dockx](https://app.pluralsight.com/profile/author/kevin-dockx)
+  * Author: Kevin Dockx
 * [ASP.NET Core 6 Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-fundamentals)
-  * Author: [Gill Cleeren](https://app.pluralsight.com/profile/author/gill-cleeren)
+  * Author: Gill Cleeren
 * [ASP.NET Microservices [Path]](https://www.pluralsight.com/paths/net-microservices)
-  * Authors:
-    * [Antonio Goncalves](https://www.pluralsight.com/authors/antonio-goncalves)
-    * [Roland Guijt](https://www.pluralsight.com/authors/roland-guijt)
-    * [Gill Cleeren](https://www.pluralsight.com/authors/gill-cleeren)
-    * [Neil Morrissey](https://www.pluralsight.com/authors/neil-morrissey)
-    * [Kevin Dockx](https://www.pluralsight.com/authors/kevin-dockx)
-    * [Mark Heath](https://www.pluralsight.com/authors/mark-heath)
-    * [Marcel de Vries](https://www.pluralsight.com/authors/marcel-devries)
-    * [Steve Gordan](https://www.pluralsight.com/authors/steve-gordon)
-    * [Rag Dhiman](https://www.pluralsight.com/authors/rag-dhiman)
+  * Authors: Antonio Goncalves | Roland Guijt | Gill Cleeren | Neil Morrissey | Kevin Dockx | Mark Heath | Marcel de Vries | Steve Gordan | Rag Dhiman
 * [Your Microservices Transition](https://app.pluralsight.com/courses/your-microservices-transition)
-  * Author: [Rag Dhiman](https://www.pluralsight.com/authors/rag-dhiman)
+  * Author: Rag Dhiman
 * [Microservices Architecture: The Design Principles](https://app.pluralsight.com/courses/microservices-design-principles)
-  * Author: [Rag Dhiman](https://www.pluralsight.com/authors/rag-dhiman)
+  * Author: Rag Dhiman
 * [Securing ASP.NET Core 3 with OAuth2 and OpenID Connect](https://www.pluralsight.com/courses/securing-aspnet-core-3-oauth2-openid-connect)
-  * Author: [Kevin Dockx](https://app.pluralsight.com/profile/author/kevin-dockx)
+  * Author: Kevin Dockx
 * [Cryptography in .NET 6](https://www.pluralsight.com/courses/dot-net-6-cryptography)
-  * Author: [Stephen Haunts](https://app.pluralsight.com/profile/author/stephen-haunts)
+  * Author: Stephen Haunts
 * [Logging and Monitoring in ASP.NET Core 6](https://www.pluralsight.com/courses/logging-monitoring-aspdotnet-core-6)
-  * Author: [Erik Dahl](https://app.pluralsight.com/profile/author/erik-dahl)
+  * Author: Erik Dahl
 * [RabbitMQ by Example](https://www.pluralsight.com/courses/rabbitmq-by-example)
-  * Author: [Stephen Haunts](https://app.pluralsight.com/profile/author/stephen-haunts)
+  * Author: Stephen Haunts
 * [Building ASP.NET Core 3 Hosted Services and .NET Core 3 Worker Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services)
-  * Author: [Steve Gordan](https://www.pluralsight.com/authors/steve-gordon)
+  * Author: Steve Gordan
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
-  * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
+  * Author: IAmTimCorey
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
-  * Author: [IAmTimCorey](https://www.youtube.com/user/IAmTimCorey)
+  * Author: IAmTimCorey
 * [RabbitMQ Custom Docker Image with Custom Configuration and Definitions](https://www.youtube.com/watch?v=I8QHPfMhqAU)
-  * Author: [Mike Møller Nielsen](https://www.youtube.com/c/MikeM%C3%B8llerNielsen)
-* [Microsoft Docs / Learn](https://learn.microsoft.com/en-us/)
+  * Author: Mike Møller Nielsen
+* [Microsoft Learn](https://learn.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]
 * [How export or import RabbitMQ configuration](https://sleeplessbeastie.eu/2020/03/18/how-export-or-import-rabbitmq-configuration/)
 
 ## Required local setup to build and run
 
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.3.6 or later
-* [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) 6.0.403
+* .NET SDK [6.0.403](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.100](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
@@ -225,8 +216,13 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 docker pull elasticsearch:7.17.7
 docker pull kibana:7.17.7
 docker pull rabbitmq:3-management
+
 docker pull mcr.microsoft.com/dotnet/aspnet:6.0
 docker pull mcr.microsoft.com/dotnet/sdk:6.0
+
+docker pull mcr.microsoft.com/dotnet/aspnet:7.0
+docker pull mcr.microsoft.com/dotnet/sdk:7.0
+
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 ```

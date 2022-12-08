@@ -146,12 +146,12 @@ public class CustomersController : ControllerBase
         {
             TraceId = Activity.Current!.TraceId.ToString(),
             SpanId = Activity.Current!.SpanId.ToString(),
-            AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
+            AccessToken = HttpContext.Request.Headers.Authorization[0]!.Replace("Bearer ", ""),
             SerializedModel = JsonSerializer.SerializeToUtf8Bytes(updateAccountModel),
             IdOfEntityToUpdate = id
         };
 
-        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]!);
 
         return NoContent();
     }
@@ -172,11 +172,11 @@ public class CustomersController : ControllerBase
         {
             TraceId = Activity.Current!.TraceId.ToString(),
             SpanId = Activity.Current!.SpanId.ToString(),
-            AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
+            AccessToken = HttpContext.Request.Headers.Authorization[0]!.Replace("Bearer ", ""),
             IdOfEntityToUpdate = id
         };
 
-        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]!);
 
         return NoContent();
     }

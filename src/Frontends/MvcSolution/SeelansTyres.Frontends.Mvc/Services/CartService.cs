@@ -49,7 +49,7 @@ public class CartService : ICartService
             "Service => Attempting to retrieve cart {cartId}",
             cartId);
         
-        if (cache.TryGetValue(cartId, out List<CartItemModel> cart) is false)
+        if (cache.TryGetValue(cartId, out List<CartItemModel>? cart) is false)
         {
             logger.LogInformation(
                 "Cart {cartId} doesn't exist in the cache. Adding it",
@@ -59,7 +59,7 @@ public class CartService : ICartService
             Update(cart);
         }
 
-        return cart;
+        return cart!;
     }
 
     private void Update(List<CartItemModel> cart)

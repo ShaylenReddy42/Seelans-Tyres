@@ -26,10 +26,10 @@ public class RabbitMQPublisher : IMessagingServicePublisher
         RabbitMQ.ConfigureCommonRabbitMQConnection(
             settings: new()
             {
-                UserName = configuration["RabbitMQ:Credentials:UserName"],
-                Password = configuration["RabbitMQ:Credentials:Password"],
+                UserName = configuration["RabbitMQ:Credentials:UserName"]!,
+                Password = configuration["RabbitMQ:Credentials:Password"]!,
 
-                HostName = configuration["RabbitMQ:ConnectionProperties:HostName"],
+                HostName = configuration["RabbitMQ:ConnectionProperties:HostName"]!,
                 Port = configuration.GetValue<int>("RabbitMQ:ConnectionProperties:Port"),
 
                 Exchange = destination

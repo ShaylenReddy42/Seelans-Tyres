@@ -121,12 +121,12 @@ public class TyresController : ControllerBase
         {
             TraceId = Activity.Current!.TraceId.ToString(),
             SpanId = Activity.Current!.SpanId.ToString(),
-            AccessToken = HttpContext.Request.Headers.Authorization[0].Replace("Bearer ", ""),
+            AccessToken = HttpContext.Request.Headers.Authorization[0]!.Replace("Bearer ", ""),
             SerializedModel = JsonSerializer.SerializeToUtf8Bytes(tyreModel),
             IdOfEntityToUpdate = id
         };
 
-        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]!);
 
         return NoContent();
     }

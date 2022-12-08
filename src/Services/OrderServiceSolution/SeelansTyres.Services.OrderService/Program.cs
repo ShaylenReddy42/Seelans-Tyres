@@ -27,7 +27,7 @@ builder.Services.AddCommonSwaggerGen();
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["Database:ConnectionString"],
+        builder.Configuration["Database:ConnectionString"]!,
         options => options.MigrationsAssembly(typeof(OrderDbContext).Assembly.GetName().Name)));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -70,7 +70,7 @@ builder.Services.AddProblemDetails(configure =>
 var healthChecksModel = new HealthChecksModel
 {
     EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!
 };
 
 builder.Services.AddHealthChecks()

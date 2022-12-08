@@ -19,20 +19,20 @@ builder.AddCommonBuilderConfiguration(new()
 
 builder.Services.AddDbContext<AddressDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["Database:ConnectionString"]));
+        builder.Configuration["Database:ConnectionString"]!));
 
 builder.Services.AddScoped<IAddressUpdateService, AddressUpdateService>();
 builder.Services.AddHostedService<DeleteAccountWorker>();
 builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(client =>
 {
-    client.BaseAddress = new(builder.Configuration["TokenIssuer"]);
+    client.BaseAddress = new(builder.Configuration["TokenIssuer"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 
 var healthChecksModel = new HealthChecksModel
 {
     EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!
 };
 
 builder.Services.AddHealthChecks()
@@ -42,7 +42,7 @@ builder.Services.AddHealthChecks()
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(
         name: "rabbitmq",
-        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"],
+        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
         failureStatus: HealthStatus.Degraded);
 
 var app = builder.Build();

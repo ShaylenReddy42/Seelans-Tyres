@@ -31,7 +31,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddHttpClient<ITokenExchangeService, TokenExchangeService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["IdentityServerUrl"]);
+    client.BaseAddress = new Uri(builder.Configuration["IdentityServerUrl"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 
@@ -49,13 +49,13 @@ builder.Services.AddOcelot()
 var healthChecksModel = new HealthChecksModel
 {
     EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!
 };
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
     .AddIdentityServer(
-        idSvrUri: new(builder.Configuration["IdentityServerUrl"]),
+        idSvrUri: new(builder.Configuration["IdentityServerUrl"]!),
         name: "identityServer",
         failureStatus: HealthStatus.Unhealthy)
     .AddDownstreamChecks(builder.Configuration);
@@ -73,8 +73,8 @@ await app.UseOcelot(ocelotPipelineConfiguration =>
 
         var healthCheckEndpoints = new List<string>()
         {
-            app.Configuration["HealthCheckEndpoint"],
-            app.Configuration["LivenessCheckEndpoint"],
+            app.Configuration["HealthCheckEndpoint"]!,
+            app.Configuration["LivenessCheckEndpoint"]!,
         };
 
         if (healthCheckEndpoints.Contains(requestPath) is false)
