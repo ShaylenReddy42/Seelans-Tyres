@@ -1,164 +1,102 @@
 trigger:
 - '*'
 
-pool: Default
+stages:
+- stage: Build
+  jobs:
+  - job: Build_Solution
+    pool: Default
+    variables:
+      buildConfiguration: 'Release'
+      workDir: $(Build.SourcesDirectory)
+    steps:
+    - template: .pipelines/templates/build-and-scan-solution.yml
 
-variables:
-  buildConfiguration: 'Release'
-  workDir: $(Build.SourcesDirectory)
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore dotnet tools'
+      inputs:
+        command: custom
+        custom: tool
+        arguments: restore
+        workingDirectory: '$(workDir)'
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET Core SDK'
-  inputs:
-    version: 6.0.403
-    performMultiLevelLookup: true
+    - task: DotNetCoreCLI@2
+      displayName: 'Create EF Core Bundle for SeelansTyres.Services.AddressService'
+      inputs:
+        command: custom
+        custom: tool
+        arguments: run dotnet-ef migrations bundle --force --project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresAddressDb.exe"
+        workingDirectory: '$(workDir)'
 
-- task: CMake@1
-  displayName: 'Run CMake'
-  inputs:
-    cmakeArgs: -S . -B "$(workDir)\build" -DCI_BUILD=ON
-    workingDirectory: $(workDir)
+    - task: DotNetCoreCLI@2
+      displayName: 'Create EF Core Bundle for SeelansTyres.Services.OrderService'
+      inputs:
+        command: custom
+        custom: tool
+        arguments: run dotnet-ef migrations bundle --force --project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderDb.exe"
+        workingDirectory: '$(workDir)'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore Solution'
-  inputs:
-    command: restore
-    arguments: -c $(buildConfiguration)
-    projects: '$(workDir)/src/SeelansTyres.sln'
+    - task: DotNetCoreCLI@2
+      displayName: 'Create EF Core Bundle for SeelansTyres.Services.TyresService'
+      inputs:
+        command: custom
+        custom: tool
+        arguments: run dotnet-ef migrations bundle --force --project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --context TyresDbContext -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresDb.exe"
+        workingDirectory: '$(workDir)'
 
-- task: SonarCloudPrepare@1
-  displayName: 'Prepare SonarCloud for Analysis'
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'shaylenreddy42'
-    scannerMode: 'MSBuild'
-    projectKey: 'ShaylenReddy42_Seelans-Tyres'
-    projectName: 'Seelans-Tyres'
-    extraProperties: |
-      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
-      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Frontends
+        solutionSubfolder: HealthChecksUISolution
+        project: SeelansTyres.Frontends.HealthChecksUI
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Solution'
-  inputs:
-    command: build
-    arguments: -c $(buildConfiguration)
-    projects: '$(workDir)/src/SeelansTyres.sln'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Frontends
+        solutionSubfolder: MvcSolution
+        project: SeelansTyres.Frontends.Mvc
 
-- task: SonarCloudAnalyze@1
-  displayName: 'Run SonarCloud Analysis'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Gateways
+        solutionSubfolder: MvcBffSolution
+        project: SeelansTyres.Gateways.MvcBff
 
-- task: SonarCloudPublish@1
-  displayName: 'Publish SonarCloud Quality Gate Result'
-  inputs:
-    pollingTimeoutSec: '300'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Services
+        solutionSubfolder: AddressServiceSolution
+        project: SeelansTyres.Services.AddressService
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore dotnet tools'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: restore
-    workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Services
+        solutionSubfolder: AddressServiceSolution
+        project: SeelansTyres.Workers.AddressWorker
 
-- task: DotNetCoreCLI@2
-  displayName: 'Create EF Core Bundle for SeelansTyres.Services.AddressService'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresAddressContext.exe"
-    workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Services
+        solutionSubfolder: IdentityServiceSolution
+        project: SeelansTyres.Services.IdentityService
 
-- task: DotNetCoreCLI@2
-  displayName: 'Create EF Core Bundle for SeelansTyres.Services.OrderService'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderContext.exe"
-    workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Services
+        solutionSubfolder: OrderServiceSolution
+        project: SeelansTyres.Services.OrderService
 
-- task: DotNetCoreCLI@2
-  displayName: 'Create EF Core Bundle for SeelansTyres.Services.TyresService'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: run dotnet-ef migrations bundle --force --project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj  --context TyresDbContext -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresContext.exe"
-    workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Services
+        solutionSubfolder: OrderServiceSolution
+        project: SeelansTyres.Workers.OrderWorker
 
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Frontends
-    solutionSubfolder: HealthChecksUISolution
-    project: SeelansTyres.Frontends.HealthChecksUI
-    workDir: '$(workDir)'
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
+        solutionFolder: Services
+        solutionSubfolder: TyresServiceSolution
+        project: SeelansTyres.Services.TyresService
 
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Frontends
-    solutionSubfolder: MvcSolution
-    project: SeelansTyres.Frontends.Mvc
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Gateways
-    solutionSubfolder: MvcBffSolution
-    project: SeelansTyres.Gateways.MvcBff
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Services
-    solutionSubfolder: AddressServiceSolution
-    project: SeelansTyres.Services.AddressService
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Services
-    solutionSubfolder: AddressServiceSolution
-    project: SeelansTyres.Workers.AddressWorker
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Services
-    solutionSubfolder: IdentityServiceSolution
-    project: SeelansTyres.Services.IdentityService
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Services
-    solutionSubfolder: OrderServiceSolution
-    project: SeelansTyres.Services.OrderService
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Services
-    solutionSubfolder: OrderServiceSolution
-    project: SeelansTyres.Workers.OrderWorker
-    workDir: '$(workDir)'
-
-- template: .pipelines/templates/publishProject.yml
-  parameters:
-    buildConfiguration: $(buildConfiguration)
-    solutionFolder: Services
-    solutionSubfolder: TyresServiceSolution
-    project: SeelansTyres.Services.TyresService
-    workDir: '$(workDir)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Build Artifacts'
-  inputs:
-    ArtifactName: "Seelan's Tyres"
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Build Artifacts'

@@ -1,0 +1,55 @@
+parameters:
+- name: buildConfiguration
+  type: string
+  default: 'Release'
+
+- name: workDir
+  type: string
+  default: $(Build.SourcesDirectory)
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET SDK 6.0.403'
+  inputs:
+    version: 6.0.403
+    performMultiLevelLookup: true
+
+- task: CMake@1
+  displayName: 'Run CMake'
+  inputs:
+    cmakeArgs: -S . -B "${{ parameters.workDir }}\build" -DCI_BUILD=ON
+    workingDirectory: ${{ parameters.workDir }}
+
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Solution'
+  inputs:
+    command: restore
+    arguments: -c ${{ parameters.buildConfiguration }}
+    projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
+
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud for Analysis'
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'shaylenreddy42'
+    scannerMode: 'MSBuild'
+    projectKey: 'ShaylenReddy42_Seelans-Tyres'
+    projectName: 'Seelans-Tyres'
+    extraProperties: |
+      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
+      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: build
+    arguments: -c ${{ parameters.buildConfiguration }}
+    projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Quality Gate Result'
+  inputs:
+    pollingTimeoutSec: '300'
