@@ -1,4 +1,5 @@
-﻿using SeelansTyres.Data.AddressData;
+﻿using Microsoft.EntityFrameworkCore;
+using SeelansTyres.Data.AddressData;
 using SeelansTyres.Libraries.Shared.Messages;
 using System.Diagnostics;
 
@@ -27,9 +28,9 @@ public class AddressUpdateService : IAddressUpdateService
         stopwatch.Start();
         try
         {
-            context.Addresses.RemoveRange(
-                context.Addresses
-                    .Where(address => address.CustomerId == message.IdOfEntityToUpdate));
+            await context.Addresses
+                .Where(address => address.CustomerId == message.IdOfEntityToUpdate)
+                .ExecuteDeleteAsync();
         }
         catch (Exception ex)
         {
@@ -43,8 +44,6 @@ public class AddressUpdateService : IAddressUpdateService
             throw ex.GetBaseException();
         }
         stopwatch.Stop();
-
-        await context.SaveChangesAsync();
 
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} completed successfully",

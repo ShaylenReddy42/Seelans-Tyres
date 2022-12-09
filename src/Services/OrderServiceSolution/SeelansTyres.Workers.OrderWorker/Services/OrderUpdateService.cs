@@ -29,9 +29,9 @@ public class OrderUpdateService : IOrderUpdateService
         stopwatch.Start();
         try
         {
-            context.Orders.RemoveRange(
-                context.Orders
-                    .Where(order => order.CustomerId == message.IdOfEntityToUpdate));
+            await context.Orders
+                .Where(order => order.CustomerId == message.IdOfEntityToUpdate)
+                .ExecuteDeleteAsync();
         }
         catch (Exception ex)
         {
@@ -45,8 +45,6 @@ public class OrderUpdateService : IOrderUpdateService
             throw ex.GetBaseException();
         }
         stopwatch.Stop();
-
-        await context.SaveChangesAsync();
 
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} completed successfully",
@@ -64,14 +62,13 @@ public class OrderUpdateService : IOrderUpdateService
         stopwatch.Start();
         try
         {
-            var orders = context.Orders.Where(order => order.CustomerId == message.IdOfEntityToUpdate);
-
-            await orders.ForEachAsync(order =>
-            {
-                order.FirstName = updateAccountModel!.FirstName;
-                order.LastName = updateAccountModel!.LastName;
-                order.PhoneNumber = updateAccountModel!.PhoneNumber;
-            });
+            await context.Orders
+                .Where(order => order.CustomerId == message.IdOfEntityToUpdate)
+                .ExecuteUpdateAsync(
+                    updates => updates
+                        .SetProperty(order => order.FirstName, updateAccountModel!.FirstName)
+                        .SetProperty(order => order.LastName, updateAccountModel!.LastName)
+                        .SetProperty(order => order.PhoneNumber, updateAccountModel!.PhoneNumber));
         }
         catch (Exception ex)
         {
@@ -85,8 +82,6 @@ public class OrderUpdateService : IOrderUpdateService
             throw ex.GetBaseException();
         }
         stopwatch.Stop();
-
-        await context.SaveChangesAsync();
 
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} completed successfully",
@@ -105,12 +100,11 @@ public class OrderUpdateService : IOrderUpdateService
         try
         {
             // The price will not be updated because the data will lose integrity
-            var orderItems = context.OrderItems.Where(item => item.TyreId == message.IdOfEntityToUpdate);
-
-            await orderItems.ForEachAsync(item =>
-            {
-                item.TyreName = tyreModel!.Name;
-            });
+            await context.OrderItems
+                .Where(item => item.TyreId == message.IdOfEntityToUpdate)
+                .ExecuteUpdateAsync(
+                    updates => updates
+                        .SetProperty(item => item.TyreName, tyreModel!.Name));
         }
         catch (Exception ex)
         {
@@ -124,8 +118,6 @@ public class OrderUpdateService : IOrderUpdateService
             throw ex.GetBaseException();
         }
         stopwatch.Stop();
-
-        await context.SaveChangesAsync();
 
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to update update all orders with tyre {tyreId} completed successfully",

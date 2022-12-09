@@ -14,6 +14,48 @@ public class AddressRepository : IAddressRepository
     public AddressRepository(AddressDbContext context, ILogger<AddressRepository> logger) => 
         (this.context, this.logger) = (context, logger);
 
+    public async Task CreateAsync(Guid customerId, Address newAddress)
+    {
+        logger.LogInformation(
+            "Repository => Adding a new address for customer {customerId}",
+            customerId);
+
+        newAddress.CustomerId = customerId;
+
+        stopwatch.Start();
+        try
+        {
+            if (newAddress.PreferredAddress is true)
+            {
+                logger.LogInformation("Customer marked the new address as preferred. Setting the rest to false");
+
+                await context.Addresses
+                    .Where(address => address.CustomerId == customerId)
+                    .ExecuteUpdateAsync(
+                        updates => updates
+                            .SetProperty(address => address.PreferredAddress, false));
+            }
+
+            await context.Addresses.AddAsync(newAddress);
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} was unsuccessful",
+                "FAILED", stopwatch.ElapsedMilliseconds, customerId);
+
+            throw ex.GetBaseException();
+        }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} completed successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
+    }
+
     public async Task<IEnumerable<Address>> RetrieveAllAsync(Guid customerId)
     {
         logger.LogInformation(
@@ -80,46 +122,6 @@ public class AddressRepository : IAddressRepository
         return address;
     }
 
-    public async Task CreateAsync(Guid customerId, Address newAddress)
-    {
-        logger.LogInformation(
-            "Repository => Adding a new address for customer {customerId}", 
-            customerId);
-        
-        newAddress.CustomerId = customerId;
-
-        stopwatch.Start();
-        try
-        {
-            if (newAddress.PreferredAddress is true)
-            {
-                logger.LogInformation("Customer marked the new address as preferred. Setting the rest to false");
-                
-                await context.Addresses
-                    .Where(address => address.CustomerId == customerId)
-                    .ForEachAsync(address => address.PreferredAddress = false);
-            }
-
-            await context.Addresses.AddAsync(newAddress);
-        }
-        catch (Exception ex)
-        {
-            stopwatch.Stop();
-
-            logger.LogError(
-                ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, customerId);
-
-            throw ex.GetBaseException();
-        }
-        stopwatch.Stop();
-
-        logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
-    }
-
     public async Task MarkAsPrefferedAsync(Guid customerId, Address addressToMarkAsPreferred)
     {
         logger.LogInformation(
@@ -129,10 +131,12 @@ public class AddressRepository : IAddressRepository
         try
         {
             logger.LogInformation("Setting preference for other addresses to false for customer {customerId}", customerId);
-            
+
             await context.Addresses
                 .Where(address => address.CustomerId == customerId)
-                .ForEachAsync(address => address.PreferredAddress = false);
+                .ExecuteUpdateAsync(
+                    updates => updates
+                        .SetProperty(address => address.PreferredAddress, false));
 
             addressToMarkAsPreferred.PreferredAddress = true;
         }
