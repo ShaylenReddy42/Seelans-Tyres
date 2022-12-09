@@ -1,5 +1,9 @@
-trigger:
-- '*'
+trigger: 
+  paths:
+    include:
+      - docs/release-notes/*
+    exclude:
+      - docs/release-notes/next.md
 
 stages:
 - stage: Build

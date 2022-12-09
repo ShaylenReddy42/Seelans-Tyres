@@ -1,0 +1,19 @@
+trigger:
+  paths:
+    include:
+      - src/Gateways/MvcBffSolution
+      - src/Libraries/SharedLibrarySolution
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build_MvcBffSolution
+      pool: Default
+      steps:
+      - template: templates/build-and-scan-solution.yml
+
+      - template: templates/publish-project.yml
+        parameters:
+          solutionFolder: Gateways
+          solutionSubfolder: MvcBffSolution
+          project: SeelansTyres.Gateways.MvcBff

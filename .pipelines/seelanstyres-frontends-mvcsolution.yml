@@ -1,0 +1,19 @@
+trigger:
+  paths:
+    include:
+      - src/Frontends/MvcSolution
+      - src/Libraries/SharedLibrarySolution
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build_MvcSolution
+      pool: Default
+      steps:
+      - template: templates/build-and-scan-solution.yml
+
+      - template: templates/publish-project.yml
+        parameters:
+          solutionFolder: Frontends
+          solutionSubfolder: MvcSolution
+          project: SeelansTyres.Frontends.Mvc

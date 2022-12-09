@@ -1,0 +1,19 @@
+trigger:
+  paths:
+    include:
+      - src/Services/IdentityServiceSolution
+      - src/Libraries/SharedLibrarySolution
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build_IdentityServiceSolution
+      pool: Default
+      steps:
+      - template: templates/build-and-scan-solution.yml
+
+      - template: templates/publish-project.yml
+        parameters:
+          solutionFolder: Services
+          solutionSubfolder: IdentityServiceSolution
+          project: SeelansTyres.Services.IdentityService

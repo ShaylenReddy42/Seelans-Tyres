@@ -1,0 +1,46 @@
+trigger:
+  paths:
+    include:
+      - src/Services/OrderServiceSolution
+      - src/Libraries/SharedLibrarySolution
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build_OrderServiceSolution
+      pool: Default
+      variables:
+        workDir: $(Build.SourcesDirectory)
+      steps:
+      - template: templates/build-and-scan-solution.yml
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore dotnet tools'
+        inputs:
+          command: custom
+          custom: tool
+          arguments: restore
+          workingDirectory: '$(workDir)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Create EF Core Bundle for SeelansTyres.Services.OrderService'
+        inputs:
+          command: custom
+          custom: tool
+          arguments: run dotnet-ef migrations bundle --force --project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderDb.exe"
+          workingDirectory: '$(workDir)'
+
+      - template: templates/publish-project.yml
+        parameters:
+          solutionFolder: Services
+          solutionSubfolder: OrderServiceSolution
+          project: SeelansTyres.Services.OrderService
+
+      - template: templates/publish-project.yml
+        parameters:
+          solutionFolder: Services
+          solutionSubfolder: OrderServiceSolution
+          project: SeelansTyres.Workers.OrderWorker
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Build Artifacts'
