@@ -1,6 +1,15 @@
 # Seelan's Tyres
 
-[![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/ShaylenReddy42.Seelans-Tyres?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=5&branchName=master)
+| Solution | Build Status |
+| :------: | :----------: |
+| Main     | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=5&branchName=master) |
+| SeelansTyres-Frontends-HealthChecksUISolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Frontends-HealthChecksUISolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=6&branchName=master) |
+| SeelansTyres-Frontends-MvcSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Frontends-MvcSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=7&branchName=master) |
+| SeelansTyres-Gateways-MvcBffSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Gateways-MvcBffSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=8&branchName=master) |
+| SeelansTyres-Services-AddressServiceSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Services-AddressServiceSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=9&branchName=master) |
+| SeelansTyres-Services-IdentityServiceSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Services-IdentityServiceSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=10&branchName=master) |
+| SeelansTyres-Services-OrderServiceSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Services-OrderServiceSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=11&branchName=master) |
+| SeelansTyres-Services-TyresServiceSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Services-TyresServiceSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=12&branchName=master) |
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=ShaylenReddy42_Seelans-Tyres)
 
