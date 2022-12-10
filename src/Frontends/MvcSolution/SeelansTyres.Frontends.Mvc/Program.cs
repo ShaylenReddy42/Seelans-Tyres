@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.CookiePolicy;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SeelansTyres.Frontends.Mvc.BackgroundServices;
+using SeelansTyres.Frontends.Mvc.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +77,11 @@ builder.Services.AddFluentEmail(
                     builder.Configuration["EmailCredentials:Email"],
                     builder.Configuration["EmailCredentials:Password"])
         });
-builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddSingleton<IMailService, MailService>();
+
+builder.Services.AddSingleton<SendReceiptChannel>();
+builder.Services.AddHostedService<SendReceiptChannelReaderBackgroundService>();
 
 builder.Services.AddAuthentication(options =>
 {

@@ -21,6 +21,7 @@ public class TyresController : ControllerBase
     private readonly IMapper mapper;
     private readonly IConfiguration configuration;
     private readonly PublishUpdateChannel publishUpdateChannel;
+    private readonly Stopwatch stopwatch = new();
 
     public TyresController(
         ILogger<TyresController> logger,
@@ -126,7 +127,15 @@ public class TyresController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
+        stopwatch.Start();
+
         await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]!);
+
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "It took {stopwatchElapsedTime}ms to write the update to the channel",
+            stopwatch.ElapsedMilliseconds);
 
         return NoContent();
     }

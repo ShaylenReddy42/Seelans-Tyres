@@ -17,7 +17,7 @@ public class AccountController : Controller
     private readonly IAddressService addressService;
     private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
-    private readonly IEmailService emailService;
+    private readonly IMailService mailService;
     private readonly Stopwatch stopwatch = new();
 
     public AccountController(
@@ -25,13 +25,13 @@ public class AccountController : Controller
         IAddressService addressService,
         ICustomerService customerService,
         IOrderService orderService,
-        IEmailService emailService)
+        IMailService mailService)
     {
         this.logger = logger;
         this.addressService = addressService;
         this.customerService = customerService;
         this.orderService = orderService;
-        this.emailService = emailService;
+        this.mailService = mailService;
     }
 
     [Authorize]
@@ -267,7 +267,7 @@ public class AccountController : Controller
                 "***REDACTED***");
 
              var result = 
-                await emailService.SendResetPasswordTokenAsync(
+                await mailService.SendResetPasswordTokenAsync(
                     customerEmail: model.SendCodeModel.Email,
                     firstName: customer.FirstName,
                     lastName: customer.LastName,

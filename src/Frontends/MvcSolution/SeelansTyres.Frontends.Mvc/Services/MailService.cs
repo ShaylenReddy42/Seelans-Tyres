@@ -4,14 +4,14 @@ using System.Reflection;
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
-public class EmailService : IEmailService
+public class MailService : IMailService
 {
-    private readonly ILogger<EmailService> logger;
+    private readonly ILogger<MailService> logger;
     private readonly IFluentEmail email;
     private readonly Stopwatch stopwatch = new();
 
-    public EmailService(
-        ILogger<EmailService> logger,
+    public MailService(
+        ILogger<MailService> logger,
         IFluentEmail email)
     {
         this.logger = logger;
@@ -35,6 +35,12 @@ public class EmailService : IEmailService
                     model: order,
                     assembly: Assembly.GetExecutingAssembly())
                 .SendAsync();
+
+            stopwatch.Stop();
+
+            logger.LogInformation(
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} completed successfully",
+                "SUCCEEDED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
         catch (Exception ex)
         {
@@ -45,11 +51,6 @@ public class EmailService : IEmailService
                 "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
-        stopwatch.Stop();
-
-        logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} completed successful",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
     }
 
     public async Task<bool> SendResetPasswordTokenAsync(string customerEmail, string firstName, string lastName, string token)
@@ -73,6 +74,12 @@ public class EmailService : IEmailService
                     },
                     assembly: Assembly.GetExecutingAssembly())
                 .SendAsync();
+
+            stopwatch.Stop();
+
+            logger.LogInformation(
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} completed successfully",
+                "SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
         }
         catch (Exception ex)
         {
@@ -85,12 +92,7 @@ public class EmailService : IEmailService
 
             return false;
         }
-        stopwatch.Stop();
-
-        logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
-
+        
         return true;
     }
 }

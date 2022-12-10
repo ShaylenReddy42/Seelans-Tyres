@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RazorLight;
+using SeelansTyres.Frontends.Mvc.Channels;
 using SeelansTyres.Frontends.Mvc.Models;
 using SeelansTyres.Frontends.Mvc.Services;
 using SeelansTyres.Frontends.Mvc.ViewModels;
@@ -16,7 +17,7 @@ public class ShoppingController : Controller
     private readonly ICartService cartService;
     private readonly ICustomerService customerService;
     private readonly IOrderService orderService;
-    private readonly IEmailService emailService;
+    private readonly SendReceiptChannel sendReceiptChannel;
     private readonly Stopwatch stopwatch = new();
 
     public ShoppingController(
@@ -25,14 +26,14 @@ public class ShoppingController : Controller
         ICartService cartService,
         ICustomerService customerService,
         IOrderService orderService,
-        IEmailService emailService)
+        SendReceiptChannel sendReceiptChannel)
     {
         this.logger = logger;
         this.addressService = addressService;
         this.cartService = cartService;
         this.customerService = customerService;
         this.orderService = orderService;
-        this.emailService = emailService;
+        this.sendReceiptChannel = sendReceiptChannel;
     }
     
     public async Task<IActionResult> Cart()
@@ -110,21 +111,24 @@ public class ShoppingController : Controller
             "Controller => Attempting to place an order for customer {customerId}",
             customerId);
 
-        var customer = await customerService.RetrieveSingleAsync(customerId);
+        var customer = customerService.RetrieveSingleAsync(customerId);
+        var addresses = addressService.RetrieveAllAsync(customerId);
 
-        var addresses = await addressService.RetrieveAllAsync(customerId);
+        await Task.WhenAll(
+            Task.Run(() => customer),
+            Task.Run(() => addresses));
 
-        var preferredAddress = addresses!.Single(address => address.PreferredAddress is true);
+        var preferredAddress = addresses.Result.Single(address => address.PreferredAddress is true);
 
         var order = new OrderModel
         {
             Id = 0,
             OrderPlaced = DateTime.Now,
             CustomerId = customerId.ToString(),
-            FirstName = customer.FirstName,
-            LastName = customer.LastName,
-            Email = customer.Email,
-            PhoneNumber = customer.PhoneNumber,
+            FirstName = customer.Result.FirstName,
+            LastName = customer.Result.LastName,
+            Email = customer.Result.Email,
+            PhoneNumber = customer.Result.PhoneNumber,
             AddressId = preferredAddress.Id,
             AddressLine1 = preferredAddress.AddressLine1,
             AddressLine2 = preferredAddress.AddressLine2,
@@ -155,20 +159,28 @@ public class ShoppingController : Controller
                 "{announcement}: Attempt to place an order for customer {customerId} completed successfully",
                 "SUCCEEDED", customerId);
 
-            await emailService.SendReceiptAsync(placedOrder);
+            logger.LogInformation("Controller => Writing the order to the channel for sending to the customer");
+
+            await sendReceiptChannel
+                .WriteToChannelAsync(
+                    placedOrder,
+                    Activity.Current!.TraceId.ToString(),
+                    Activity.Current!.SpanId.ToString());
+
+            stopwatch.Stop();
+
+            logger.LogInformation(
+                "Placing an order for customer {customerId} took {stopwatchElapsedTime}ms to complete",
+                customerId, stopwatch.ElapsedMilliseconds);
         }
         else
         {
+            stopwatch.Stop();
+            
             logger.LogInformation(
                 "{announcement}: Attempt to place an order for customer {customerId} was unsuccessful",
                 "FAILED", customerId);
         }
-
-        stopwatch.Stop();
-
-        logger.LogInformation(
-            "Placing an order for customer {customerId} took {stopwatchElapsedTime}ms to complete",
-            customerId, stopwatch.ElapsedMilliseconds);
 
         return RedirectToAction("Index", "Home");
     }

@@ -25,6 +25,7 @@ public class CustomersController : ControllerBase
     private readonly ILogger<CustomersController> logger;
     private readonly IConfiguration configuration;
     private readonly PublishUpdateChannel publishUpdateChannel;
+    private readonly Stopwatch stopwatch = new();
 
     public CustomersController(
         ICustomerService customerService,
@@ -151,7 +152,15 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
+        stopwatch.Start();
+
         await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]!);
+
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "It took {stopwatchElapsedTime}ms to write the update to the channel",
+            stopwatch.ElapsedMilliseconds);
 
         return NoContent();
     }
@@ -176,7 +185,15 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
+        stopwatch.Start();
+
         await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]!);
+
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "It took {stopwatchElapsedTime}ms to write the update to the channel",
+            stopwatch.ElapsedMilliseconds);
 
         return NoContent();
     }
