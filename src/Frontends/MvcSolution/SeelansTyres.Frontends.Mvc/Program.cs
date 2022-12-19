@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using Microsoft.AspNetCore.CookiePolicy;
 using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -95,7 +94,7 @@ builder.Services.AddAuthentication(options =>
         options.ClientSecret = builder.Configuration["ClientCredentials:ClientSecret"];
 
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.Authority = builder.Configuration["IdentityServerUrl"];
+        options.Authority = builder.Configuration["IdentityServer"];
         options.RequireHttpsMetadata = false;
         
         options.ResponseType = "code";
@@ -119,7 +118,7 @@ var healthChecksModel = new HealthChecksModel
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
     .AddIdentityServer(
-        idSvrUri: new(builder.Configuration["IdentityServerUrl"]!),
+        idSvrUri: new(builder.Configuration["IdentityServer"]!),
         name: "identityServer",
         failureStatus: HealthStatus.Unhealthy)
     .AddUrlGroup(
@@ -129,11 +128,9 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
-});
+app.UseForwardedHeaders();
+
+app.UseCommonCookiePolicy();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() is false)

@@ -13,7 +13,7 @@ public static class WebApplicationBuilderConfiguration
         this WebApplicationBuilder builder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
-        if (builder.Configuration.GetValue<bool>("UseDocker") is false)
+        if (builder.Configuration.GetValue<bool>("InContainer") is false)
         {
             builder.WebHost.ConfigureKestrel(options => 
                 options.ListenLocalhost(

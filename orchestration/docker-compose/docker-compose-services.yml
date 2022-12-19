@@ -18,7 +18,7 @@ services:
           soft: -1
           hard: -1
     volumes:
-      - ../../docker/elasticsearch:/usr/share/elasticsearch/data
+      - ../volumes/elasticsearch:/usr/share/elasticsearch/data
     networks:
       - services-network
 

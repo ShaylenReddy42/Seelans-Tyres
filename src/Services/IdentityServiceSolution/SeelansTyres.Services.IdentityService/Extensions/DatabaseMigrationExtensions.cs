@@ -40,7 +40,7 @@ public static class DatabaseMigrationExtensions
                 "{announcement} ({stopwatchElapsedTime}ms): Attempt to migrate databases was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
-            throw ex.GetBaseException();
+            await app.RunSeedersAsync();
         }
         stopwatch.Stop();
 

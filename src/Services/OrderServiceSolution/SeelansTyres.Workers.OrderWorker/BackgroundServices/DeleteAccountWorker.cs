@@ -53,7 +53,7 @@ public class DeleteAccountWorker : BackgroundService
             var tokenIsValid =
                 await tokenValidationService.ValidateTokenAsync(
                     baseMessage!,
-                    configuration["TokenIssuer"]!,
+                    configuration["IdentityServer"]!,
                     "CustomerService");
 
             if (tokenIsValid is false)

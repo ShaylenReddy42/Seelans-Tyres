@@ -24,14 +24,14 @@ var authenticationScheme = "SeelansTyresMvcBffAuthenticationScheme";
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(authenticationScheme, configure =>
     {
-        configure.Authority = builder.Configuration["IdentityServerUrl"];
+        configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "SeelansTyresMvcBff";
         configure.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddHttpClient<ITokenExchangeService, TokenExchangeService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["IdentityServerUrl"]!);
+    client.BaseAddress = new Uri(builder.Configuration["IdentityServer"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 
@@ -55,7 +55,7 @@ var healthChecksModel = new HealthChecksModel
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
     .AddIdentityServer(
-        idSvrUri: new(builder.Configuration["IdentityServerUrl"]!),
+        idSvrUri: new(builder.Configuration["IdentityServer"]!),
         name: "identityServer",
         failureStatus: HealthStatus.Unhealthy)
     .AddDownstreamChecks(builder.Configuration);

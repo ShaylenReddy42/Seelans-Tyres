@@ -1,6 +1,5 @@
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +14,7 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -171,11 +171,9 @@ builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher
 
 var app = builder.Build();
 
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
-});
+app.UseForwardedHeaders();
+
+app.UseCommonCookiePolicy();
 
 app.UseProblemDetails();
 

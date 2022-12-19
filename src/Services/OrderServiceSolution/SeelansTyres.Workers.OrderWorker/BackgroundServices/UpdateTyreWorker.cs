@@ -53,7 +53,7 @@ public class UpdateTyreWorker : BackgroundService
             var tokenIsValid = 
                 await tokenValidationService.ValidateTokenAsync(
                     baseMessage!,
-                    configuration["TokenIssuer"]!,
+                    configuration["IdentityServer"]!,
                     "TyresService");
 
             if (tokenIsValid is false)

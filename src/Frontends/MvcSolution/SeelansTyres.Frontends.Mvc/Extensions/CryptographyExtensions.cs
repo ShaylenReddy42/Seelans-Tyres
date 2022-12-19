@@ -47,7 +47,7 @@ public static class CryptographyExtensions
 
         logger.LogDebug("Attempting to retrieve the discovery document from IdentityServer4");
 
-        var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServerUrl"]);
+        var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
         if (discoveryDocument.IsError is true)
         {

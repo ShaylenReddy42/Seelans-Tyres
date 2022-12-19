@@ -39,7 +39,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(configure =>
     {
-        configure.Authority = builder.Configuration["TokenIssuer"];
+        configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "TyresService";
         configure.RequireHttpsMetadata = false;
     });
@@ -99,7 +99,7 @@ app.MapControllers();
 
 app.MapCommonHealthChecks();
 
-if (app.Configuration.GetValue<bool>("UseDocker") is true)
+if (app.Configuration.GetValue<bool>("InContainer") is true)
 {
     await app.MigrateDatabaseAsync<TyresDbContext>();
 }

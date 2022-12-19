@@ -13,9 +13,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
-      - GlobalHealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - envHost=${HOST}
-      - UseDocker=true
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - Host=${HOST}
+      - InContainer=true
     restart: always
     networks:
       - seelanstyres-network
@@ -32,13 +32,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - EmailCredentials__Email=${EmailCredentials__Email}
       - EmailCredentials__Password=${EmailCredentials__Password}
-      - envIdentityServerUrl=http://${HOST}:5005
+      - IdentityServer=${IDENTITYSERVER}
       - envMvcBffUrl=http://${HOST}:5050
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - SystemDegraded=true
-      - UseDocker=true
+      - InContainer=true
     restart: always
     networks:
       - seelanstyres-network
@@ -58,11 +58,11 @@ services:
       - envOrderServiceHost=${HOST}
       - envTyresServiceHost=${HOST}
       - envBaseUrl=http://${HOST}:5050
-      - envIdentityServerUrl=http://${HOST}:5005
+      - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - UseDocker=true
+      - InContainer=true
     restart: always
     networks:
       - seelanstyres-network
@@ -81,8 +81,8 @@ services:
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - envTokenIssuer=http://${HOST}:5005
-      - UseDocker=true
+      - IdentityServer=${IDENTITYSERVER}
+      - InContainer=true
     depends_on:
       - sqlserver
     restart: always
@@ -105,8 +105,8 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
-      - envTokenIssuer=http://${HOST}:5005
-      - UseDocker=true
+      - IdentityServer=${IDENTITYSERVER}
+      - InContainer=true
     depends_on:
       - rabbitmq
     restart: always
@@ -125,15 +125,15 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - AdminCredentials__Email=${AdminCredentials__Email}
       - AdminCredentials__Password=${AdminCredentials__Password}
+      - BaseUrl=${IDENTITYSERVER}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - envBaseUrl=http://${HOST}:5005
-      - envSeelansTyresMvcClientUrl=http://${HOST}:5001
+      - envSeelansTyresMvcClientUrl=http://www-local.seelanstyres.com:4000
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
-      - UseDocker=true
+      - InContainer=true
     depends_on:
       - sqlserver
       - rabbitmq
@@ -152,11 +152,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Database__ConnectionString=${DBCONNECTIONSTRING}
-      - envTokenIssuer=http://${HOST}:5005
+      - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - UseDocker=true
+      - InContainer=true
     depends_on:
       - sqlserver
     restart: always
@@ -179,8 +179,8 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
-      - envTokenIssuer=http://${HOST}:5005
-      - UseDocker=true
+      - IdentityServer=${IDENTITYSERVER}
+      - InContainer=true
     depends_on:
       - rabbitmq
     restart: always
@@ -198,13 +198,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Database__ConnectionString=${DBCONNECTIONSTRING}
-      - envTokenIssuer=http://${HOST}:5005
+      - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
-      - UseDocker=true
+      - InContainer=true
     depends_on:
       - sqlserver
       - rabbitmq
@@ -221,9 +221,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=P@55w0rd1234
     volumes:
-      - ../../docker/mssql/data:/var/opt/mssql/data
-      - ../../docker/mssql/log:/var/opt/mssql/log
-      - ../../docker/mssql/secrets:/var/opt/mssql/secrets
+      - ../volumes/mssql/data:/var/opt/mssql/data
     restart: always
     networks:
       - seelanstyres-network
@@ -245,7 +243,7 @@ services:
           soft: -1
           hard: -1
     volumes:
-      - ../../docker/elasticsearch:/usr/share/elasticsearch/data
+      - ../volumes/elasticsearch:/usr/share/elasticsearch/data
     networks:
       - seelanstyres-network
 
@@ -257,6 +255,24 @@ services:
     restart: always
     networks:
       - seelanstyres-network
+
+  nginx:
+    build:
+      context: ../custom-images/nginx/
+      dockerfile: Dockerfile
+    container_name: nginx
+    image: customnginx
+    ports:
+      - 4000:4000
+    depends_on:
+      - seelanstyres-services-identityservice
+      - seelanstyres-frontends-mvc
+    restart: always
+    networks:
+      seelanstyres-network:
+        aliases:
+          - id-local.seelanstyres.com
+          - www-local.seelanstyres.com
   
   rabbitmq:
     build:

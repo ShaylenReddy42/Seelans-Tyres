@@ -2,7 +2,7 @@
 .vs/
 .vscode/
 build/
-docker/
+orchestration/volumes/
 publish/
 scripts/run/
 

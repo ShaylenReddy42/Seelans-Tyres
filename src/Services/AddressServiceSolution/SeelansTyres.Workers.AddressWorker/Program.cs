@@ -25,7 +25,7 @@ builder.Services.AddScoped<IAddressUpdateService, AddressUpdateService>();
 builder.Services.AddHostedService<DeleteAccountWorker>();
 builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(client =>
 {
-    client.BaseAddress = new(builder.Configuration["TokenIssuer"]!);
+    client.BaseAddress = new(builder.Configuration["IdentityServer"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 

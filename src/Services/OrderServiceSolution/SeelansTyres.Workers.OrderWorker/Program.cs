@@ -27,7 +27,7 @@ builder.Services.AddHostedService<UpdateAccountWorker>();
 builder.Services.AddHostedService<UpdateTyreWorker>();
 builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(client =>
 {
-    client.BaseAddress = new(builder.Configuration["TokenIssuer"]!);
+    client.BaseAddress = new(builder.Configuration["IdentityServer"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 });
 

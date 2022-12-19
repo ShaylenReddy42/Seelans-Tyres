@@ -197,6 +197,8 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
   * Author: Stephen Haunts
 * [Building ASP.NET Core 3 Hosted Services and .NET Core 3 Worker Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services)
   * Author: Steve Gordan
+* [Fundamentals of Docker and Kubernetes for .NET 5 Developers](https://www.pluralsight.com/courses/docker-kubernetes-dot-net-developers-fundamentals)
+  * Author: Erik Dahl
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: IAmTimCorey
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
@@ -217,6 +219,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+* [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.65.0 or later [For the hosts file editor]
 
 ## Build instructions
 
@@ -226,6 +229,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 docker pull elasticsearch:7.17.7
 docker pull kibana:7.17.7
+docker pull nginx:latest
 docker pull rabbitmq:3-management
 
 docker pull mcr.microsoft.com/dotnet/aspnet:6.0

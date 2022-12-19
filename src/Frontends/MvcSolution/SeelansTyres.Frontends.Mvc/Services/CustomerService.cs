@@ -220,7 +220,7 @@ public class CustomerService : ICustomerService
 
         stopwatch.Start();
         
-        var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServerUrl"]);
+        var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
         if (discoveryDocument.IsError is true)
         {
