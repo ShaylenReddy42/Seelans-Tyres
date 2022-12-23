@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - image: elasticsearch:7.17.8
+          name: elasticsearch
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9200
+            - containerPort: 9300
+          env:
+            - name: node.name
+              value: elasticsearch
+            - name: cluster.name
+              value: seelanstyres-cluster
+            - name: discovery.type
+              value: single-node
+          resources:
+            limits:
+              cpu: 1250m
+              memory: 1Gi
+          startupProbe:
+            tcpSocket:
+              port: 9200
+            initialDelaySeconds: 60
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+  namespace: seelanstyres
+spec:
+  ports:
+    - port: 9200
+      protocol: TCP
+      targetPort: 9200
+      name: port9200
+    - port: 9300
+      protocol: TCP
+      targetPort: 9300
+      name: port9300
+  selector:
+    app: elasticsearch
+  type: ClusterIP

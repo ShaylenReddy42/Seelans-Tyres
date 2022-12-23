@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kibana
+  name: kibana
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - image: kibana:7.17.8
+          name: kibana
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5601
+          resources:
+            limits:
+              cpu: 1250m
+              memory: 1Gi
+          startupProbe:
+            tcpSocket:
+              port: 5601
+            initialDelaySeconds: 60
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kibana
+  name: kibana
+  namespace: seelanstyres
+spec:
+  ports:
+    - port: 5601
+      protocol: TCP
+      targetPort: 5601
+  selector:
+    app: kibana
+  type: LoadBalancer

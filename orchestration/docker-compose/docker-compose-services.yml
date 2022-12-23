@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   elasticsearch:
-    image: elasticsearch:7.17.7
+    image: elasticsearch:7.17.8
     container_name: elasticsearch
     ports:
       - 9201:9200
@@ -10,8 +10,6 @@ services:
     environment:
       - node.name=elasticsearch
       - cluster.name=seelanstyres-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.type=single-node
     ulimits:
         memlock:
@@ -23,7 +21,7 @@ services:
       - services-network
 
   kibana:
-    image: kibana:7.17.7
+    image: kibana:7.17.8
     container_name: kibana
     ports:
       - 5602:5601

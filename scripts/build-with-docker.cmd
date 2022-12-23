@@ -4,11 +4,11 @@ CD "%~dp0"
 
 CD ..
 
-ECHO.
 ECHO Run CMake
 ECHO.
-cmake -G "Visual Studio 17" -S . -B build
-ECHO.
+
+cmake -S . -B build
+
 ECHO.
 
 CD scripts

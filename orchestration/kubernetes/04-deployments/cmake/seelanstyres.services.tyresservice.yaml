@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-services-tyresservice
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5013
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-services-tyresservice
+  name: seelanstyres-services-tyresservice
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-services-tyresservice
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-services-tyresservice
+    spec:
+      containers:
+        - image: seelanstyres/services/tyresservice:@FILE_VERSION@
+          name: tyresservice
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5013
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-services-tyresservice
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          startupProbe:
+            tcpSocket:
+              port: 5013
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5013
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5013
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-services-tyresservice
+  name: seelanstyres-services-tyresservice
+  namespace: seelanstyres
+spec:
+  ports:
+  - port: 5013
+    protocol: TCP
+    targetPort: 5013
+  selector:
+    app: seelanstyres-services-tyresservice
+  type: ClusterIP

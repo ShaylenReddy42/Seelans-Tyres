@@ -133,6 +133,10 @@ foreach(PROJECT IN LISTS PROJECTS)
 		set(RUN_TEMPLATE "START /min CMD /c ${PROJECT_NAME}\\run.cmd \n\n")
 
 		string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
+
+		configure_file(
+			"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/cmake/${PROJECT_NAME}.yaml"
+			"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/${PROJECT_NAME}-configured.yaml")
 	endif()
 endforeach()
 

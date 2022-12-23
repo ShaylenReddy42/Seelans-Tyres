@@ -58,4 +58,4 @@ efbundle.exe --connection "%Database__ConnectionString%"
 ECHO.
 ECHO Run CMake
 ECHO.
-cmake -G "Visual Studio 17" -S . -B build
+cmake -S . -B build

@@ -199,6 +199,8 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
   * Author: Steve Gordan
 * [Fundamentals of Docker and Kubernetes for .NET 5 Developers](https://www.pluralsight.com/courses/docker-kubernetes-dot-net-developers-fundamentals)
   * Author: Erik Dahl
+* [Certified Kubernetes Administrator (CKA)](https://www.pluralsight.com/paths/certified-kubernetes-administrator) [Path]
+  * Author: Anthony Nocentino
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: IAmTimCorey
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
@@ -227,8 +229,8 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 ``` bat
 
-docker pull elasticsearch:7.17.7
-docker pull kibana:7.17.7
+docker pull elasticsearch:7.17.8
+docker pull kibana:7.17.8
 docker pull nginx:latest
 docker pull rabbitmq:3-management
 
@@ -246,8 +248,8 @@ docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 ``` bat
 
-docker pull elasticsearch:7.17.7
-docker pull kibana:7.17.7
+docker pull elasticsearch:7.17.8
+docker pull kibana:7.17.8
 docker pull rabbitmq:3-management
 
 ```
@@ -256,10 +258,15 @@ docker pull rabbitmq:3-management
   * Press the Win Key and search for `Edit environment variables for your account`
   * When setting this for the first time, restart your computer
 * All build scripts are in the `scripts` folder
-* In order to build, I've provided three options for you:
+* In order to build, I've provided four options for you:
   * `build.cmd` which is the regular build
   * `build-with-docker.cmd` just to see what it looks like orchestrated with docker compose
   * `build-with-services.cmd` which is the regular build + elasticsearch, kibana and rabbitmq orchestrated with docker compose
+  * Kubernetes:
+    * All scripts for Kubernetes are in the `scripts/kubernetes` folder and should be run in order
+      * `00-build-images.cmd`
+      * `01-deploy.cmd`
+      * `02-delete.cmd`
 
 * Once you run either `build.cmd` or `build-with-services.cmd`, CMake will generate `run-all.cmd`
 * Thereafter, run `run-all.cmd` which will start all applications minimized and launch the site, simulating orchestration

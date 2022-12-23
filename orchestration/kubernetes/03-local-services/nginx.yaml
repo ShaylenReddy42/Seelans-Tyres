@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: customnginx
+          name: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+          resources:
+            limits:
+              cpu: 250m
+              memory: 500Mi
+          startupProbe:
+            tcpSocket:
+              port: 4000
+            initialDelaySeconds: 60
+      hostAliases:
+        - ip: 127.0.0.1
+          hostnames:
+            - id-local.seelanstyres.com
+            - www-local.seelanstyres.com
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: seelanstyres
+spec:
+  ports:
+    - port: 4000
+      protocol: TCP
+      targetPort: 4000
+  selector:
+    app: nginx
+  type: LoadBalancer

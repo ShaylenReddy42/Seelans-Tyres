@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-frontends-healthchecksui
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5000
+  Applications__Mvc: http://seelanstyres-frontends-mvc:5001
+  Applications__MvcBff: http://seelanstyres-gateways-mvcbff:5050
+  Applications__AddressService: http://seelanstyres-services-addressservice:5011
+  Applications__AddressWorker: http://seelanstyres-workers-addressworker:5021
+  Applications__IdentityService: http://seelanstyres-services-identityservice:5005
+  Applications__OrderService: http://seelanstyres-services-orderservice:5012
+  Applications__OrderWorker: http://seelanstyres-workers-orderworker:5022
+  Applications__TyresService: http://seelanstyres-services-tyresservice:5013
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-frontends-healthchecksui
+  name: seelanstyres-frontends-healthchecksui
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-frontends-healthchecksui
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-frontends-healthchecksui
+    spec:
+      containers:
+        - image: seelanstyres/frontends/healthchecksui:@FILE_VERSION@
+          name: healthchecksui
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-frontends-healthchecksui
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          startupProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-frontends-healthchecksui
+  name: seelanstyres-frontends-healthchecksui
+  namespace: seelanstyres
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: seelanstyres-frontends-healthchecksui
+  type: LoadBalancer

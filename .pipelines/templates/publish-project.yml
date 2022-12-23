@@ -33,3 +33,10 @@ steps:
       includeRootFolder: false
       archiveType: zip
       archiveFile: '$(Build.ArtifactStagingDirectory)\${{ parameters.project }}.zip'
+
+- task: CopyFiles@2
+  displayName: 'Copy Kubernetes Manifest to drop'
+  inputs:
+    Contents: '${{ parameters.workDir }}\orchestration\kubernetes\04-deployments\${{ parameters.project }}-configured.yaml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    flattenFolders: true

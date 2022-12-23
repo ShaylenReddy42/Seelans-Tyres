@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rabbitmq
+  name: rabbitmq
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - image: customrabbitmq
+          name: rabbitmq
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          env:
+            - name: RABBITMQ_CONFIG_FILE
+              value: /etc/rabbitmq/rabbitmq.conf
+          resources:
+            limits:
+              cpu: 250m
+              memory: 500Mi
+          startupProbe:
+            tcpSocket:
+              port: 5672
+            initialDelaySeconds: 60
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rabbitmq
+  name: rabbitmq
+  namespace: seelanstyres
+spec:
+  ports:
+    - port: 5672
+      protocol: TCP
+      targetPort: 5672
+      name: port5672
+    - port: 15672
+      protocol: TCP
+      targetPort: 15672
+      name: port15672
+  selector:
+    app: rabbitmq
+  type: ClusterIP

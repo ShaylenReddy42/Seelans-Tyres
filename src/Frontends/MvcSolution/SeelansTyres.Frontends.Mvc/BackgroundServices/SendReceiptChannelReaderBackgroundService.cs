@@ -8,16 +8,16 @@ public class SendReceiptChannelReaderBackgroundService : BackgroundService
 {
     private readonly ILogger<SendReceiptChannelReaderBackgroundService> logger;
     private readonly SendReceiptChannel channel;
-    private readonly IMailService mailService;
+    private readonly IServiceScopeFactory serviceScopeFactory;
 
     public SendReceiptChannelReaderBackgroundService(
         ILogger<SendReceiptChannelReaderBackgroundService> logger,
         SendReceiptChannel channel,
-        IMailService mailService)
+        IServiceScopeFactory serviceScopeFactory)
     {
         this.logger = logger;
         this.channel = channel;
-        this.mailService = mailService;
+        this.serviceScopeFactory = serviceScopeFactory;
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,8 +31,12 @@ public class SendReceiptChannelReaderBackgroundService : BackgroundService
             activity.Start();
 
             logger.LogInformation("Background Service => Received new order. Sending email to customer");
+
+            using var scope = serviceScopeFactory.CreateScope();
+
+            var mailService = scope.ServiceProvider.GetService<IMailService>();
             
-            await mailService.SendReceiptAsync(order);
+            await mailService!.SendReceiptAsync(order);
         }
     }
 }

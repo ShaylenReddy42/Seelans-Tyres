@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  
+  # Frontends ###########################################################################################
+  
   seelanstyres-frontends-healthchecksui:
     build:
       context: ../../src/
@@ -8,9 +11,10 @@ services:
     container_name: 'seelanstyres_frontends_healthchecksui'
     image: 'seelanstyres/frontends/healthchecksui:${TAG}'
     ports:
-      - 5000:80
+      - 5000:5000
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5000
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -27,9 +31,10 @@ services:
     container_name: 'seelanstyres_frontends_mvc'
     image: 'seelanstyres/frontends/mvc:${TAG}'
     ports:
-      - 5001:80
+      - 5001:5001
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5001
       - EmailCredentials__Email=${EmailCredentials__Email}
       - EmailCredentials__Password=${EmailCredentials__Password}
       - IdentityServer=${IDENTITYSERVER}
@@ -43,6 +48,8 @@ services:
     networks:
       - seelanstyres-network
 
+  # Gateways ############################################################################################
+
   seelanstyres-gateways-mvcbff:
     build:
       context: ../../src/
@@ -50,9 +57,10 @@ services:
     container_name: 'seelanstyres_gateways_mvcbff'
     image: 'seelanstyres/gateways/mvcbff:${TAG}'
     ports:
-      - 5050:80
+      - 5050:5050
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5050
       - envAddressServiceHost=${HOST}
       - envCustomerServiceHost=${HOST}
       - envOrderServiceHost=${HOST}
@@ -67,6 +75,8 @@ services:
     networks:
       - seelanstyres-network
 
+  # Services ############################################################################################
+
   seelanstyres-services-addressservice:
     build:
       context: ../../src/
@@ -74,9 +84,10 @@ services:
     container_name: 'seelanstyres_services_addressservice'
     image: 'seelanstyres/services/addressservice:${TAG}'
     ports:
-      - 5011:80
+      - 5011:5011
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5011
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -89,30 +100,6 @@ services:
     networks:
       - seelanstyres-network
 
-  seelanstyres-services-addressworker:
-    build:
-      context: ../../src/
-      dockerfile: 'Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/Dockerfile'
-    container_name: 'seelanstyres_workers_addressworker'
-    image: 'seelanstyres/workers/addressworker:${TAG}'
-    ports:
-      - 5021:80
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - Database__ConnectionString=${DBCONNECTIONSTRING}
-      - envUseElasticsearch=true
-      - envElasticsearchUrl=${ELASTICSEARCH}
-      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - envRabbitMQHost=${HOST}
-      - envRabbitMQPort=5672
-      - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
-    depends_on:
-      - rabbitmq
-    restart: always
-    networks:
-      - seelanstyres-network
-
   seelanstyres-services-identityservice:
     build:
       context: ../../src/
@@ -120,12 +107,12 @@ services:
     container_name: 'seelanstyres_services_identityservice'
     image: 'seelanstyres/services/identityservice:${TAG}'
     ports:
-      - 5005:80
+      - 5005:5005
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5005
       - AdminCredentials__Email=${AdminCredentials__Email}
       - AdminCredentials__Password=${AdminCredentials__Password}
-      - BaseUrl=${IDENTITYSERVER}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -133,6 +120,7 @@ services:
       - envSeelansTyresMvcClientUrl=http://www-local.seelanstyres.com:4000
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
+      - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
     depends_on:
       - sqlserver
@@ -148,41 +136,17 @@ services:
     container_name: 'seelanstyres_services_orderservice'
     image: 'seelanstyres/services/orderservice:${TAG}'
     ports:
-      - 5012:80
+      - 5012:5012
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5012
       - Database__ConnectionString=${DBCONNECTIONSTRING}
-      - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - InContainer=true
     depends_on:
       - sqlserver
-    restart: always
-    networks:
-      - seelanstyres-network
-
-  seelanstyres-services-orderworker:
-    build:
-      context: ../../src/
-      dockerfile: 'Services/OrderServiceSolution/SeelansTyres.Workers.OrderWorker/Dockerfile'
-    container_name: 'seelanstyres_workers_orderworker'
-    image: 'seelanstyres/workers/orderworker:${TAG}'
-    ports:
-      - 5022:80
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - Database__ConnectionString=${DBCONNECTIONSTRING}
-      - envUseElasticsearch=true
-      - envElasticsearchUrl=${ELASTICSEARCH}
-      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - envRabbitMQHost=${HOST}
-      - envRabbitMQPort=5672
-      - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
-    depends_on:
-      - rabbitmq
     restart: always
     networks:
       - seelanstyres-network
@@ -194,9 +158,10 @@ services:
     container_name: 'seelanstyres_services_tyresservice'
     image: 'seelanstyres/services/tyresservice:${TAG}'
     ports:
-      - 5013:80
+      - 5013:5013
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5013
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
@@ -212,49 +177,58 @@ services:
     networks:
       - seelanstyres-network
 
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    expose:
-      - 1433
+  # Workers #############################################################################################
+
+  seelanstyres-workers-addressworker:
+    build:
+      context: ../../src/
+      dockerfile: 'Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/Dockerfile'
+    container_name: 'seelanstyres_workers_addressworker'
+    image: 'seelanstyres/workers/addressworker:${TAG}'
+    ports:
+      - 5021:5021
     environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=P@55w0rd1234
-    volumes:
-      - ../volumes/mssql/data:/var/opt/mssql/data
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5021
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
+      - envUseElasticsearch=true
+      - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - envRabbitMQHost=${HOST}
+      - envRabbitMQPort=5672
+      - IdentityServer=${IDENTITYSERVER}
+      - InContainer=true
+    depends_on:
+      - rabbitmq
     restart: always
     networks:
       - seelanstyres-network
 
-  elasticsearch:
-    image: elasticsearch:7.17.7
-    container_name: elasticsearch
+  seelanstyres-workers-orderworker:
+    build:
+      context: ../../src/
+      dockerfile: 'Services/OrderServiceSolution/SeelansTyres.Workers.OrderWorker/Dockerfile'
+    container_name: 'seelanstyres_workers_orderworker'
+    image: 'seelanstyres/workers/orderworker:${TAG}'
     ports:
-      - 9200:9200
-      - 9300:9300
+      - 5022:5022
     environment:
-      - node.name=elasticsearch
-      - cluster.name=seelanstyres-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - discovery.type=single-node
-    ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-    volumes:
-      - ../volumes/elasticsearch:/usr/share/elasticsearch/data
-    networks:
-      - seelanstyres-network
-
-  kibana:
-    image: kibana:7.17.7
-    container_name: kibana
-    ports:
-      - 5601:5601
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5022
+      - Database__ConnectionString=${DBCONNECTIONSTRING}
+      - envUseElasticsearch=true
+      - envElasticsearchUrl=${ELASTICSEARCH}
+      - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - envRabbitMQHost=${HOST}
+      - envRabbitMQPort=5672
+      - InContainer=true
+    depends_on:
+      - rabbitmq
     restart: always
     networks:
       - seelanstyres-network
+
+  # Important Services ##################################################################################
 
   nginx:
     build:
@@ -273,7 +247,51 @@ services:
         aliases:
           - id-local.seelanstyres.com
           - www-local.seelanstyres.com
-  
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    expose:
+      - 1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@55w0rd1234
+    volumes:
+      - ../volumes/mssql/data:/var/opt/mssql/data
+    restart: always
+    networks:
+      - seelanstyres-network
+
+  # Other Services ######################################################################################
+
+  elasticsearch:
+    image: elasticsearch:7.17.8
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=seelanstyres-cluster
+      - discovery.type=single-node
+    ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+    volumes:
+      - ../volumes/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - seelanstyres-network
+
+  kibana:
+    image: kibana:7.17.8
+    container_name: kibana
+    ports:
+      - 5601:5601
+    restart: always
+    networks:
+      - seelanstyres-network
+
   rabbitmq:
     build:
       context: ../custom-images/rabbitmq/

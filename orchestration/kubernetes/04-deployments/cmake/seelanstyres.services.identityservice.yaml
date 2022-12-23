@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-services-identityservice
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5005
+  BaseUrl: http://id-local.seelanstyres.com:4000
+  envSeelansTyresMvcClientUrl: http://www-local.seelanstyres.com:4000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-services-identityservice
+  name: seelanstyres-services-identityservice
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-services-identityservice
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-services-identityservice
+    spec:
+      containers:
+        - image: seelanstyres/services/identityservice:@FILE_VERSION@
+          name: identityservice
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5005
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-services-identityservice
+            - secretRef:
+                name: secrets-seelanstyres
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          startupProbe:
+            tcpSocket:
+              port: 5005
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5005
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5005
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-services-identityservice
+  name: seelanstyres-services-identityservice
+  namespace: seelanstyres
+spec:
+  ports:
+  - port: 5005
+    protocol: TCP
+    targetPort: 5005
+  selector:
+    app: seelanstyres-services-identityservice
+  type: LoadBalancer

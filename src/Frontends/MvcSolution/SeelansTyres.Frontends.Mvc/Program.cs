@@ -77,7 +77,7 @@ builder.Services.AddFluentEmail(
                     builder.Configuration["EmailCredentials:Password"])
         });
 
-builder.Services.AddSingleton<IMailService, MailService>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 builder.Services.AddSingleton<SendReceiptChannel>();
 builder.Services.AddHostedService<SendReceiptChannelReaderBackgroundService>();

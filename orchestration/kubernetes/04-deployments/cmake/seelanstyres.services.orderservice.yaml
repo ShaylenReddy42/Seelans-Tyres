@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-services-orderservice
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5012
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-services-orderservice
+  name: seelanstyres-services-orderservice
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-services-orderservice
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-services-orderservice
+    spec:
+      containers:
+        - image: seelanstyres/services/orderservice:@FILE_VERSION@
+          name: orderservice
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5012
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-services-orderservice
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          startupProbe:
+            tcpSocket:
+              port: 5012
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5012
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5012
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-services-orderservice
+  name: seelanstyres-services-orderservice
+  namespace: seelanstyres
+spec:
+  ports:
+  - port: 5012
+    protocol: TCP
+    targetPort: 5012
+  selector:
+    app: seelanstyres-services-orderservice
+  type: ClusterIP

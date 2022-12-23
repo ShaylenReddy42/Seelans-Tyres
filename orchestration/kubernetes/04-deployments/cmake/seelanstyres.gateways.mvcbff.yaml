@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-gateways-mvcbff
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5050
+  envAddressServiceHost: seelanstyres-services-addressservice
+  envCustomerServiceHost: seelanstyres-services-identityservice
+  envOrderServiceHost: seelanstyres-services-orderservice
+  envTyresServiceHost: seelanstyres-services-tyresservice
+  envBaseUrl: http://seelanstyres-gateways-mvcbff:5050
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-gateways-mvcbff
+  name: seelanstyres-gateways-mvcbff
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-gateways-mvcbff
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-gateways-mvcbff
+    spec:
+      containers:
+        - image: seelanstyres/gateways/mvcbff:@FILE_VERSION@
+          name: mvcbff
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5050
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-gateways-mvcbff
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          startupProbe:
+            tcpSocket:
+              port: 5050
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5050
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5050
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-gateways-mvcbff
+  name: seelanstyres-gateways-mvcbff
+  namespace: seelanstyres
+spec:
+  ports:
+  - port: 5050
+    protocol: TCP
+    targetPort: 5050
+  selector:
+    app: seelanstyres-gateways-mvcbff
+  type: ClusterIP

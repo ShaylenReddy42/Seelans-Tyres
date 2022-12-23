@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sqlserver
+  name: sqlserver
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlserver
+  template:
+    metadata:
+      labels:
+        app: sqlserver
+    spec:
+      containers:
+        - image: mcr.microsoft.com/mssql/server:2022-latest
+          name: sqlserver
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              value: P@55w0rd1234
+          resources:
+            limits:
+              cpu: 1250m
+              memory: 1500Mi
+          startupProbe:
+            tcpSocket:
+              port: 1433
+            initialDelaySeconds: 60
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sqlserver
+  name: sqlserver
+  namespace: seelanstyres
+spec:
+  ports:
+    - port: 1433
+      protocol: TCP
+      targetPort: 1433
+  selector:
+    app: sqlserver
+  type: ClusterIP

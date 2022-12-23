@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-frontends-mvc
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5001
+  envMvcBffUrl: http://seelanstyres-gateways-mvcbff:5050
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-frontends-mvc
+  name: seelanstyres-frontends-mvc
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-frontends-mvc
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-frontends-mvc
+    spec:
+      containers:
+        - image: seelanstyres/frontends/mvc:@FILE_VERSION@
+          name: mvc
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5001
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-frontends-mvc
+            - secretRef:
+                name: secrets-seelanstyres
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          startupProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-frontends-mvc
+  name: seelanstyres-frontends-mvc
+  namespace: seelanstyres
+spec:
+  ports:
+    - port: 5001
+      protocol: TCP
+      targetPort: 5001
+  selector:
+    app: seelanstyres-frontends-mvc
+  sessionAffinity: ClientIP
+  type: LoadBalancer

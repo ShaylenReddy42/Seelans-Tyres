@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-seelanstyres-workers-addressworker
+  namespace: seelanstyres
+data:
+  ASPNETCORE_URLS: http://*:5021
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: seelanstyres-workers-addressworker
+  name: seelanstyres-workers-addressworker
+  namespace: seelanstyres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seelanstyres-workers-addressworker
+  template:
+    metadata:
+      labels:
+        app: seelanstyres-workers-addressworker
+    spec:
+      containers:
+        - image: seelanstyres/workers/addressworker:@FILE_VERSION@
+          name: addressworker
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5021
+          envFrom:
+            - configMapRef:
+                name: cm-global
+            - configMapRef:
+                name: cm-seelanstyres-workers-addressworker
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          startupProbe:
+            tcpSocket:
+              port: 5021
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5021
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5021
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: seelanstyres-workers-addressworker
+  name: seelanstyres-workers-addressworker
+  namespace: seelanstyres
+spec:
+  ports:
+  - port: 5021
+    protocol: TCP
+    targetPort: 5021
+  selector:
+    app: seelanstyres-workers-addressworker
+  type: ClusterIP

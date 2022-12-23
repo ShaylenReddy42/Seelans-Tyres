@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-global
+  namespace: seelanstyres
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  Database__ConnectionString: Server=sqlserver;Database=$$(Database:Name);User ID=sa;Password=P@55w0rd1234;Encrypt=false;TrustServerCertificate=true
+  envUseElasticsearch: 'true'
+  envElasticsearchUrl: http://elasticsearch:9200
+  envRabbitMQHost: rabbitmq
+  envRabbitMQPort: '5672'
+  HealthCheckEndpoint: /bcudsd7f2h378h237
+  IdentityServer: http://id-local.seelanstyres.com:4000
+  InContainer: 'true'
+  SystemDegraded: 'true'
