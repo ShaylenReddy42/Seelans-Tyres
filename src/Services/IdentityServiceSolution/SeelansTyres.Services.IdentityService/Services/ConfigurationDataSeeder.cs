@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace SeelansTyres.Services.IdentityService.Services;
@@ -26,23 +27,19 @@ public class ConfigurationDataSeeder
         Config.Configuration = configuration;
         
         logger.LogDebug("Clients being populated");
-        Config.Clients.ToList().ForEach(client =>
+        Config.Clients.ForEach(client =>
         {
-            var clientEntity =
-                context.Clients.SingleOrDefault(
-                    entity => entity.ClientId == client.ClientId);
+            context.Clients
+                .Where(entity => entity.ClientId == client.ClientId)
+                .ExecuteDelete();
 
-            if (clientEntity is not null)
-            {
-                context.Clients.Remove(clientEntity);
-            }
-
-            context.Clients.Add(client.ToEntity());
+            context.Clients
+                .Add(client.ToEntity());
         });
         await context.SaveChangesAsync();
 
         logger.LogDebug("IdentityResources being populated");
-        Config.IdentityResources.ToList().ForEach(identityResource =>
+        Config.IdentityResources.ForEach(identityResource =>
         {
             var identityResourceEntity =
                 context.IdentityResources.SingleOrDefault(
@@ -50,13 +47,14 @@ public class ConfigurationDataSeeder
 
             if (identityResourceEntity is null)
             {
-                context.IdentityResources.Add(identityResource.ToEntity());
+                context.IdentityResources
+                    .Add(identityResource.ToEntity());
             }
         });
         await context.SaveChangesAsync();
 
         logger.LogDebug("ApiScopes being populated");
-        Config.ApiScopes.ToList().ForEach(apiScope =>
+        Config.ApiScopes.ForEach(apiScope =>
         {
             var apiScopeEntity =
                 context.ApiScopes.SingleOrDefault(
@@ -64,13 +62,14 @@ public class ConfigurationDataSeeder
 
             if (apiScopeEntity is null)
             {
-                context.ApiScopes.Add(apiScope.ToEntity());
+                context.ApiScopes
+                    .Add(apiScope.ToEntity());
             }
         });
         await context.SaveChangesAsync();
 
         logger.LogDebug("ApiResources being populated");
-        Config.ApiResources.ToList().ForEach(apiResource =>
+        Config.ApiResources.ForEach(apiResource =>
         {
             var apiResourceEntity =
                 context.ApiResources.SingleOrDefault(
@@ -78,7 +77,8 @@ public class ConfigurationDataSeeder
 
             if (apiResourceEntity is null)
             {
-                context.ApiResources.Add(apiResource.ToEntity());
+                context.ApiResources
+                    .Add(apiResource.ToEntity());
             }
         });
         await context.SaveChangesAsync();

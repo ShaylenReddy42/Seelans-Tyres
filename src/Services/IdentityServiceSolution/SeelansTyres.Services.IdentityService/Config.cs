@@ -7,7 +7,7 @@ public static class Config
 {
     public static IConfiguration? Configuration { get; set; }
     
-    public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
+    public static List<IdentityResource> IdentityResources => new()
     {
         new IdentityResources.OpenId(),
         new IdentityResources.Profile(),
@@ -17,7 +17,7 @@ public static class Config
             userClaims: new List<string> { ClaimTypes.Role })
     };
 
-    public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
+    public static List<ApiScope> ApiScopes => new()
     {
         new ApiScope("SeelansTyresMvcBff.fullaccess"),
         new ApiScope("AddressService.fullaccess"),
@@ -29,7 +29,7 @@ public static class Config
         new ApiScope("TyresService.fullaccess"),
     };
 
-    public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
+    public static List<ApiResource> ApiResources => new()
     {
         new ApiResource("SeelansTyresMvcBff", "Seelan's Tyres Mvc Bff")
         {
@@ -59,7 +59,7 @@ public static class Config
         },
     };
 
-    public static IEnumerable<Client> Clients => new Client[]
+    public static List<Client> Clients => new()
     {
         new Client
         {
