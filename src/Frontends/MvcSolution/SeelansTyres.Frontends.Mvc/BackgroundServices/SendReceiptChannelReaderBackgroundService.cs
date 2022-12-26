@@ -1,6 +1,6 @@
 ﻿using SeelansTyres.Frontends.Mvc.Channels;
 using SeelansTyres.Frontends.Mvc.Services;
-using System.Diagnostics;
+using static SeelansTyres.Libraries.Shared.DistributedTracing;
 
 namespace SeelansTyres.Frontends.Mvc.BackgroundServices;
 
@@ -24,11 +24,7 @@ public class SendReceiptChannelReaderBackgroundService : BackgroundService
     {
         await foreach (var (order, activityTraceId, activitySpanId) in channel.ReadAllFromChannelAsync())
         {
-            var activity = new Activity("Sending receipt");
-            activity.SetParentId(
-                traceId: ActivityTraceId.CreateFromString(activityTraceId),
-                spanId: ActivitySpanId.CreateFromString(activitySpanId));
-            activity.Start();
+            StartANewActivity(activityTraceId, activitySpanId, "Sending receipt");
 
             logger.LogInformation("Background Service => Received new order. Sending email to customer");
 
