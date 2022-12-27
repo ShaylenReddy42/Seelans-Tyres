@@ -62,15 +62,16 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5050
       - envAddressServiceHost=${HOST}
-      - envCustomerServiceHost=${HOST}
+      - envCustomerServiceHost=id-local.seelanstyres.com
       - envOrderServiceHost=${HOST}
       - envTyresServiceHost=${HOST}
       - envBaseUrl=http://${HOST}:5050
-      - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - Services__CustomerService__Port=4000
     restart: always
     networks:
       - seelanstyres-network

@@ -30,6 +30,8 @@ public class TokenExchangeService : ITokenExchangeService
             logger.LogError(
                 "{announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful",
                 "FAILED");
+
+            logger.LogError(discoveryDocument.Error);
         }
 
         var tokenResponse = await client.RequestTokenExchangeTokenAsync(new TokenExchangeTokenRequest
@@ -48,8 +50,10 @@ public class TokenExchangeService : ITokenExchangeService
                 "{announcement}: Token exchange request was unsuccessful",
                 "FAILED");
         }
-
-        logger.LogInformation("Token exchange request completed successfully");
+        else
+        {
+            logger.LogInformation("Token exchange request completed successfully");
+        }
 
         return new AuthenticationHeaderValue("Bearer", tokenResponse.AccessToken);
     }
