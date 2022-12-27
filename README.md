@@ -160,6 +160,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * [restructure and reorganize the entire solution](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/14c11fb8414c71f03fa8ad7d60cf828cb1dcb58a)
 * A build system optimized with CMake to make the local building and running of the solution seamless
   * Related commits:
+    * [containerize and MOSTLY orchestrate the solution locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/673d44990c0a2b778a3f97ad6a27cddb41d2ad9d)
     * [cmake: templatize the run script](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6b204c9581c4d4fbf96e00c26a52c0e9aebb36ac)
     * [cmake: make the configure files more maintainable](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/bc683f940094e80e3dfbe2ec00da93c5f49f3195)
     * [cmake: templatize the copying of publish files](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9d8708cd1ca47ea28c513352eac491bb7db8298f)
@@ -173,16 +174,28 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 ## Resources that helped me skill up to rewrite this project
 
+### Textbooks
+
 * [C# 10 and .NET 6 [Paperback]](https://www.amazon.com/10-NET-Cross-Platform-Development-websites/dp/1801077363/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=)
   * Author: Mark J. Price
+
+### Pluralsight 
+
+#### Paths
+
+* [ASP.NET Microservices](https://www.pluralsight.com/paths/net-microservices)
+  * Authors: Antonio Goncalves | Roland Guijt | Gill Cleeren | Neil Morrissey | Kevin Dockx | Mark Heath | Marcel de Vries | Steve Gordan | Rag Dhiman
+* [Certified Kubernetes Administrator (CKA)](https://www.pluralsight.com/paths/certified-kubernetes-administrator)
+  * Author: Anthony Nocentino
+
+#### Individual Courses
+
 * [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://www.pluralsight.com/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
   * Author: Shawn Wildermuth
 * [ASP.NET Core 6 Web API Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-web-api-fundamentals)
   * Author: Kevin Dockx
 * [ASP.NET Core 6 Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-fundamentals)
   * Author: Gill Cleeren
-* [ASP.NET Microservices [Path]](https://www.pluralsight.com/paths/net-microservices)
-  * Authors: Antonio Goncalves | Roland Guijt | Gill Cleeren | Neil Morrissey | Kevin Dockx | Mark Heath | Marcel de Vries | Steve Gordan | Rag Dhiman
 * [Your Microservices Transition](https://app.pluralsight.com/courses/your-microservices-transition)
   * Author: Rag Dhiman
 * [Microservices Architecture: The Design Principles](https://app.pluralsight.com/courses/microservices-design-principles)
@@ -199,8 +212,9 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
   * Author: Steve Gordan
 * [Fundamentals of Docker and Kubernetes for .NET 5 Developers](https://www.pluralsight.com/courses/docker-kubernetes-dot-net-developers-fundamentals)
   * Author: Erik Dahl
-* [Certified Kubernetes Administrator (CKA)](https://www.pluralsight.com/paths/certified-kubernetes-administrator) [Path]
-  * Author: Anthony Nocentino
+
+### YouTube videos
+
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: IAmTimCorey
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
@@ -209,6 +223,9 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
   * Author: Mike Møller Nielsen
 * [Leveling up data: Upgrade from EF6 to EF7 and blast off! | .NET Conf 2022](https://www.youtube.com/watch?v=1U02rnSaz9Q)
   * Author: dotnet
+
+### Docs, forums and articles
+
 * [Microsoft Learn](https://learn.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]
 * [How export or import RabbitMQ configuration](https://sleeplessbeastie.eu/2020/03/18/how-export-or-import-rabbitmq-configuration/)
