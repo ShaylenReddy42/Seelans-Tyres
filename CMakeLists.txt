@@ -154,6 +154,24 @@ configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/run-all.cmd.in" 
 	"${CMAKE_SOURCE_DIR}/scripts/run-all.cmd")
 
+file(
+	COPY 
+		"${CMAKE_SOURCE_DIR}/self-signed-certificates/id-local.seelanstyres.com.crt"
+		"${CMAKE_SOURCE_DIR}/self-signed-certificates/id-local.seelanstyres.com.key"
+		"${CMAKE_SOURCE_DIR}/self-signed-certificates/www-local.seelanstyres.com.crt"
+		"${CMAKE_SOURCE_DIR}/self-signed-certificates/www-local.seelanstyres.com.key"
+	DESTINATION
+		"${CMAKE_SOURCE_DIR}/orchestration/custom-images/nginx/custom-configuration/ssl"
+)
+
+file(
+	COPY 
+		"${CMAKE_SOURCE_DIR}/self-signed-certificates/id-local.seelanstyres.com.crt"
+		"${CMAKE_SOURCE_DIR}/self-signed-certificates/www-local.seelanstyres.com.crt"
+	DESTINATION
+		"${CMAKE_SOURCE_DIR}/src/self-signed-certificates"
+)
+
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 
 if(CI_BUILD)

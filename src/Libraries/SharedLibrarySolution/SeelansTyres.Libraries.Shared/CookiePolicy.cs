@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace SeelansTyres.Libraries.Shared;
 
@@ -7,10 +8,13 @@ public static class CookiePolicy
 {
     public static WebApplication UseCommonCookiePolicy(this WebApplication app)
     {
-        app.UseCookiePolicy(new CookiePolicyOptions
+        if (app.Configuration.GetValue<bool>("InContainer") is false)
         {
-            MinimumSameSitePolicy = SameSiteMode.Lax
-        });
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
+        }
 
         return app;
     }

@@ -171,7 +171,7 @@ builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher
 
 var app = builder.Build();
 
-app.UseForwardedHeaders();
+app.HonorForwardedHeaders();
 
 app.UseCommonCookiePolicy();
 

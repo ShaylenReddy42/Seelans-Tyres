@@ -42,8 +42,9 @@ services:
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - SystemDegraded=true
       - InContainer=true
+    volumes:
+      - ../volumes/images:/app/wwwroot/images/uploaded
     restart: always
     networks:
       - seelanstyres-network
@@ -71,6 +72,7 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - Services__CustomerService__Scheme=https
       - Services__CustomerService__Port=4000
     restart: always
     networks:
@@ -114,11 +116,12 @@ services:
       - ASPNETCORE_URLS=http://*:5005
       - AdminCredentials__Email=${AdminCredentials__Email}
       - AdminCredentials__Password=${AdminCredentials__Password}
+      - BaseUrl=${IDENTITYSERVER}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - envSeelansTyresMvcClientUrl=http://www-local.seelanstyres.com:4000
+      - envSeelansTyresMvcClientUrl=https://www-local.seelanstyres.com:4000
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
@@ -145,6 +148,7 @@ services:
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
+      - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
     depends_on:
       - sqlserver
@@ -164,12 +168,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5013
       - Database__ConnectionString=${DBCONNECTIONSTRING}
-      - IdentityServer=${IDENTITYSERVER}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
+      - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
     depends_on:
       - sqlserver
@@ -222,6 +226,7 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
+      - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
     depends_on:
       - rabbitmq

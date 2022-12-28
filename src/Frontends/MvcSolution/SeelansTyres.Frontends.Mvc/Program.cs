@@ -11,6 +11,7 @@ using SeelansTyres.Libraries.Shared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Frontends.Mvc.BackgroundServices;
 using SeelansTyres.Frontends.Mvc.Channels;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -128,7 +129,7 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-app.UseForwardedHeaders();
+app.HonorForwardedHeaders();
 
 app.UseCommonCookiePolicy();
 

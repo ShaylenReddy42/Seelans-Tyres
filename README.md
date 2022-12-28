@@ -232,7 +232,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 ## Required local setup to build and run
 
-* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.3.6 or later
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.4 or later
 * .NET SDK [6.0.404](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.101](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
@@ -277,8 +277,8 @@ docker pull rabbitmq:3-management
 * All build scripts are in the `scripts` folder
 * In order to build, I've provided four options for you:
   * `build.cmd` which is the regular build
-  * `build-with-docker.cmd` just to see what it looks like orchestrated with docker compose
-  * `build-with-services.cmd` which is the regular build + elasticsearch, kibana and rabbitmq orchestrated with docker compose
+  * `build-with-docker.cmd` to run with docker-compose
+  * `build-with-services.cmd` which is the regular build + elasticsearch, kibana and rabbitmq orchestrated with docker-compose
   * Kubernetes:
     * All scripts for Kubernetes are in the `scripts/kubernetes` folder and should be run in order
       * `00-build-images.cmd`
