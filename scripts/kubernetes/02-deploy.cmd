@@ -32,7 +32,14 @@ ECHO.
 kubectl apply -f 04-deployments\
 
 ECHO.
-ECHO Run "02-delete.cmd" to cleanup the resources by deleting the namespace
+ECHO Creating ingress resources
+ECHO.
+
+kubectl apply -f 05-ingress\local.yaml
+kubectl apply -f 05-ingress\local-services.yaml
+
+ECHO.
+ECHO Run "03-delete.cmd" to cleanup the resources by deleting the namespace
 ECHO.
 
 PAUSE

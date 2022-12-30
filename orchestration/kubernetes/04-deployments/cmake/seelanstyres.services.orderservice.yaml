@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-seelanstyres-services-orderservice
+  name: seelanstyres-services-orderservice
   namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5012
@@ -33,9 +33,9 @@ spec:
             - containerPort: 5012
           envFrom:
             - configMapRef:
-                name: cm-global
+                name: configmap-global
             - configMapRef:
-                name: cm-seelanstyres-services-orderservice
+                name: seelanstyres-services-orderservice
           resources:
             limits:
               cpu: 200m
@@ -43,7 +43,7 @@ spec:
           startupProbe:
             tcpSocket:
               port: 5012
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5

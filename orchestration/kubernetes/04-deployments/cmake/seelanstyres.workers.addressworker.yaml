@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-seelanstyres-workers-addressworker
+  name: seelanstyres-workers-addressworker
   namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5021
@@ -33,9 +33,9 @@ spec:
             - containerPort: 5021
           envFrom:
             - configMapRef:
-                name: cm-global
+                name: configmap-global
             - configMapRef:
-                name: cm-seelanstyres-workers-addressworker
+                name: seelanstyres-workers-addressworker
           resources:
             limits:
               cpu: 200m

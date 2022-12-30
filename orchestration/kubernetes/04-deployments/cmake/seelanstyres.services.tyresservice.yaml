@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-seelanstyres-services-tyresservice
+  name: seelanstyres-services-tyresservice
   namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5013
@@ -33,9 +33,9 @@ spec:
             - containerPort: 5013
           envFrom:
             - configMapRef:
-                name: cm-global
+                name: configmap-global
             - configMapRef:
-                name: cm-seelanstyres-services-tyresservice
+                name: seelanstyres-services-tyresservice
           resources:
             limits:
               cpu: 200m
@@ -43,7 +43,7 @@ spec:
           startupProbe:
             tcpSocket:
               port: 5013
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5

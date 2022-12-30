@@ -17,7 +17,7 @@
 
 This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which - compared to this - was very poorly written and insecure
 
-Originally, it was written using PHP. This is written using C# and .NET 6
+Originally, it was written using PHP [by force, not choice]. This is written using C# and .NET 6 and 7
 
 It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifications and needed a way to prove my skills with a project
 
@@ -281,9 +281,11 @@ docker pull rabbitmq:3-management
   * `build-with-services.cmd` which is the regular build + elasticsearch, kibana and rabbitmq orchestrated with docker-compose
   * Kubernetes:
     * All scripts for Kubernetes are in the `scripts/kubernetes` folder and should be run in order
-      * `00-build-images.cmd`
-      * `01-deploy.cmd`
-      * `02-delete.cmd`
+      * `00-applied-once.cmd`
+        * Note: This adds the nginx ingress to the cluster from the original repo
+      * `01-build-images.cmd`
+      * `02-deploy.cmd`
+      * `03-delete.cmd`
 
 * Once you run either `build.cmd` or `build-with-services.cmd`, CMake will generate `run-all.cmd`
 * Thereafter, run `run-all.cmd` which will start all applications minimized and launch the site, simulating orchestration

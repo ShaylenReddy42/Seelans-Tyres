@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-seelanstyres-gateways-mvcbff
+  name: seelanstyres-gateways-mvcbff
   namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5050
@@ -38,9 +38,9 @@ spec:
             - containerPort: 5050
           envFrom:
             - configMapRef:
-                name: cm-global
+                name: configmap-global
             - configMapRef:
-                name: cm-seelanstyres-gateways-mvcbff
+                name: seelanstyres-gateways-mvcbff
           resources:
             limits:
               cpu: 200m

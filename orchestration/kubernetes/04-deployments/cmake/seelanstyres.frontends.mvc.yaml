@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-seelanstyres-frontends-mvc
+  name: seelanstyres-frontends-mvc
   namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5001
@@ -34,11 +34,11 @@ spec:
             - containerPort: 5001
           envFrom:
             - configMapRef:
-                name: cm-global
+                name: configmap-global
             - configMapRef:
-                name: cm-seelanstyres-frontends-mvc
+                name: seelanstyres-frontends-mvc
             - secretRef:
-                name: secrets-seelanstyres
+                name: secrets-global
           resources:
             limits:
               cpu: 200m
@@ -83,4 +83,4 @@ spec:
   selector:
     app: seelanstyres-frontends-mvc
   sessionAffinity: ClientIP
-  type: LoadBalancer
+  type: ClusterIP

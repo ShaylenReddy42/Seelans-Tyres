@@ -55,7 +55,9 @@ public static class CryptographyExtensions
                 "{announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
                 "FAILED");
 
-            logger.LogError(discoveryDocument.Error);
+            logger.LogError(
+                "True reason for failure: {IdentityServer4Error}",
+                discoveryDocument.Error);
         }
 
         logger.LogDebug("Retrieving the Json Web Key from the discovery document");

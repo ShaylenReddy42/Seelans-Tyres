@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-seelanstyres
+  namespace: seelanstyres
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - health-local.seelanstyres.com
+      secretName: tls-for-health-local
+    - hosts:
+      - id-local.seelanstyres.com
+      secretName: tls-for-id-local
+    - hosts:
+      - www-local.seelanstyres.com
+      secretName: tls-for-www-local
+  rules:
+    - host: health-local.seelanstyres.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: seelanstyres-frontends-healthchecksui
+                port:
+                  number: 5000
+            path: /
+            pathType: Prefix
+    - host: www-local.seelanstyres.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: seelanstyres-frontends-mvc
+                port:
+                  number: 5001
+            path: /
+            pathType: Prefix
+    - host: id-local.seelanstyres.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: seelanstyres-services-identityservice
+                port:
+                  number: 5005
+            path: /
+            pathType: Prefix

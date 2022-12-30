@@ -28,13 +28,15 @@ spec:
               value: P@55w0rd1234
           resources:
             limits:
-              cpu: 1250m
-              memory: 1500Mi
+              cpu: 1750m
+              memory: 2Gi
           startupProbe:
             tcpSocket:
               port: 1433
-            initialDelaySeconds: 60
-      restartPolicy: Always
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
 
 ---
 

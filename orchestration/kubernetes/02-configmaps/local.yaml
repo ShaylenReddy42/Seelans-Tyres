@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-global
+  name: configmap-global
   namespace: seelanstyres
 data:
   ASPNETCORE_ENVIRONMENT: Development
-  Database__ConnectionString: Server=sqlserver;Database=$$(Database:Name);User ID=sa;Password=P@55w0rd1234;Encrypt=false;TrustServerCertificate=true
+  Database__ConnectionString: Server=sqlserver;Database=$$(Database:Name);User ID=sa;Password=P@55w0rd1234;TrustServerCertificate=true
   envUseElasticsearch: 'true'
   envElasticsearchUrl: http://elasticsearch:9200
   envRabbitMQHost: rabbitmq
   envRabbitMQPort: '5672'
-  HealthCheckEndpoint: /bcudsd7f2h378h237
-  IdentityServer: http://id-local.seelanstyres.com:4000
+  HealthCheckEndpoint: /KwjsaTB9EteliVHxBxqxogo4kMbmf2J4Fac2B3G69wTSDfczqKABwS2nnj1bT8HE4njAzE4yXHU5762w7VBlA
+  IdentityServer: https://id-local.seelanstyres.com
   InContainer: 'true'
   SystemDegraded: 'true'

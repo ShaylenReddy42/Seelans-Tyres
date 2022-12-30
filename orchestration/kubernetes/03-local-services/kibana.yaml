@@ -47,4 +47,4 @@ spec:
       targetPort: 5601
   selector:
     app: kibana
-  type: LoadBalancer
+  type: ClusterIP

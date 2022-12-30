@@ -18,7 +18,7 @@ ECHO.
 docker compose -f docker-compose-all.yml build
 
 ECHO.
-ECHO Next, run "01-deploy.cmd" to deploy to kubernetes
+ECHO Next, run "02-deploy.cmd" to deploy to kubernetes
 ECHO.
 
 PAUSE

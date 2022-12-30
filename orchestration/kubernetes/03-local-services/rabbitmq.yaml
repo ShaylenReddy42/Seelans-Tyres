@@ -27,12 +27,15 @@ spec:
               value: /etc/rabbitmq/rabbitmq.conf
           resources:
             limits:
-              cpu: 250m
-              memory: 500Mi
+              cpu: 500m
+              memory: 750Mi
           startupProbe:
             tcpSocket:
               port: 5672
             initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
       restartPolicy: Always
 
 ---

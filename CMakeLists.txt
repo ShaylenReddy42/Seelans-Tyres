@@ -154,23 +154,42 @@ configure_file(
 	"${CMAKE_SOURCE_DIR}/cmake/run-all.cmd.in" 
 	"${CMAKE_SOURCE_DIR}/scripts/run-all.cmd")
 
-file(
-	COPY 
-		"${CMAKE_SOURCE_DIR}/self-signed-certificates/id-local.seelanstyres.com.crt"
-		"${CMAKE_SOURCE_DIR}/self-signed-certificates/id-local.seelanstyres.com.key"
-		"${CMAKE_SOURCE_DIR}/self-signed-certificates/www-local.seelanstyres.com.crt"
-		"${CMAKE_SOURCE_DIR}/self-signed-certificates/www-local.seelanstyres.com.key"
-	DESTINATION
-		"${CMAKE_SOURCE_DIR}/orchestration/custom-images/nginx/custom-configuration/ssl"
+# Handle certificates for https
+
+set(
+	HOSTS
+	"health-local.seelanstyres.com"
+	"id-local.seelanstyres.com"
+	"www-local.seelanstyres.com"
+
+	"kibana-local.seelanstyres.com"
+	"rabbitmq-local.seelanstyres.com"
 )
 
-file(
-	COPY 
-		"${CMAKE_SOURCE_DIR}/self-signed-certificates/id-local.seelanstyres.com.crt"
-		"${CMAKE_SOURCE_DIR}/self-signed-certificates/www-local.seelanstyres.com.crt"
-	DESTINATION
-		"${CMAKE_SOURCE_DIR}/src/self-signed-certificates"
-)
+foreach(HOST IN LISTS HOSTS)
+	set(
+		DESTINATIONS
+		"${CMAKE_SOURCE_DIR}/orchestration/custom-images/nginx/custom-configuration/ssl"
+		"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/01-secrets"
+	)
+
+	foreach(DESTINATION IN LISTS DESTINATIONS)
+		file(
+			COPY 
+				"${CMAKE_SOURCE_DIR}/self-signed-certificates/${HOST}.crt"
+				"${CMAKE_SOURCE_DIR}/self-signed-certificates/${HOST}.key"
+			DESTINATION
+				"${DESTINATION}"
+		)
+	endforeach()
+
+	file(
+		COPY 
+			"${CMAKE_SOURCE_DIR}/self-signed-certificates/${HOST}.crt"
+		DESTINATION
+			"${CMAKE_SOURCE_DIR}/src/self-signed-certificates"
+	)
+endforeach()
 
 option(CI_BUILD "Used to write the version info to a file for CI" OFF)
 
