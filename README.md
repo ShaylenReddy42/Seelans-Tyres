@@ -196,9 +196,9 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
   * Author: Kevin Dockx
 * [ASP.NET Core 6 Fundamentals](https://www.pluralsight.com/courses/asp-dot-net-core-6-fundamentals)
   * Author: Gill Cleeren
-* [Your Microservices Transition](https://app.pluralsight.com/courses/your-microservices-transition)
+* [Your Microservices Transition](https://www.pluralsight.com/courses/your-microservices-transition)
   * Author: Rag Dhiman
-* [Microservices Architecture: The Design Principles](https://app.pluralsight.com/courses/microservices-design-principles)
+* [Microservices Architecture: The Design Principles](https://www.pluralsight.com/courses/microservices-design-principles)
   * Author: Rag Dhiman
 * [Securing ASP.NET Core 3 with OAuth2 and OpenID Connect](https://www.pluralsight.com/courses/securing-aspnet-core-3-oauth2-openid-connect)
   * Author: Kevin Dockx
