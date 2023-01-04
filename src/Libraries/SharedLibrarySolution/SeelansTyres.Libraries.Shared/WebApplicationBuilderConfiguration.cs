@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SeelansTyres.Libraries.Shared.Models;
 
@@ -25,6 +26,15 @@ public static class WebApplicationBuilderConfiguration
         builder.Logging.ClearProviders();
 
         builder.Host.UseCommonSerilog(commonBuilderConfigurationModel);
+
+        if (builder.Configuration.GetValue<bool>("AppInsights:Enabled") is true)
+        {
+            builder.Services.AddApplicationInsightsTelemetry(
+                options => options.ConnectionString = 
+                    builder.Configuration["AppInsights:ConnectionString"]);
+
+            builder.Services.AddApplicationInsightsKubernetesEnricher();
+        }
 
         return builder;
     }

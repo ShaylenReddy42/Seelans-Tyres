@@ -183,12 +183,16 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 #### Paths
 
+* [Designing and Implementing Microsoft DevOps Solutions (AZ-400)](https://www.pluralsight.com/paths/designing-and-implementing-microsoft-devops-solutions-az-400)
+  * Authors: John Savill | David Tucker | Neil Morrissey | Marcel de Vries | Chris Behrens | Adam Bertram | Daniel Krzyczkowski
+* [Exam AZ-400: Designing and Implementing Microsoft DevOps Solutions](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
+  * Author: ??? [WhizLabs]
 * [ASP.NET Microservices](https://www.pluralsight.com/paths/net-microservices)
   * Authors: Antonio Goncalves | Roland Guijt | Gill Cleeren | Neil Morrissey | Kevin Dockx | Mark Heath | Marcel de Vries | Steve Gordan | Rag Dhiman
 * [Certified Kubernetes Administrator (CKA)](https://www.pluralsight.com/paths/certified-kubernetes-administrator)
   * Author: Anthony Nocentino
 
-#### Individual Courses
+#### Individual courses
 
 * [Building a Web App with ASP.NET Core 5, MVC, Entity Framework Core, Bootstrap, and Angular](https://www.pluralsight.com/courses/aspnetcore-mvc-efcore-bootstrap-angular-web)
   * Author: Shawn Wildermuth
@@ -213,7 +217,14 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 * [Fundamentals of Docker and Kubernetes for .NET 5 Developers](https://www.pluralsight.com/courses/docker-kubernetes-dot-net-developers-fundamentals)
   * Author: Erik Dahl
 
-### YouTube videos
+### YouTube
+
+#### Channels
+
+* [John Savill's Technical Training](https://www.youtube.com/@NTFAQGuy)
+  * Author: John Savill
+
+#### Videos
 
 * [Sending Email in C# using FluentEmail](https://www.youtube.com/watch?v=qSeO9886nRM)
   * Author: IAmTimCorey

@@ -55,7 +55,7 @@ public static class Logging
                 commonBuilderConfigurationModel.OriginAssembly
                     .GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
 
-            metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value));
+            metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value!));
 
             if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled") is true)
             {

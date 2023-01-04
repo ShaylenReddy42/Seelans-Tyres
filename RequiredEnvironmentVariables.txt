@@ -27,3 +27,19 @@ EmailCredentials__Password
 	You would then generate a custom app password.
 	Don't specify the platform and give it any name you want.
 	Copy that as your password
+
+-----
+
+Azure Specific
+
+NOTE: These variables have to be set regardless of whether you have an Azure subscription or not
+	  as these will be used as secrets in kubernetes locally and will override appsettings.json.
+	  Use the defaults if you haven't got one
+
+AppInsights__Enabled -- default: false -- override: true
+
+	If you have an instance, enable it
+
+AppInsights__ConnectionString -- default: ... -- override: value from portal
+
+	Retrieve this value from the overview tab

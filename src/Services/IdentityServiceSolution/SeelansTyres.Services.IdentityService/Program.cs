@@ -150,11 +150,10 @@ builder.Services.AddProblemDetails(configure =>
 var healthChecksModel = new HealthChecksModel
 {
     EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]
-};
+    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"],
 
-var rabbitMQConnectionString =
-    $"amqp://{builder.Configuration["RabbitMQ:ConnectionProperties:HostName"]}:{builder.Configuration["RabbitMQ:ConnectionProperties:Port"]}";
+    PublishHealthStatusToAppInsights = builder.Configuration.GetValue<bool>("AppInsights:Enabled")
+};
 
 builder.Services.AddHealthChecks()
     .AddCommonChecks(healthChecksModel)
@@ -163,7 +162,7 @@ builder.Services.AddHealthChecks()
         failureStatus: HealthStatus.Unhealthy)
     .AddRabbitMQ(
         name: "rabbitmq",
-        rabbitConnectionString: rabbitMQConnectionString,
+        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
         failureStatus: HealthStatus.Degraded);
 
 builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(

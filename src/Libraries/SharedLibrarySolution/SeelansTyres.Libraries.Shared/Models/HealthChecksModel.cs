@@ -4,4 +4,6 @@ public class HealthChecksModel
 {
     public bool EnableElasticsearchHealthCheck { get; set; } = default;
     public string ElasticsearchUrl { get; set; } = string.Empty;
+
+    public bool PublishHealthStatusToAppInsights { get; set; } = default;
 }

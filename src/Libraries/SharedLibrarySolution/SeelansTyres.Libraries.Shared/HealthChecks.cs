@@ -25,6 +25,11 @@ public static class HealthChecks
                     failureStatus: HealthStatus.Degraded);
         }
 
+        if (healthChecksModel.PublishHealthStatusToAppInsights is true)
+        {
+            healthChecks.AddApplicationInsightsPublisher();
+        }
+
         return healthChecks;
     }
 

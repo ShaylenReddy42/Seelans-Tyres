@@ -15,6 +15,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5000
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -35,6 +37,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5001
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - EmailCredentials__Email=${EmailCredentials__Email}
       - EmailCredentials__Password=${EmailCredentials__Password}
       - IdentityServer=${IDENTITYSERVER}
@@ -62,6 +66,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5050
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - envAddressServiceHost=${HOST}
       - envCustomerServiceHost=id-local.seelanstyres.com
       - envOrderServiceHost=${HOST}
@@ -91,6 +97,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5011
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -116,6 +124,8 @@ services:
       - ASPNETCORE_URLS=http://*:5005
       - AdminCredentials__Email=${AdminCredentials__Email}
       - AdminCredentials__Password=${AdminCredentials__Password}
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - BaseUrl=${IDENTITYSERVER}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
@@ -144,6 +154,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5012
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -167,6 +179,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5013
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -195,6 +209,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5021
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
@@ -220,6 +236,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5022
+      - AppInsights__Enabled=${AppInsights__Enabled}
+      - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
