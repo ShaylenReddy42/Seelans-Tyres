@@ -4,4 +4,9 @@ CD "%~dp0"
 
 CD ..
 
+IF EXIST publish (
+	RD publish /S /Q
+	MD publish
+)
+
 @COPY_TEMPLATE@

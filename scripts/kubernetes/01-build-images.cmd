@@ -2,14 +2,13 @@
 
 CD "%~dp0"
 
-CD ..\..
+CD ..
 
-ECHO Run CMake
-ECHO.
+CALL run-cmake.cmd
 
-cmake -S . -B build
+CD "%~dp0"
 
-CD orchestration\docker-compose
+CD ..\..\orchestration\docker-compose
 
 ECHO.
 ECHO Running docker-compose build to build all the images

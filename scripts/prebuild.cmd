@@ -1,5 +1,7 @@
 @ECHO off
 
+CD "%~dp0"
+
 CD ..
 
 MORE RequiredEnvironmentVariables.txt
@@ -55,7 +57,8 @@ ECHO Execute EF Core Bundle against configured database connection
 ECHO.
 efbundle.exe --connection "%Database__ConnectionString%"
 
+CD "%~dp0"
+
 ECHO.
-ECHO Run CMake
-ECHO.
-cmake -S . -B build
+
+CALL run-cmake.cmd
