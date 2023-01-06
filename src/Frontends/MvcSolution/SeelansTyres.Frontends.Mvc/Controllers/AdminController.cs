@@ -77,10 +77,6 @@ public class AdminController : Controller
 
         logger.LogInformation("Controller => Administrator is attempting to add a new tyre");
 
-        // integrate with azure storage later on.
-        // upload the file to azure storage, get the url
-        // and set the ImageUrl
-
         logger.LogInformation("Attempting to upload image");
 
         var imageUrl = await imageService.UploadAsync(model.Image, "/images/no-image.png");
@@ -187,7 +183,7 @@ public class AdminController : Controller
             return View(model);
         }
 
-        logger.LogError(
+        logger.LogInformation(
             "{announcement}: Attempt to update tyre {tyreId} completed successfully",
             "SUCCEEDED", model.Id);
 

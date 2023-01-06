@@ -24,6 +24,8 @@ public class LocalImageService : IImageService
             return defaultImage;
         }
 
+        logger.LogInformation("The administrator has chosen to upload a new image");
+
         var directory = Path.Combine(environment.WebRootPath, "images", "uploaded");
 
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";

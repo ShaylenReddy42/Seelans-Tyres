@@ -11,7 +11,6 @@ using SeelansTyres.Libraries.Shared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Frontends.Mvc.BackgroundServices;
 using SeelansTyres.Frontends.Mvc.Channels;
-using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +60,15 @@ builder.Services.AddSession();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddTransient<IImageService, LocalImageService>();
+
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddTransient<IImageService, LocalImageService>();
+}
+else
+{
+    builder.Services.AddTransient<IImageService, CloudImageService>();
+}
 
 builder.Services.AddFluentEmail(
         builder.Configuration["EmailCredentials:Email"], "Seelan's Tyres")

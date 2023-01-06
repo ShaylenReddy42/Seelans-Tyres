@@ -185,6 +185,8 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
 
 * [Designing and Implementing Microsoft DevOps Solutions (AZ-400)](https://www.pluralsight.com/paths/designing-and-implementing-microsoft-devops-solutions-az-400)
   * Authors: John Savill | David Tucker | Neil Morrissey | Marcel de Vries | Chris Behrens | Adam Bertram | Daniel Krzyczkowski
+* [Developing Solutions for Microsoft Azure (AZ-204)](https://www.pluralsight.com/paths/developing-solutions-for-microsoft-azure-az-204)
+  * Authors: Matthew Kruczek | Anthony Nocentino | Mike Pfeiffer | Mark Heath | David Tucker | Thomas Claudius Huber | Sahil Malik | Reza Salehi | James Millar | Daniel Krzyczkowski | Matthew Soucoup
 * [ASP.NET Microservices](https://www.pluralsight.com/paths/net-microservices)
   * Authors: Antonio Goncalves | Roland Guijt | Gill Cleeren | Neil Morrissey | Kevin Dockx | Mark Heath | Marcel de Vries | Steve Gordan | Rag Dhiman
 * [Certified Kubernetes Administrator (CKA)](https://www.pluralsight.com/paths/certified-kubernetes-administrator)
