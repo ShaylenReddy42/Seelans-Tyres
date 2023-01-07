@@ -288,7 +288,7 @@ docker pull rabbitmq:3-management
 ```
 
 * Ensure to set environment variables listed in the `RequiredEnvironmentVariables.txt` file
-  * Press the Win Key and search for `Edit environment variables for your account`
+  * Press <kbd>🪟</kbd> and search for `Edit environment variables for your account`
   * When setting this for the first time, restart your computer
 * All build scripts are in the `scripts` folder
 * In order to build, I've provided four options for you:
