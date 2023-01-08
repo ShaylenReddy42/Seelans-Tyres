@@ -74,6 +74,6 @@ public class CloudImageService : IImageService
             "{announcement}: Attempt to upload the blob to the storage account completed successfully",
             "SUCCEEDED");
 
-        return $"https://{blobServiceClient.AccountName}.blob.core.windows.net/{blobContainerClient.Name}/{blobName}";
+        return blobClient.Uri.AbsoluteUri;
     }
 }
