@@ -4,11 +4,6 @@ CD "%~dp0"
 
 CD ..
 
-MORE RequiredEnvironmentVariables.txt
-
-ECHO.
-PAUSE
-
 ECHO.
 ECHO Restore dotnet tools
 ECHO.
@@ -57,8 +52,5 @@ ECHO Execute EF Core Bundle against configured database connection
 ECHO.
 efbundle.exe --connection "%Database__ConnectionString%"
 
-CD "%~dp0"
-
+DEL efbundle.exe
 ECHO.
-
-CALL run-cmake.cmd

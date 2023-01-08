@@ -9,4 +9,7 @@ IF EXIST publish (
 	MD publish
 )
 
+ECHO Copying files to a root publish Directory
+ECHO.
+
 @COPY_TEMPLATE@
