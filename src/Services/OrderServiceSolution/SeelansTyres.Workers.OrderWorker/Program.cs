@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Data.OrderData;
 using SeelansTyres.Libraries.Shared;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Workers.OrderWorker.BackgroundServices;
 using SeelansTyres.Workers.OrderWorker.Services;
@@ -44,11 +42,29 @@ builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<OrderDbContext>()
-    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
-    .AddRabbitMQ(
-        name: "rabbitmq",
-        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
-        failureStatus: HealthStatus.Degraded);
+    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!);
+
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddHealthChecks()
+        .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);
+}
+else
+{
+    builder.Services.AddHealthChecks()
+        .AddCommonAzureServiceBusSubscriptionCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:DeleteAccount"]!,
+            subscriptionName: builder.Configuration["AzureServiceBus:Subscriptions:DeleteAccount"]!)
+        .AddCommonAzureServiceBusSubscriptionCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:UpdateAccount"]!,
+            subscriptionName: builder.Configuration["AzureServiceBus:Subscriptions:UpdateAccount"]!)
+        .AddCommonAzureServiceBusSubscriptionCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:UpdateTyre"]!,
+            subscriptionName: builder.Configuration["AzureServiceBus:Subscriptions:UpdateTyre"]!);
+}
 
 var app = builder.Build();
 

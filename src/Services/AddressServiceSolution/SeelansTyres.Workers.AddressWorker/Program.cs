@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Data.AddressData;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Libraries.Shared.Services;
@@ -39,11 +38,21 @@ builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<AddressDbContext>()
-    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
-    .AddRabbitMQ(
-        name: "rabbitmq",
-        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
-        failureStatus: HealthStatus.Degraded);
+    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!);
+
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddHealthChecks()
+        .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);
+}
+else
+{
+    builder.Services.AddHealthChecks()
+        .AddCommonAzureServiceBusSubscriptionCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:DeleteAccount"]!,
+            subscriptionName: builder.Configuration["AzureServiceBus:Subscriptions:DeleteAccount"]!);
+}
 
 var app = builder.Build();
 

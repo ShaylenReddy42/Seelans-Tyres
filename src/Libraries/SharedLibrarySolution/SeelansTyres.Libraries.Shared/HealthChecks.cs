@@ -53,6 +53,42 @@ public static class HealthChecks
         return healthChecks;
     }
 
+    public static IHealthChecksBuilder AddCommonRabbitMQCheck(
+        this IHealthChecksBuilder healthChecks, string connectionString)
+    {
+        healthChecks.AddRabbitMQ(
+            name: "rabbitmq",
+            rabbitConnectionString: connectionString,
+            failureStatus: HealthStatus.Degraded);
+
+        return healthChecks;
+    }
+
+    public static IHealthChecksBuilder AddCommonAzureServiceBusTopicCheck(
+        this IHealthChecksBuilder healthChecks, string connectionString, string topicName)
+    {
+        healthChecks.AddAzureServiceBusTopic(
+            connectionString: connectionString,
+            topicName: topicName,
+            name: $"azureServiceBusTopic: {topicName}",
+            failureStatus: HealthStatus.Degraded);
+        
+        return healthChecks;
+    }
+
+    public static IHealthChecksBuilder AddCommonAzureServiceBusSubscriptionCheck(
+        this IHealthChecksBuilder healthChecks, string connectionString, string topicName, string subscriptionName)
+    {
+        healthChecks.AddAzureServiceBusSubscription(
+            connectionString: connectionString,
+            topicName: topicName,
+            subscriptionName: subscriptionName,
+            name: $"azureServiceBusTopicSubscription: {subscriptionName}",
+            failureStatus: HealthStatus.Degraded);
+
+        return healthChecks;
+    }
+
     public static WebApplication MapCommonHealthChecks(this WebApplication app)
     {
         app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"]!, new HealthCheckOptions

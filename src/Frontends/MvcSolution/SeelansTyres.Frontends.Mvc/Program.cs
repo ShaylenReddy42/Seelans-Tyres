@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Frontends.Mvc.BackgroundServices;
@@ -123,6 +122,15 @@ builder.Services.AddHealthChecks()
         uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
         name: "gateway",
         failureStatus: HealthStatus.Unhealthy);
+
+if (builder.Environment.IsDevelopment() is false)
+{
+    builder.Services.AddHealthChecks()
+        .AddAzureBlobStorage(
+            connectionString: builder.Configuration.GetConnectionString("AzureStorageAccount")!,
+            name: "azureStorageAccount",
+            failureStatus: HealthStatus.Unhealthy);
+}
 
 var app = builder.Build();
 

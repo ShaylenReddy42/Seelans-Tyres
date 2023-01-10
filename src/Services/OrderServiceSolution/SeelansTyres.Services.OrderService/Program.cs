@@ -2,13 +2,11 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Services.OrderService.Authorization;
 using SeelansTyres.Data.OrderData;
 using SeelansTyres.Services.OrderService.Services;
 using System.Reflection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 

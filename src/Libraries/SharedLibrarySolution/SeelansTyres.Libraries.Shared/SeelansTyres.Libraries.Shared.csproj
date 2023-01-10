@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="6.1.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="6.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.OpenIdConnectServer" Version="6.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.Publisher.ApplicationInsights" Version="6.0.2" />

@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="6.1.2" />
     <PackageReference Include="Azure.Core" Version="1.26.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.14.1" />
     <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />

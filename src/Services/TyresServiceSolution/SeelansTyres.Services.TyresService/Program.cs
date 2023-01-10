@@ -2,13 +2,11 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Services.TyresService.Authorization;
 using SeelansTyres.Services.TyresService.Data;
 using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Libraries.Shared.DbContexts;
 
@@ -63,19 +61,23 @@ builder.Services.AddProblemDetails(configure =>
 });
 
 builder.Services.AddHealthChecks()
-    .AddCommonDbContextCheck<TyresDbContext>()
-    .AddRabbitMQ(
-        name: "rabbitmq",
-        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
-        failureStatus: HealthStatus.Degraded);
+    .AddCommonDbContextCheck<TyresDbContext>();
 
 if (builder.Environment.IsDevelopment() is true)
 {
+    builder.Services.AddHealthChecks()
+        .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);
+
     builder.Services.AddUnpublishedUpdatesManagement<RabbitMQPublisher>(
         databaseConnectionString: builder.Configuration["Database:ConnectionString"]!);
 }
 else
 {
+    builder.Services.AddHealthChecks()
+        .AddCommonAzureServiceBusTopicCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:UpdateTyre"]!);
+    
     builder.Services.AddUnpublishedUpdatesManagement<AzureServiceBusPublisher>(
         databaseConnectionString: builder.Configuration["Database:ConnectionString"]!);
 }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Services.IdentityService.Authorization;
 using SeelansTyres.Services.IdentityService.Data;
@@ -11,7 +10,6 @@ using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Services;
 using System.Reflection;
 using System.Security.Cryptography;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
 
@@ -147,19 +145,26 @@ builder.Services.AddProblemDetails(configure =>
 });
 
 builder.Services.AddHealthChecks()
-    .AddCommonDbContextCheck<CustomerDbContext>()
-    .AddRabbitMQ(
-        name: "rabbitmq",
-        rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
-        failureStatus: HealthStatus.Degraded);
+    .AddCommonDbContextCheck<CustomerDbContext>();
 
 if (builder.Environment.IsDevelopment() is true)
 {
+    builder.Services.AddHealthChecks()
+        .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);
+    
     builder.Services.AddUnpublishedUpdatesManagement<RabbitMQPublisher>(
         databaseConnectionString: connectionString);
 }
 else
 {
+    builder.Services.AddHealthChecks()
+        .AddCommonAzureServiceBusTopicCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:DeleteAccount"]!)
+        .AddCommonAzureServiceBusTopicCheck(
+            connectionString: builder.Configuration["AzureServiceBus:ConnectionString"]!,
+            topicName: builder.Configuration["AzureServiceBus:Topics:UpdateAccount"]!);
+
     builder.Services.AddUnpublishedUpdatesManagement<AzureServiceBusPublisher>(
         databaseConnectionString: connectionString);
 }
