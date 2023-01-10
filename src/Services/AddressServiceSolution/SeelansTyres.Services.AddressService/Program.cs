@@ -63,19 +63,8 @@ builder.Services.AddProblemDetails(configure =>
     configure.IncludeExceptionDetails = (httpContext, exception) => false;
 });
 
-var healthChecksModel = new HealthChecksModel
-{
-    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!,
-
-    PublishHealthStatusToAppInsights = builder.Configuration.GetValue<bool>("AppInsights:Enabled")
-};
-
 builder.Services.AddHealthChecks()
-    .AddCommonChecks(healthChecksModel)
-    .AddDbContextCheck<AddressDbContext>(
-        name: "database",
-        failureStatus: HealthStatus.Unhealthy);
+    .AddCommonDbContextCheck<AddressDbContext>();
 
 var app = builder.Build();
 

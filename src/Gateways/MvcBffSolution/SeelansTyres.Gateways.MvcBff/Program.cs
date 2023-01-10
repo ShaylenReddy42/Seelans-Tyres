@@ -46,20 +46,8 @@ builder.Services.AddOcelot()
     .AddDelegatingHandler<OrderServiceDelegatingHandler>()
     .AddDelegatingHandler<TyresServiceDelegatingHandler>();
 
-var healthChecksModel = new HealthChecksModel
-{
-    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!,
-
-    PublishHealthStatusToAppInsights = builder.Configuration.GetValue<bool>("AppInsights:Enabled")
-};
-
 builder.Services.AddHealthChecks()
-    .AddCommonChecks(healthChecksModel)
-    .AddIdentityServer(
-        idSvrUri: new(builder.Configuration["IdentityServer"]!),
-        name: "identityServer",
-        failureStatus: HealthStatus.Unhealthy)
+    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
     .AddDownstreamChecks(builder.Configuration);
 
 var app = builder.Build();

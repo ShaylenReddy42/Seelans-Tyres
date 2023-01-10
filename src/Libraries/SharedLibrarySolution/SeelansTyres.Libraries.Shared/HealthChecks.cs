@@ -1,6 +1,7 @@
 ﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Libraries.Shared.Models;
@@ -29,6 +30,25 @@ public static class HealthChecks
         {
             healthChecks.AddApplicationInsightsPublisher();
         }
+
+        return healthChecks;
+    }
+
+    public static IHealthChecksBuilder AddCommonDbContextCheck<TDbContext>(this IHealthChecksBuilder healthChecks) where TDbContext : DbContext
+    {
+        healthChecks.AddDbContextCheck<TDbContext>(
+            name: "database",
+            failureStatus: HealthStatus.Unhealthy);
+
+        return healthChecks;
+    }
+
+    public static IHealthChecksBuilder AddCommonIdentityServerCheck(this IHealthChecksBuilder healthChecks, string identityServerUrl)
+    {
+        healthChecks.AddIdentityServer(
+            idSvrUri: new(identityServerUrl),
+            name: "identityServer",
+            failureStatus: HealthStatus.Unhealthy);
 
         return healthChecks;
     }

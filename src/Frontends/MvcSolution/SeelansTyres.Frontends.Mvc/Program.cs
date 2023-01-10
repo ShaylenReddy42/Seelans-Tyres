@@ -117,20 +117,8 @@ builder.Services.AddAuthentication(options =>
         options.ClaimActions.MapUniqueJsonKey(ClaimTypes.Role, ClaimTypes.Role);
     });
 
-var healthChecksModel = new HealthChecksModel
-{
-    EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-    ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!,
-
-    PublishHealthStatusToAppInsights = builder.Configuration.GetValue<bool>("AppInsights:Enabled")
-};
-
 builder.Services.AddHealthChecks()
-    .AddCommonChecks(healthChecksModel)
-    .AddIdentityServer(
-        idSvrUri: new(builder.Configuration["IdentityServer"]!),
-        name: "identityServer",
-        failureStatus: HealthStatus.Unhealthy)
+    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
     .AddUrlGroup(
         uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
         name: "gateway",
