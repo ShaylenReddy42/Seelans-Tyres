@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
-public class RabbitMQPublisher : IMessagingServicePublisher
+public class RabbitMQPublisher : IMessagePublisher
 {
     private readonly ILogger<RabbitMQPublisher> logger;
     private readonly IConfiguration configuration;

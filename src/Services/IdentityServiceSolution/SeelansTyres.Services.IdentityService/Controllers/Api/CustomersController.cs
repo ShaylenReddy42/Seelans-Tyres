@@ -24,6 +24,7 @@ public class CustomersController : ControllerBase
     private readonly IMapper mapper;
     private readonly ILogger<CustomersController> logger;
     private readonly IConfiguration configuration;
+    private readonly IWebHostEnvironment environment;
     private readonly PublishUpdateChannel publishUpdateChannel;
     private readonly Stopwatch stopwatch = new();
 
@@ -33,6 +34,7 @@ public class CustomersController : ControllerBase
         IMapper mapper,
         ILogger<CustomersController> logger,
         IConfiguration configuration,
+        IWebHostEnvironment environment,
         PublishUpdateChannel publishUpdateChannel)
     {
         this.customerService = customerService;
@@ -40,6 +42,7 @@ public class CustomersController : ControllerBase
         this.mapper = mapper;
         this.logger = logger;
         this.configuration = configuration;
+        this.environment = environment;
         this.publishUpdateChannel = publishUpdateChannel;
     }
     
@@ -152,9 +155,13 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
+        var configurationKeyForDestination = environment.IsDevelopment() is true
+                                           ? "RabbitMQ:Exchanges:UpdateAccount"
+                                           : "AzureServiceBus:Topics:UpdateAccount";
+
         stopwatch.Start();
 
-        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateAccount"]!);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration[configurationKeyForDestination]!);
 
         stopwatch.Stop();
 
@@ -185,9 +192,13 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
+        var configurationKeyForDestination = environment.IsDevelopment() is true
+                                           ? "RabbitMQ:Exchanges:DeleteAccount"
+                                           : "AzureServiceBus:Topics:DeleteAccount";
+
         stopwatch.Start();
 
-        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:DeleteAccount"]!);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration[configurationKeyForDestination]!);
 
         stopwatch.Stop();
 

@@ -14,7 +14,6 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
-using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -165,8 +164,16 @@ builder.Services.AddHealthChecks()
         rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
         failureStatus: HealthStatus.Degraded);
 
-builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(
-    databaseConnectionString: connectionString);
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddUnpublishedUpdatesManagement<RabbitMQPublisher>(
+        databaseConnectionString: connectionString);
+}
+else
+{
+    builder.Services.AddUnpublishedUpdatesManagement<AzureServiceBusPublisher>(
+        databaseConnectionString: connectionString);
+}
 
 var app = builder.Build();
 

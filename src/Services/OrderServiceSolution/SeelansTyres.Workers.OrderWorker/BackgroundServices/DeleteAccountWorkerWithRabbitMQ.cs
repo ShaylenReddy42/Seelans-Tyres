@@ -1,24 +1,25 @@
 ﻿using RabbitMQ.Client;
 using SeelansTyres.Libraries.Shared.Messages;
-using SeelansTyres.Workers.AddressWorker.Services;
 using RabbitMQ.Client.Events;
 using System.Text.Json;
 using SeelansTyres.Libraries.Shared.Services;
+using SeelansTyres.Workers.OrderWorker.Services;
 using SeelansTyres.Libraries.Shared;
+using SeelansTyres.Libraries.Shared.Extensions;
 
-namespace SeelansTyres.Workers.AddressWorker.BackgroundServices;
+namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 
-public class DeleteAccountWorker : BackgroundService
+public class DeleteAccountWorkerWithRabbitMQ : BackgroundService
 {
-    private readonly ILogger<DeleteAccountWorker> logger;
+    private readonly ILogger<DeleteAccountWorkerWithRabbitMQ> logger;
     private readonly IConfiguration configuration;
     private readonly IServiceScopeFactory serviceScopeFactory;
     private readonly ITokenValidationService tokenValidationService;
     private IModel? channel;
     private EventingBasicConsumer? consumer;
 
-    public DeleteAccountWorker(
-        ILogger<DeleteAccountWorker> logger,
+    public DeleteAccountWorkerWithRabbitMQ(
+        ILogger<DeleteAccountWorkerWithRabbitMQ> logger,
         IConfiguration configuration,
         IServiceScopeFactory serviceScopeFactory,
         ITokenValidationService tokenValidationService)
@@ -46,44 +47,36 @@ public class DeleteAccountWorker : BackgroundService
         consumer.Received += async (sender, args) =>
         {
             var baseMessage = JsonSerializer.Deserialize<BaseMessage>(args.Body.ToArray());
+
             baseMessage!.StartANewActivity();
 
-            logger.LogInformation("Worker => Attempting to validate the access token");
-
-            var tokenIsValid = 
-                await tokenValidationService.ValidateTokenAsync(
-                    baseMessage!,
-                    configuration["IdentityServer"]!,
-                    "CustomerService");
+            baseMessage!.ValidateTokenFromBaseMessage(
+                configuration,
+                logger,
+                tokenValidationService,
+                validAudience: "CustomerService",
+                out bool tokenIsValid);
 
             if (tokenIsValid is false)
             {
-                logger.LogError(
-                    "{announcement}: Attempt to validate the access token was unsuccessful",
-                    "FAILED");
-
                 channel.BasicAck(args.DeliveryTag, false);
                 return;
             }
 
             logger.LogInformation(
-                "{announcement}: Attempt to validate the access token completed successfully",
-                "SUCCEEDED");
-
-            logger.LogInformation(
-                "Worker => Attempting to remove addresses for customer {customerId}",
+                "Worker => Attempting to remove orders for customer {customerId}",
                 baseMessage!.IdOfEntityToUpdate);
 
             using var scope = serviceScopeFactory.CreateScope();
 
-            var addressUpdateService = scope.ServiceProvider.GetService<IAddressUpdateService>();
+            var orderUpdateService = scope.ServiceProvider.GetService<IOrderUpdateService>();
 
-            await addressUpdateService!.DeleteAsync(baseMessage!);
+            await orderUpdateService!.DeleteAccountAsync(baseMessage!);
 
             channel.BasicAck(args.DeliveryTag, false);
         };
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Task.Yield();

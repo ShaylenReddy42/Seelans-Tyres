@@ -13,13 +13,13 @@ public class PublishUpdateChannelReaderBackgroundService : BackgroundService
 {
     private readonly ILogger<PublishUpdateChannelReaderBackgroundService> logger;
     private readonly PublishUpdateChannel publishUpdateChannel;
-    private readonly IMessagingServicePublisher messagingServicePublisher;
+    private readonly IMessagePublisher messagingServicePublisher;
     private readonly IServiceScopeFactory serviceScopeFactory;
 
     public PublishUpdateChannelReaderBackgroundService(
         ILogger<PublishUpdateChannelReaderBackgroundService> logger,
         PublishUpdateChannel publishUpdateChannel,
-        IMessagingServicePublisher messagingServicePublisher,
+        IMessagePublisher messagingServicePublisher,
         IServiceScopeFactory serviceScopeFactory)
     {
         this.logger = logger;

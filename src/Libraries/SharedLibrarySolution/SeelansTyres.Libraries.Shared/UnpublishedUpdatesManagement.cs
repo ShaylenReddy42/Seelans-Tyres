@@ -7,11 +7,11 @@ using SeelansTyres.Libraries.Shared.Services;
 
 namespace SeelansTyres.Libraries.Shared;
 
-public static class UnpublishedUpdateServices
+public static class UnpublishedUpdatesManagement
 {
-    public static IServiceCollection AddCommonUnpublishedUpdatesManagementServices<TImplementation>(
+    public static IServiceCollection AddUnpublishedUpdatesManagement<TMessagePublisherImplementation>(
         this IServiceCollection services,
-        string databaseConnectionString) where TImplementation : class, IMessagingServicePublisher
+        string databaseConnectionString) where TMessagePublisherImplementation : class, IMessagePublisher
     {
         services.AddDbContext<UnpublishedUpdateDbContext>(options =>
             options.UseSqlServer(
@@ -20,7 +20,7 @@ public static class UnpublishedUpdateServices
 
         services.AddScoped<IUnpublishedUpdateRepository, UnpublishedUpdateRepository>();
 
-        services.AddSingleton<IMessagingServicePublisher, TImplementation>();
+        services.AddSingleton<IMessagePublisher, TMessagePublisherImplementation>();
         
         services.AddSingleton<PublishUpdateChannel>();
         services.AddHostedService<PublishUpdateChannelReaderBackgroundService>();

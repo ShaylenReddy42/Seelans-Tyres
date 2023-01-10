@@ -22,7 +22,16 @@ builder.Services.AddDbContext<AddressDbContext>(options =>
         builder.Configuration["Database:ConnectionString"]!));
 
 builder.Services.AddScoped<IAddressUpdateService, AddressUpdateService>();
-builder.Services.AddHostedService<DeleteAccountWorker>();
+
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddHostedService<DeleteAccountWorkerWithRabbitMQ>();
+}
+else
+{
+    builder.Services.AddHostedService<DeleteAccountWorkerWithAzureServiceBus>();
+}
+
 builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(client =>
 {
     client.BaseAddress = new(builder.Configuration["IdentityServer"]!);

@@ -32,9 +32,11 @@ EmailCredentials__Password
 
 Azure Specific
 
-NOTE: These variables have to be set regardless of whether you have an Azure subscription or not
+NOTE: Some of these variables have to be set regardless of whether you have an Azure subscription or not
       as these will be used as secrets in kubernetes locally and will override appsettings.json.
       Use the defaults if you haven't got one
+
+*** MANDATORY IN ALL ENVIRONMENTS ***
 
 AppInsights__Enabled -- default: false -- override: true
 
@@ -44,9 +46,13 @@ AppInsights__ConnectionString -- default: ... -- override: value from portal
 
 	Retrieve this value from the overview tab
 
+*** OPTIONAL IN DEVELOPMENT, MANDATORY IN ANY OTHER ENVIRONMENT ***
+
 ConnectionStrings__AzureStorageAccount -- default: ... -- override: connection string
 
 	Retrieve this value from the Access keys blade of the storage account
 
-	NOTE: The cloud image service is enabled for environments other than development and locally,
-	the system is always in development so no need to worry about it
+AzureServiceBus__ConnectionString -- default: ... -- override: primary connection string
+
+	Retrieve this value from the Shared access policies blade of the azure service bus using
+	the "RootManageSharedAccessKey" policy

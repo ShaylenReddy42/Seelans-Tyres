@@ -120,7 +120,7 @@ public class OrderUpdateService : IOrderUpdateService
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to update update all orders with tyre {tyreId} completed successfully",
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

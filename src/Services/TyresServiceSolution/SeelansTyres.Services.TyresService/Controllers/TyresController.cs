@@ -20,6 +20,7 @@ public class TyresController : ControllerBase
     private readonly ITyresRepository tyresRepository;
     private readonly IMapper mapper;
     private readonly IConfiguration configuration;
+    private readonly IWebHostEnvironment environment;
     private readonly PublishUpdateChannel publishUpdateChannel;
     private readonly Stopwatch stopwatch = new();
 
@@ -28,12 +29,14 @@ public class TyresController : ControllerBase
         ITyresRepository tyresRepository,
         IMapper mapper,
         IConfiguration configuration,
+        IWebHostEnvironment environment,
         PublishUpdateChannel publishUpdateChannel)
     {
         this.logger = logger;
         this.tyresRepository = tyresRepository;
         this.mapper = mapper;
         this.configuration = configuration;
+        this.environment = environment;
         this.publishUpdateChannel = publishUpdateChannel;
     }
 
@@ -127,9 +130,13 @@ public class TyresController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
+        var configurationKeyForDestination = environment.IsDevelopment() is true
+                                           ? "RabbitMQ:Exchanges:UpdateTyre"
+                                           : "AzureServiceBus:Topics:UpdateTyre";
+
         stopwatch.Start();
 
-        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration["RabbitMQ:Exchanges:UpdateTyre"]!);
+        await publishUpdateChannel.WriteToChannelAsync(baseMessage, configuration[configurationKeyForDestination]!);
 
         stopwatch.Stop();
 

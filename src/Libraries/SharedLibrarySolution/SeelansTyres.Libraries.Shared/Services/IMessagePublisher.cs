@@ -2,7 +2,7 @@
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
-public interface IMessagingServicePublisher
+public interface IMessagePublisher
 {
     Task PublishMessageAsync(BaseMessage message, string destination);
 }

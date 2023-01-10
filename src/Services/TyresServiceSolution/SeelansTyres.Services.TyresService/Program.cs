@@ -80,8 +80,16 @@ builder.Services.AddHealthChecks()
         rabbitConnectionString: builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!,
         failureStatus: HealthStatus.Degraded);
 
-builder.Services.AddCommonUnpublishedUpdatesManagementServices<RabbitMQPublisher>(
-    databaseConnectionString: builder.Configuration["Database:ConnectionString"]!);
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddUnpublishedUpdatesManagement<RabbitMQPublisher>(
+        databaseConnectionString: builder.Configuration["Database:ConnectionString"]!);
+}
+else
+{
+    builder.Services.AddUnpublishedUpdatesManagement<AzureServiceBusPublisher>(
+        databaseConnectionString: builder.Configuration["Database:ConnectionString"]!);
+}
 
 var app = builder.Build();
 

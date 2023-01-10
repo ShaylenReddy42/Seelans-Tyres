@@ -12,12 +12,12 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
 {
     private readonly ILogger<RetryUnpublishedUpdatesWorker> logger;
     private readonly IServiceScopeFactory serviceScopeFactory;
-    private readonly IMessagingServicePublisher messagingServicePublisher;
+    private readonly IMessagePublisher messagingServicePublisher;
 
     public RetryUnpublishedUpdatesWorker(
         ILogger<RetryUnpublishedUpdatesWorker> logger,
         IServiceScopeFactory serviceScopeFactory,
-        IMessagingServicePublisher messagingServicePublisher)
+        IMessagePublisher messagingServicePublisher)
     {
         this.logger = logger;
         this.serviceScopeFactory = serviceScopeFactory;

@@ -5,20 +5,21 @@ using System.Text.Json;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Workers.OrderWorker.Services;
 using SeelansTyres.Libraries.Shared;
+using SeelansTyres.Libraries.Shared.Extensions;
 
 namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 
-public class UpdateTyreWorker : BackgroundService
+public class UpdateTyreWorkerWithRabbitMQ : BackgroundService
 {
-    private readonly ILogger<UpdateTyreWorker> logger;
+    private readonly ILogger<UpdateTyreWorkerWithRabbitMQ> logger;
     private readonly IConfiguration configuration;
     private readonly IServiceScopeFactory serviceScopeFactory;
     private readonly ITokenValidationService tokenValidationService;
     private IModel? channel;
     private EventingBasicConsumer? consumer;
 
-    public UpdateTyreWorker(
-        ILogger<UpdateTyreWorker> logger,
+    public UpdateTyreWorkerWithRabbitMQ(
+        ILogger<UpdateTyreWorkerWithRabbitMQ> logger,
         IConfiguration configuration,
         IServiceScopeFactory serviceScopeFactory,
         ITokenValidationService tokenValidationService)
@@ -46,29 +47,21 @@ public class UpdateTyreWorker : BackgroundService
         consumer.Received += async (sender, args) =>
         {
             var baseMessage = JsonSerializer.Deserialize<BaseMessage>(args.Body.ToArray());
+
             baseMessage!.StartANewActivity();
 
-            logger.LogInformation("Worker => Attempting to validate the access token");
-
-            var tokenIsValid = 
-                await tokenValidationService.ValidateTokenAsync(
-                    baseMessage!,
-                    configuration["IdentityServer"]!,
-                    "TyresService");
+            baseMessage!.ValidateTokenFromBaseMessage(
+                configuration,
+                logger,
+                tokenValidationService,
+                validAudience: "TyresService",
+                out bool tokenIsValid);
 
             if (tokenIsValid is false)
             {
-                logger.LogError(
-                    "{announcement}: Attempt to validate the access token was unsuccessful",
-                    "FAILED");
-
                 channel.BasicAck(args.DeliveryTag, false);
                 return;
             }
-
-            logger.LogInformation(
-                "{announcement}: Attempt to validate the access token completed successfully",
-                "SUCCEEDED");
 
             logger.LogInformation(
                 "Worker => Attempting to update all orders with tyre {tyreId}",

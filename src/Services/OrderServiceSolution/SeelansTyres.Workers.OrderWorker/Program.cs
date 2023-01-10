@@ -22,9 +22,20 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
         builder.Configuration["Database:ConnectionString"]!));
 
 builder.Services.AddScoped<IOrderUpdateService, OrderUpdateService>();
-builder.Services.AddHostedService<DeleteAccountWorker>();
-builder.Services.AddHostedService<UpdateAccountWorker>();
-builder.Services.AddHostedService<UpdateTyreWorker>();
+
+if (builder.Environment.IsDevelopment() is true)
+{
+    builder.Services.AddHostedService<DeleteAccountWorkerWithRabbitMQ>();
+    builder.Services.AddHostedService<UpdateAccountWorkerWithRabbitMQ>();
+    builder.Services.AddHostedService<UpdateTyreWorkerWithRabbitMQ>();
+}
+else
+{
+    builder.Services.AddHostedService<DeleteAccountWorkerWithAzureServiceBus>();
+    builder.Services.AddHostedService<UpdateAccountWorkerWithAzureServiceBus>();
+    builder.Services.AddHostedService<UpdateTyreWorkerWithAzureServiceBus>();
+}
+
 builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(client =>
 {
     client.BaseAddress = new(builder.Configuration["IdentityServer"]!);
