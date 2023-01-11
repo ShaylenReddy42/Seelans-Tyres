@@ -64,6 +64,8 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * [admin portal: use restful routing for updating a tyre](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/a57625efb6dd5110f226d5830dbfef1207e19b0b)
     * [add a missing feature to set the tyre's availability and adjust what customers see accordingly](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/8209ac8a41e6cd6ce76a038621c3c8d17babfecf)
     * [create an image service](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/0f3c1cca9777e1e38bf9bda8f67172e1367ab956)
+    * [azure: implement the cloud version of the image service](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/71ebfb0faf41d9e26796e5f9f24093338cd5280a)
+    * [the blob client has the uri 😐](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/c53f9b54d3af1b326459a90b2355e4a0662801ad)
 * A custom footer with a link to the commit on GitHub referencing the version its built on
   * Related commits:
     * [update the footer to include the version and a link to the commit in github](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/1322343c75e48a07223633ec7e1841cbf0e503c9)
@@ -140,10 +142,11 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * CODE REVIEWS ARE IMPORTANT
   * Related commits:
     * [prep for centralized logging with serilog and elasticsearch](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/08bd63d906e416078cdd01d3db82c099a1e35922)
-* Implementation of an efficient data synchronization strategy across microservices
+* An efficient data synchronization strategy across microservices
   * Related commits:
     * [implement rabbitmq and complete the architecture locally](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/9619457579b512a92817695b67ce0acdf668e486)
     * [rework how updates are published by making it more resilient to failure](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/74779db7ad0f933d613037e405aca1eb1abdd3e0)
+    * [azure: implement the cloud version of pub-sub](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/34431c77768a5c578452b662506270dd4e0730b4)
 * Site Reliability Engineering possibilities like creating an actionable alerting strategy and monitoring application health
   * Related commits:
     * [the days and nights were long and so too, was the logging spree](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/3fe627984d17f80bdc38ad73a2f5e43480ae5f88)
@@ -152,6 +155,9 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * [enable the system degraded state by default when using docker compose](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b26dac1ac5ff811be2a8711ca31fd290379fe1bb)
     * [implement liveness checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/8e5581c21e91ae2ce6f255bd1e92d617277ac6b0)
     * [perform the liveness checks from the health checks ui](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/59f1d9694ee5200d9e068a8839f072132012bc5a)
+    * [azure: instrument the solution with application insights telemetry](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/dfd858a997258584e1d8b81bb9840519e8021987)
+    * [overhaul the existing health checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/4011f2761eda155aa2b26aba3a9d492fecfcd18a)
+    * [implement environment specific health checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/0c8c98aa05f678c3f2ec932ce3133d152862e07b)
 
 ### Codebase / Build System features
 
