@@ -8,6 +8,9 @@ parameters:
   default: $(Build.SourcesDirectory)
 
 steps:
+- checkout: self
+  fetchDepth: 0
+
 - task: UseDotNet@2
   displayName: 'Use .NET SDK 6.0.405'
   inputs:
