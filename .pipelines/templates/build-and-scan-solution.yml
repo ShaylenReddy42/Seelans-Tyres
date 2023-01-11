@@ -9,15 +9,15 @@ parameters:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET SDK 6.0.404'
+  displayName: 'Use .NET SDK 6.0.405'
   inputs:
-    version: 6.0.404
+    version: 6.0.405
     performMultiLevelLookup: true
 
 - task: UseDotNet@2
-  displayName: 'Use .NET SDK 7.0.101'
+  displayName: 'Use .NET SDK 7.0.102'
   inputs:
-    version: 7.0.101
+    version: 7.0.102
     performMultiLevelLookup: true
 
 - task: CMake@1
