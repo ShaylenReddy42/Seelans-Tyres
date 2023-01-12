@@ -10,7 +10,6 @@ ECHO.
 ECHO.
 ECHO All the logs will be streamed to this command prompt.
 ECHO This process could take very long the first few times because some images have to be pulled
-ECHO Once the containers have started up, ignore all the errors, the containers will restart
 ECHO Wait for the message "Kibana is now available (was degraded)" (it'll stop at that point) which means the site and Kibana can be accessed
 ECHO The site is on https://www-local.seelanstyres.com:4000 and Kibana is on http://localhost:5601
 ECHO Press Ctrl+C to stop

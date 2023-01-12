@@ -43,7 +43,7 @@ spec:
           startupProbe:
             tcpSocket:
               port: 5021
-            initialDelaySeconds: 10
+            initialDelaySeconds: 25
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5

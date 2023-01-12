@@ -23,7 +23,8 @@ public static class HealthChecks
             healthChecks
                 .AddElasticsearch(
                     elasticsearchUri: healthChecksModel.ElasticsearchUrl, 
-                    failureStatus: HealthStatus.Degraded);
+                    failureStatus: HealthStatus.Degraded,
+                    timeout: TimeSpan.FromSeconds(1.5));
         }
 
         if (healthChecksModel.PublishHealthStatusToAppInsights is true)
@@ -59,7 +60,8 @@ public static class HealthChecks
         healthChecks.AddRabbitMQ(
             name: "rabbitmq",
             rabbitConnectionString: connectionString,
-            failureStatus: HealthStatus.Degraded);
+            failureStatus: HealthStatus.Degraded,
+            timeout: TimeSpan.FromSeconds(1.5));
 
         return healthChecks;
     }

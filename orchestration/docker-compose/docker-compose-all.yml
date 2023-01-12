@@ -22,6 +22,7 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - Host=${HOST}
       - InContainer=true
+      - StartupDelayInSeconds=30
     restart: always
     networks:
       - seelanstyres-network
@@ -47,6 +48,7 @@ services:
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - InContainer=true
+      - StartupDelayInSeconds=20
     volumes:
       - ../volumes/images:/app/wwwroot/images/uploaded
     restart: always
@@ -78,6 +80,7 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
       - Services__CustomerService__Scheme=https
       - Services__CustomerService__Port=4000
     restart: always
@@ -105,6 +108,7 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
     restart: always
@@ -136,6 +140,7 @@ services:
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
       - rabbitmq
@@ -162,6 +167,7 @@ services:
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
     restart: always
@@ -189,6 +195,7 @@ services:
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
       - rabbitmq
@@ -219,6 +226,7 @@ services:
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
     depends_on:
       - rabbitmq
     restart: always
@@ -246,6 +254,7 @@ services:
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
       - InContainer=true
+      - StartupDelayInSeconds=20
     depends_on:
       - rabbitmq
     restart: always

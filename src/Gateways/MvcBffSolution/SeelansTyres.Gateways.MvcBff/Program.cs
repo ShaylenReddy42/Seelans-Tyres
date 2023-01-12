@@ -9,6 +9,7 @@ using static System.Net.Mime.MediaTypeNames;
 using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Gateways.MvcBff.Extensions;
+using SeelansTyres.Libraries.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,5 +88,7 @@ await app.UseOcelot(ocelotPipelineConfiguration =>
         }
     };
 });
+
+app.AddCommonStartupDelay();
 
 app.Run();

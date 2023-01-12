@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
+using SeelansTyres.Libraries.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -198,6 +199,8 @@ app.UseAuthorization();
 app.MapDefaultControllerRoute();
 
 app.MapCommonHealthChecks();
+
+app.AddCommonStartupDelay();
 
 app.Logger.LogInformation("Program => Migrating and seeding databases");
 

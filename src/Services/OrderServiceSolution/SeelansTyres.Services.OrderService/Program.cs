@@ -7,6 +7,7 @@ using SeelansTyres.Services.OrderService.Authorization;
 using SeelansTyres.Data.OrderData;
 using SeelansTyres.Services.OrderService.Services;
 using System.Reflection;
+using SeelansTyres.Libraries.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +86,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapCommonHealthChecks();
+
+app.AddCommonStartupDelay();
 
 if (app.Configuration.GetValue<bool>("InContainer") is true)
 {

@@ -10,6 +10,7 @@ using SeelansTyres.Libraries.Shared;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SeelansTyres.Frontends.Mvc.BackgroundServices;
 using SeelansTyres.Frontends.Mvc.Channels;
+using SeelansTyres.Libraries.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -157,5 +158,7 @@ app.UseSession();
 app.MapDefaultControllerRoute();
 
 app.MapCommonHealthChecks();
+
+app.AddCommonStartupDelay();
 
 app.Run();

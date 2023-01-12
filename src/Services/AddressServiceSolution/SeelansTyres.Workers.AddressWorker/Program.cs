@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Data.AddressData;
 using SeelansTyres.Libraries.Shared;
+using SeelansTyres.Libraries.Shared.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Workers.AddressWorker.BackgroundServices;
 using SeelansTyres.Workers.AddressWorker.Services;
@@ -57,5 +58,7 @@ else
 var app = builder.Build();
 
 app.MapCommonHealthChecks();
+
+app.AddCommonStartupDelay();
 
 app.Run();

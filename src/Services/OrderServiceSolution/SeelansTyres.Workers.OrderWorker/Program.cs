@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Data.OrderData;
 using SeelansTyres.Libraries.Shared;
+using SeelansTyres.Libraries.Shared.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Workers.OrderWorker.BackgroundServices;
 using SeelansTyres.Workers.OrderWorker.Services;
@@ -69,5 +70,7 @@ else
 var app = builder.Build();
 
 app.MapCommonHealthChecks();
+
+app.AddCommonStartupDelay();
 
 app.Run();
