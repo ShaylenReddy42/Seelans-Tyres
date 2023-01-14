@@ -145,6 +145,8 @@ if (app.Environment.IsDevelopment() is false)
     app.UseExceptionHandler("/Home/Error");
 }
 
+app.ConditionallyUseAzureAppConfiguration();
+
 app.UseStaticFiles();
 
 app.UseRouting();

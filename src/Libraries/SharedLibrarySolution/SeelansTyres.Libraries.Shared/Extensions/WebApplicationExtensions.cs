@@ -6,6 +6,16 @@ namespace SeelansTyres.Libraries.Shared.Extensions;
 
 public static class WebApplicationExtensions
 {
+    public static WebApplication ConditionallyUseAzureAppConfiguration(this WebApplication app)
+    {
+        if (app.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
+        {
+            app.UseAzureAppConfiguration();
+        }
+
+        return app;
+    }
+    
     public static WebApplication AddCommonStartupDelay(this WebApplication app)
     {
         int startupDelayInSeconds = app.Configuration.GetValue<int>("StartupDelayInSeconds");

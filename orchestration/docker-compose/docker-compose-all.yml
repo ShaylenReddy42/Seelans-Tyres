@@ -15,6 +15,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5000
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - envUseElasticsearch=true
@@ -38,6 +40,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5001
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - EmailCredentials__Email=${EmailCredentials__Email}
@@ -68,6 +72,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5050
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - envAddressServiceHost=${HOST}
@@ -100,6 +106,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5011
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
@@ -128,6 +136,8 @@ services:
       - ASPNETCORE_URLS=http://*:5005
       - AdminCredentials__Email=${AdminCredentials__Email}
       - AdminCredentials__Password=${AdminCredentials__Password}
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - BaseUrl=${IDENTITYSERVER}
@@ -159,6 +169,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5012
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
@@ -185,6 +197,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5013
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
@@ -216,6 +230,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5021
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}
@@ -244,6 +260,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://*:5022
+      - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
+      - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
       - AppInsights__ConnectionString=${AppInsights__ConnectionString}
       - Database__ConnectionString=${DBCONNECTIONSTRING}

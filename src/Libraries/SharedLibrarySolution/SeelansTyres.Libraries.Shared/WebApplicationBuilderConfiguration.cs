@@ -21,6 +21,21 @@ public static class WebApplicationBuilderConfiguration
                     commonBuilderConfigurationModel.KestrelLocalhostPortNumber));
         }
 
+        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
+        {
+            builder.Configuration.AddAzureAppConfiguration(options =>
+            {
+                options
+                    .Connect(builder.Configuration["AzureAppConfig:ConnectionString"])
+                    .Select("*")
+                    .ConfigureRefresh(refreshOptions =>
+                    {
+                        refreshOptions.Register("SystemDegraded", true);
+                        refreshOptions.SetCacheExpiration(TimeSpan.FromSeconds(30));
+                    });
+            });
+        }
+
         builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
 
         builder.Logging.ClearProviders();
@@ -46,6 +61,11 @@ public static class WebApplicationBuilderConfiguration
 
         builder.Services.AddHealthChecks()
             .AddCommonChecks(healthChecksModel);
+
+        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
+        {
+            builder.Services.AddAzureAppConfiguration();
+        }
 
         return builder;
     }

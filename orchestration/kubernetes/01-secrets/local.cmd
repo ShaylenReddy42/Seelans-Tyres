@@ -4,6 +4,8 @@ ECHO Creating secrets
 ECHO.
 
 kubectl create secret generic secrets-global --namespace seelanstyres ^
+    --from-literal=AzureAppConfig__Enabled="%AzureAppConfig__Enabled%" ^
+    --from-literal=AzureAppConfig__ConnectionString="%AzureAppConfig__ConnectionString%" ^
     --from-literal=AppInsights__Enabled="%AppInsights__Enabled%" ^
     --from-literal=AppInsights__ConnectionString="%AppInsights__ConnectionString%" ^
     --from-literal=AdminCredentials__Email="%AdminCredentials__Email%" ^

@@ -38,13 +38,21 @@ NOTE: Some of these variables have to be set regardless of whether you have an A
 
 *** MANDATORY IN ALL ENVIRONMENTS ***
 
+AzureAppConfig__Enabled -- default: false -- override: true
+
+	If you have an instance, enable it
+
+AzureAppConfig__ConnectionString -- default: ... -- override: value from portal
+
+	Retrieve this value from the Access keys blade
+
 AppInsights__Enabled -- default: false -- override: true
 
 	If you have an instance, enable it
 
 AppInsights__ConnectionString -- default: ... -- override: value from portal
 
-	Retrieve this value from the overview tab
+	Retrieve this value from the overview blade
 
 *** OPTIONAL IN DEVELOPMENT, MANDATORY IN ANY OTHER ENVIRONMENT ***
 
