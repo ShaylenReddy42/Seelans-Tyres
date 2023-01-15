@@ -158,6 +158,7 @@ So far, the solution comprises of 9 runnable projects with 16 projects in total 
     * [azure: instrument the solution with application insights telemetry](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/dfd858a997258584e1d8b81bb9840519e8021987)
     * [overhaul the existing health checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/4011f2761eda155aa2b26aba3a9d492fecfcd18a)
     * [implement environment specific health checks](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/0c8c98aa05f678c3f2ec932ce3133d152862e07b)
+    * [azure: implement the system-degraded toggler azure function app](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/b1a2d1885fc53cc2c7c4c86e97000d4bbee2256d)
 
 ### Codebase / Build System features
 
