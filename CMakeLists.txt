@@ -77,6 +77,8 @@ set(
 	"Frontends | HealthChecksUISolution | SeelansTyres.Frontends.HealthChecksUI | Yes"
 	"Frontends | MvcSolution | SeelansTyres.Frontends.Mvc | Yes"
 
+	"FunctionApps | SystemDegradedTogglerSolution | SeelansTyres.FunctionApps.SystemDegradedToggler | Yes"
+
 	"Gateways | MvcBffSolution | SeelansTyres.Gateways.MvcBff | Yes"
 
 	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No"
@@ -115,9 +117,15 @@ foreach(PROJECT IN LISTS PROJECTS)
 		"${CMAKE_SOURCE_DIR}/src/${SOLUTION_FOLDER}/${SOLUTION_SUBFOLDER}/${PROJECT_NAME}/Properties/AssemblyInfo.cs")
 	
 	if(IS_RUNNABLE STREQUAL "Yes")
-		configure_file(
-			"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
-			"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT_NAME}.cmd")
+		if(NOT SOLUTION_FOLDER STREQUAL "FunctionApps")
+			configure_file(
+				"${CMAKE_SOURCE_DIR}/cmake/run.cmd.in"
+				"${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT_NAME}.cmd")
+		else()
+			SET(FUNC_START "@ECHO off \n\nCD \"%~dp0\" \n\nTITLE ${PROJECT_NAME} \n\nfunc start --csharp\n")
+		
+			file(WRITE "${CMAKE_SOURCE_DIR}/scripts/run/${PROJECT_NAME}.cmd" "${FUNC_START}")
+		endif()
 
 		file(READ "${CMAKE_SOURCE_DIR}/cmake/publish-project.in" PUBLISH_PROJECT)
 		string(REPLACE "@SOLUTION_FOLDER@" "${SOLUTION_FOLDER}" PUBLISH_PROJECT ${PUBLISH_PROJECT})
@@ -132,11 +140,13 @@ foreach(PROJECT IN LISTS PROJECTS)
 
 		set(RUN_TEMPLATE "START /min CMD /c ${PROJECT_NAME}\\run.cmd \n\n")
 
-		string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
-
-		configure_file(
-			"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/cmake/${PROJECT_NAME}.yaml"
-			"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/${PROJECT_NAME}-configured.yaml")
+		if(NOT SOLUTION_FOLDER STREQUAL "FunctionApps")
+			string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
+			
+			configure_file(
+				"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/cmake/${PROJECT_NAME}.yaml"
+				"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/${PROJECT_NAME}-configured.yaml")
+		endif()
 	endif()
 endforeach()
 
