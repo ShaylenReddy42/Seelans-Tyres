@@ -17,3 +17,6 @@ stages:
           solutionFolder: Gateways
           solutionSubfolder: MvcBffSolution
           project: SeelansTyres.Gateways.MvcBff
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Build Artifacts'

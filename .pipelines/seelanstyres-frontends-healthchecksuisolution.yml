@@ -17,3 +17,6 @@ stages:
           solutionFolder: Frontends
           solutionSubfolder: HealthChecksUISolution
           project: SeelansTyres.Frontends.HealthChecksUI
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Build Artifacts'

@@ -18,3 +18,6 @@ stages:
           project: SeelansTyres.FunctionApps.SystemDegradedToggler
           uploadZip: true
           runtimeIdentifier: linux-x64
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Build Artifacts'
