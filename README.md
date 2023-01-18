@@ -5,6 +5,7 @@
 | Main     | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=14&branchName=master) |
 | SeelansTyres-Frontends-HealthChecksUISolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Frontends-HealthChecksUISolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=6&branchName=master) |
 | SeelansTyres-Frontends-MvcSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Frontends-MvcSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=7&branchName=master) |
+| SeelansTyres-FunctionApps-SystemDegradedTogglerSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-FunctionApps-SystemDegradedTogglerSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=15&branchName=master) |
 | SeelansTyres-Gateways-MvcBffSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Gateways-MvcBffSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=8&branchName=master) |
 | SeelansTyres-Services-AddressServiceSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Services-AddressServiceSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=9&branchName=master) |
 | SeelansTyres-Services-IdentityServiceSolution | [![Build Status](https://dev.azure.com/Shaylen/Personal/_apis/build/status/SeelansTyres-Services-IdentityServiceSolution?branchName=master)](https://dev.azure.com/Shaylen/Personal/_build/latest?definitionId=10&branchName=master) |
@@ -41,7 +42,7 @@ In the beginning, it was a distributed monolith with a frontend and backend API 
 
 The API has been broken down into microservices which then invited a backend-for-frontend to have a single point of entry into the microservices from the frontend
 
-So far, the solution comprises of 9 runnable projects with 16 projects in total with only one left, the System Degraded Toggler Azure Function App
+The solution now comprises of 10 runnable projects with 17 projects in total
 
 ## Features
 
