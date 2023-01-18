@@ -1,0 +1,20 @@
+trigger:
+  paths:
+    include:
+      - src/FunctionApps/SystemDegradedTogglerSolution
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build_SystemDegradedTogglerSolution
+      pool: Default
+      steps:
+      - template: templates/build-and-scan-solution.yml
+
+      - template: templates/publish-project.yml
+        parameters:
+          solutionFolder: FunctionApps
+          solutionSubfolder: SystemDegradedTogglerSolution
+          project: SeelansTyres.FunctionApps.SystemDegradedToggler
+          uploadZip: true
+          runtimeIdentifier: linux-x64
