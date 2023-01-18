@@ -12,7 +12,6 @@
     <DebugType>embedded</DebugType>
     <SelfContained>false</SelfContained>
     <PublishDir>publish</PublishDir>
-    <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Data.AppConfiguration" Version="1.2.0" />
