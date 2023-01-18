@@ -60,6 +60,14 @@ stages:
 
     - template: .pipelines/templates/publish-project.yml
       parameters:
+        solutionFolder: FunctionApps
+        solutionSubfolder: SystemDegradedTogglerSolution
+        project: SeelansTyres.FunctionApps.SystemDegradedToggler
+        uploadZip: true
+        runtimeIdentifier: linux-x64
+
+    - template: .pipelines/templates/publish-project.yml
+      parameters:
         solutionFolder: Gateways
         solutionSubfolder: MvcBffSolution
         project: SeelansTyres.Gateways.MvcBff
