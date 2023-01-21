@@ -4,7 +4,7 @@
   "libraries": [
     {
       "provider": "unpkg",
-      "library": "bootstrap@5.2.2",
+      "library": "bootstrap@5.2.3",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
         "dist/css/bootstrap-grid.css",
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "library": "jquery@3.6.1",
+      "library": "jquery@3.6.3",
       "destination": "wwwroot/lib/jquery/",
       "files": [
         "dist/jquery.js",
