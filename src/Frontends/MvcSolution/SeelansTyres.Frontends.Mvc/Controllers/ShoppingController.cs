@@ -40,7 +40,7 @@ public class ShoppingController : Controller
     {
         stopwatch.Start();
         
-        var cartItems = cartService.Retrieve();
+        var cartItems = await cartService.RetrieveAsync();
 
         var numberOfAddresses = 0;
 
@@ -67,7 +67,7 @@ public class ShoppingController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
+    public async Task<IActionResult> AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
     {
         logger.LogInformation(
             "Controller => Adding tyre {tyreId} to cart with quantity {quantity}",
@@ -81,19 +81,19 @@ public class ShoppingController : Controller
             Quantity = quantity
         };
 
-        cartService.CreateItem(cartItem);
+        await cartService.CreateItemAsync(cartItem);
         
         return RedirectToAction("Cart");
     }
 
     [HttpPost]
-    public IActionResult RemoveTyreFromCart(Guid tyreId)
+    public async Task<IActionResult> RemoveTyreFromCart(Guid tyreId)
     {
         logger.LogInformation(
             "Controller => Removing tyre {tyreId} from cart",
             tyreId);
 
-        cartService.DeleteItem(tyreId);
+        await cartService.DeleteItemAsync(tyreId);
 
         return RedirectToAction("Cart");
     }
@@ -103,7 +103,7 @@ public class ShoppingController : Controller
     {
         stopwatch.Start();
         
-        var cartItems = cartService.Retrieve();
+        var cartItems = await cartService.RetrieveAsync();
 
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
@@ -153,7 +153,7 @@ public class ShoppingController : Controller
 
         if (placedOrder is not null)
         {
-            cartService.Delete();
+            await cartService.DeleteAsync();
 
             logger.LogInformation(
                 "{announcement}: Attempt to place an order for customer {customerId} completed successfully",

@@ -4,8 +4,8 @@ namespace SeelansTyres.Frontends.Mvc.Services;
 
 public interface ICartService
 {
-    void CreateItem(CartItemModel newItem);
-    List<CartItemModel> Retrieve();
-    void DeleteItem(Guid tyreId);
-    void Delete();
+    Task CreateItemAsync(CartItemModel newItem);
+    Task<List<CartItemModel>> RetrieveAsync();
+    Task DeleteItemAsync(Guid tyreId);
+    Task DeleteAsync();
 }

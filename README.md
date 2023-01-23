@@ -243,6 +243,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: IAmTimCorey
 * [Intro to Health Checks in .NET Core](https://www.youtube.com/watch?v=Kbfto6Y2xdw)
   * Author: IAmTimCorey
+* [Intro to Redis in C# - Caching Made Easy](https://www.youtube.com/watch?v=UrQWii_kfIE)
+  * Author: IAmTimCorey
 * [RabbitMQ Custom Docker Image with Custom Configuration and Definitions](https://www.youtube.com/watch?v=I8QHPfMhqAU)
   * Author: Mike Møller Nielsen
 * [Leveling up data: Upgrade from EF6 to EF7 and blast off! | .NET Conf 2022](https://www.youtube.com/watch?v=1U02rnSaz9Q)

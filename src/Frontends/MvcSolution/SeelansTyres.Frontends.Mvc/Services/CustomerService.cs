@@ -10,7 +10,7 @@ public class CustomerService : ICustomerService
     private readonly HttpContext httpContext;
     private readonly HttpClient client;
     private readonly IConfiguration configuration;
-    private readonly IMemoryCache cache;
+    private readonly ICacheService cacheService;
     private readonly ILogger<CustomerService> logger;
     private readonly Stopwatch stopwatch = new();
 
@@ -18,13 +18,13 @@ public class CustomerService : ICustomerService
         HttpClient client,
         IHttpContextAccessor httpContextAccessor,
         IConfiguration configuration,
-        IMemoryCache cache,
+        ICacheService cacheService,
         ILogger<CustomerService> logger)
     {
         httpContext = httpContextAccessor.HttpContext!;
         this.client = client;
         this.configuration = configuration;
-        this.cache = cache;
+        this.cacheService = cacheService;
         this.logger = logger;
     }
 
@@ -78,8 +78,10 @@ public class CustomerService : ICustomerService
         logger.LogInformation(
             "Service => Attempting to retrieve customer {customerId}",
             customerId);
+
+        var customer = await cacheService.RetrieveAsync<CustomerModel>(customerId.ToString());
         
-        if (cache.TryGetValue(customerId, out CustomerModel? customer) is false)
+        if (customer is null)
         {
             logger.LogInformation(
                 "Customer {customerId} is not in the cache. Retrieving from downstream and adding it",
@@ -103,16 +105,12 @@ public class CustomerService : ICustomerService
                 customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
             }
 
-            var cacheEntryOptions =
-                new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(5));
-
-            cache.Set(customerId, customer, cacheEntryOptions);
+            await cacheService.SetAsync(customerId.ToString(), customer, 5, null);
         }
 
         if (customer!.Id == Guid.Empty)
         {
-            cache.Remove(customerId);
+            await cacheService.DeleteAsync(customerId.ToString());
         }
 
         return customer!;
@@ -153,7 +151,7 @@ public class CustomerService : ICustomerService
                 "{announcement}: Attempt to update account for customer {customerId} completed successfully. Removing the old customer info from the cache",
                 "SUCCEEDED", customerId);
             
-            cache.Remove(customerId);
+            await cacheService.DeleteAsync(customerId.ToString());
         }
         else
         {

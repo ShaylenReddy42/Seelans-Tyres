@@ -313,6 +313,15 @@ services:
     networks:
       - seelanstyres-network
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    expose:
+      - 6379
+    restart: always
+    networks:
+      - seelanstyres-network
+
   # Other Services ######################################################################################
 
   elasticsearch:

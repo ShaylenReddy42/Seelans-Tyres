@@ -10,14 +10,17 @@ public class ShoppingCartSummary : ViewComponent
 
     public ShoppingCartSummary(
         ILogger<ShoppingCartSummary> logger,
-        ICartService cartService) =>
-            (this.logger, this.cartService) = (logger, cartService);
+        ICartService cartService)
+    {
+        this.logger = logger;
+        this.cartService = cartService;
+    }
 
     public IViewComponentResult Invoke()
     {
         logger.LogInformation("ViewComponent => Retrieving cart to extract the number of items in it");
         
-        var cartItemCount = cartService.Retrieve().Count;
+        var cartItemCount = cartService.RetrieveAsync().Result.Count;
         
         ViewData["CartItemsCount"] = cartItemCount;
 

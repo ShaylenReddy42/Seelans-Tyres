@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using SeelansTyres.Frontends.Mvc.Models;
+﻿using SeelansTyres.Frontends.Mvc.Models;
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
@@ -7,21 +6,25 @@ public class CartService : ICartService
 {
     private readonly ILogger<CartService> logger;
     private readonly string cartId;
-    private readonly IMemoryCache cache;
+    private readonly ICacheService cacheService;
 
     public CartService(
         ILogger<CartService> logger,
         IHttpContextAccessor httpContextAccessor,
-        IMemoryCache cache) =>
-            (this.logger, cartId, this.cache) = (logger, httpContextAccessor.HttpContext!.Session.GetString("CartId")!, cache);
+        ICacheService cacheService)
+    {
+        this.logger = logger;
+        cartId = httpContextAccessor.HttpContext!.Session.GetString("CartId")!;
+        this.cacheService = cacheService;
+    }
     
-    public void CreateItem(CartItemModel newItem)
+    public async Task CreateItemAsync(CartItemModel newItem)
     {
         logger.LogInformation(
             "Service => Attempting to add tyre {tyreId} to cart {cartId} with quantity {quantity}",
             newItem.TyreId, cartId, newItem.Quantity);
         
-        var cart = Retrieve();
+        var cart = await RetrieveAsync();
 
         var cartItem = cart.SingleOrDefault(item => item.TyreId == newItem.TyreId);
 
@@ -40,61 +43,58 @@ public class CartService : ICartService
             cart.Add(cartItem);
         }
 
-        Update(cart);
+        await UpdateAsync(cart);
     }
 
-    public List<CartItemModel> Retrieve()
+    public async Task<List<CartItemModel>> RetrieveAsync()
     {
         logger.LogInformation(
             "Service => Attempting to retrieve cart {cartId}",
             cartId);
-        
-        if (cache.TryGetValue(cartId, out List<CartItemModel>? cart) is false)
+
+        var cart = await cacheService.RetrieveAsync<List<CartItemModel>>(cartId);
+
+        if (cart is null)
         {
             logger.LogInformation(
                 "Cart {cartId} doesn't exist in the cache. Adding it",
                 cartId);
             
             cart = new List<CartItemModel>();
-            Update(cart);
+            await UpdateAsync(cart);
         }
 
         return cart!;
     }
 
-    private void Update(List<CartItemModel> cart)
+    private async Task UpdateAsync(List<CartItemModel> cart)
     {
         logger.LogInformation(
             "Service => Attempting to update cart {cartId}",
             cartId);
         
-        var cacheEntryOptions =
-            new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(30))
-                .SetAbsoluteExpiration(TimeSpan.FromHours(2));
-
-        cache.Set(cartId, cart, cacheEntryOptions);
+        await cacheService.SetAsync(cartId, cart, 30, 2 * 60);
     }
 
-    public void DeleteItem(Guid tyreId)
+    public async Task DeleteItemAsync(Guid tyreId)
     {
         logger.LogInformation(
             "Service => Attempting to remove tyre {tyreId} from cart {cartId}",
             tyreId, cartId);
         
-        var cart = Retrieve();
+        var cart = await RetrieveAsync();
 
         cart.Remove(cart.Single(item => item.TyreId == tyreId));
 
-        Update(cart);
+        await UpdateAsync(cart);
     }
 
-    public void Delete()
+    public async Task DeleteAsync()
     {
         logger.LogInformation(
             "Service => Attempting to remove cart {cartId} from the cache",
             cartId);
         
-        cache.Remove(cartId);
+        await cacheService.DeleteAsync(cartId);
     }
 }
