@@ -276,6 +276,7 @@ docker pull elasticsearch:7.17.8
 docker pull kibana:7.17.8
 docker pull nginx:latest
 docker pull rabbitmq:3-management
+docker pull redis:latest
 
 docker pull mcr.microsoft.com/dotnet/aspnet:6.0
 docker pull mcr.microsoft.com/dotnet/sdk:6.0
