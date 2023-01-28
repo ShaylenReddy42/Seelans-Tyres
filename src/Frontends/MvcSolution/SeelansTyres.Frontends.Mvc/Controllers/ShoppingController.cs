@@ -39,8 +39,19 @@ public class ShoppingController : Controller
     public async Task<IActionResult> Cart()
     {
         stopwatch.Start();
-        
-        var cartItems = await cartService.RetrieveAsync();
+
+        List<CartItemModel>? cartItems = new();
+
+        try
+        {
+            cartItems = await cartService.RetrieveAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Cache is unavailable");
+        }
 
         var numberOfAddresses = 0;
 

@@ -19,8 +19,21 @@ public class ShoppingCartSummary : ViewComponent
     public IViewComponentResult Invoke()
     {
         logger.LogInformation("ViewComponent => Retrieving cart to extract the number of items in it");
-        
-        var cartItemCount = cartService.RetrieveAsync().Result.Count;
+
+        int cartItemCount;
+
+        try
+        {
+            cartItemCount = cartService.RetrieveAsync().Result.Count;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Cache is unavailable");
+
+            cartItemCount = 0;
+        }
         
         ViewData["CartItemsCount"] = cartItemCount;
 

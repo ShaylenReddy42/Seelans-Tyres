@@ -1,5 +1,4 @@
 ﻿using IdentityModel.Client;
-using Microsoft.Extensions.Caching.Memory;
 using SeelansTyres.Frontends.Mvc.Extensions;
 using System.Diagnostics;
 
@@ -79,7 +78,18 @@ public class CustomerService : ICustomerService
             "Service => Attempting to retrieve customer {customerId}",
             customerId);
 
-        var customer = await cacheService.RetrieveAsync<CustomerModel>(customerId.ToString());
+        CustomerModel? customer = null;
+
+        try
+        {
+            customer = await cacheService.RetrieveAsync<CustomerModel>(customerId.ToString());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Cache is unavailable");
+        }
         
         if (customer is null)
         {

@@ -53,7 +53,16 @@ public class DistributedCacheService : ICacheService
                 .SetAbsoluteExpiration(TimeSpan.FromMinutes((double)absoluteExpirationInMinutes));
         }
 
-        await cache.SetAsync(cacheKey, JsonSerializer.SerializeToUtf8Bytes(data), cacheEntryOptions);
+        try
+        {
+            await cache.SetAsync(cacheKey, JsonSerializer.SerializeToUtf8Bytes(data), cacheEntryOptions);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Cache is unavailable");
+        }
     }
 
     public async Task DeleteAsync(string cacheKey)
@@ -62,6 +71,15 @@ public class DistributedCacheService : ICacheService
             "Cache Service => Attempting to remove data linked to cache key {cacheKey}",
             cacheKey);
 
-        await cache.RemoveAsync(cacheKey);
+        try
+        {
+            await cache.RemoveAsync(cacheKey);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Cache is unavailable");
+        }
     }
 }
