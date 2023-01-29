@@ -29,6 +29,9 @@ spec:
         - image: seelanstyres/services/orderservice:@FILE_VERSION@
           name: orderservice
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5012
           envFrom:

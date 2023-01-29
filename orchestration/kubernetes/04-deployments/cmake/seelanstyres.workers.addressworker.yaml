@@ -29,6 +29,9 @@ spec:
         - image: seelanstyres/workers/addressworker:@FILE_VERSION@
           name: addressworker
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5021
           envFrom:

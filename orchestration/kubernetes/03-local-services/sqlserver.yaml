@@ -19,6 +19,9 @@ spec:
         - image: mcr.microsoft.com/mssql/server:2022-latest
           name: sqlserver
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 1433
           env:

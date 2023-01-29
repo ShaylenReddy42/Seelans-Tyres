@@ -19,6 +19,9 @@ spec:
         - image: kibana:7.17.8
           name: kibana
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5601
           resources:

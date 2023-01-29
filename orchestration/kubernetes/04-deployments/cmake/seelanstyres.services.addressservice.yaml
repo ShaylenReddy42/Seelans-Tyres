@@ -29,6 +29,9 @@ spec:
         - image: seelanstyres/services/addressservice:@FILE_VERSION@
           name: addressservice
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5011
           envFrom:

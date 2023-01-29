@@ -19,6 +19,9 @@ spec:
         - image: redis:latest
           name: redis
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 6379
           resources:

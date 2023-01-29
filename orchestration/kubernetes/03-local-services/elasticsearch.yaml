@@ -19,6 +19,9 @@ spec:
         - image: elasticsearch:7.17.8
           name: elasticsearch
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 9200
             - containerPort: 9300

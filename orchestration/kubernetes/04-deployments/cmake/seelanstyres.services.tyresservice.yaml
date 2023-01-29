@@ -29,6 +29,9 @@ spec:
         - image: seelanstyres/services/tyresservice:@FILE_VERSION@
           name: tyresservice
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5013
           envFrom:

@@ -38,6 +38,9 @@ spec:
         - image: seelanstyres/frontends/healthchecksui:@FILE_VERSION@
           name: healthchecksui
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5000
           envFrom:

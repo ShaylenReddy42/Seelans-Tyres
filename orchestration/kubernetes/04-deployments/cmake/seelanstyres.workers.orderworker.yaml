@@ -29,6 +29,9 @@ spec:
         - image: seelanstyres/workers/orderworker:@FILE_VERSION@
           name: orderworker
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5022
           envFrom:

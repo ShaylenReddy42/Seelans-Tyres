@@ -30,6 +30,9 @@ spec:
         - image: seelanstyres/frontends/mvc:@FILE_VERSION@
           name: mvc
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5001
           envFrom:

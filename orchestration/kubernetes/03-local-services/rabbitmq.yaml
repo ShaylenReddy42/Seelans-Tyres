@@ -19,6 +19,9 @@ spec:
         - image: customrabbitmq
           name: rabbitmq
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           ports:
             - containerPort: 5672
             - containerPort: 15672

@@ -1,12 +1,12 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS base
 WORKDIR /app
 COPY self-signed-certificates/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
 COPY ["Services/AddressServiceSolution/SeelansTyres.Data.AddressData/SeelansTyres.Data.AddressData.csproj", "Services/AddressServiceSolution/SeelansTyres.Data.AddressData/"]
@@ -21,6 +21,8 @@ FROM build AS publish
 RUN dotnet publish "SeelansTyres.Services.AddressService.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
 
 FROM base AS final
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+USER nonroot
 WORKDIR /app
 COPY --from=publish /src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/publish .
 ENTRYPOINT ["dotnet", "SeelansTyres.Services.AddressService.dll"]

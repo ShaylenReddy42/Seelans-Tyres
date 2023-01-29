@@ -224,8 +224,10 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: Steve Gordan
 * [Fundamentals of Docker and Kubernetes for .NET 5 Developers](https://www.pluralsight.com/courses/docker-kubernetes-dot-net-developers-fundamentals)
   * Author: Erik Dahl
+* [Deploying ASP.NET Core 6 Using Kubernetes](https://www.pluralsight.com/courses/asp-dot-net-core-6-kubernetes)
+  * Author: Marcel de Vries
 
-### WhizLabs
+### Whizlabs
 
 * [Exam AZ-400: Designing and Implementing Microsoft DevOps Solutions](https://www.whizlabs.com/microsoft-azure-certification-az-400/)
   * Author: ???
@@ -255,6 +257,7 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 * [Microsoft Learn](https://learn.microsoft.com/en-us/)
 * [Stack Overflow](https://stackoverflow.com/) [Obviously]
 * [How export or import RabbitMQ configuration](https://sleeplessbeastie.eu/2020/03/18/how-export-or-import-rabbitmq-configuration/)
+* [Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)
 
 ## Required local setup to build and run
 
@@ -278,11 +281,11 @@ docker pull nginx:latest
 docker pull rabbitmq:3-management
 docker pull redis:latest
 
-docker pull mcr.microsoft.com/dotnet/aspnet:6.0
-docker pull mcr.microsoft.com/dotnet/sdk:6.0
+docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
+docker pull mcr.microsoft.com/dotnet/sdk:6.0-alpine
 
-docker pull mcr.microsoft.com/dotnet/aspnet:7.0
-docker pull mcr.microsoft.com/dotnet/sdk:7.0
+docker pull mcr.microsoft.com/dotnet/aspnet:7.0-alpine
+docker pull mcr.microsoft.com/dotnet/sdk:7.0-alpine
 
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 
