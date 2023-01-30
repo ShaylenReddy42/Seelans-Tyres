@@ -101,7 +101,8 @@
                 <input type="file" class="form-control" asp-for="Image">
                 <label class="input-group-text" asp-for="Image">Upload</label>
             </div>
-            <span asp-validation-for="ImageFileName"></span>
+            <span asp-validation-for="ImageFileName" class="d-block"></span>
+            <span asp-validation-for="ImageSize" class="d-block"></span>
         </div>
         <div class="text-center mb-4">
             <button class="btn btn-dark w-50" type="submit">Update Tyre</button>
