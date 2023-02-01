@@ -35,7 +35,8 @@ builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(
 {
     client.BaseAddress = new(builder.Configuration["IdentityServer"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
+})
+    .AddCommonResiliencyPolicies<TokenValidationService>(builder.Services);
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<AddressDbContext>()

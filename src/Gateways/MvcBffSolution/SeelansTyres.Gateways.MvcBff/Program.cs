@@ -34,7 +34,8 @@ builder.Services.AddHttpClient<ITokenExchangeService, TokenExchangeService>(clie
 {
     client.BaseAddress = new Uri(builder.Configuration["IdentityServer"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
-});
+})
+    .AddCommonResiliencyPolicies<TokenExchangeService>(builder.Services);
 
 builder.Services.AddScoped<AddressServiceDelegatingHandler>();
 builder.Services.AddScoped<CustomerServiceFullAccessDelegatingHandler>();

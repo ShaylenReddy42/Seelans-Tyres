@@ -31,28 +31,32 @@ builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
     client.BaseAddress = new Uri(builder.Configuration["Services:AddressService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
-    .AddUserAccessTokenHandler();
+    .AddUserAccessTokenHandler()
+    .AddCommonResiliencyPolicies<AddressService>(builder.Services);
 
 builder.Services.AddHttpClient<ICustomerService, CustomerService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:CustomerService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
-    .AddUserAccessTokenHandler();
+    .AddUserAccessTokenHandler()
+    .AddCommonResiliencyPolicies<CustomerService>(builder.Services);
 
 builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:OrderService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
-    .AddUserAccessTokenHandler();
+    .AddUserAccessTokenHandler()
+    .AddCommonResiliencyPolicies<OrderService>(builder.Services);
 
 builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:TyresService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
-    .AddUserAccessTokenHandler();
+    .AddUserAccessTokenHandler()
+    .AddCommonResiliencyPolicies<TyresService>(builder.Services);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
