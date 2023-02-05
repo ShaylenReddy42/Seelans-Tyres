@@ -224,7 +224,21 @@ public class AccountController : Controller
             "Controller => Attempting to mark address {addressId} for customer {customerId} as preferred",
             addressId, customerId);
 
-        _ = await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
+        await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteAddress(Guid addressId)
+    {
+        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+
+        logger.LogInformation(
+            "Controller => Attempting to delete address {addressId} for customer {customerId}",
+            addressId, customerId);
+
+        await addressService.DeleteAsync(customerId, addressId);
 
         return RedirectToAction(nameof(Index));
     }

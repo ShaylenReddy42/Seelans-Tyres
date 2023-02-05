@@ -87,7 +87,10 @@
                                         @if (address.PreferredAddress is false)
                                         {
                                             <form method="post" asp-controller="Account" asp-action="MarkAddressAsPreferred" asp-route-addressId="@address.Id">
-                                                <button type="submit" class="btn btn-dark w-50">Mark as Preferred</button>
+                                                <button type="submit" class="btn btn-dark w-50 mb-2">Mark as Preferred</button>
+                                            </form>
+                                            <form method="post" asp-controller="Account" asp-action="DeleteAddress" asp-route-addressId="@address.Id">
+                                                <button type="submit" class="btn btn-danger w-50">Delete</button>
                                             </form>
                                         }
                                     </div>

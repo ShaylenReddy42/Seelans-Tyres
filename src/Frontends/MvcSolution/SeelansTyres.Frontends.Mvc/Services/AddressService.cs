@@ -96,4 +96,31 @@ public class AddressService : IAddressService
             return false;
         }
     }
+
+    public async Task<bool> DeleteAsync(Guid customerId, Guid addressId)
+    {
+        logger.LogInformation(
+            "Service => Attempting to delete address {addressId} for customer {customerId}",
+            addressId, customerId);
+
+        try
+        {
+            await client.DeleteAsync($"api/customers/{customerId}/addresses/{addressId}");
+
+            logger.LogInformation(
+                "{announcement}: Attempt to delete address {addressId} for customer {customerId} completed successfully",
+                "SUCCEEDED", addressId, customerId);
+
+            return true;
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
+
+            return false;
+        }
+    }
 }

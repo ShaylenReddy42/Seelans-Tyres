@@ -26,6 +26,27 @@ public class AddressesController : ControllerBase
         this.mapper = mapper;
     }
 
+    [HttpPost]
+    public async Task<ActionResult<AddressModel>> CreateAsync(Guid customerId, AddressModel newAddress)
+    {
+        logger.LogInformation(
+            "API => Adding a new address for customer {customerId}",
+            customerId);
+
+        var addressEntity = mapper.Map<AddressModel, Address>(newAddress);
+
+        await addressRepository.CreateAsync(customerId, addressEntity);
+
+        await addressRepository.SaveChangesAsync();
+
+        var createdAddress = mapper.Map<Address, AddressModel>(addressEntity);
+
+        return CreatedAtRoute(
+            "GetAddressForCustomer",
+            new { customerId = customerId, addressId = createdAddress.Id },
+            createdAddress);
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AddressModel>>> RetrieveAllAsync(Guid customerId)
     {
@@ -59,29 +80,8 @@ public class AddressesController : ControllerBase
         return Ok(mapper.Map<Address, AddressModel>(address));
     }
 
-    [HttpPost]
-    public async Task<ActionResult<AddressModel>> CreateAsync(Guid customerId, AddressModel newAddress)
-    {
-        logger.LogInformation(
-            "API => Adding a new address for customer {customerId}", 
-            customerId);
-
-        var addressEntity = mapper.Map<AddressModel, Address>(newAddress);
-
-        await addressRepository.CreateAsync(customerId, addressEntity);
-
-        await addressRepository.SaveChangesAsync();
-
-        var createdAddress = mapper.Map<Address, AddressModel>(addressEntity);
-
-        return CreatedAtRoute(
-            "GetAddressForCustomer",
-            new { customerId = customerId, addressId = createdAddress.Id },
-            createdAddress);
-    }
-
     [HttpPut("{addressId}")]
-    public async Task<ActionResult> MarkAddressAsPrefferedAsync(Guid customerId, Guid addressId, bool markAsPreffered)
+    public async Task<ActionResult> MarkAddressAsPreferredAsync(Guid customerId, Guid addressId, bool markAsPreferred)
     {
         logger.LogInformation(
             "API => Marking address {addressId} as preferred for customer {customerId}",
@@ -98,8 +98,20 @@ public class AddressesController : ControllerBase
             return NotFound();
         }
 
-        await addressRepository.MarkAsPrefferedAsync(customerId, address);
+        await addressRepository.MarkAsPreferredAsync(customerId, address);
         await addressRepository.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{addressId}")]
+    public async Task<ActionResult> DeleteAsync(Guid customerId, Guid addressId)
+    {
+        logger.LogInformation(
+            "API => Attempting to delete address {addressId} for customer {customerId}",
+            addressId, customerId);
+
+        await addressRepository.DeleteAsync(customerId, addressId);
 
         return NoContent();
     }

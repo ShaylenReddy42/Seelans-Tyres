@@ -122,12 +122,13 @@ public class AddressRepository : IAddressRepository
         return address;
     }
 
-    public async Task MarkAsPrefferedAsync(Guid customerId, Address addressToMarkAsPreferred)
+    public async Task MarkAsPreferredAsync(Guid customerId, Address addressToMarkAsPreferred)
     {
         logger.LogInformation(
             "Repository => Marking address {addressId} as preferred for customer {customerId}", 
             addressToMarkAsPreferred.Id, customerId);
-        
+
+        stopwatch.Start();
         try
         {
             logger.LogInformation("Setting preference for other addresses to false for customer {customerId}", customerId);
@@ -156,6 +157,37 @@ public class AddressRepository : IAddressRepository
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
+    }
+
+    public async Task DeleteAsync(Guid customerId, Guid addressId)
+    {
+        logger.LogInformation(
+            "Repository => Attempting to delete address {addressId} for customer {customerId}",
+            addressId, customerId);
+
+        stopwatch.Start();
+        try
+        {
+            await context.Addresses
+                .Where(address => address.Id == addressId)
+                .ExecuteDeleteAsync();
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
+                "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
+
+            throw ex.GetBaseException();
+        }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} completed successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
     }
 
     public async Task<bool> SaveChangesAsync() =>
