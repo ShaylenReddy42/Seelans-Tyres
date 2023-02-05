@@ -153,6 +153,37 @@ public class TyresRepository : ITyresRepository
         return tyre;
     }
 
+    public async Task DeleteTyreAsync(Guid tyreId)
+    {
+        logger.LogInformation(
+            "Repository => Attempting to delete tyre {tyreId}",
+            tyreId);
+
+        stopwatch.Start();
+        try
+        {
+            await context.Tyres
+                .Where(tyre => tyre.Id == tyreId)
+                .ExecuteDeleteAsync();
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+
+            logger.LogError(
+                ex,
+                "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} was unsuccessful",
+                "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
+
+            throw ex.GetBaseException();
+        }
+        stopwatch.Stop();
+
+        logger.LogInformation(
+            "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} completed successfully",
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
+    }
+
     public async Task<bool> SaveChangesAsync() =>
         await context.SaveChangesAsync() >= 0;
 }

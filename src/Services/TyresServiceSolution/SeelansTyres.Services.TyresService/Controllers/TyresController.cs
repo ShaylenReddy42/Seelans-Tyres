@@ -146,4 +146,16 @@ public class TyresController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<TyreModel>> DeleteTyreAsync(Guid id)
+    {
+        logger.LogInformation(
+            "API => Attempting to delete tyre {tyreId}",
+            id);
+
+        await tyresRepository.DeleteTyreAsync(id);
+
+        return NoContent();
+    }
 }

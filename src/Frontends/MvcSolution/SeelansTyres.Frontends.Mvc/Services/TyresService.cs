@@ -26,7 +26,35 @@ public class TyresService : ITyresService
         }
     }
 
-	public async Task<bool> CreateTyreAsync(TyreModel tyre)
+    public async Task<IEnumerable<BrandModel>> RetrieveAllBrandsAsync()
+    {
+        logger.LogInformation("Service => Attempting to retrieve all brands");
+
+        try
+        {
+            var response = await client.GetAsync("api/brands");
+            response.EnsureSuccessStatusCode();
+
+            var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
+
+            logger.LogInformation(
+                "{announcement}: Attempt to retrieve all brands completed successfully with {brandsCount} brands",
+                "SUCCEEDED", brands!.Count());
+
+            return brands!;
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
+
+            return new List<BrandModel>();
+        }
+    }
+
+    public async Task<bool> CreateTyreAsync(TyreModel tyre)
 	{
         logger.LogInformation("Service => Attempting to add a new tyre");
 
@@ -48,34 +76,6 @@ public class TyresService : ITyresService
 				"FAILED");
 
 			return false;
-		}
-	}
-
-	public async Task<IEnumerable<BrandModel>> RetrieveAllBrandsAsync()
-	{
-        logger.LogInformation("Service => Attempting to retrieve all brands");
-
-        try
-		{
-			var response = await client.GetAsync("api/brands");
-            response.EnsureSuccessStatusCode();
-
-			var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
-
-            logger.LogInformation(
-				"{announcement}: Attempt to retrieve all brands completed successfully with {brandsCount} brands",
-				"SUCCEEDED", brands!.Count());
-
-            return brands!;
-		}
-		catch (HttpRequestException ex)
-		{
-            logger.LogError(
-                ex,
-                "{announcement}: The API is unavailable",
-                "FAILED");
-
-            return new List<BrandModel>();
 		}
 	}
 
@@ -149,7 +149,7 @@ public class TyresService : ITyresService
 
         try
 		{
-			_ = await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
+			await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
 
             logger.LogInformation(
                 "{announcement}: Attempt to update tyre {tyreId} completed successfully",
@@ -167,4 +167,31 @@ public class TyresService : ITyresService
             return false;
 		}
 	}
+
+    public async Task<bool> DeleteTyreAsync(Guid tyreId)
+    {
+        logger.LogInformation(
+            "Service => Attempting to delete tyre {tyreId}",
+            tyreId);
+
+        try
+        {
+            await client.DeleteAsync($"api/tyres/{tyreId}");
+
+            logger.LogInformation(
+                "{announcement}: Attempt to delete tyre {tyreId} completed successfully",
+                "SUCCEEDED", tyreId);
+
+            return true;
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
+
+            return false;
+        }
+    }
 }

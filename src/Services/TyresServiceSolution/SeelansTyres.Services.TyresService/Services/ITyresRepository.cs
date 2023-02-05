@@ -11,6 +11,7 @@ public interface ITyresRepository
     Task CreateTyreAsync(Tyre tyre);
     Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly);
     Task<Tyre?> RetrieveSingleTyreAsync(Guid tyreId);
+    Task DeleteTyreAsync(Guid tyreId);
     
     Task<bool> SaveChangesAsync();
 }

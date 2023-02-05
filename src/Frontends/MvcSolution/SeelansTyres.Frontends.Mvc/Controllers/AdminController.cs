@@ -112,7 +112,7 @@ public class AdminController : Controller
             "{announcement}: Attempt to add a new tyre completed successfully",
             "SUCCEEDED");
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpGet("Admin/UpdateTyre/{tyreId}")]
@@ -187,7 +187,19 @@ public class AdminController : Controller
             "{announcement}: Attempt to update tyre {tyreId} completed successfully",
             "SUCCEEDED", model.Id);
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteTyre(Guid tyreId)
+    {
+        logger.LogInformation(
+            "Controller => Administrator is attempting to delete tyre {tyreId}",
+            tyreId);
+
+        await tyresService.DeleteTyreAsync(tyreId);
+
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -199,6 +211,6 @@ public class AdminController : Controller
         
         _ = await orderService.MarkOrderAsDeliveredAsync(orderId);
 
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 }
