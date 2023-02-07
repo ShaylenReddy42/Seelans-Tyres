@@ -79,19 +79,22 @@
                             {
                                 <div class="card w-100 mb-2" style="width: 18rem;">
                                     <div class="card-body text-center">
-                                        <p class="card-text">@address.AddressLine1</p>
-                                        <p class="card-text">@address.AddressLine2</p>
-                                        <p class="card-text">@address.City</p>
-                                        <p class="card-text">@address.PostalCode</p>
-                                        <p class="card-text">Preferred Address: @(address.PreferredAddress ? "Yes" : "No")</p>
+                                        <p class="card-text m-0 p-0">@address.AddressLine1</p>
+                                        <p class="card-text m-0 p-0">@address.AddressLine2</p>
+                                        <p class="card-text m-0 p-0">@address.City</p>
+                                        <p class="card-text m-0 p-0">@address.PostalCode</p>
+                                        <p class="card-text m-0 p-0 @(address.PreferredAddress ? "fw-bold text-success text-end" : "d-none")"><i class="fa fa-check"></i> Preferred Address</p>
                                         @if (address.PreferredAddress is false)
                                         {
-                                            <form method="post" asp-controller="Account" asp-action="MarkAddressAsPreferred" asp-route-addressId="@address.Id">
-                                                <button type="submit" class="btn btn-dark w-50 mb-2">Mark as Preferred</button>
-                                            </form>
-                                            <form method="post" asp-controller="Account" asp-action="DeleteAddress" asp-route-addressId="@address.Id">
-                                                <button type="submit" class="btn btn-danger w-50">Delete</button>
-                                            </form>
+                                            <hr class="my-3">
+                                            <div class="d-flex justify-content-end">
+                                                <form method="post" asp-controller="Account" asp-action="MarkAddressAsPreferred" asp-route-addressId="@address.Id">
+                                                    <button type="submit" class="btn btn-dark me-2"><i class="fa fa-check"></i> Mark as Preferred</button>
+                                                </form>
+                                                <form method="post" asp-controller="Account" asp-action="DeleteAddress" asp-route-addressId="@address.Id">
+                                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash-can"></i> Delete</button>
+                                                </form>
+                                            </div>
                                         }
                                     </div>
                                 </div>
