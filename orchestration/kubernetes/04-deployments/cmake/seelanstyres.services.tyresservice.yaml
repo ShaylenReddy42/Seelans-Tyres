@@ -26,7 +26,7 @@ spec:
         app: seelanstyres-services-tyresservice
     spec:
       containers:
-        - image: seelanstyres/services/tyresservice:@FILE_VERSION@
+        - image: seelanstyres/services/tyresservice:@DOCKER_IMAGE_TAG@
           name: tyresservice
           imagePullPolicy: IfNotPresent
           securityContext:

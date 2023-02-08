@@ -27,7 +27,7 @@ spec:
         app: seelanstyres-frontends-mvc
     spec:
       containers:
-        - image: seelanstyres/frontends/mvc:@FILE_VERSION@
+        - image: seelanstyres/frontends/mvc:@DOCKER_IMAGE_TAG@
           name: mvc
           imagePullPolicy: IfNotPresent
           securityContext:

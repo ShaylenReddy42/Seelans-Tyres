@@ -31,7 +31,7 @@ spec:
         app: seelanstyres-gateways-mvcbff
     spec:
       containers:
-        - image: seelanstyres/gateways/mvcbff:@FILE_VERSION@
+        - image: seelanstyres/gateways/mvcbff:@DOCKER_IMAGE_TAG@
           name: mvcbff
           imagePullPolicy: IfNotPresent
           securityContext:

@@ -28,7 +28,7 @@ spec:
         app: seelanstyres-services-identityservice
     spec:
       containers:
-        - image: seelanstyres/services/identityservice:@FILE_VERSION@
+        - image: seelanstyres/services/identityservice:@DOCKER_IMAGE_TAG@
           name: identityservice
           imagePullPolicy: IfNotPresent
           securityContext:

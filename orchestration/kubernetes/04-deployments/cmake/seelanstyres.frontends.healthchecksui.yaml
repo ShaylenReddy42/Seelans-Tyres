@@ -35,7 +35,7 @@ spec:
         app: seelanstyres-frontends-healthchecksui
     spec:
       containers:
-        - image: seelanstyres/frontends/healthchecksui:@FILE_VERSION@
+        - image: seelanstyres/frontends/healthchecksui:@DOCKER_IMAGE_TAG@
           name: healthchecksui
           imagePullPolicy: IfNotPresent
           securityContext:

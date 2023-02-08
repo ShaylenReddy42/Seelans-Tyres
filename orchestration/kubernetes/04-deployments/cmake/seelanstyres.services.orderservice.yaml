@@ -26,7 +26,7 @@ spec:
         app: seelanstyres-services-orderservice
     spec:
       containers:
-        - image: seelanstyres/services/orderservice:@FILE_VERSION@
+        - image: seelanstyres/services/orderservice:@DOCKER_IMAGE_TAG@
           name: orderservice
           imagePullPolicy: IfNotPresent
           securityContext:

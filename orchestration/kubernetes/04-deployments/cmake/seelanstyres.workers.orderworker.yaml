@@ -26,7 +26,7 @@ spec:
         app: seelanstyres-workers-orderworker
     spec:
       containers:
-        - image: seelanstyres/workers/orderworker:@FILE_VERSION@
+        - image: seelanstyres/workers/orderworker:@DOCKER_IMAGE_TAG@
           name: orderworker
           imagePullPolicy: IfNotPresent
           securityContext:

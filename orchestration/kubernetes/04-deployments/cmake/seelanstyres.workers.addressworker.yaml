@@ -26,7 +26,7 @@ spec:
         app: seelanstyres-workers-addressworker
     spec:
       containers:
-        - image: seelanstyres/workers/addressworker:@FILE_VERSION@
+        - image: seelanstyres/workers/addressworker:@DOCKER_IMAGE_TAG@
           name: addressworker
           imagePullPolicy: IfNotPresent
           securityContext:
