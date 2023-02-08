@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    solution: seelanstyres
   name: seelanstyres-services-identityservice
-  namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5005
   BaseUrl: https://id-local.seelanstyres.com
@@ -14,9 +15,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    solution: seelanstyres
     app: seelanstyres-services-identityservice
   name: seelanstyres-services-identityservice
-  namespace: seelanstyres
 spec:
   replicas: 1
   selector:
@@ -75,9 +76,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
+    solution: seelanstyres
     app: seelanstyres-services-identityservice
   name: seelanstyres-services-identityservice
-  namespace: seelanstyres
 spec:
   ports:
   - port: 5005

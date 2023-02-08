@@ -1,8 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  labels:
+    solution: seelanstyres
   name: ingress-seelanstyres
-  namespace: seelanstyres
 spec:
   ingressClassName: nginx
   tls:

@@ -4,13 +4,6 @@ CD "%~dp0"
 
 CD ..\..\orchestration\kubernetes
 
-ECHO Creating namespace
-ECHO.
-
-kubectl apply -f 00-namespace\
-
-ECHO.
-
 CALL 01-secrets\local.cmd
 
 ECHO.

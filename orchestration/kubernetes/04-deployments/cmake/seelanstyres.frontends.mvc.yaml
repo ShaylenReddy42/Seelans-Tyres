@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    solution: seelanstyres
   name: seelanstyres-frontends-mvc
-  namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5001
   envMvcBffUrl: http://seelanstyres-gateways-mvcbff:5050
@@ -13,9 +14,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    solution: seelanstyres
     app: seelanstyres-frontends-mvc
   name: seelanstyres-frontends-mvc
-  namespace: seelanstyres
 spec:
   replicas: 1
   selector:
@@ -74,9 +75,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
+    solution: seelanstyres
     app: seelanstyres-frontends-mvc
   name: seelanstyres-frontends-mvc
-  namespace: seelanstyres
 spec:
   ports:
     - port: 5001

@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    solution: seelanstyres
   name: seelanstyres-frontends-healthchecksui
-  namespace: seelanstyres
 data:
   ASPNETCORE_URLS: http://*:5000
   Applications__Mvc: http://seelanstyres-frontends-mvc:5001
@@ -21,9 +22,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    solution: seelanstyres
     app: seelanstyres-frontends-healthchecksui
   name: seelanstyres-frontends-healthchecksui
-  namespace: seelanstyres
 spec:
   replicas: 1
   selector:
@@ -82,9 +83,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
+    solution: seelanstyres
     app: seelanstyres-frontends-healthchecksui
   name: seelanstyres-frontends-healthchecksui
-  namespace: seelanstyres
 spec:
   ports:
   - port: 5000
