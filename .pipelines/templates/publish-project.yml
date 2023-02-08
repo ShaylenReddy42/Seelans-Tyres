@@ -28,11 +28,11 @@ parameters:
   default: $(Build.SourcesDirectory)
 
 steps:
-- script: dotnet publish -c ${{ parameters.buildConfiguration }} -r ${{ parameters.runtimeIdentifier }} --no-self-contained
-  displayName: 'Publish ${{ parameters.project }}'
-  workingDirectory: '${{ parameters.workDir }}\src\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}'
-
 - ${{ if eq(parameters.uploadZip, true) }}:
+  - script: dotnet publish -c ${{ parameters.buildConfiguration }} -r ${{ parameters.runtimeIdentifier }} --no-self-contained
+    displayName: 'Publish ${{ parameters.project }}'
+    workingDirectory: '${{ parameters.workDir }}\src\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}'
+    
   - task: ArchiveFiles@2
     displayName: 'Archive ${{ parameters.project }}'
     inputs:
