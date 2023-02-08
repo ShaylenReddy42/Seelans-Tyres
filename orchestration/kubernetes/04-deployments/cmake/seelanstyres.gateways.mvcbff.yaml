@@ -36,7 +36,6 @@ spec:
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
-            runAsNonRoot: true
           ports:
             - containerPort: 5050
           envFrom:
