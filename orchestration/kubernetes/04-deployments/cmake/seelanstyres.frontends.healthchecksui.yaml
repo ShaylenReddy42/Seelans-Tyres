@@ -47,6 +47,8 @@ spec:
                 name: configmap-global
             - configMapRef:
                 name: seelanstyres-frontends-healthchecksui
+            - secretRef:
+                name: secrets-global
           resources:
             limits:
               cpu: 200m

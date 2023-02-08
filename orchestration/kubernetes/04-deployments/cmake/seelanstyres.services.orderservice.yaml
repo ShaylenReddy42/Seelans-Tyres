@@ -38,6 +38,8 @@ spec:
                 name: configmap-global
             - configMapRef:
                 name: seelanstyres-services-orderservice
+            - secretRef:
+                name: secrets-global
           resources:
             limits:
               cpu: 200m
