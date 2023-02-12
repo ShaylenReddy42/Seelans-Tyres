@@ -4,6 +4,7 @@ metadata:
   labels:
     solution: seelanstyres
   name: seelanstyres-services-tyresservice
+  namespace: default
 data:
   ASPNETCORE_URLS: http://*:5013
 
@@ -16,6 +17,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-services-tyresservice
   name: seelanstyres-services-tyresservice
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -77,6 +79,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-services-tyresservice
   name: seelanstyres-services-tyresservice
+  namespace: default
 spec:
   ports:
   - port: 5013

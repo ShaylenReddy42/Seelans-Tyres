@@ -4,6 +4,7 @@ metadata:
   labels:
     solution: seelanstyres
   name: ingress-local-services
+  namespace: default
 spec:
   ingressClassName: nginx
   tls:

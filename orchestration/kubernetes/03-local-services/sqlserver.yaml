@@ -5,6 +5,7 @@ metadata:
     solution: seelanstyres
     app: sqlserver
   name: sqlserver
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -49,6 +50,7 @@ metadata:
     solution: seelanstyres
     app: sqlserver
   name: sqlserver
+  namespace: default
 spec:
   ports:
     - port: 1433

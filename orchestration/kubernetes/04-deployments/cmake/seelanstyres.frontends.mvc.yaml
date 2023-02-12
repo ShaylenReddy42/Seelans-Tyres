@@ -4,6 +4,7 @@ metadata:
   labels:
     solution: seelanstyres
   name: seelanstyres-frontends-mvc
+  namespace: default
 data:
   ASPNETCORE_URLS: http://*:5001
   envMvcBffUrl: http://seelanstyres-gateways-mvcbff:5050
@@ -17,6 +18,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-frontends-mvc
   name: seelanstyres-frontends-mvc
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -78,6 +80,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-frontends-mvc
   name: seelanstyres-frontends-mvc
+  namespace: default
 spec:
   ports:
     - port: 5001

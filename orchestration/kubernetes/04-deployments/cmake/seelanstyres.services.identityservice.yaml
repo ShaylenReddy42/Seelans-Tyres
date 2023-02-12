@@ -4,6 +4,7 @@ metadata:
   labels:
     solution: seelanstyres
   name: seelanstyres-services-identityservice
+  namespace: default
 data:
   ASPNETCORE_URLS: http://*:5005
   BaseUrl: https://id-local.seelanstyres.com
@@ -18,6 +19,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-services-identityservice
   name: seelanstyres-services-identityservice
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -79,6 +81,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-services-identityservice
   name: seelanstyres-services-identityservice
+  namespace: default
 spec:
   ports:
   - port: 5005

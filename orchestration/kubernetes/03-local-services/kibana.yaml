@@ -5,6 +5,7 @@ metadata:
     solution: seelanstyres
     app: kibana
   name: kibana
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -42,6 +43,7 @@ metadata:
     solution: seelanstyres
     app: kibana
   name: kibana
+  namespace: default
 spec:
   ports:
     - port: 5601

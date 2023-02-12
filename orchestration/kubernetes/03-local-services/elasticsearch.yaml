@@ -5,6 +5,7 @@ metadata:
     solution: seelanstyres
     app: elasticsearch
   name: elasticsearch
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -50,6 +51,7 @@ metadata:
     solution: seelanstyres
     app: elasticsearch
   name: elasticsearch
+  namespace: default
 spec:
   ports:
     - port: 9200

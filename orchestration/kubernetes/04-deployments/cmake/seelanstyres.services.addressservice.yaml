@@ -4,6 +4,7 @@ metadata:
   labels:
     solution: seelanstyres
   name: seelanstyres-services-addressservice
+  namespace: default
 data:
   ASPNETCORE_URLS: http://*:5011
 
@@ -16,6 +17,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-services-addressservice
   name: seelanstyres-services-addressservice
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -77,6 +79,7 @@ metadata:
     solution: seelanstyres
     app: seelanstyres-services-addressservice
   name: seelanstyres-services-addressservice
+  namespace: default
 spec:
   ports:
   - port: 5011

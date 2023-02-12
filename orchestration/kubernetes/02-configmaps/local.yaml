@@ -4,6 +4,7 @@ metadata:
   labels:
     solution: seelanstyres
   name: configmap-global
+  namespace: default
 data:
   ASPNETCORE_ENVIRONMENT: Development
   Database__ConnectionString: Server=sqlserver;Database=$$(Database:Name);User ID=sa;Password=P@55w0rd1234;TrustServerCertificate=true
