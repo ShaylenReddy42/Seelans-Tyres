@@ -20,26 +20,30 @@ public static class Config
     public static List<ApiScope> ApiScopes => new()
     {
         new ApiScope("SeelansTyresMvcBff.fullaccess"),
+
         new ApiScope("AddressService.fullaccess"),
+
         new ApiScope("CustomerService.fullaccess"),
         new ApiScope("CustomerService.createaccount"),
         new ApiScope("CustomerService.retrievesinglebyemail"),
         new ApiScope("CustomerService.resetpassword"),
+
         new ApiScope("OrderService.fullaccess"),
+
         new ApiScope("TyresService.fullaccess"),
     };
 
     public static List<ApiResource> ApiResources => new()
     {
-        new ApiResource("SeelansTyresMvcBff", "Seelan's Tyres Mvc Bff")
+        new ApiResource("SeelansTyresMvcBff", "Seelan's Tyres Mvc Bff", new[] { ClaimTypes.Role })
         {
             Scopes = { "SeelansTyresMvcBff.fullaccess" }
         },
-        new ApiResource("AddressService", "Address Microservice")
+        new ApiResource("AddressService", "Address Microservice", new[] { ClaimTypes.Role })
         {
             Scopes = { "AddressService.fullaccess" }
         },
-        new ApiResource("CustomerService", "Customer Microservice")
+        new ApiResource("CustomerService", "Customer Microservice", new[] { ClaimTypes.Role })
         {
             Scopes = 
             { 
@@ -49,11 +53,11 @@ public static class Config
                 "CustomerService.resetpassword",
             }
         },
-        new ApiResource("OrderService", "Order Microservice")
+        new ApiResource("OrderService", "Order Microservice", new[] { ClaimTypes.Role })
         {
             Scopes = { "OrderService.fullaccess" }
         },
-        new ApiResource("TyresService", "Tyres Microservice")
+        new ApiResource("TyresService", "Tyres Microservice", new[] { ClaimTypes.Role })
         {
             Scopes = { "TyresService.fullaccess" }
         },
@@ -88,7 +92,7 @@ public static class Config
             AllowedGrantTypes = { "urn:ietf:params:oauth:grant-type:token-exchange" },
             AllowedScopes =
             {
-                "openid", "profile",
+                "openid", "profile", "role",
                 "AddressService.fullaccess",
                 "CustomerService.fullaccess",
                 "OrderService.fullaccess",

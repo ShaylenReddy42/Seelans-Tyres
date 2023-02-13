@@ -71,7 +71,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "MustBeAnAdministrator")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult> MarkOrderAsDelivered(int id, bool delivered = true)
     {
         logger.LogInformation(

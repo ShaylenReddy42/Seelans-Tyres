@@ -226,6 +226,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: Erik Dahl
 * [Deploying ASP.NET Core 6 Using Kubernetes](https://www.pluralsight.com/courses/asp-dot-net-core-6-kubernetes)
   * Author: Marcel de Vries
+* [Securing ASP.NET Core 6 with OAuth2 and OpenID Connect](https://www.pluralsight.com/courses/asp-dot-net-core-6-securing-oauth-2-openid-connect)
+  * Author: Kevin Dockx
 
 ### Whizlabs
 

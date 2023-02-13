@@ -38,10 +38,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "AddressService";
+        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         configure.RequireHttpsMetadata = false;
     });
 
-builder.Services.AddTransient<IAuthorizationHandler, MustBeARegularCustomerHandler>();
 builder.Services.AddTransient<IAuthorizationHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler>();
 
 builder.Services.AddAuthorization(configure =>
@@ -49,8 +49,8 @@ builder.Services.AddAuthorization(configure =>
     configure.AddPolicy("MustBeARegularCustomer", policy =>
     {
         policy.RequireAuthenticatedUser();
+        policy.RequireAssertion(context => context.User.IsInRole("Administrator") is false);
         policy.AddRequirements(
-            new MustBeARegularCustomerRequirement(),
             new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement());
     });
 });

@@ -63,6 +63,7 @@ public class TokenValidationService : ITokenValidationService
             ValidIssuer = validIssuer,
             ValidAudience = validAudience,
             IssuerSigningKeys = issuerSigningKeys,
+            ValidTypes = new[] { "at+jwt" },
             LifetimeValidator = (notBefore, expires, securityToken, tokenValidationParameters) =>
             {
                 return expires!.Value.ToUniversalTime() > message.CreationTime.ToUniversalTime();

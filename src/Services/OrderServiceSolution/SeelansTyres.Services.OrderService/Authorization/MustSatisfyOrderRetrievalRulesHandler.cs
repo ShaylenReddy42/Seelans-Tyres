@@ -29,9 +29,7 @@ public class MustSatisfyOrderRetrievalRulesHandler : AuthorizationHandler<MustSa
         string? customerIdFromQuery = customerIds.Count is not 0 ? customerIds[0] : null;
         var customerIdFromClaims = context.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value ?? "anonymous";
 
-        httpContext.Request.Headers.TryGetValue("X-User-Role", out StringValues userRoles);
-
-        var isAdmin = userRoles.Count is not 0 && userRoles[0] is "Administrator";
+        var isAdmin = context.User.IsInRole("Administrator");
 
         if (isAdmin is true && customerIdFromQuery is null)
         {

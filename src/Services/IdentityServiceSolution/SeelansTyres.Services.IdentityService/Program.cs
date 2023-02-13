@@ -104,6 +104,7 @@ builder.Services.AddAuthentication()
     {
         configure.Authority = builder.Configuration["BaseUrl"];
         configure.Audience = "CustomerService";
+        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         configure.RequireHttpsMetadata = false;
     });
 

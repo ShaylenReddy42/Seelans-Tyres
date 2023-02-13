@@ -12,18 +12,6 @@ public class OrderService : IOrderService
     {
         this.client = client;
         this.logger = logger;
-
-        if (httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated is true)
-        {
-            var roleClaim = httpContextAccessor.HttpContext!.User.Claims.SingleOrDefault(claim => claim.Type.EndsWith("role"));
-
-            if (roleClaim is not null && roleClaim.Value is "Administrator")
-            {
-                logger.LogInformation("Currently logged in user is an administrator. Adding custom X-User-Role header to all requests");
-
-                client.DefaultRequestHeaders.Add("X-User-Role", "Administrator");
-            }
-        }
     }
 
     public async Task<OrderModel?> CreateAsync(OrderModel order)

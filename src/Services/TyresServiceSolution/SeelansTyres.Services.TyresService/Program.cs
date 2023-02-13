@@ -1,9 +1,7 @@
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SeelansTyres.Libraries.Shared;
-using SeelansTyres.Services.TyresService.Authorization;
 using SeelansTyres.Services.TyresService.Data;
 using SeelansTyres.Services.TyresService.Services;
 using System.Reflection;
@@ -40,19 +38,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "TyresService";
+        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         configure.RequireHttpsMetadata = false;
     });
 
-builder.Services.AddTransient<IAuthorizationHandler, MustBeAnAdministratorHandler>();
-
-builder.Services.AddAuthorization(configure =>
-{
-    configure.AddPolicy("MustBeAnAdministrator", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.AddRequirements(new MustBeAnAdministratorRequirement());
-    });
-});
+builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 
