@@ -3,7 +3,6 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using SeelansTyres.Gateways.MvcBff.DelegatingHandlers;
 using SeelansTyres.Gateways.MvcBff.Services;
-using SeelansTyres.Libraries.Shared.Models;
 using SeelansTyres.Libraries.Shared;
 using static System.Net.Mime.MediaTypeNames;
 using HealthChecks.UI.Client;
@@ -27,6 +26,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "SeelansTyresMvcBff";
+        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
         configure.RequireHttpsMetadata = false;
     });
 
