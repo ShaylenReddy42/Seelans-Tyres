@@ -103,6 +103,7 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 * Custom authorization requirements and policies for customers and the administrator. Customers can only access their own data
   * Related commits:
     * [implement identityserver4](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/6d1255cd3d4a1aafe97b50f8227b7de548328a23)
+    * [authorization: fix the issue of the role claim missing in the access token](https://github.com/ShaylenReddy42/Seelans-Tyres/commit/f03cfc8b73c1f3114b4d58556770335cd688c43e)
 
 ### API features
 
