@@ -47,7 +47,7 @@ services:
       - EmailCredentials__Email=${EmailCredentials__Email}
       - EmailCredentials__Password=${EmailCredentials__Password}
       - IdentityServer=${IDENTITYSERVER}
-      - envMvcBffUrl=http://${HOST}:5050
+      - MvcBffUrl=http://${HOST}:5050
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
