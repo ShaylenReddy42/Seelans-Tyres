@@ -49,7 +49,7 @@
                     <a class="btn btn-warning btn-sm w-100" asp-controller="Admin" asp-action="UpdateTyre" asp-route-tyreId="@tyre.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>
-                    <form method="post" asp-controller="Admin" asp-action="DeleteTyre" asp-route-tyreId="@tyre.Id">
+                    <form method="post" asp-controller="Admin" asp-action="DeleteTyre" asp-route-tyreId="@tyre.Id" asp-route-imageUrl="@tyre.ImageUrl">
                         <button class="btn btn-danger btn-sm w-100"><i class="fa fa-trash-can" aria-hidden="true"></i></button>
                     </form>
                 </td>

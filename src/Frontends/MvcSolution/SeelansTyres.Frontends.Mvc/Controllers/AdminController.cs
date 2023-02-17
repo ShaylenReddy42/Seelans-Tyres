@@ -191,13 +191,18 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteTyre(Guid tyreId)
+    public async Task<IActionResult> DeleteTyre(Guid tyreId, string imageUrl)
     {
         logger.LogInformation(
             "Controller => Administrator is attempting to delete tyre {tyreId}",
             tyreId);
 
-        await tyresService.DeleteTyreAsync(tyreId);
+        var succeeded = await tyresService.DeleteTyreAsync(tyreId);
+
+        if (succeeded is true)
+        {
+            await imageService.DeleteAsync(imageUrl);
+        }
 
         return RedirectToAction(nameof(Index));
     }

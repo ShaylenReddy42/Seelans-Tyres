@@ -42,4 +42,35 @@ public class LocalImageService : IImageService
 
         return filePath;
     }
+
+    public Task DeleteAsync(string imageUrl)
+    {
+        logger.LogInformation("Service => Attempting to delete image");
+        
+        if (imageUrl.StartsWith("/images/uploaded/") is false)
+        {
+            logger.LogWarning("The image url is invalid and cannot be acted upon. It needs to start with '/images/uploaded/'");
+            
+            return Task.CompletedTask;
+        }
+
+        imageUrl = imageUrl[1 ..].Replace('/', Path.DirectorySeparatorChar);
+
+        imageUrl = Path.Combine(environment.WebRootPath, imageUrl);
+
+        if (File.Exists(imageUrl) is false)
+        {
+            logger.LogWarning("The image doesn't exist on disk. Exiting early");
+
+            return Task.CompletedTask;
+        }
+
+        File.Delete(imageUrl);
+
+        logger.LogInformation(
+            "{announcement}: Attempt to delete image completed successfully",
+            "SUCCEEDED");
+
+        return Task.CompletedTask;
+    }
 }

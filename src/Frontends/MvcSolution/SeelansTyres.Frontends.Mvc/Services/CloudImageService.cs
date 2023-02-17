@@ -15,7 +15,7 @@ public class CloudImageService : IImageService
         this.logger = logger;
         this.configuration = configuration;
     }
-    
+
     public async Task<string> UploadAsync(IFormFile? image, string defaultImage)
     {
         if (image is null)
@@ -75,5 +75,33 @@ public class CloudImageService : IImageService
             "SUCCEEDED");
 
         return blobClient.Uri.AbsoluteUri;
+    }
+
+    public async Task DeleteAsync(string imageUrl)
+    {
+        logger.LogInformation("Service => Attempting to delete image");
+
+        var blobServiceClient = new BlobServiceClient(configuration.GetConnectionString("AzureStorageAccount"));
+
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient("images");
+
+        var blobContainerUri = blobContainerClient.Uri.AbsoluteUri;
+
+        if (imageUrl.StartsWith(blobContainerUri) is false)
+        {
+            logger.LogWarning(
+                "The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",
+                blobContainerUri);
+
+            return;
+        }
+
+        imageUrl = imageUrl[(imageUrl.LastIndexOf('/') + 1) ..];
+
+        await blobContainerClient.DeleteBlobIfExistsAsync(imageUrl, DeleteSnapshotsOption.IncludeSnapshots);
+
+        logger.LogInformation(
+            "{announcement}: Attempt to delete image completed successfully if it existed prior",
+            "SUCCEEDED");
     }
 }
