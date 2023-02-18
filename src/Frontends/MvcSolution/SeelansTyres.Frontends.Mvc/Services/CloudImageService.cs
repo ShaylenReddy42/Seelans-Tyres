@@ -74,6 +74,10 @@ public class CloudImageService : IImageService
             "{announcement}: Attempt to upload the blob to the storage account completed successfully",
             "SUCCEEDED");
 
+        logger.LogInformation("Attempting to delete the older image");
+
+        await DeleteAsync(defaultImage);
+
         return blobClient.Uri.AbsoluteUri;
     }
 
@@ -90,8 +94,8 @@ public class CloudImageService : IImageService
         if (imageUrl.StartsWith(blobContainerUri) is false)
         {
             logger.LogWarning(
-                "The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",
-                blobContainerUri);
+                "{announcement}: The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",
+                "ABORTED", blobContainerUri);
 
             return;
         }

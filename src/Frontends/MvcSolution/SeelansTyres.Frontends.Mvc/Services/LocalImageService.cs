@@ -40,6 +40,10 @@ public class LocalImageService : IImageService
 
         filePath = $"/images/uploaded/{fileName}";
 
+        logger.LogInformation("Attempting to delete the older image");
+
+        await DeleteAsync(defaultImage);
+
         return filePath;
     }
 
@@ -49,7 +53,9 @@ public class LocalImageService : IImageService
         
         if (imageUrl.StartsWith("/images/uploaded/") is false)
         {
-            logger.LogWarning("The image url is invalid and cannot be acted upon. It needs to start with '/images/uploaded/'");
+            logger.LogWarning(
+                "{announcement}: The image url is invalid and cannot be acted upon. It needs to start with '/images/uploaded/'",
+                "ABORTED");
             
             return Task.CompletedTask;
         }
@@ -60,7 +66,9 @@ public class LocalImageService : IImageService
 
         if (File.Exists(imageUrl) is false)
         {
-            logger.LogWarning("The image doesn't exist on disk. Exiting early");
+            logger.LogWarning(
+                "{announcement}: The image doesn't exist on disk. Exiting early",
+                "ABORTED");
 
             return Task.CompletedTask;
         }
