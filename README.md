@@ -229,6 +229,10 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: Marcel de Vries
 * [Securing ASP.NET Core 6 with OAuth2 and OpenID Connect](https://www.pluralsight.com/courses/asp-dot-net-core-6-securing-oauth-2-openid-connect)
   * Author: Kevin Dockx
+* [Deploying Azure Resources Using Bicep](https://www.pluralsight.com/courses/deploying-azure-resources-using-bicep)
+  * Author: Ben Weissman
+* [The IT Ops Sessions: ARM Templates vs. Terraform](https://www.pluralsight.com/courses/arm-templates-terraform-it-ops-sessions)
+  * Author: Tim Warner
 
 ### Whizlabs
 
