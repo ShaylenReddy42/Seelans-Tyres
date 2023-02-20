@@ -31,7 +31,7 @@ steps:
 
 - powershell: |
     $dockerImageTag = Get-Content .\version.txt -Raw
-    Write-Host "##vso[task.setvariable variable=dockerImageTage;isOutput=true]$dockerImageTag"
+    Write-Host "##vso[task.setvariable variable=dockerImageTag;isOutput=true]$dockerImageTag"
   name: getDockerImageTag
   displayName: 'Set the Docker Image Tag variable'
   workingDirectory: '${{ parameters.workDir }}'
