@@ -26,8 +26,18 @@ steps:
 - task: CMake@1
   displayName: 'Run CMake'
   inputs:
-    cmakeArgs: -S . -B "${{ parameters.workDir }}\build" -DCI_BUILD=ON
-    workingDirectory: ${{ parameters.workDir }}
+    cmakeArgs: -S . -B build -DCI_BUILD=ON
+    workingDirectory: '${{ parameters.workDir }}'
+
+- powershell: |
+    $dockerImageTag = Get-Content .\version.txt -Raw
+    Write-Host "##vso[task.setvariable variable=dockerImageTage;isOutput=true]$dockerImageTag"
+  name: getDockerImageTag
+  displayName: 'Set the Docker Image Tag variable'
+  workingDirectory: '${{ parameters.workDir }}'
+
+- powershell: Write-Host $(getDockerImageTag.dockerImageTag)
+  displayName:  'Verify the Docker Image Tag'
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
