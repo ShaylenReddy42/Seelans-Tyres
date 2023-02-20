@@ -11,6 +11,8 @@ steps:
 - checkout: self
   fetchDepth: 0
 
+- template: prebuild-iac.yml
+
 - task: UseDotNet@2
   displayName: 'Use .NET SDK 6.0.405'
   inputs:
@@ -26,14 +28,14 @@ steps:
 - task: CMake@1
   displayName: 'Run CMake'
   inputs:
-    cmakeArgs: -S . -B build -DCI_BUILD=ON
+    cmakeArgs: -S . -B build -DCI_BUILD=ON -DDOCKER_REGISTRY=$(containerRegistryProperties.containerRegistryLoginServer)
     workingDirectory: '${{ parameters.workDir }}'
 
 - powershell: |
     $dockerImageTag = Get-Content .\version.txt -Raw
     Write-Host "##vso[task.setvariable variable=dockerImageTag;isOutput=true]$dockerImageTag"
   name: getDockerImageTag
-  displayName: 'Set the Docker Image Tag variable'
+  displayName: 'Set the Docker Image Tag Variable'
   workingDirectory: '${{ parameters.workDir }}'
 
 - powershell: Write-Host $(getDockerImageTag.dockerImageTag)
