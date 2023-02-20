@@ -9,6 +9,8 @@ scripts/run/
 #Files
 efbundle.exe
 
+version.txt
+
 scripts/copy-publish-files.cmd
 scripts/publish-all.cmd
 scripts/run-all.cmd

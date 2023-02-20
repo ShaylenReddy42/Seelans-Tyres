@@ -7,6 +7,11 @@ project(
 	LANGUAGES NONE
 )
 
+# Options
+
+option(CI_BUILD "Used to write the version info to a file for CI" OFF)
+option(DOCKER_REGISTRY "The login server of the registry created in the pipeline" OFF)
+
 # Extracting version
 
 set(TAG "0.0.0")
@@ -70,6 +75,15 @@ endif()
 message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 message(STATUS "Commit Url: ${COMMIT_URL}")
+
+# Handle option "DOCKER_REGISTRY"
+
+if (DOCKER_REGISTRY STREQUAL "OFF")
+	set(DOCKER_REGISTRY "")
+else()
+	set(DOCKER_REGISTRY "${DOCKER_REGISTRY}/")
+	message(STATUS "Login Server: ${DOCKER_REGISTRY}")
+endif()
 
 # Key: Solution Folder | Solution Subfolder | Project Name | Is Runnable ?
 
@@ -145,7 +159,7 @@ foreach(PROJECT IN LISTS PROJECTS)
 			string(APPEND RUNALL_TEMPLATE ${RUN_TEMPLATE})
 			
 			configure_file(
-				"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/cmake/${PROJECT_NAME}.yaml"
+				"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/cmake/${PROJECT_NAME}.yaml.in"
 				"${CMAKE_SOURCE_DIR}/orchestration/kubernetes/04-deployments/${PROJECT_NAME}-configured.yaml")
 		endif()
 	endif()
@@ -202,8 +216,8 @@ foreach(HOST IN LISTS HOSTS)
 	)
 endforeach()
 
-option(CI_BUILD "Used to write the version info to a file for CI" OFF)
+# Handle option CI_BUILD
 
 if(CI_BUILD)
-	file(WRITE "${CMAKE_SOURCE_DIR}/version.txt" ${INFORMATIONAL_VERSION})
+	file(WRITE "${CMAKE_SOURCE_DIR}/version.txt" ${DOCKER_IMAGE_TAG})
 endif()

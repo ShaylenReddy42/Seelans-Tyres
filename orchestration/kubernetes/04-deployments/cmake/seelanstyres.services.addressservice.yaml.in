@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-workers-addressworker
+  name: seelanstyres-services-addressservice
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5021
+  ASPNETCORE_URLS: http://*:5011
 
 ---
 
@@ -15,32 +15,32 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-workers-addressworker
-  name: seelanstyres-workers-addressworker
+    app: seelanstyres-services-addressservice
+  name: seelanstyres-services-addressservice
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-workers-addressworker
+      app: seelanstyres-services-addressservice
   template:
     metadata:
       labels:
-        app: seelanstyres-workers-addressworker
+        app: seelanstyres-services-addressservice
     spec:
       containers:
-        - image: seelanstyres/workers/addressworker:@DOCKER_IMAGE_TAG@
-          name: addressworker
+        - image: @DOCKER_REGISTRY@seelanstyres/services/addressservice:@DOCKER_IMAGE_TAG@
+          name: addressservice
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5021
+            - containerPort: 5011
           envFrom:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-workers-addressworker
+                name: seelanstyres-services-addressservice
             - secretRef:
                 name: secrets-global
           resources:
@@ -49,21 +49,21 @@ spec:
               memory: 128Mi
           startupProbe:
             tcpSocket:
-              port: 5021
-            initialDelaySeconds: 25
+              port: 5011
+            initialDelaySeconds: 30
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5021
+              port: 5011
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5021
+              port: 5011
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -77,14 +77,14 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-workers-addressworker
-  name: seelanstyres-workers-addressworker
+    app: seelanstyres-services-addressservice
+  name: seelanstyres-services-addressservice
   namespace: default
 spec:
   ports:
-  - port: 5021
+  - port: 5011
     protocol: TCP
-    targetPort: 5021
+    targetPort: 5011
   selector:
-    app: seelanstyres-workers-addressworker
+    app: seelanstyres-services-addressservice
   type: ClusterIP

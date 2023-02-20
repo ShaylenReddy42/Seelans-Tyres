@@ -3,10 +3,19 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-services-orderservice
+  name: seelanstyres-frontends-healthchecksui
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5012
+  ASPNETCORE_URLS: http://*:5000
+  Applications__Mvc: http://seelanstyres-frontends-mvc:5001
+  Applications__MvcBff: http://seelanstyres-gateways-mvcbff:5050
+  Applications__AddressService: http://seelanstyres-services-addressservice:5011
+  Applications__AddressWorker: http://seelanstyres-workers-addressworker:5021
+  Applications__IdentityService: http://seelanstyres-services-identityservice:5005
+  Applications__OrderService: http://seelanstyres-services-orderservice:5012
+  Applications__OrderWorker: http://seelanstyres-workers-orderworker:5022
+  Applications__TyresService: http://seelanstyres-services-tyresservice:5013
+  StartupDelayInSeconds: '30'
 
 ---
 
@@ -15,32 +24,32 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-orderservice
-  name: seelanstyres-services-orderservice
+    app: seelanstyres-frontends-healthchecksui
+  name: seelanstyres-frontends-healthchecksui
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-services-orderservice
+      app: seelanstyres-frontends-healthchecksui
   template:
     metadata:
       labels:
-        app: seelanstyres-services-orderservice
+        app: seelanstyres-frontends-healthchecksui
     spec:
       containers:
-        - image: seelanstyres/services/orderservice:@DOCKER_IMAGE_TAG@
-          name: orderservice
+        - image: @DOCKER_REGISTRY@seelanstyres/frontends/healthchecksui:@DOCKER_IMAGE_TAG@
+          name: healthchecksui
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5012
+            - containerPort: 5000
           envFrom:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-services-orderservice
+                name: seelanstyres-frontends-healthchecksui
             - secretRef:
                 name: secrets-global
           resources:
@@ -49,21 +58,21 @@ spec:
               memory: 128Mi
           startupProbe:
             tcpSocket:
-              port: 5012
-            initialDelaySeconds: 30
+              port: 5000
+            initialDelaySeconds: 35
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5012
+              port: 5000
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5012
+              port: 5000
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -77,14 +86,14 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-orderservice
-  name: seelanstyres-services-orderservice
+    app: seelanstyres-frontends-healthchecksui
+  name: seelanstyres-frontends-healthchecksui
   namespace: default
 spec:
   ports:
-  - port: 5012
+  - port: 5000
     protocol: TCP
-    targetPort: 5012
+    targetPort: 5000
   selector:
-    app: seelanstyres-services-orderservice
+    app: seelanstyres-frontends-healthchecksui
   type: ClusterIP

@@ -3,10 +3,15 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-services-tyresservice
+  name: seelanstyres-gateways-mvcbff
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5013
+  ASPNETCORE_URLS: http://*:5050
+  envAddressServiceHost: seelanstyres-services-addressservice
+  envCustomerServiceHost: seelanstyres-services-identityservice
+  envOrderServiceHost: seelanstyres-services-orderservice
+  envTyresServiceHost: seelanstyres-services-tyresservice
+  envBaseUrl: http://seelanstyres-gateways-mvcbff:5050
 
 ---
 
@@ -15,32 +20,32 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-tyresservice
-  name: seelanstyres-services-tyresservice
+    app: seelanstyres-gateways-mvcbff
+  name: seelanstyres-gateways-mvcbff
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-services-tyresservice
+      app: seelanstyres-gateways-mvcbff
   template:
     metadata:
       labels:
-        app: seelanstyres-services-tyresservice
+        app: seelanstyres-gateways-mvcbff
     spec:
       containers:
-        - image: seelanstyres/services/tyresservice:@DOCKER_IMAGE_TAG@
-          name: tyresservice
+        - image: @DOCKER_REGISTRY@seelanstyres/gateways/mvcbff:@DOCKER_IMAGE_TAG@
+          name: mvcbff
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5013
+            - containerPort: 5050
           envFrom:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-services-tyresservice
+                name: seelanstyres-gateways-mvcbff
             - secretRef:
                 name: secrets-global
           resources:
@@ -49,21 +54,21 @@ spec:
               memory: 128Mi
           startupProbe:
             tcpSocket:
-              port: 5013
-            initialDelaySeconds: 30
+              port: 5050
+            initialDelaySeconds: 25
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5013
+              port: 5050
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5013
+              port: 5050
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -77,14 +82,14 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-tyresservice
-  name: seelanstyres-services-tyresservice
+    app: seelanstyres-gateways-mvcbff
+  name: seelanstyres-gateways-mvcbff
   namespace: default
 spec:
   ports:
-  - port: 5013
+  - port: 5050
     protocol: TCP
-    targetPort: 5013
+    targetPort: 5050
   selector:
-    app: seelanstyres-services-tyresservice
+    app: seelanstyres-gateways-mvcbff
   type: ClusterIP

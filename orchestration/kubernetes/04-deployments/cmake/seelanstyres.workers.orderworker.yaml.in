@@ -3,15 +3,10 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-gateways-mvcbff
+  name: seelanstyres-workers-orderworker
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5050
-  envAddressServiceHost: seelanstyres-services-addressservice
-  envCustomerServiceHost: seelanstyres-services-identityservice
-  envOrderServiceHost: seelanstyres-services-orderservice
-  envTyresServiceHost: seelanstyres-services-tyresservice
-  envBaseUrl: http://seelanstyres-gateways-mvcbff:5050
+  ASPNETCORE_URLS: http://*:5022
 
 ---
 
@@ -20,32 +15,32 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-gateways-mvcbff
-  name: seelanstyres-gateways-mvcbff
+    app: seelanstyres-workers-orderworker
+  name: seelanstyres-workers-orderworker
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-gateways-mvcbff
+      app: seelanstyres-workers-orderworker
   template:
     metadata:
       labels:
-        app: seelanstyres-gateways-mvcbff
+        app: seelanstyres-workers-orderworker
     spec:
       containers:
-        - image: seelanstyres/gateways/mvcbff:@DOCKER_IMAGE_TAG@
-          name: mvcbff
+        - image: @DOCKER_REGISTRY@seelanstyres/workers/orderworker:@DOCKER_IMAGE_TAG@
+          name: orderworker
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5050
+            - containerPort: 5022
           envFrom:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-gateways-mvcbff
+                name: seelanstyres-workers-orderworker
             - secretRef:
                 name: secrets-global
           resources:
@@ -54,21 +49,21 @@ spec:
               memory: 128Mi
           startupProbe:
             tcpSocket:
-              port: 5050
+              port: 5022
             initialDelaySeconds: 25
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5050
+              port: 5022
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5050
+              port: 5022
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -82,14 +77,14 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-gateways-mvcbff
-  name: seelanstyres-gateways-mvcbff
+    app: seelanstyres-workers-orderworker
+  name: seelanstyres-workers-orderworker
   namespace: default
 spec:
   ports:
-  - port: 5050
+  - port: 5022
     protocol: TCP
-    targetPort: 5050
+    targetPort: 5022
   selector:
-    app: seelanstyres-gateways-mvcbff
+    app: seelanstyres-workers-orderworker
   type: ClusterIP

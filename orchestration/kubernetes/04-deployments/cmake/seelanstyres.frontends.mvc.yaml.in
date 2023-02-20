@@ -3,12 +3,11 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-services-identityservice
+  name: seelanstyres-frontends-mvc
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5005
-  BaseUrl: https://id-local.seelanstyres.com
-  envSeelansTyresMvcClientUrl: https://www-local.seelanstyres.com
+  ASPNETCORE_URLS: http://*:5001
+  MvcBffUrl: http://seelanstyres-gateways-mvcbff:5050
 
 ---
 
@@ -17,55 +16,55 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-identityservice
-  name: seelanstyres-services-identityservice
+    app: seelanstyres-frontends-mvc
+  name: seelanstyres-frontends-mvc
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-services-identityservice
+      app: seelanstyres-frontends-mvc
   template:
     metadata:
       labels:
-        app: seelanstyres-services-identityservice
+        app: seelanstyres-frontends-mvc
     spec:
       containers:
-        - image: seelanstyres/services/identityservice:@DOCKER_IMAGE_TAG@
-          name: identityservice
+        - image: @DOCKER_REGISTRY@seelanstyres/frontends/mvc:@DOCKER_IMAGE_TAG@
+          name: mvc
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5005
+            - containerPort: 5001
           envFrom:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-services-identityservice
+                name: seelanstyres-frontends-mvc
             - secretRef:
                 name: secrets-global
           resources:
             limits:
               cpu: 200m
-              memory: 256Mi
+              memory: 128Mi
           startupProbe:
             tcpSocket:
-              port: 5005
-            initialDelaySeconds: 30
+              port: 5001
+            initialDelaySeconds: 25
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5005
+              port: 5001
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5005
+              port: 5001
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -79,14 +78,15 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-identityservice
-  name: seelanstyres-services-identityservice
+    app: seelanstyres-frontends-mvc
+  name: seelanstyres-frontends-mvc
   namespace: default
 spec:
   ports:
-  - port: 5005
-    protocol: TCP
-    targetPort: 5005
+    - port: 5001
+      protocol: TCP
+      targetPort: 5001
   selector:
-    app: seelanstyres-services-identityservice
+    app: seelanstyres-frontends-mvc
+  sessionAffinity: ClientIP
   type: ClusterIP

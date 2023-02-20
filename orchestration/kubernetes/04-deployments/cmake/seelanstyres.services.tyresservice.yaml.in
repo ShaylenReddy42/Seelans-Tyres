@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-services-addressservice
+  name: seelanstyres-services-tyresservice
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5011
+  ASPNETCORE_URLS: http://*:5013
 
 ---
 
@@ -15,32 +15,32 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-addressservice
-  name: seelanstyres-services-addressservice
+    app: seelanstyres-services-tyresservice
+  name: seelanstyres-services-tyresservice
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-services-addressservice
+      app: seelanstyres-services-tyresservice
   template:
     metadata:
       labels:
-        app: seelanstyres-services-addressservice
+        app: seelanstyres-services-tyresservice
     spec:
       containers:
-        - image: seelanstyres/services/addressservice:@DOCKER_IMAGE_TAG@
-          name: addressservice
+        - image: @DOCKER_REGISTRY@seelanstyres/services/tyresservice:@DOCKER_IMAGE_TAG@
+          name: tyresservice
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5011
+            - containerPort: 5013
           envFrom:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-services-addressservice
+                name: seelanstyres-services-tyresservice
             - secretRef:
                 name: secrets-global
           resources:
@@ -49,21 +49,21 @@ spec:
               memory: 128Mi
           startupProbe:
             tcpSocket:
-              port: 5011
+              port: 5013
             initialDelaySeconds: 30
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5011
+              port: 5013
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5011
+              port: 5013
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -77,14 +77,14 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-services-addressservice
-  name: seelanstyres-services-addressservice
+    app: seelanstyres-services-tyresservice
+  name: seelanstyres-services-tyresservice
   namespace: default
 spec:
   ports:
-  - port: 5011
+  - port: 5013
     protocol: TCP
-    targetPort: 5011
+    targetPort: 5013
   selector:
-    app: seelanstyres-services-addressservice
+    app: seelanstyres-services-tyresservice
   type: ClusterIP
