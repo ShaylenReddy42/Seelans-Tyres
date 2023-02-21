@@ -51,7 +51,7 @@ steps:
 
 - ${{ if eq(parameters.buildImage, true) }}:
   - task: AzureCLI@2
-    displayName: 'Build ${{ parameters.imageName }}:$(getDockerImageTag.dockerImageTag)'
+    displayName: 'Build and Push ${{ parameters.imageName }}'
     inputs:
       azureSubscription: 'Azure-Manual-SP'
       scriptType: ps
