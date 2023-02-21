@@ -17,6 +17,8 @@ stages:
           solutionFolder: Frontends
           solutionSubfolder: MvcSolution
           project: SeelansTyres.Frontends.Mvc
+          buildImage: true
+          imageName: seelanstyres/frontends/mvc
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Build Artifacts'

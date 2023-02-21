@@ -20,7 +20,6 @@ steps:
         $containerRegistryLoginServer = $containerRegistryName + ".azurecr.io"
         Write-Host "##vso[task.setvariable variable=containerRegistryName;isOutput=true]$containerRegistryName"
         Write-Host "##vso[task.setvariable variable=containerRegistryLoginServer;isOutput=true]$containerRegistryLoginServer"
-      workingDirectory: '$(Build.SourcesDirectory)/infrastructure/with-bicep/01-prebuild'
 
   - powershell: Write-Host "$(containerRegistryProperties.containerRegistryName) | $(containerRegistryProperties.containerRegistryLoginServer)"
     displayName:  'Verify the Container Registry Properties'

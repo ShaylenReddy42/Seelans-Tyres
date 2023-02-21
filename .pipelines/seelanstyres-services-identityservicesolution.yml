@@ -17,6 +17,8 @@ stages:
           solutionFolder: Services
           solutionSubfolder: IdentityServiceSolution
           project: SeelansTyres.Services.IdentityService
+          buildImage: true
+          imageName: seelanstyres/services/identityservice
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Build Artifacts'

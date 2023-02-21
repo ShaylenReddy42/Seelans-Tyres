@@ -17,6 +17,8 @@ stages:
           solutionFolder: Frontends
           solutionSubfolder: HealthChecksUISolution
           project: SeelansTyres.Frontends.HealthChecksUI
+          buildImage: true
+          imageName: seelanstyres/frontends/healthchecksui
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Build Artifacts'

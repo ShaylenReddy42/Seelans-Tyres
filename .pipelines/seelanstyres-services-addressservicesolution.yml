@@ -35,12 +35,16 @@ stages:
           solutionFolder: Services
           solutionSubfolder: AddressServiceSolution
           project: SeelansTyres.Services.AddressService
+          buildImage: true
+          imageName: seelanstyres/services/addressservice
 
       - template: templates/publish-project.yml
         parameters:
           solutionFolder: Services
           solutionSubfolder: AddressServiceSolution
           project: SeelansTyres.Workers.AddressWorker
+          buildImage: true
+          imageName: seelanstyres/workers/addressworker
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Build Artifacts'

@@ -35,12 +35,16 @@ stages:
           solutionFolder: Services
           solutionSubfolder: OrderServiceSolution
           project: SeelansTyres.Services.OrderService
+          buildImage: true
+          imageName: seelanstyres/services/orderservice
 
       - template: templates/publish-project.yml
         parameters:
           solutionFolder: Services
           solutionSubfolder: OrderServiceSolution
           project: SeelansTyres.Workers.OrderWorker
+          buildImage: true
+          imageName: seelanstyres/workers/orderworker
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Build Artifacts'

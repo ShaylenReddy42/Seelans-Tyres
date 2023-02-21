@@ -35,6 +35,8 @@ stages:
           solutionFolder: Services
           solutionSubfolder: TyresServiceSolution
           project: SeelansTyres.Services.TyresService
+          buildImage: true
+          imageName: seelanstyres/services/tyresservice
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Build Artifacts'

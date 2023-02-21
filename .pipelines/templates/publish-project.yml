@@ -23,6 +23,14 @@ parameters:
     - win-x64
     - linux-x64
 
+- name: buildImage
+  type: boolean
+  default: false
+
+- name: imageName
+  type: string
+  default: ''
+
 - name: workDir
   type: string
   default: $(Build.SourcesDirectory)
@@ -40,6 +48,17 @@ steps:
       includeRootFolder: false
       archiveType: zip
       archiveFile: '$(Build.ArtifactStagingDirectory)\${{ parameters.project }}.zip'
+
+- ${{ if eq(parameters.buildImage, true) }}:
+  - task: AzureCLI@2
+    displayName: 'Build ${{ parameters.imageName }}:$(getDockerImageTag.dockerImageTag)'
+    inputs:
+      azureSubscription: 'Azure-Manual-SP'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        az acr build -f ".\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}\Dockerfile" -t ${{ parameters.imageName }}:$(getDockerImageTag.dockerImageTag) -r $(containerRegistryProperties.containerRegistryName) .
+      workingDirectory: '$(Build.SourcesDirectory)/src'
 
 - ${{ if ne(parameters.solutionFolder, 'FunctionApps') }}:
   - task: CopyFiles@2
