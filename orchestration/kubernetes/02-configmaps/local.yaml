@@ -14,6 +14,5 @@ data:
   envRabbitMQPort: '5672'
   HealthCheckEndpoint: /KwjsaTB9EteliVHxBxqxogo4kMbmf2J4Fac2B3G69wTSDfczqKABwS2nnj1bT8HE4njAzE4yXHU5762w7VBlA
   IdentityServer: https://id-local.seelanstyres.com
-  InContainer: 'true'
   StartupDelayInSeconds: '20'
   SystemDegraded: 'true'

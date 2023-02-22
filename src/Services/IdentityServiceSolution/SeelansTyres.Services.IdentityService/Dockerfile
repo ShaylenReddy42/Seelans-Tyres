@@ -5,6 +5,7 @@ WORKDIR /app
 COPY self-signed-certificates/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 EXPOSE 80
+ENV InContainer=true
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /src

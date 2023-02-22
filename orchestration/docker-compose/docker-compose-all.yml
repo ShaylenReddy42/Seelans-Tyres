@@ -23,7 +23,6 @@ services:
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - Host=${HOST}
-      - InContainer=true
       - StartupDelayInSeconds=30
     restart: always
     networks:
@@ -51,7 +50,6 @@ services:
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
-      - InContainer=true
       - StartupDelayInSeconds=20
     volumes:
       - ../volumes/images:/app/wwwroot/images/uploaded
@@ -85,7 +83,6 @@ services:
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
       - Services__CustomerService__Scheme=https
       - Services__CustomerService__Port=4000
@@ -115,7 +112,6 @@ services:
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
@@ -149,7 +145,6 @@ services:
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
@@ -178,7 +173,6 @@ services:
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
@@ -208,7 +202,6 @@ services:
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
     depends_on:
       - sqlserver
@@ -241,7 +234,6 @@ services:
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
     depends_on:
       - rabbitmq
@@ -271,7 +263,6 @@ services:
       - envRabbitMQHost=${HOST}
       - envRabbitMQPort=5672
       - IdentityServer=${IDENTITYSERVER}
-      - InContainer=true
       - StartupDelayInSeconds=20
     depends_on:
       - rabbitmq
