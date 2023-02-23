@@ -8,6 +8,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerfileTag>seelanstyres/services/addressservice</DockerfileTag>
   </PropertyGroup>
 
   <!-- Manually added PropertyGroup for reducing files created during publishing -->

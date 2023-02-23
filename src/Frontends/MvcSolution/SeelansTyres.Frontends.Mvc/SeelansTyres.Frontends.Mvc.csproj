@@ -8,6 +8,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerfileTag>seelanstyres/frontends/mvc</DockerfileTag>
   </PropertyGroup>
 
   <PropertyGroup>
