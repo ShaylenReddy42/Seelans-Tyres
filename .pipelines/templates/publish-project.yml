@@ -57,7 +57,10 @@ steps:
       scriptType: ps
       scriptLocation: inlineScript
       inlineScript: |
-        az acr build -f ".\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}\Dockerfile" -t ${{ parameters.imageName }}:$(getDockerImageTag.dockerImageTag) -r $(containerRegistryProperties.containerRegistryName) .
+        az acr build `
+          --file ".\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}\Dockerfile" `
+          --image ${{ parameters.imageName }}:$(getDockerImageTag.dockerImageTag) `
+          --registry $(containerRegistryProperties.containerRegistryName) .
       workingDirectory: '$(Build.SourcesDirectory)/src'
 
 - ${{ if ne(parameters.solutionFolder, 'FunctionApps') }}:
