@@ -9,6 +9,7 @@ stages:
     jobs:
     - job: Build_MvcBffSolution
       pool: Default
+      cancelTimeoutInMinutes: 2
       steps:
       - template: templates/build-and-scan-solution.yml
 

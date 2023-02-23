@@ -9,6 +9,7 @@ stages:
     jobs:
     - job: Build_TyresServiceSolution
       pool: Default
+      cancelTimeoutInMinutes: 2
       variables:
         workDir: $(Build.SourcesDirectory)
       steps:

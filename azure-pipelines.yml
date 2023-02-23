@@ -8,6 +8,8 @@ stages:
   jobs:
   - job: Build_Solution
     pool: Default
+    timeoutInMinutes: 180
+    cancelTimeoutInMinutes: 2
     variables:
       buildConfiguration: 'Release'
       workDir: $(Build.SourcesDirectory)
