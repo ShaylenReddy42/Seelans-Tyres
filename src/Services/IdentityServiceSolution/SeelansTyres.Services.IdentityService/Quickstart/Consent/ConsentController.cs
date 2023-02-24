@@ -84,9 +84,9 @@ public class ConsentController : Controller
         return View("Error");
     }
 
-    /*****************************************/
-    /* helper APIs for the ConsentController */
-    /*****************************************/
+    /*****************************************
+     * helper APIs for the ConsentController *
+     *****************************************/
     private async Task<ProcessConsentResult> ProcessConsent(ConsentInputModel model)
     {
         var result = new ProcessConsentResult();
