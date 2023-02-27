@@ -1,6 +1,11 @@
 @description('Specifies the location for resources.')
 param location string = resourceGroup().location
 
+@allowed([
+  'Basic'
+  'Standard'
+  'Premium'
+])
 @description('Specifies the sku name for the container registry')
 param containerRegistrySku string = 'Basic'
 

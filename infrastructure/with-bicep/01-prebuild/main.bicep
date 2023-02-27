@@ -29,3 +29,11 @@ module containerRegistry '01-container-registry/template.bicep' = {
     containerRegistrySku: containerRegistrySku
   }
 }
+
+module queryPack '02-query-pack/template.bicep' = {
+  scope: resourceGroup
+  name: 'queryPack'
+  params: {
+    location: location
+  }
+}
