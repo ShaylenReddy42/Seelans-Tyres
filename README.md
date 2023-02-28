@@ -258,6 +258,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: Mike Møller Nielsen
 * [Leveling up data: Upgrade from EF6 to EF7 and blast off! | .NET Conf 2022](https://www.youtube.com/watch?v=1U02rnSaz9Q)
   * Author: dotnet
+* [Authoring and deploying Azure resources with Bicep | Azure Friday](https://www.youtube.com/watch?v=VDCAJIGqHZU)
+  * Author: Microsoft Azure
 
 ### Docs, forums and articles
 
