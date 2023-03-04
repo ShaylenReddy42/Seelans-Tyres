@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 
 @allowed([
   'dev'
-  'staging'
+  'stage'
   'prod'
 ])
 @description('Used to determine how the resources would be configured, instead of passing in params for all options')
