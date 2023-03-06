@@ -28,3 +28,11 @@ module scheduledQueryRule '01-scheduled-query-rule/template.bicep' = {
     emailAddressOfResponder: emailAddressOfResponder
   }
 }
+
+module roleAssignmentToFunctionApp '02-role-assignment-to-function-app/template.bicep' = {
+  scope: resourceGroup
+  name: 'roleAssignmentToFunctionApp'
+  params: {
+    environment: environment
+  }
+}
