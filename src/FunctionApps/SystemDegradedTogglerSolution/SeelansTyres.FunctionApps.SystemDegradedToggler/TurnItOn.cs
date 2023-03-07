@@ -13,7 +13,7 @@ public static class TurnItOn
 {
     [FunctionName("TurnItOn")]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest request,
+        [HttpTrigger(AuthorizationLevel.Admin, "post", Route = null)] HttpRequest request,
         ILogger logger)
     {
         var appConfigUri = new Uri($"https://{GetEnvironmentVariable("AzureAppConfigName")}.azconfig.io");

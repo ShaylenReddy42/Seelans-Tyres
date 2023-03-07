@@ -43,7 +43,7 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {
         name: 'System Degraded Toggler'
         functionAppResourceId: functionApp.id
         functionName: 'TurnItOn'
-        httpTriggerUrl: 'https://${functionApp.properties.defaultHostName}/api/turniton'
+        httpTriggerUrl: 'https://${functionApp.properties.defaultHostName}/api/turniton?code=${listKeys('${functionApp.id}/host/default', functionApp.apiVersion).masterKey}'
         useCommonAlertSchema: true
       }
     ]
