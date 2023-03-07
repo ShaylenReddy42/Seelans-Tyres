@@ -16,15 +16,21 @@ public static class TurnItOn
         [HttpTrigger(AuthorizationLevel.Admin, "post", Route = null)] HttpRequest request,
         ILogger logger)
     {
-        var appConfigUri = new Uri($"https://{GetEnvironmentVariable("AzureAppConfigName")}.azconfig.io");
+        var appConfigurationUri = new Uri($"https://{GetEnvironmentVariable("AzureAppConfigName")}.azconfig.io");
 
         logger.LogInformation("Connecting to Azure App Configuration with a Managed Identity");
 
-        var configurationClient = new ConfigurationClient(appConfigUri, new DefaultAzureCredential());
+        var configurationClient = new ConfigurationClient(appConfigurationUri, new DefaultAzureCredential());
+
+        var systemDegradedConfigurationSetting =
+            new ConfigurationSetting("SystemDegraded", "true")
+            {
+                ContentType = "application/json"
+            };
 
         logger.LogInformation("Turning on the System-Degraded state");
 
-        await configurationClient.SetConfigurationSettingAsync("SystemDegraded", "true");
+        await configurationClient.SetConfigurationSettingAsync(systemDegradedConfigurationSetting);
 
         return new OkResult();
     }
