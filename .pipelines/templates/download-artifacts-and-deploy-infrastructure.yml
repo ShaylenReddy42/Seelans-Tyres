@@ -1,0 +1,31 @@
+steps:
+  - download: 'current'
+    artifact: 'drop'
+    displayName: 'Download Artifacts'
+  
+  - task: AzureCLI@2
+    displayName: 'Deploy Infrastructure'
+    inputs:
+      azureSubscription: 'Azure-Manual-SP'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        az deployment sub create `
+          --template-file .\02-environment-specific-phase-01\main.bicep `
+          --location southafricanorth `
+          --parameters `
+            environment=$(environment)
+
+        az deployment sub create `
+          --template-file .\03-environment-specific-phase-02\main.bicep `
+          --location southafricanorth `
+          --parameters `
+            environment=$(environment)
+
+        az deployment sub create `
+          --template-file .\04-environment-specific-phase-03\main.bicep `
+          --location southafricanorth `
+          --parameters `
+            environment=$(environment) `
+            emailAddressOfResponder=$(emailAddress)
+      workingDirectory: '$(Pipeline.Workspace)/drop/infrastructure/with-bicep'

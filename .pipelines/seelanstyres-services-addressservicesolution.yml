@@ -47,5 +47,4 @@ stages:
           buildImage: true
           imageName: seelanstyres/workers/addressworker
 
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Build Artifacts'
+      - template: templates/final-copy-and-publish-of-artifacts.yml

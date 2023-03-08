@@ -1,0 +1,10 @@
+steps:
+  - task: CopyFiles@2
+    displayName: 'Copy IaC Files to drop'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/infrastructure/with-bicep'
+      Contents: '**'
+      TargetFolder: '$(System.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Build Artifacts'

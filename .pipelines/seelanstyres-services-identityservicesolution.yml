@@ -21,5 +21,4 @@ stages:
           buildImage: true
           imageName: seelanstyres/services/identityservice
 
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Build Artifacts'
+      - template: templates/final-copy-and-publish-of-artifacts.yml

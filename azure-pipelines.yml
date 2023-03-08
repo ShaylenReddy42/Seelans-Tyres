@@ -128,8 +128,7 @@ stages:
         buildImage: true
         imageName: seelanstyres/services/tyresservice
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Build Artifacts'
+    - template: .pipelines/templates/final-copy-and-publish-of-artifacts.yml
 
     - task: GitHubRelease@1
       displayName: 'Create a New GitHub Release'
@@ -144,6 +143,6 @@ stages:
         releaseNotesSource: filePath
         releaseNotesFilePath: '$(Build.SourcesDirectory)/docs/releases/v$(Build.SourceBranchName).md'
         assets: '$(Build.ArtifactStagingDirectory)/*'
-        addChangeLog: true
+        addChangeLog: false
         changeLogCompareToRelease: lastFullRelease
         changeLogType: commitBased
