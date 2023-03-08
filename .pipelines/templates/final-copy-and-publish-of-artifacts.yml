@@ -4,7 +4,7 @@ steps:
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/infrastructure/with-bicep'
       Contents: '**'
-      TargetFolder: '$(System.ArtifactStagingDirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Build Artifacts'
