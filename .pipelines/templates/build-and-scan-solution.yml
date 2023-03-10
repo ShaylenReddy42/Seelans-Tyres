@@ -48,6 +48,14 @@ steps:
     arguments: -c ${{ parameters.buildConfiguration }}
     projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
 
+- task: DotNetCoreCLI@2
+  displayName: 'Restore dotnet tools'
+  inputs:
+    command: custom
+    custom: tool
+    arguments: restore
+    workingDirectory: '${{ parameters.workDir }}'
+
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud for Analysis'
   inputs:

@@ -10,25 +10,14 @@ stages:
     - job: Build_AddressServiceSolution
       pool: Default
       cancelTimeoutInMinutes: 2
-      variables:
-        workDir: $(Build.SourcesDirectory)
       steps:
       - template: templates/build-and-scan-solution.yml
-
-      - task: DotNetCoreCLI@2
-        displayName: 'Restore dotnet tools'
-        inputs:
-          command: custom
-          custom: tool
-          arguments: restore
-          workingDirectory: '$(workDir)'
 
       - template: templates/create-efcore-bundle.yml
         parameters:
           solutionSubfolder: AddressServiceSolution
           project: SeelansTyres.Services.AddressService
           bundleName: SeelansTyresAddressDb
-
 
       - template: templates/publish-project.yml
         parameters:

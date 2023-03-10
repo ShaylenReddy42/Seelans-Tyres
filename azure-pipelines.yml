@@ -10,19 +10,8 @@ stages:
     pool: Default
     timeoutInMinutes: 180
     cancelTimeoutInMinutes: 2
-    variables:
-      buildConfiguration: 'Release'
-      workDir: $(Build.SourcesDirectory)
     steps:
     - template: .pipelines/templates/build-and-scan-solution.yml
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Restore dotnet tools'
-      inputs:
-        command: custom
-        custom: tool
-        arguments: restore
-        workingDirectory: '$(workDir)'
 
     - template: .pipelines/templates/create-efcore-bundle.yml
       parameters:

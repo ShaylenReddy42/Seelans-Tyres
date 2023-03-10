@@ -10,18 +10,8 @@ stages:
     - job: Build_TyresServiceSolution
       pool: Default
       cancelTimeoutInMinutes: 2
-      variables:
-        workDir: $(Build.SourcesDirectory)
       steps:
       - template: templates/build-and-scan-solution.yml
-
-      - task: DotNetCoreCLI@2
-        displayName: 'Restore dotnet tools'
-        inputs:
-          command: custom
-          custom: tool
-          arguments: restore
-          workingDirectory: '$(workDir)'
 
       - template: templates/create-efcore-bundle.yml
         parameters:
