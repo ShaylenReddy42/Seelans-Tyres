@@ -24,29 +24,23 @@ stages:
         arguments: restore
         workingDirectory: '$(workDir)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Create EF Core Bundle for SeelansTyres.Services.AddressService'
-      inputs:
-        command: custom
-        custom: tool
-        arguments: run dotnet-ef migrations bundle --force --project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresAddressDb.exe"
-        workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/create-efcore-bundle.yml
+      parameters:
+        solutionSubfolder: AddressServiceSolution
+        project: SeelansTyres.Services.AddressService
+        bundleName: SeelansTyresAddressDb
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Create EF Core Bundle for SeelansTyres.Services.OrderService'
-      inputs:
-        command: custom
-        custom: tool
-        arguments: run dotnet-ef migrations bundle --force --project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderDb.exe"
-        workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/create-efcore-bundle.yml
+      parameters:
+        solutionSubfolder: OrderServiceSolution
+        project: SeelansTyres.Services.OrderService
+        bundleName: SeelansTyresOrderDb
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Create EF Core Bundle for SeelansTyres.Services.TyresService'
-      inputs:
-        command: custom
-        custom: tool
-        arguments: run dotnet-ef migrations bundle --force --project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --startup-project src/Services/TyresServiceSolution/SeelansTyres.Services.TyresService/SeelansTyres.Services.TyresService.csproj --context TyresDbContext -o "$(Build.ArtifactStagingDirectory)\SeelansTyresTyresDb.exe"
-        workingDirectory: '$(workDir)'
+    - template: .pipelines/templates/create-efcore-bundle.yml
+      parameters:
+        solutionSubfolder: TyresServiceSolution
+        project: SeelansTyres.Services.TyresService
+        bundleName: SeelansTyresTyresDb
 
     - template: .pipelines/templates/publish-project.yml
       parameters:

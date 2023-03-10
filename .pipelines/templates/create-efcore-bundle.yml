@@ -1,0 +1,19 @@
+parameters:
+  - name: solutionSubfolder
+    type: string
+
+  - name: project
+    type: string
+
+  - name: bundleName
+    type: string
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Create EF Core Bundle for ${{ parameters.project }}'
+    inputs:
+      command: custom
+      custom: tool
+      arguments: run dotnet-ef migrations bundle --force --project src/Services/${{ parameters.solutionSubfolder }}/${{ parameters.project }}/${{ parameters.project }}.csproj --startup-project src/Services/${{ parameters.solutionSubfolder }}/${{ parameters.project }}/${{ parameters.project }}.csproj -o "$(Build.ArtifactStagingDirectory)\${{ parameters.bundleName }}.exe"
+      workingDirectory: '$(Build.SourcesDirectory)'
+      

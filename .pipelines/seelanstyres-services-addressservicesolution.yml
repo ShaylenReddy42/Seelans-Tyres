@@ -23,13 +23,12 @@ stages:
           arguments: restore
           workingDirectory: '$(workDir)'
 
-      - task: DotNetCoreCLI@2
-        displayName: 'Create EF Core Bundle for SeelansTyres.Services.AddressService'
-        inputs:
-          command: custom
-          custom: tool
-          arguments: run dotnet-ef migrations bundle --force --project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj --startup-project src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresAddressDb.exe"
-          workingDirectory: '$(workDir)'
+      - template: templates/create-efcore-bundle.yml
+        parameters:
+          solutionSubfolder: AddressServiceSolution
+          project: SeelansTyres.Services.AddressService
+          bundleName: SeelansTyresAddressDb
+
 
       - template: templates/publish-project.yml
         parameters:

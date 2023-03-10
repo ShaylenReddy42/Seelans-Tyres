@@ -23,13 +23,11 @@ stages:
           arguments: restore
           workingDirectory: '$(workDir)'
 
-      - task: DotNetCoreCLI@2
-        displayName: 'Create EF Core Bundle for SeelansTyres.Services.OrderService'
-        inputs:
-          command: custom
-          custom: tool
-          arguments: run dotnet-ef migrations bundle --force --project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj --startup-project src/Services/OrderServiceSolution/SeelansTyres.Services.OrderService/SeelansTyres.Services.OrderService.csproj -o "$(Build.ArtifactStagingDirectory)\SeelansTyresOrderDb.exe"
-          workingDirectory: '$(workDir)'
+      - template: templates/create-efcore-bundle.yml
+        parameters:
+          solutionSubfolder: OrderServiceSolution
+          project: SeelansTyres.Services.OrderService
+          bundleName: SeelansTyresOrderDb
 
       - template: templates/publish-project.yml
         parameters:
