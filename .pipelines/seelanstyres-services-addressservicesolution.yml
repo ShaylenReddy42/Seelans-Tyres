@@ -7,32 +7,45 @@ trigger:
 stages:
   - stage: Build
     jobs:
-    - job: Build_AddressServiceSolution
-      pool: Default
-      cancelTimeoutInMinutes: 2
-      steps:
-      - template: templates/build-and-scan-solution.yml
+      - job: Build_AddressServiceSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: templates/build-and-scan-solution.yml
 
-      - template: templates/create-efcore-bundle.yml
-        parameters:
-          solutionSubfolder: AddressServiceSolution
-          project: SeelansTyres.Services.AddressService
-          bundleName: SeelansTyresAddressDb
+          - template: templates/create-efcore-bundle.yml
+            parameters:
+              solutionSubfolder: AddressServiceSolution
+              project: SeelansTyres.Services.AddressService
+              bundleName: SeelansTyresAddressDb
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Services
-          solutionSubfolder: AddressServiceSolution
-          project: SeelansTyres.Services.AddressService
-          buildImage: true
-          imageName: seelanstyres/services/addressservice
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: AddressServiceSolution
+              project: SeelansTyres.Services.AddressService
+              buildImage: true
+              imageName: seelanstyres/services/addressservice
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Services
-          solutionSubfolder: AddressServiceSolution
-          project: SeelansTyres.Workers.AddressWorker
-          buildImage: true
-          imageName: seelanstyres/workers/addressworker
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: AddressServiceSolution
+              project: SeelansTyres.Workers.AddressWorker
+              buildImage: true
+              imageName: seelanstyres/workers/addressworker
 
-      - template: templates/final-copy-and-publish-of-artifacts.yml
+          - template: templates/final-copy-and-publish-of-artifacts.yml
+
+  - stage: Dev
+    dependsOn: Build
+    condition: succeeded()
+    variables:
+      - group: seelanstyres-dev
+    jobs:
+      - job: Deploy_AddressServiceSolution_Dev
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml

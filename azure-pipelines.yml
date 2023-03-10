@@ -4,128 +4,144 @@ trigger:
       - "*"
 
 stages:
-- stage: Build
-  jobs:
-  - job: Build_Solution
-    pool: Default
-    timeoutInMinutes: 180
-    cancelTimeoutInMinutes: 2
-    steps:
-    - template: .pipelines/templates/build-and-scan-solution.yml
+  - stage: Build
+    jobs:
+      - job: Build_Solution
+        pool: Default
+        timeoutInMinutes: 180
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: .pipelines/templates/build-and-scan-solution.yml
 
-    - template: .pipelines/templates/create-efcore-bundle.yml
-      parameters:
-        solutionSubfolder: AddressServiceSolution
-        project: SeelansTyres.Services.AddressService
-        bundleName: SeelansTyresAddressDb
+          - template: .pipelines/templates/create-efcore-bundle.yml
+            parameters:
+              solutionSubfolder: AddressServiceSolution
+              project: SeelansTyres.Services.AddressService
+              bundleName: SeelansTyresAddressDb
 
-    - template: .pipelines/templates/create-efcore-bundle.yml
-      parameters:
-        solutionSubfolder: OrderServiceSolution
-        project: SeelansTyres.Services.OrderService
-        bundleName: SeelansTyresOrderDb
+          - template: .pipelines/templates/create-efcore-bundle.yml
+            parameters:
+              solutionSubfolder: OrderServiceSolution
+              project: SeelansTyres.Services.OrderService
+              bundleName: SeelansTyresOrderDb
 
-    - template: .pipelines/templates/create-efcore-bundle.yml
-      parameters:
-        solutionSubfolder: TyresServiceSolution
-        project: SeelansTyres.Services.TyresService
-        bundleName: SeelansTyresTyresDb
+          - template: .pipelines/templates/create-efcore-bundle.yml
+            parameters:
+              solutionSubfolder: TyresServiceSolution
+              project: SeelansTyres.Services.TyresService
+              bundleName: SeelansTyresTyresDb
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Frontends
-        solutionSubfolder: HealthChecksUISolution
-        project: SeelansTyres.Frontends.HealthChecksUI
-        buildImage: true
-        imageName: seelanstyres/frontends/healthchecksui
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Frontends
+              solutionSubfolder: HealthChecksUISolution
+              project: SeelansTyres.Frontends.HealthChecksUI
+              buildImage: true
+              imageName: seelanstyres/frontends/healthchecksui
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Frontends
-        solutionSubfolder: MvcSolution
-        project: SeelansTyres.Frontends.Mvc
-        buildImage: true
-        imageName: seelanstyres/frontends/mvc
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Frontends
+              solutionSubfolder: MvcSolution
+              project: SeelansTyres.Frontends.Mvc
+              buildImage: true
+              imageName: seelanstyres/frontends/mvc
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: FunctionApps
-        solutionSubfolder: SystemDegradedTogglerSolution
-        project: SeelansTyres.FunctionApps.SystemDegradedToggler
-        uploadZip: true
-        runtimeIdentifier: linux-x64
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: FunctionApps
+              solutionSubfolder: SystemDegradedTogglerSolution
+              project: SeelansTyres.FunctionApps.SystemDegradedToggler
+              uploadZip: true
+              runtimeIdentifier: linux-x64
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Gateways
-        solutionSubfolder: MvcBffSolution
-        project: SeelansTyres.Gateways.MvcBff
-        buildImage: true
-        imageName: seelanstyres/gateways/mvcbff
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Gateways
+              solutionSubfolder: MvcBffSolution
+              project: SeelansTyres.Gateways.MvcBff
+              buildImage: true
+              imageName: seelanstyres/gateways/mvcbff
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Services
-        solutionSubfolder: AddressServiceSolution
-        project: SeelansTyres.Services.AddressService
-        buildImage: true
-        imageName: seelanstyres/services/addressservice
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: AddressServiceSolution
+              project: SeelansTyres.Services.AddressService
+              buildImage: true
+              imageName: seelanstyres/services/addressservice
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Services
-        solutionSubfolder: AddressServiceSolution
-        project: SeelansTyres.Workers.AddressWorker
-        buildImage: true
-        imageName: seelanstyres/workers/addressworker
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: AddressServiceSolution
+              project: SeelansTyres.Workers.AddressWorker
+              buildImage: true
+              imageName: seelanstyres/workers/addressworker
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Services
-        solutionSubfolder: IdentityServiceSolution
-        project: SeelansTyres.Services.IdentityService
-        buildImage: true
-        imageName: seelanstyres/services/identityservice
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: IdentityServiceSolution
+              project: SeelansTyres.Services.IdentityService
+              buildImage: true
+              imageName: seelanstyres/services/identityservice
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Services
-        solutionSubfolder: OrderServiceSolution
-        project: SeelansTyres.Services.OrderService
-        buildImage: true
-        imageName: seelanstyres/services/orderservice
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: OrderServiceSolution
+              project: SeelansTyres.Services.OrderService
+              buildImage: true
+              imageName: seelanstyres/services/orderservice
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Services
-        solutionSubfolder: OrderServiceSolution
-        project: SeelansTyres.Workers.OrderWorker
-        buildImage: true
-        imageName: seelanstyres/workers/orderworker
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: OrderServiceSolution
+              project: SeelansTyres.Workers.OrderWorker
+              buildImage: true
+              imageName: seelanstyres/workers/orderworker
 
-    - template: .pipelines/templates/publish-project.yml
-      parameters:
-        solutionFolder: Services
-        solutionSubfolder: TyresServiceSolution
-        project: SeelansTyres.Services.TyresService
-        buildImage: true
-        imageName: seelanstyres/services/tyresservice
+          - template: .pipelines/templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: TyresServiceSolution
+              project: SeelansTyres.Services.TyresService
+              buildImage: true
+              imageName: seelanstyres/services/tyresservice
 
-    - template: .pipelines/templates/final-copy-and-publish-of-artifacts.yml
+          - template: .pipelines/templates/final-copy-and-publish-of-artifacts.yml
 
-    - task: GitHubRelease@1
-      displayName: 'Create a New GitHub Release'
-      condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-      inputs:
-        gitHubConnection: 'ShaylenReddy42_OAuth'
-        repositoryName: '$(Build.Repository.Name)'
-        action: create
-        tagSource: userSpecifiedTag
-        tag: $(Build.SourceBranchName)
-        title: 'Release v$(Build.SourceBranchName)'
-        releaseNotesSource: filePath
-        releaseNotesFilePath: '$(Build.SourcesDirectory)/docs/releases/v$(Build.SourceBranchName).md'
-        assets: '$(Build.ArtifactStagingDirectory)/*'
-        addChangeLog: false
-        changeLogCompareToRelease: lastFullRelease
-        changeLogType: commitBased
+          - task: GitHubRelease@1
+            displayName: 'Create a New GitHub Release'
+            condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+            inputs:
+              gitHubConnection: 'ShaylenReddy42_OAuth'
+              repositoryName: '$(Build.Repository.Name)'
+              action: create
+              tagSource: userSpecifiedTag
+              tag: $(Build.SourceBranchName)
+              title: 'Release v$(Build.SourceBranchName)'
+              releaseNotesSource: filePath
+              releaseNotesFilePath: '$(Build.SourcesDirectory)/docs/releases/v$(Build.SourceBranchName).md'
+              assets: '$(Build.ArtifactStagingDirectory)/*'
+              addChangeLog: false
+              changeLogCompareToRelease: lastFullRelease
+              changeLogType: commitBased
+
+  - stage: Dev
+    dependsOn: Build
+    condition: succeeded()
+    variables:
+      - group: seelanstyres-dev
+    jobs:
+      - job: Deploy_Solution_Dev
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - template: .pipelines/templates/download-artifacts-and-deploy-infrastructure.yml
+
+          - template: .pipelines/templates/deploy-system-degraded-toggler.yml
+          

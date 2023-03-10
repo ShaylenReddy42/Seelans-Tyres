@@ -6,21 +6,21 @@ trigger:
 stages:
   - stage: Build
     jobs:
-    - job: Build_SystemDegradedTogglerSolution
-      pool: Default
-      cancelTimeoutInMinutes: 2
-      steps:
-      - template: templates/build-and-scan-solution.yml
+      - job: Build_SystemDegradedTogglerSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: templates/build-and-scan-solution.yml
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: FunctionApps
-          solutionSubfolder: SystemDegradedTogglerSolution
-          project: SeelansTyres.FunctionApps.SystemDegradedToggler
-          uploadZip: true
-          runtimeIdentifier: linux-x64
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: FunctionApps
+              solutionSubfolder: SystemDegradedTogglerSolution
+              project: SeelansTyres.FunctionApps.SystemDegradedToggler
+              uploadZip: true
+              runtimeIdentifier: linux-x64
 
-      - template: templates/final-copy-and-publish-of-artifacts.yml
+          - template: templates/final-copy-and-publish-of-artifacts.yml
 
   - stage: Dev
     dependsOn: Build
@@ -35,17 +35,4 @@ stages:
         steps:
           - template: templates/download-artifacts-and-deploy-infrastructure.yml
 
-          - task: AzureCLI@2
-            displayName: 'Deploy the System-Degraded Toggler'
-            inputs:
-              azureSubscription: 'Azure-Manual-SP'
-              scriptType: ps
-              scriptLocation: inlineScript
-              inlineScript: |
-                $functionAppName = $(az functionapp list --query "[?tags.intendedResourceName == 'func-systemdegradedtoggler-$(environment)'] | [0].name" -o tsv)
-
-                az functionapp deployment source config-zip `
-                  --resource-group $(resourceGroup) `
-                  --name $functionAppName `
-                  --src .\SeelansTyres.FunctionApps.SystemDegradedToggler.zip
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+          - template: templates/deploy-system-degraded-toggler.yml

@@ -7,18 +7,31 @@ trigger:
 stages:
   - stage: Build
     jobs:
-    - job: Build_MvcBffSolution
-      pool: Default
-      cancelTimeoutInMinutes: 2
-      steps:
-      - template: templates/build-and-scan-solution.yml
+      - job: Build_MvcBffSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: templates/build-and-scan-solution.yml
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Gateways
-          solutionSubfolder: MvcBffSolution
-          project: SeelansTyres.Gateways.MvcBff
-          buildImage: true
-          imageName: seelanstyres/gateways/mvcbff
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Gateways
+              solutionSubfolder: MvcBffSolution
+              project: SeelansTyres.Gateways.MvcBff
+              buildImage: true
+              imageName: seelanstyres/gateways/mvcbff
 
-      - template: templates/final-copy-and-publish-of-artifacts.yml
+          - template: templates/final-copy-and-publish-of-artifacts.yml
+
+  - stage: Dev
+    dependsOn: Build
+    condition: succeeded()
+    variables:
+      - group: seelanstyres-dev
+    jobs:
+      - job: Deploy_MvcBffSolution_Dev
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml

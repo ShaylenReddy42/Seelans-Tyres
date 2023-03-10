@@ -7,32 +7,45 @@ trigger:
 stages:
   - stage: Build
     jobs:
-    - job: Build_OrderServiceSolution
-      pool: Default
-      cancelTimeoutInMinutes: 2
-      steps:
-      - template: templates/build-and-scan-solution.yml
+      - job: Build_OrderServiceSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: templates/build-and-scan-solution.yml
 
-      - template: templates/create-efcore-bundle.yml
-        parameters:
-          solutionSubfolder: OrderServiceSolution
-          project: SeelansTyres.Services.OrderService
-          bundleName: SeelansTyresOrderDb
+          - template: templates/create-efcore-bundle.yml
+            parameters:
+              solutionSubfolder: OrderServiceSolution
+              project: SeelansTyres.Services.OrderService
+              bundleName: SeelansTyresOrderDb
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Services
-          solutionSubfolder: OrderServiceSolution
-          project: SeelansTyres.Services.OrderService
-          buildImage: true
-          imageName: seelanstyres/services/orderservice
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: OrderServiceSolution
+              project: SeelansTyres.Services.OrderService
+              buildImage: true
+              imageName: seelanstyres/services/orderservice
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Services
-          solutionSubfolder: OrderServiceSolution
-          project: SeelansTyres.Workers.OrderWorker
-          buildImage: true
-          imageName: seelanstyres/workers/orderworker
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Services
+              solutionSubfolder: OrderServiceSolution
+              project: SeelansTyres.Workers.OrderWorker
+              buildImage: true
+              imageName: seelanstyres/workers/orderworker
 
-      - template: templates/final-copy-and-publish-of-artifacts.yml
+          - template: templates/final-copy-and-publish-of-artifacts.yml
+
+  - stage: Dev
+    dependsOn: Build
+    condition: succeeded()
+    variables:
+      - group: seelanstyres-dev
+    jobs:
+      - job: Deploy_OrderServiceSolution_Dev
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml

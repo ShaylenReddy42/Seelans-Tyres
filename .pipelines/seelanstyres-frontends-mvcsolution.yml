@@ -7,18 +7,31 @@ trigger:
 stages:
   - stage: Build
     jobs:
-    - job: Build_MvcSolution
-      pool: Default
-      cancelTimeoutInMinutes: 2
-      steps:
-      - template: templates/build-and-scan-solution.yml
+      - job: Build_MvcSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: templates/build-and-scan-solution.yml
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Frontends
-          solutionSubfolder: MvcSolution
-          project: SeelansTyres.Frontends.Mvc
-          buildImage: true
-          imageName: seelanstyres/frontends/mvc
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Frontends
+              solutionSubfolder: MvcSolution
+              project: SeelansTyres.Frontends.Mvc
+              buildImage: true
+              imageName: seelanstyres/frontends/mvc
 
-      - template: templates/final-copy-and-publish-of-artifacts.yml
+          - template: templates/final-copy-and-publish-of-artifacts.yml
+
+  - stage: Dev
+    dependsOn: Build
+    condition: succeeded()
+    variables:
+      - group: seelanstyres-dev
+    jobs:
+      - job: Deploy_MvcSolution_Dev
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml

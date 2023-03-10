@@ -7,18 +7,31 @@ trigger:
 stages:
   - stage: Build
     jobs:
-    - job: Build_HealthChecksUISolution
-      pool: Default
-      cancelTimeoutInMinutes: 2
-      steps:
-      - template: templates/build-and-scan-solution.yml
+      - job: Build_HealthChecksUISolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        steps:
+          - template: templates/build-and-scan-solution.yml
 
-      - template: templates/publish-project.yml
-        parameters:
-          solutionFolder: Frontends
-          solutionSubfolder: HealthChecksUISolution
-          project: SeelansTyres.Frontends.HealthChecksUI
-          buildImage: true
-          imageName: seelanstyres/frontends/healthchecksui
+          - template: templates/publish-project.yml
+            parameters:
+              solutionFolder: Frontends
+              solutionSubfolder: HealthChecksUISolution
+              project: SeelansTyres.Frontends.HealthChecksUI
+              buildImage: true
+              imageName: seelanstyres/frontends/healthchecksui
 
-      - template: templates/final-copy-and-publish-of-artifacts.yml
+          - template: templates/final-copy-and-publish-of-artifacts.yml
+
+  - stage: Dev
+    dependsOn: Build
+    condition: succeeded()
+    variables:
+      - group: seelanstyres-dev
+    jobs:
+      - job: Deploy_HealthChecksUISolution_Dev
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml

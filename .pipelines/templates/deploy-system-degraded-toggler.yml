@@ -1,0 +1,16 @@
+steps:
+  - task: AzureCLI@2
+    displayName: 'Deploy the System-Degraded Toggler'
+    inputs:
+      azureSubscription: 'Azure-Manual-SP'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        $functionAppName = $(az functionapp list --query "[?tags.intendedResourceName == 'func-systemdegradedtoggler-$(environment)'] | [0].name" -o tsv)
+
+        az functionapp deployment source config-zip `
+          --resource-group $(resourceGroup) `
+          --name $functionAppName `
+          --src .\SeelansTyres.FunctionApps.SystemDegradedToggler.zip
+      workingDirectory: '$(Pipeline.Workspace)/drop'
+      

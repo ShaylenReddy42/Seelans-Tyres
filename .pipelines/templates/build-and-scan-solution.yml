@@ -1,84 +1,84 @@
 parameters:
-- name: buildConfiguration
-  type: string
-  default: 'Release'
+  - name: buildConfiguration
+    type: string
+    default: 'Release'
 
-- name: workDir
-  type: string
-  default: $(Build.SourcesDirectory)
+  - name: workDir
+    type: string
+    default: $(Build.SourcesDirectory)
 
 steps:
-- checkout: self
-  fetchDepth: 0
+  - checkout: self
+    fetchDepth: 0
 
-- template: prebuild-iac.yml
+  - template: prebuild-iac.yml
 
-- task: UseDotNet@2
-  displayName: 'Use .NET SDK 6.0.406'
-  inputs:
-    version: 6.0.406
-    performMultiLevelLookup: true
+  - task: UseDotNet@2
+    displayName: 'Use .NET SDK 6.0.406'
+    inputs:
+      version: 6.0.406
+      performMultiLevelLookup: true
 
-- task: UseDotNet@2
-  displayName: 'Use .NET SDK 7.0.200'
-  inputs:
-    version: 7.0.200
-    performMultiLevelLookup: true
+  - task: UseDotNet@2
+    displayName: 'Use .NET SDK 7.0.200'
+    inputs:
+      version: 7.0.200
+      performMultiLevelLookup: true
 
-- task: CMake@1
-  displayName: 'Run CMake'
-  inputs:
-    cmakeArgs: -S . -B build -DCI_BUILD=ON -DDOCKER_REGISTRY=$(containerRegistryProperties.containerRegistryLoginServer)
+  - task: CMake@1
+    displayName: 'Run CMake'
+    inputs:
+      cmakeArgs: -S . -B build -DCI_BUILD=ON -DDOCKER_REGISTRY=$(containerRegistryProperties.containerRegistryLoginServer)
+      workingDirectory: '${{ parameters.workDir }}'
+
+  - powershell: |
+      $dockerImageTag = Get-Content .\version.txt -Raw
+      Write-Host "##vso[task.setvariable variable=dockerImageTag;isOutput=true]$dockerImageTag"
+    name: getDockerImageTag
+    displayName: 'Set the Docker Image Tag Variable'
     workingDirectory: '${{ parameters.workDir }}'
 
-- powershell: |
-    $dockerImageTag = Get-Content .\version.txt -Raw
-    Write-Host "##vso[task.setvariable variable=dockerImageTag;isOutput=true]$dockerImageTag"
-  name: getDockerImageTag
-  displayName: 'Set the Docker Image Tag Variable'
-  workingDirectory: '${{ parameters.workDir }}'
+  - powershell: Write-Host $(getDockerImageTag.dockerImageTag)
+    displayName:  'Verify the Docker Image Tag'
 
-- powershell: Write-Host $(getDockerImageTag.dockerImageTag)
-  displayName:  'Verify the Docker Image Tag'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore Solution'
+    inputs:
+      command: restore
+      arguments: -c ${{ parameters.buildConfiguration }}
+      projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore Solution'
-  inputs:
-    command: restore
-    arguments: -c ${{ parameters.buildConfiguration }}
-    projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore dotnet tools'
+    inputs:
+      command: custom
+      custom: tool
+      arguments: restore
+      workingDirectory: '${{ parameters.workDir }}'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore dotnet tools'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: restore
-    workingDirectory: '${{ parameters.workDir }}'
+  - task: SonarCloudPrepare@1
+    displayName: 'Prepare SonarCloud for Analysis'
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'shaylenreddy42'
+      scannerMode: 'MSBuild'
+      projectKey: 'ShaylenReddy42_Seelans-Tyres'
+      projectName: 'Seelans-Tyres'
+      extraProperties: |
+        sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
+        sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
 
-- task: SonarCloudPrepare@1
-  displayName: 'Prepare SonarCloud for Analysis'
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'shaylenreddy42'
-    scannerMode: 'MSBuild'
-    projectKey: 'ShaylenReddy42_Seelans-Tyres'
-    projectName: 'Seelans-Tyres'
-    extraProperties: |
-      sonar.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
-      sonar.coverage.exclusions=**/wwwroot/lib/**,**/Migrations/**,**/Templates/**,**/SeelansTyres.Models.**
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Solution'
+    inputs:
+      command: build
+      arguments: -c ${{ parameters.buildConfiguration }}
+      projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Solution'
-  inputs:
-    command: build
-    arguments: -c ${{ parameters.buildConfiguration }}
-    projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
+  - task: SonarCloudAnalyze@1
+    displayName: 'Run SonarCloud Analysis'
 
-- task: SonarCloudAnalyze@1
-  displayName: 'Run SonarCloud Analysis'
-
-- task: SonarCloudPublish@1
-  displayName: 'Publish SonarCloud Quality Gate Result'
-  inputs:
-    pollingTimeoutSec: '300'
+  - task: SonarCloudPublish@1
+    displayName: 'Publish SonarCloud Quality Gate Result'
+    inputs:
+      pollingTimeoutSec: '300'
