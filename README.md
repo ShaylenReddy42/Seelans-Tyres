@@ -284,8 +284,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 
 ``` bat
 
-docker pull elasticsearch:7.17.8
-docker pull kibana:7.17.8
+docker pull elasticsearch:7.17.9
+docker pull kibana:7.17.9
 docker pull nginx:latest
 docker pull rabbitmq:3-management
 docker pull redis:latest
@@ -304,8 +304,8 @@ docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 ``` bat
 
-docker pull elasticsearch:7.17.8
-docker pull kibana:7.17.8
+docker pull elasticsearch:7.17.9
+docker pull kibana:7.17.9
 docker pull rabbitmq:3-management
 
 ```
