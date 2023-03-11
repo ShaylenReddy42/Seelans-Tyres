@@ -4,8 +4,10 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS base
 WORKDIR /app
 COPY self-signed-certificates/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
-EXPOSE 80
+EXPOSE 8080
 ENV InContainer=true
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+RUN apk add --no-cache icu-libs
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
