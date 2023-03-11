@@ -18,6 +18,7 @@ stages:
               solutionSubfolder: TyresServiceSolution
               project: SeelansTyres.Services.TyresService
               bundleName: SeelansTyresTyresDb
+              dbContext: TyresDbContext
 
           - template: templates/publish-project.yml
             parameters:

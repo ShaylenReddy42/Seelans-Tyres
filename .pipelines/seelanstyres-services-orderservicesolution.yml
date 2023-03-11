@@ -18,6 +18,7 @@ stages:
               solutionSubfolder: OrderServiceSolution
               project: SeelansTyres.Services.OrderService
               bundleName: SeelansTyresOrderDb
+              dbContext: OrderDbContext
 
           - template: templates/publish-project.yml
             parameters:

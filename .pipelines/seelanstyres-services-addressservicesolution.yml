@@ -18,6 +18,7 @@ stages:
               solutionSubfolder: AddressServiceSolution
               project: SeelansTyres.Services.AddressService
               bundleName: SeelansTyresAddressDb
+              dbContext: AddressDbContext
 
           - template: templates/publish-project.yml
             parameters:

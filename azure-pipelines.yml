@@ -18,18 +18,21 @@ stages:
               solutionSubfolder: AddressServiceSolution
               project: SeelansTyres.Services.AddressService
               bundleName: SeelansTyresAddressDb
+              dbContext: AddressDbContext
 
           - template: .pipelines/templates/create-efcore-bundle.yml
             parameters:
               solutionSubfolder: OrderServiceSolution
               project: SeelansTyres.Services.OrderService
               bundleName: SeelansTyresOrderDb
+              dbContext: OrderDbContext
 
           - template: .pipelines/templates/create-efcore-bundle.yml
             parameters:
               solutionSubfolder: TyresServiceSolution
               project: SeelansTyres.Services.TyresService
               bundleName: SeelansTyresTyresDb
+              dbContext: TyresDbContext
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
