@@ -12,11 +12,16 @@ steps:
       scriptType: ps
       scriptLocation: inlineScript
       inlineScript: |
+        $clientIP = $(Invoke-RestMethod https://ipinfo.io/json).ip
+      
         az deployment sub create `
           --template-file .\02-environment-specific-phase-01\main.bicep `
           --location southafricanorth `
           --parameters `
-            environment=$(environment)
+            environment=$(environment) `
+            sqlServerAdminLogin=$(sqlServerAdminLogin) `
+            sqlServerAdminPassword=$(sqlServerAdminPassword) `
+            clientIPOfAgent=$clientIP
 
         az deployment sub create `
           --template-file .\03-environment-specific-phase-02\main.bicep `
