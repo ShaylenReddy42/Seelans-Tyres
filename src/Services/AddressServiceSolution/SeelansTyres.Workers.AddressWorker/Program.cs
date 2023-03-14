@@ -18,7 +18,8 @@ builder.AddCommonBuilderConfiguration(new()
 
 builder.Services.AddDbContext<AddressDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration["Database:ConnectionString"]!));
+        builder.Configuration["Database:ConnectionString"]!,
+        options => options.EnableRetryOnFailure(maxRetryCount: 5)));
 
 builder.Services.AddScoped<IAddressUpdateService, AddressUpdateService>();
 

@@ -27,7 +27,11 @@ builder.Services.AddCommonSwaggerGen();
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration["Database:ConnectionString"]!,
-        options => options.MigrationsAssembly(typeof(OrderDbContext).Assembly.GetName().Name)));
+        options => 
+        { 
+            options.MigrationsAssembly(typeof(OrderDbContext).Assembly.GetName().Name);
+            options.EnableRetryOnFailure(maxRetryCount: 5);
+        }));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 

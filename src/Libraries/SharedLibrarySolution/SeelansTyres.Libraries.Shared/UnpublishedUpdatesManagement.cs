@@ -16,7 +16,11 @@ public static class UnpublishedUpdatesManagement
         services.AddDbContext<UnpublishedUpdateDbContext>(options =>
             options.UseSqlServer(
                 databaseConnectionString,
-                options => options.MigrationsAssembly(typeof(UnpublishedUpdateDbContext).Assembly.GetName().Name)));
+                options =>
+                {
+                    options.MigrationsAssembly(typeof(UnpublishedUpdateDbContext).Assembly.GetName().Name);
+                    options.EnableRetryOnFailure(maxRetryCount: 5);
+                }));
 
         services.AddScoped<IUnpublishedUpdateRepository, UnpublishedUpdateRepository>();
 

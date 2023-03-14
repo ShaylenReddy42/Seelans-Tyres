@@ -32,7 +32,13 @@ var assemblyName = typeof(Program).Assembly.GetName().Name;
 
 builder.Services.AddDbContext<CustomerDbContext>(options =>
 {
-    options.UseSqlServer(connectionString, options => options.MigrationsAssembly(assemblyName));
+    options.UseSqlServer(
+        connectionString, 
+        options =>
+        {
+            options.MigrationsAssembly(assemblyName);
+            options.EnableRetryOnFailure(maxRetryCount: 5);
+        });
 });
 
 builder.Services.AddIdentity<Customer, IdentityRole<Guid>>()
@@ -86,12 +92,24 @@ builder.Services.AddIdentityServer(options =>
     .AddConfigurationStore(options =>
     {
         options.ConfigureDbContext = builder => 
-            builder.UseSqlServer(connectionString, options => options.MigrationsAssembly(assemblyName));
+            builder.UseSqlServer(
+                connectionString, 
+                options =>
+                {
+                    options.MigrationsAssembly(assemblyName);
+                    options.EnableRetryOnFailure(maxRetryCount: 5);
+                });
     })
     .AddOperationalStore(options =>
     {
         options.ConfigureDbContext = builder => 
-            builder.UseSqlServer(connectionString, options => options.MigrationsAssembly(assemblyName));
+            builder.UseSqlServer(
+                connectionString, 
+                options => 
+                { 
+                    options.MigrationsAssembly(assemblyName);
+                    options.EnableRetryOnFailure(maxRetryCount: 5);
+                });
 
         options.EnableTokenCleanup = true;
     })
