@@ -85,34 +85,34 @@ else()
 	message(STATUS "Login Server: ${DOCKER_REGISTRY}")
 endif()
 
-# Key: Solution Folder | Solution Subfolder | Project Name | Is Runnable ?
+# Key: Solution Folder | Solution Subfolder | Project Name | Is Runnable ? | Port Number
 
 set(
 	PROJECTS
-	"Frontends | HealthChecksUISolution | SeelansTyres.Frontends.HealthChecksUI | Yes"
-	"Frontends | MvcSolution | SeelansTyres.Frontends.Mvc | Yes"
+	"Frontends | HealthChecksUISolution | SeelansTyres.Frontends.HealthChecksUI | Yes | 5000"
+	"Frontends | MvcSolution | SeelansTyres.Frontends.Mvc | Yes | 5001"
 
-	"FunctionApps | SystemDegradedTogglerSolution | SeelansTyres.FunctionApps.SystemDegradedToggler | Yes"
+	"FunctionApps | SystemDegradedTogglerSolution | SeelansTyres.FunctionApps.SystemDegradedToggler | Yes | 7071"
 
-	"Gateways | MvcBffSolution | SeelansTyres.Gateways.MvcBff | Yes"
+	"Gateways | MvcBffSolution | SeelansTyres.Gateways.MvcBff | Yes | 5050"
 
-	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No"
+	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No | 0"
 
-	"Services | AddressServiceSolution | SeelansTyres.Data.AddressData | No"
-	"Services | AddressServiceSolution | SeelansTyres.Models.AddressModels | No"
-	"Services | AddressServiceSolution | SeelansTyres.Services.AddressService | Yes"
-	"Services | AddressServiceSolution | SeelansTyres.Workers.AddressWorker | Yes"
+	"Services | AddressServiceSolution | SeelansTyres.Data.AddressData | No | 0"
+	"Services | AddressServiceSolution | SeelansTyres.Models.AddressModels | No | 0"
+	"Services | AddressServiceSolution | SeelansTyres.Services.AddressService | Yes | 5011"
+	"Services | AddressServiceSolution | SeelansTyres.Workers.AddressWorker | Yes | 5021"
 
-	"Services | IdentityServiceSolution | SeelansTyres.Models.IdentityModels | No"
-	"Services | IdentityServiceSolution | SeelansTyres.Services.IdentityService | Yes"
+	"Services | IdentityServiceSolution | SeelansTyres.Models.IdentityModels | No | 0"
+	"Services | IdentityServiceSolution | SeelansTyres.Services.IdentityService | Yes | 5005"
 
-	"Services | OrderServiceSolution | SeelansTyres.Data.OrderData | No"
-	"Services | OrderServiceSolution | SeelansTyres.Models.OrderModels | No"
-	"Services | OrderServiceSolution | SeelansTyres.Services.OrderService | Yes"
-	"Services | OrderServiceSolution | SeelansTyres.Workers.OrderWorker | Yes"
+	"Services | OrderServiceSolution | SeelansTyres.Data.OrderData | No | 0"
+	"Services | OrderServiceSolution | SeelansTyres.Models.OrderModels | No | 0"
+	"Services | OrderServiceSolution | SeelansTyres.Services.OrderService | Yes | 5012"
+	"Services | OrderServiceSolution | SeelansTyres.Workers.OrderWorker | Yes | 5022"
 
-	"Services | TyresServiceSolution | SeelansTyres.Models.TyresModels | No"
-	"Services | TyresServiceSolution | SeelansTyres.Services.TyresService | Yes"
+	"Services | TyresServiceSolution | SeelansTyres.Models.TyresModels | No | 0"
+	"Services | TyresServiceSolution | SeelansTyres.Services.TyresService | Yes | 5013"
 )
 
 set(PUBLISHALL "@ECHO off \n\n")
@@ -126,6 +126,7 @@ foreach(PROJECT IN LISTS PROJECTS)
 	list(GET TEMP_LIST 1 SOLUTION_SUBFOLDER)
 	list(GET TEMP_LIST 2 PROJECT_NAME)
 	list(GET TEMP_LIST 3 IS_RUNNABLE)
+	list(GET TEMP_LIST 4 PORT)
 
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/cmake/AssemblyInfo/${PROJECT_NAME}.in" 

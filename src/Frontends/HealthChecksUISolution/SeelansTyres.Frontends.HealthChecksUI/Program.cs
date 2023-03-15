@@ -5,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
-    KestrelLocalhostPortNumber = 5000,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Health Checks UI"
 });
@@ -13,6 +12,8 @@ builder.AddCommonBuilderConfiguration(new()
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 var app = builder.Build();
+
+app.HonorForwardedHeaders();
 
 app.MapHealthChecksUI(options =>
 {

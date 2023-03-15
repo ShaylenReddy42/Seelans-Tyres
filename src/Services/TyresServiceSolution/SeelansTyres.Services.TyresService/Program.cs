@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
-    KestrelLocalhostPortNumber = 5013,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Tyres Microservice"
 });
@@ -78,6 +77,8 @@ else
 }
 
 var app = builder.Build();
+
+app.HonorForwardedHeaders();
 
 app.UseProblemDetails();
 

@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
-    KestrelLocalhostPortNumber = 5050,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Backend-for-Frontend"
 });
@@ -53,6 +52,8 @@ builder.Services.AddHealthChecks()
     .AddDownstreamChecks(builder.Configuration);
 
 var app = builder.Build();
+
+app.HonorForwardedHeaders();
 
 app.UseAuthentication();
 

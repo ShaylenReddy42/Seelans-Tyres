@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
-    KestrelLocalhostPortNumber = 5022,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Order Worker Service"
 });
@@ -70,6 +69,8 @@ else
 }
 
 var app = builder.Build();
+
+app.HonorForwardedHeaders();
 
 app.MapCommonHealthChecks();
 

@@ -1,6 +1,5 @@
 ﻿using ConfigurationSubstitution;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,13 +13,6 @@ public static class WebApplicationBuilderConfiguration
         this WebApplicationBuilder builder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
-        if (builder.Configuration.GetValue<bool>("InContainer") is false)
-        {
-            builder.WebHost.ConfigureKestrel(options => 
-                options.ListenLocalhost(
-                    commonBuilderConfigurationModel.KestrelLocalhostPortNumber));
-        }
-
         if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
         {
             builder.Configuration.AddAzureAppConfiguration(options =>

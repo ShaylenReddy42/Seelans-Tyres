@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
-    KestrelLocalhostPortNumber = 5011,
     OriginAssembly = typeof(Program).Assembly,
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Address Microservice"
 });
@@ -70,6 +69,8 @@ builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<AddressDbContext>();
 
 var app = builder.Build();
+
+app.HonorForwardedHeaders();
 
 app.UseProblemDetails();
 
