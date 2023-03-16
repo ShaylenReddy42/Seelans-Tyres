@@ -25,16 +25,12 @@ stages:
               solutionFolder: Services
               solutionSubfolder: AddressServiceSolution
               project: SeelansTyres.Services.AddressService
-              buildImage: true
-              imageName: seelanstyres/services/addressservice
 
           - template: templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: AddressServiceSolution
               project: SeelansTyres.Workers.AddressWorker
-              buildImage: true
-              imageName: seelanstyres/workers/addressworker
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

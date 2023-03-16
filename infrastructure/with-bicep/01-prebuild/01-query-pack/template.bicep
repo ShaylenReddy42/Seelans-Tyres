@@ -1,14 +1,14 @@
 @description('Specifies the location for resources.')
 param location string = resourceGroup().location
 
-var queryPackName = 'pack-custom-queries${uniqueString(resourceGroup().id)}'
+var queryPackName = 'pack-seelanstyres-queries-${uniqueString(resourceGroup().id)}'
 
 resource queryPack 'microsoft.operationalInsights/querypacks@2019-09-01' = {
   name: queryPackName
   location: location
   properties: {}
   tags: {
-    intendedResourceName: 'pack-custom-queries'
+    intendedResourceName: 'pack-seelanstyres-queries'
   }
 }
 

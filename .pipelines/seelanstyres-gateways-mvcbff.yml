@@ -18,8 +18,6 @@ stages:
               solutionFolder: Gateways
               solutionSubfolder: MvcBffSolution
               project: SeelansTyres.Gateways.MvcBff
-              buildImage: true
-              imageName: seelanstyres/gateways/mvcbff
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

@@ -18,8 +18,6 @@ stages:
               solutionFolder: Frontends
               solutionSubfolder: HealthChecksUISolution
               project: SeelansTyres.Frontends.HealthChecksUI
-              buildImage: true
-              imageName: seelanstyres/frontends/healthchecksui
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

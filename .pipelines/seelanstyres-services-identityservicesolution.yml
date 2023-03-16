@@ -18,8 +18,6 @@ stages:
               solutionFolder: Services
               solutionSubfolder: IdentityServiceSolution
               project: SeelansTyres.Services.IdentityService
-              buildImage: true
-              imageName: seelanstyres/services/identityservice
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

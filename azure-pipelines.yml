@@ -39,80 +39,60 @@ stages:
               solutionFolder: Frontends
               solutionSubfolder: HealthChecksUISolution
               project: SeelansTyres.Frontends.HealthChecksUI
-              buildImage: true
-              imageName: seelanstyres/frontends/healthchecksui
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Frontends
               solutionSubfolder: MvcSolution
               project: SeelansTyres.Frontends.Mvc
-              buildImage: true
-              imageName: seelanstyres/frontends/mvc
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: FunctionApps
               solutionSubfolder: SystemDegradedTogglerSolution
               project: SeelansTyres.FunctionApps.SystemDegradedToggler
-              uploadZip: true
-              runtimeIdentifier: linux-x64
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Gateways
               solutionSubfolder: MvcBffSolution
               project: SeelansTyres.Gateways.MvcBff
-              buildImage: true
-              imageName: seelanstyres/gateways/mvcbff
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: AddressServiceSolution
               project: SeelansTyres.Services.AddressService
-              buildImage: true
-              imageName: seelanstyres/services/addressservice
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: AddressServiceSolution
               project: SeelansTyres.Workers.AddressWorker
-              buildImage: true
-              imageName: seelanstyres/workers/addressworker
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: IdentityServiceSolution
               project: SeelansTyres.Services.IdentityService
-              buildImage: true
-              imageName: seelanstyres/services/identityservice
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: OrderServiceSolution
               project: SeelansTyres.Services.OrderService
-              buildImage: true
-              imageName: seelanstyres/services/orderservice
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: OrderServiceSolution
               project: SeelansTyres.Workers.OrderWorker
-              buildImage: true
-              imageName: seelanstyres/workers/orderworker
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Services
               solutionSubfolder: TyresServiceSolution
               project: SeelansTyres.Services.TyresService
-              buildImage: true
-              imageName: seelanstyres/services/tyresservice
 
           - template: .pipelines/templates/final-copy-and-publish-of-artifacts.yml
 

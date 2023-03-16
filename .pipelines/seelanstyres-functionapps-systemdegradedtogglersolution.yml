@@ -17,8 +17,6 @@ stages:
               solutionFolder: FunctionApps
               solutionSubfolder: SystemDegradedTogglerSolution
               project: SeelansTyres.FunctionApps.SystemDegradedToggler
-              uploadZip: true
-              runtimeIdentifier: linux-x64
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

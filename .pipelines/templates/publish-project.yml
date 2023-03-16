@@ -14,22 +14,14 @@ parameters:
 
   - name: uploadZip
     type: boolean
-    default: false
+    default: true
 
   - name: runtimeIdentifier
     type: string
-    default: win-x64
+    default: linux-x64
     values:
       - win-x64
       - linux-x64
-
-  - name: buildImage
-    type: boolean
-    default: false
-
-  - name: imageName
-    type: string
-    default: ''
 
   - name: workDir
     type: string
@@ -48,25 +40,3 @@ steps:
         includeRootFolder: false
         archiveType: zip
         archiveFile: '$(Build.ArtifactStagingDirectory)\${{ parameters.project }}.zip'
-
-  - ${{ if eq(parameters.buildImage, true) }}:
-    - task: AzureCLI@2
-      displayName: 'Build and Push ${{ parameters.imageName }}'
-      inputs:
-        azureSubscription: 'Azure-Manual-SP'
-        scriptType: ps
-        scriptLocation: inlineScript
-        inlineScript: |
-          az acr build `
-            --file ".\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}\Dockerfile" `
-            --image ${{ parameters.imageName }}:$(getDockerImageTag.dockerImageTag) `
-            --registry $(containerRegistryProperties.containerRegistryName) .
-        workingDirectory: '$(Build.SourcesDirectory)/src'
-
-  - ${{ if ne(parameters.solutionFolder, 'FunctionApps') }}:
-    - task: CopyFiles@2
-      displayName: 'Copy Kubernetes Manifest to drop'
-      inputs:
-        Contents: '${{ parameters.workDir }}\orchestration\kubernetes\04-deployments\${{ parameters.project }}-configured.yaml'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)/kubernetes/deployments'
-        flattenFolders: true

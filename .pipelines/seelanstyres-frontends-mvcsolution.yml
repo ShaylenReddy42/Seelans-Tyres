@@ -18,8 +18,6 @@ stages:
               solutionFolder: Frontends
               solutionSubfolder: MvcSolution
               project: SeelansTyres.Frontends.Mvc
-              buildImage: true
-              imageName: seelanstyres/frontends/mvc
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 
