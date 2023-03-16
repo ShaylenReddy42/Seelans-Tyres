@@ -51,6 +51,7 @@ services:
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
       - StartupDelayInSeconds=20
+      - Redis__Enabled=true
     volumes:
       - ../volumes/images:/app/wwwroot/images/uploaded
     restart: always

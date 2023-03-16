@@ -60,7 +60,7 @@ builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 
-if (builder.Configuration.GetValue<bool>("InContainer") is false)
+if (builder.Configuration.GetValue<bool>("Redis:Enabled") is false)
 {
     builder.Services.AddMemoryCache();
     builder.Services.AddScoped<ICacheService, InMemoryCacheService>(); 
@@ -69,7 +69,7 @@ else
 {
     builder.Services.AddStackExchangeRedisCache(setup =>
     {
-        setup.Configuration = builder.Configuration.GetConnectionString("Redis");
+        setup.Configuration = builder.Configuration["Redis:ConnectionString"]!;
         setup.InstanceName = "seelanstyres_";
     });
     builder.Services.AddScoped<ICacheService, DistributedCacheService>();
@@ -149,11 +149,11 @@ if (builder.Environment.IsDevelopment() is false)
             failureStatus: HealthStatus.Unhealthy);
 }
 
-if (builder.Configuration.GetValue<bool>("InContainer") is true)
+if (builder.Configuration.GetValue<bool>("Redis:Enabled") is true)
 {
     builder.Services.AddHealthChecks()
         .AddRedis(
-            redisConnectionString: builder.Configuration.GetConnectionString("Redis")!,
+            redisConnectionString: builder.Configuration["Redis:ConnectionString"]!,
             name: "redis",
             failureStatus: HealthStatus.Unhealthy);
 }
