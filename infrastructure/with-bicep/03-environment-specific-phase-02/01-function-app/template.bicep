@@ -90,7 +90,7 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
       ]
       use32BitWorkerProcess: false
-      linuxFxVersion: 'dotnet|6.0'
+      linuxFxVersion: 'DOTNET|6.0'
     }
   }
   tags: {

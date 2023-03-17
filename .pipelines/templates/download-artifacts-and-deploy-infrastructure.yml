@@ -27,7 +27,16 @@ steps:
           --template-file .\03-environment-specific-phase-02\main.bicep `
           --location southafricanorth `
           --parameters `
-            environment=$(environment)
+            environment=$(environment) `
+            adminCredentialsEmail=$(adminCredentialsEmail) `
+            adminCredentialsPassword=$(adminCredentialsPassword) `
+            emailCredentialsEmail=$(emailCredentialsEmail) `
+            emailCredentialsPassword=$(emailCredentialsPassword) `
+            healthCheckEndpoint=$(healthCheckEndpoint) `
+            mvcClientSecret=$(mvcClientSecret) `
+            mvcBffClientSecret=$(mvcBffClientSecret) `
+            sqlServerAdminLogin=$(sqlServerAdminLogin) `
+            sqlServerAdminPassword=$(sqlServerAdminPassword)
 
         az deployment sub create `
           --template-file .\04-environment-specific-phase-03\main.bicep `
