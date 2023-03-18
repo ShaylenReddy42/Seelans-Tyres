@@ -1,0 +1,19 @@
+parameters:
+  - name: bundleName
+    type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: 'Migrate ${{ parameters.bundleName }}'
+    inputs:
+      azureSubscription: 'Azure-Manual-SP'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        $sqlServerFqdn = $(az sql server list --query "[?tags.intendedResourceName == 'sql-seelanstyres-$(environment)'] | [0].fullyQualifiedDomainName" -o tsv)
+
+        $Env:Database__ConnectionString = "Server=tcp:" + $sqlServerFqdn + ",1433;Database=${{ parameters.bundleName }};User ID=$(sqlServerAdminLogin);Password=$(sqlServerAdminPassword);MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+        $Env:RabbitMQ__ConnectionProperties__ConnectionString = "amqp://localhost:5673"
+
+        .\${{ parameters.bundleName }}.exe --connection "$Env:Database__ConnectionString"
+      workingDirectory: '$(Pipeline.Workspace)/drop'

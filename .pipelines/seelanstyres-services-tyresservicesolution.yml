@@ -40,3 +40,7 @@ stages:
         timeoutInMinutes: 120
         steps:
           - template: templates/download-artifacts-and-deploy-infrastructure.yml
+
+          - template: templates/execute-efcore-bundle.yml
+            parameters:
+              bundleName: SeelansTyresTyresDb

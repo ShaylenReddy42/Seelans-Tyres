@@ -127,4 +127,16 @@ stages:
           - template: .pipelines/templates/download-artifacts-and-deploy-infrastructure.yml
 
           - template: .pipelines/templates/deploy-system-degraded-toggler.yml
+
+          - template: .pipelines/templates/execute-efcore-bundle.yml
+            parameters:
+              bundleName: SeelansTyresAddressDb
+
+          - template: .pipelines/templates/execute-efcore-bundle.yml
+            parameters:
+              bundleName: SeelansTyresOrderDb
+
+          - template: .pipelines/templates/execute-efcore-bundle.yml
+            parameters:
+              bundleName: SeelansTyresTyresDb
           
