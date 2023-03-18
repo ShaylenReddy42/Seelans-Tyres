@@ -2,12 +2,12 @@ parameters:
   - name: intendedResourceName
     type: string
   
-  - name: zipFileName
+  - name: project
     type: string
 
 steps:
   - task: AzureCLI@2
-    displayName: 'Deploy ${{ parameters.zipFileName }}'
+    displayName: 'Deploy ${{ parameters.project }}'
     inputs:
       azureSubscription: 'Azure-Manual-SP'
       scriptType: ps
@@ -18,5 +18,5 @@ steps:
         az webapp deployment source config-zip `
           --resource-group $(resourceGroup) `
           --name $appServiceName `
-          --src .\${{ parameters.zipFileName }}.zip
+          --src .\${{ parameters.project }}.zip
       workingDirectory: '$(Pipeline.Workspace)/drop'

@@ -50,3 +50,13 @@ stages:
           - template: templates/execute-efcore-bundle.yml
             parameters:
               bundleName: SeelansTyresOrderDb
+
+          - template: templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-orderservice-$(environment)
+              project: SeelansTyres.Services.OrderService
+
+          - template: templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-orderworker-$(environment)
+              project: SeelansTyres.Workers.OrderWorker

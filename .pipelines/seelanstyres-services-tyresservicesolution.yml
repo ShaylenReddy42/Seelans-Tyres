@@ -44,3 +44,8 @@ stages:
           - template: templates/execute-efcore-bundle.yml
             parameters:
               bundleName: SeelansTyresTyresDb
+
+          - template: templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-tyresservice-$(environment)
+              project: SeelansTyres.Services.TyresService

@@ -139,4 +139,48 @@ stages:
           - template: .pipelines/templates/execute-efcore-bundle.yml
             parameters:
               bundleName: SeelansTyresTyresDb
-          
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-tyresservice-$(environment)
+              project: SeelansTyres.Services.TyresService
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-orderworker-$(environment)
+              project: SeelansTyres.Workers.OrderWorker
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-orderservice-$(environment)
+              project: SeelansTyres.Services.OrderService
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-identityservice-$(environment)
+              project: SeelansTyres.Services.IdentityService
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-addressworker-$(environment)
+              project: SeelansTyres.Workers.AddressWorker
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-addressservice-$(environment)
+              project: SeelansTyres.Services.AddressService
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-mvcbff-$(environment)
+              project: SeelansTyres.Gateways.MvcBff
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-mvc-$(environment)
+              project: SeelansTyres.Frontends.Mvc
+
+          - template: .pipelines/templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-healthchecksui-$(environment)
+              project: SeelansTyres.Frontends.HealthChecksUI
