@@ -1,0 +1,22 @@
+parameters:
+  - name: intendedResourceName
+    type: string
+  
+  - name: zipFileName
+    type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: 'Deploy ${{ parameters.zipFileName }}'
+    inputs:
+      azureSubscription: 'Azure-Manual-SP'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        $appServiceName = $(az webapp list --query "[?tags.intendedResourceName == '${{ parameters.intendedResourceName }}'] | [0].name" -o tsv)
+
+        az webapp deployment source config-zip `
+          --resource-group $(resourceGroup) `
+          --name $appServiceName `
+          --src .\${{ parameters.zipFileName }}.zip
+      workingDirectory: '$(Pipeline.Workspace)/drop'
