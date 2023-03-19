@@ -142,6 +142,10 @@ resource mvc 'Microsoft.Web/sites@2022-03-01' = {
           value: 'https://app-seelanstyres-identityservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
+          name: 'InAzure'
+          value: 'true'
+        }
+        {
           name: 'MvcBffUrl'
           value: 'https://app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
@@ -328,6 +332,10 @@ resource identityService 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'Database__ConnectionString'
           value: databaseConnectionString
+        }
+        {
+          name: 'InAzure'
+          value: 'true'
         }
         {
           name: 'AzureServiceBus__ConnectionString'

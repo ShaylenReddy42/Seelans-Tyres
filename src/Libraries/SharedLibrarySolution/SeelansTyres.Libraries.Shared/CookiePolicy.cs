@@ -8,7 +8,8 @@ public static class CookiePolicy
 {
     public static WebApplication UseCommonCookiePolicy(this WebApplication app)
     {
-        if (app.Configuration.GetValue<bool>("InContainer") is false)
+        if (app.Configuration.GetValue<bool>("InContainer") is false &&
+            app.Configuration.GetValue<bool>("InAzure") is false)
         {
             app.UseCookiePolicy(new CookiePolicyOptions
             {
