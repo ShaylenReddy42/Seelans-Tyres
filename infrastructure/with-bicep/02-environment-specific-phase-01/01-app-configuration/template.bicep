@@ -11,13 +11,11 @@ param environment string = 'dev'
 
 var appConfigurationName = 'appcs-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 
-var appConfigurationSku = environment == 'dev' ? 'Free' : 'Standard'
-
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' = {
   name: appConfigurationName
   location: location
   sku: {
-    name: appConfigurationSku
+    name: 'Standard'
   }
   tags:{
     intendedResourceName: 'appcs-seelanstyres-${environment}'
