@@ -334,3 +334,7 @@ docker pull rabbitmq:3-management
 ### Setting up Kibana and demonstrating distributed tracing
 
 [![Kibana Thumbnail](docs/demos/kibana-thumbnail.png)](https://drive.google.com/file/d/1aVM_LosrVu2S6ZnN9Vc6IdDNI87_28la/view "Setting Up Kibana and Demonstrating Distributed Tracing")
+
+### Solution in Azure
+
+[![Azure Thumbnail](docs/demos/azure-thumbnail.png)](https://drive.google.com/file/d/1IHLi6Q6hsFGMJCS53Y3Mb-hEVU8LyZ_8/view "Solution in Azure")
