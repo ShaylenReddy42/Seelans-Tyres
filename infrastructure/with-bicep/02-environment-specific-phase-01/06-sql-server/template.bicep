@@ -58,46 +58,58 @@ resource seelansTyresAddressDb 'Microsoft.Sql/servers/databases@2022-08-01-previ
   parent: sqlServer
   name: 'SeelansTyresAddressDb'
   location: location
-  sku: {
-    name: 'GP_S_Gen5'
-    tier: 'GeneralPurpose'
-    family: 'Gen5'
-    capacity: 1
-  }
+  sku: environment == 'dev' ? {
+                                name: 'Basic'
+                                tier: 'Basic'
+                              } : {
+                                name: 'GP_S_Gen5'
+                                tier: 'GeneralPurpose'
+                                family: 'Gen5'
+                                capacity: 1
+                              }
 }
 
 resource seelansTyresIdentityDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresIdentityDb'
   location: location
-  sku: {
-    name: 'GP_S_Gen5'
-    tier: 'GeneralPurpose'
-    family: 'Gen5'
-    capacity: 1
-  }
+  sku: environment == 'dev' ? {
+                                name: 'Basic'
+                                tier: 'Basic'
+                              } : {
+                                name: 'GP_S_Gen5'
+                                tier: 'GeneralPurpose'
+                                family: 'Gen5'
+                                capacity: 1
+                              }
 }
 
 resource seelansTyresOrderDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresOrderDb'
   location: location
-  sku: {
-    name: 'GP_S_Gen5'
-    tier: 'GeneralPurpose'
-    family: 'Gen5'
-    capacity: 1
-  }
+  sku: environment == 'dev' ? {
+                                name: 'Basic'
+                                tier: 'Basic'
+                              } : {
+                                name: 'GP_S_Gen5'
+                                tier: 'GeneralPurpose'
+                                family: 'Gen5'
+                                capacity: 1
+                              }
 }
 
 resource seelansTyresTyresDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresTyresDb'
   location: location
-  sku: {
-    name: 'GP_S_Gen5'
-    tier: 'GeneralPurpose'
-    family: 'Gen5'
-    capacity: 1
-  }
+  sku: environment == 'dev' ? {
+                                name: 'Basic'
+                                tier: 'Basic'
+                              } : {
+                                name: 'GP_S_Gen5'
+                                tier: 'GeneralPurpose'
+                                family: 'Gen5'
+                                capacity: 1
+                              }
 }
