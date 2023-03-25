@@ -45,18 +45,19 @@ stages:
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
         steps:
-          - template: templates/download-artifacts-and-deploy-infrastructure.yml
+          - ${{ if eq(variables.deploySolution, 'true') }}:
+            - template: templates/download-artifacts-and-deploy-infrastructure.yml
 
-          - template: templates/execute-efcore-bundle.yml
-            parameters:
-              bundleName: SeelansTyresOrderDb
+            - template: templates/execute-efcore-bundle.yml
+              parameters:
+                bundleName: SeelansTyresOrderDb
 
-          - template: templates/deploy-webapp.yml
-            parameters:
-              intendedResourceName: app-seelanstyres-orderservice-$(environment)
-              project: SeelansTyres.Services.OrderService
+            - template: templates/deploy-webapp.yml
+              parameters:
+                intendedResourceName: app-seelanstyres-orderservice-$(environment)
+                project: SeelansTyres.Services.OrderService
 
-          - template: templates/deploy-webapp.yml
-            parameters:
-              intendedResourceName: app-seelanstyres-orderworker-$(environment)
-              project: SeelansTyres.Workers.OrderWorker
+            - template: templates/deploy-webapp.yml
+              parameters:
+                intendedResourceName: app-seelanstyres-orderworker-$(environment)
+                project: SeelansTyres.Workers.OrderWorker
