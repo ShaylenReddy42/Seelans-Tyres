@@ -21,8 +21,8 @@ ECHO Health Checks UI    -- https://health-local.seelanstyres.com:4000
 ECHO MVC Frontend        -- https://www-local.seelanstyres.com:4000
 ECHO Identity Service    -- https://id-local.seelanstyres.com:4000
 ECHO.
-ECHO Kibana              -- http://localhost:5601
-ECHO RabbitMQ Management -- http://localhost:15672
+ECHO Kibana              -- http://kibana-local.seelanstyres.com:4000
+ECHO RabbitMQ Management -- http://rabbitmq-local.seelanstyres.com:4000
 ECHO.
 ECHO.
 
