@@ -120,7 +120,7 @@ resource healthChecksUI 'Microsoft.Web/sites@2022-03-01' = {
         ]
       }
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|6.0'
+      linuxFxVersion: 'DOTNETCORE|7.0'
     }
   }
   tags: {

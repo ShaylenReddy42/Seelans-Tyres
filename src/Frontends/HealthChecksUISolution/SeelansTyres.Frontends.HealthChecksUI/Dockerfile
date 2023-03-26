@@ -1,13 +1,13 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS base
 WORKDIR /app
 EXPOSE 8080
 ENV InContainer=true
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 RUN apk add --no-cache icu-libs
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
 COPY ["Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/SeelansTyres.Frontends.HealthChecksUI.csproj", "Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/"]
