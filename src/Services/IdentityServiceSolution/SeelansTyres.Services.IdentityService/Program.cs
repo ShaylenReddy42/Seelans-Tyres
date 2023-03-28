@@ -2,14 +2,12 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using SeelansTyres.Libraries.Shared;
 using SeelansTyres.Services.IdentityService.Authorization;
 using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 using SeelansTyres.Services.IdentityService.Services;
 using System.Reflection;
-using System.Security.Cryptography;
 using SeelansTyres.Services.IdentityService.Extensions;
 using SeelansTyres.Libraries.Shared.Services;
 using SeelansTyres.Libraries.Shared.Extensions;
@@ -62,21 +60,6 @@ builder.Services.AddScoped<AdminAccountSeeder>();
 builder.Services.AddScoped<ConfigurationDataSeeder>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
-var rsaSecurityKey = new RsaSecurityKey(
-    new RSAParameters
-    {
-        D = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:D"]),
-        DP = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:DP"]),
-        DQ = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:DQ"]),
-        Exponent = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Exponent"]),
-        InverseQ = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:InverseQ"]),
-        Modulus = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Modulus"]),
-        P = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:P"]),
-        Q = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Q"])
-    });
-
-var signingCredentials = new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256);
-
 builder.Services.AddIdentityServer(options =>
 {
     options.Events.RaiseErrorEvents = true;
@@ -114,7 +97,7 @@ builder.Services.AddIdentityServer(options =>
     })
     .AddAspNetIdentity<Customer>()
     .AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>()
-    .AddSigningCredential(signingCredentials);
+    .AddSigningCredential(builder.GenerateSigningCredentialsFromConfiguration());
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(configure =>

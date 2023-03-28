@@ -9,6 +9,25 @@ namespace SeelansTyres.Services.IdentityService.Extensions;
 
 public static class CryptographyExtensions
 {
+    public static SigningCredentials GenerateSigningCredentialsFromConfiguration(
+        this WebApplicationBuilder builder)
+    {
+        var rsaSecurityKey = new RsaSecurityKey(
+            new RSAParameters
+            {
+                D = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:D"]),
+                DP = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:DP"]),
+                DQ = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:DQ"]),
+                Exponent = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Exponent"]),
+                InverseQ = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:InverseQ"]),
+                Modulus = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Modulus"]),
+                P = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:P"]),
+                Q = Base64UrlEncoder.DecodeBytes(builder.Configuration["RSAParameters:Q"])
+            });
+
+        return new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256);
+    }
+    
     public static async Task<T?> DecryptAsync<T>(
         this EncryptedDataModel encryptedDataModel, 
         ISigningCredentialStore signingCredentialStore,
