@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Data.OrderData.Entities;
-using SeelansTyres.Data.OrderData;
-using System.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore;        // Include()
+using SeelansTyres.Data.OrderData.Entities; // Order
+using SeelansTyres.Data.OrderData;          // OrderDbContext
+using System.Diagnostics;                   // Stopwatch
 
 namespace SeelansTyres.Services.OrderService.Services;
 
@@ -95,11 +95,11 @@ public class OrderRepository : IOrderRepository
         return orders;
     }
 
-    public async Task<Order?> RetrieveSingleAsync(int id)
+    public async Task<Order?> RetrieveSingleAsync(int orderId)
     {
         logger.LogInformation(
             "Repository => Attempting to retrieve order {orderId}",
-            id);
+            orderId);
 
         Order? order = null;
 
@@ -108,7 +108,7 @@ public class OrderRepository : IOrderRepository
         {
             order = await context.Orders
                             .Include(order => order.OrderItems)
-                            .SingleOrDefaultAsync(order => order.Id == id);
+                            .SingleOrDefaultAsync(order => order.Id == orderId);
         }
         catch (Exception ex)
         {
@@ -117,7 +117,7 @@ public class OrderRepository : IOrderRepository
             logger.LogError(
                 ex,
                 "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, id);
+                "FAILED", stopwatch.ElapsedMilliseconds, orderId);
             
             throw ex.GetBaseException();
         }
@@ -125,7 +125,7 @@ public class OrderRepository : IOrderRepository
 
         logger.LogInformation(
             "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, id);
+            "SUCCEEDED", stopwatch.ElapsedMilliseconds, orderId);
 
         return order;
     }

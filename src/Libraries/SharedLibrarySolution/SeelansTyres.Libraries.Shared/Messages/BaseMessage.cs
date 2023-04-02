@@ -1,5 +1,10 @@
 ﻿namespace SeelansTyres.Libraries.Shared.Messages;
 
+/// <summary>
+/// Used to send updates to other microservices
+/// </summary>
+/// <remarks>
+/// </remarks>
 public class BaseMessage
 {
     public string TraceId { get; set; } = string.Empty;

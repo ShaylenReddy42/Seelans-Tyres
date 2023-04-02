@@ -1,9 +1,9 @@
-﻿using IdentityModel.Client;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Libraries.Shared.Messages;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography;
+﻿using IdentityModel.Client;                   // DiscoveryDocumentResponse, GetDiscoveryDocumentAsync()
+using Microsoft.Extensions.Logging;           // ILogger
+using Microsoft.IdentityModel.Tokens;         // SecurityKey, Base64UrlEncoder, RsaSecurityKey, TokenValidationParameters
+using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
+using System.IdentityModel.Tokens.Jwt;        // JwtSecurityTokenHandler()
+using System.Security.Cryptography;           // RSAParameters
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
@@ -22,6 +22,9 @@ public class TokenValidationService : ITokenValidationService
     
     public async Task<bool> ValidateTokenAsync(BaseMessage message, string validIssuer, string validAudience)
     {
+        // Gets the discovery document from IdentityServer4, extracts the json web keys
+        // and converts them to RSA parameters to form RSA security keys used to validate the token
+        
         DiscoveryDocumentResponse? discoveryDocument = null;
 
         try
@@ -57,6 +60,8 @@ public class TokenValidationService : ITokenValidationService
 
             issuerSigningKeys.Add(rsaSecurityKey);
         });
+
+        // Creates the validation parameters and attempts to validate the token
 
         var tokenValidationParameters = new TokenValidationParameters
         {

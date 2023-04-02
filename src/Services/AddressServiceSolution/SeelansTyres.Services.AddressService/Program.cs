@@ -1,13 +1,13 @@
-using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Libraries.Shared;
-using SeelansTyres.Services.AddressService.Authorization;
-using SeelansTyres.Data.AddressData;
-using SeelansTyres.Services.AddressService.Services;
-using System.Reflection;
-using SeelansTyres.Libraries.Shared.Extensions;
+using Hellang.Middleware.ProblemDetails;                  // UseProblemDetails()
+using Microsoft.AspNetCore.Authentication.JwtBearer;      // JwtBearerDefaults
+using Microsoft.AspNetCore.Authorization;                 // IAuthorizationHandler
+using Microsoft.EntityFrameworkCore;                      // UseSqlServer()
+using SeelansTyres.Libraries.Shared;                      // All common methods
+using SeelansTyres.Services.AddressService.Authorization; // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
+using SeelansTyres.Data.AddressData;                      // AddressDbContext
+using SeelansTyres.Services.AddressService.Services;      // IAddressRepository, AddressRepository
+using System.Reflection;                                  // Assembly
+using SeelansTyres.Libraries.Shared.Extensions;           // AddCommonStartupDelay()
 
 var builder = WebApplication.CreateBuilder(args);
 

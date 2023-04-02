@@ -1,6 +1,4 @@
 ﻿using FluentEmail.Core;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Reflection; // Assembly
 
 namespace SeelansTyres.Libraries.Shared.Models;
 

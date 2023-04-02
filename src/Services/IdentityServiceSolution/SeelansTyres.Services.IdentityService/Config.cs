@@ -1,10 +1,11 @@
-﻿using IdentityServer4.Models;
-using System.Security.Claims;
+﻿using IdentityServer4.Models; // IdentityResource, IdentityResources, ApiScope, ApiResource, Client, Secret, GrantTypes, Sha256()
+using System.Security.Claims; // ClaimTypes
 
 namespace SeelansTyres.Services.IdentityService;
 
 public static class Config
 {
+    // Set by the ConfigurationDataSeeder's SeedConfigurationDataAsync() method
     public static IConfiguration? Configuration { get; set; }
     
     public static List<IdentityResource> IdentityResources => new()

@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Frontends.Mvc.Models;
+﻿using SeelansTyres.Frontends.Mvc.Models; // CartItemModel
 
 namespace SeelansTyres.Frontends.Mvc.ViewModels;
 

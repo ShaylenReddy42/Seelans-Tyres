@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using RazorLight;
-using SeelansTyres.Frontends.Mvc.Channels;
-using SeelansTyres.Frontends.Mvc.Models;
-using SeelansTyres.Frontends.Mvc.Services;
-using SeelansTyres.Frontends.Mvc.ViewModels;
-using System.Diagnostics;
-using System.Reflection;
+﻿using Microsoft.AspNetCore.Authorization;    // Authorize
+using RazorLight;                            // RazorLightEngineBuilder
+using SeelansTyres.Frontends.Mvc.Channels;   // SendReceiptChannel
+using SeelansTyres.Frontends.Mvc.Models;     // CartItemModel
+using SeelansTyres.Frontends.Mvc.Services;   // IAddressService, ICartService, ICustomerService, IOrderService
+using SeelansTyres.Frontends.Mvc.ViewModels; // CartViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 

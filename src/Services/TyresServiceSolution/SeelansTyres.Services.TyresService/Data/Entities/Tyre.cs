@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;        // Key, Required, StringLength, Range, MaxLength
+using System.ComponentModel.DataAnnotations.Schema; // DatabaseGenerated, Column, ForeignKey
 
 namespace SeelansTyres.Services.TyresService.Data.Entities;
 

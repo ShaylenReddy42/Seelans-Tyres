@@ -1,7 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations; // ValidationAttribute, ValidationResult, ValidationContext
 
 namespace SeelansTyres.Frontends.Mvc.Validation;
 
+/// <summary>
+/// Specifies that a file cannot exceed a set limit
+/// </summary>
+/// <remarks>
+/// Usage: The file size of an IFormFile [IFormFile.Length] is extracted into its own property and is then validated
+/// </remarks>
 public class FileSizeLimitAttribute : ValidationAttribute
 {
     public int LimitInMB { get; }

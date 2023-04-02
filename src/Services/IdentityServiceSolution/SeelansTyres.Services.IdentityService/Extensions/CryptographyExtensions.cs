@@ -9,6 +9,16 @@ namespace SeelansTyres.Services.IdentityService.Extensions;
 
 public static class CryptographyExtensions
 {
+    /// <summary>
+    /// <para>Extracts the RSA parameters from configuration to create signing credentials for IdentityServer4</para>
+    /// 
+    /// <para>
+    ///     RSA parameters were extracted from the temp key and added to appsettings [NOT A GOOD PRACTICE OF COURSE]<br/>
+    ///     and were originally Base64Url encoded
+    /// </para>
+    /// </summary>
+    /// <param name="builder">A builder for web applications</param>
+    /// <returns>Signing credentials created from an RSA security key</returns>
     public static SigningCredentials GenerateSigningCredentialsFromConfiguration(
         this WebApplicationBuilder builder)
     {
@@ -28,6 +38,14 @@ public static class CryptographyExtensions
         return new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256);
     }
     
+    /// <summary>
+    /// Decrypts the cipher text to the original model of type T
+    /// </summary>
+    /// <typeparam name="T">Model to deserialize the decrypted cipher text to from the json as a utf8 byte array</typeparam>
+    /// <param name="encryptedDataModel">The incoming encrypted model from the request</param>
+    /// <param name="signingCredentialStore">IdentityServer4's credential store to extract the signing credentials to decrypt the encrypted Aes key</param>
+    /// <param name="logger">An instance of ILogger injected from the client code's constructor</param>
+    /// <returns>A decrypted model of type T if decryption succeeds, else default [null]</returns>
     public static async Task<T?> DecryptAsync<T>(
         this EncryptedDataModel encryptedDataModel, 
         ISigningCredentialStore signingCredentialStore,
@@ -41,27 +59,27 @@ public static class CryptographyExtensions
             "Beginning decryption process for model of type {modelType}", 
             typeof(T).Name);
 
-        logger.LogDebug("Retrieving the RSA Security Key from the signing credential store");
+        logger.LogInformation("Retrieving the RSA Security Key from the signing credential store");
         
         var rsaSecurityKey = (RsaSecurityKey)(await signingCredentialStore.GetSigningCredentialsAsync()).Key;
 
         var rsa = RSA.Create(rsaSecurityKey.Parameters);
 
-        logger.LogDebug("Decrypting the encrypted Aes key");
+        logger.LogInformation("Decrypting the encrypted Aes key");
 
         var aesKey = rsa.Decrypt(encryptedDataModel.EncryptedAesKey, RSAEncryptionPadding.OaepSHA256);
 
-        logger.LogDebug("Creating a byte array to hold the decrypted data");
+        logger.LogInformation("Creating a byte array to hold the decrypted data");
         
         var modelAsBytes = new byte[encryptedDataModel.AesGcmCipherText.Length];
 
-        logger.LogDebug("Recreating the AesGcm instance with the Aes key to decrypt the data");
+        logger.LogInformation("Recreating the AesGcm instance with the Aes key to decrypt the data");
 
         using var aesGcm = new AesGcm(aesKey);
 
         try
         {
-            logger.LogDebug("Attempting to decrypt the data");
+            logger.LogInformation("Attempting to decrypt the data");
             
             aesGcm.Decrypt(
                 nonce: encryptedDataModel.AesGcmNonce,

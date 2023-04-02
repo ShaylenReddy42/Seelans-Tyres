@@ -1,11 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
-using SeelansTyres.Libraries.Shared.Messages;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Configuration;     // IConfiguration
+using Microsoft.Extensions.Logging;           // ILogger
+using RabbitMQ.Client;                        // BasicPublish()
+using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
+using System.Text.Json;                       // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
+/// <summary>
+/// Provides the RabbitMQ implementation for the message publisher
+/// </summary>
+/// <remarks>
+///     Used in the Development environment [ASPNETCORE_ENVIRONMENT]
+/// </remarks>
 public class RabbitMQPublisher : IMessagePublisher
 {
     private readonly ILogger<RabbitMQPublisher> logger;

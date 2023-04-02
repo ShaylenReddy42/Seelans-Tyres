@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SeelansTyres.Services.IdentityService.Data.Entities;
-using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Identity;                       // RoleManager, UserManager, IdentityRole
+using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
+using System.Diagnostics;                                  // Stopwatch
+using System.IdentityModel.Tokens.Jwt;                     // JwtRegisteredClaimNames
+using System.Security.Claims;                              // Claim, ClaimTypes
 
 namespace SeelansTyres.Services.IdentityService.Services;
 

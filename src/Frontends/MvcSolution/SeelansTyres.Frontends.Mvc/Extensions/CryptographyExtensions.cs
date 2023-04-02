@@ -1,14 +1,23 @@
-﻿using IdentityModel.Client;
-using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Libraries.Shared.Models;
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text.Json;
+﻿using IdentityModel.Client;                 // GetDiscoveryDocumentAsync()
+using Microsoft.IdentityModel.Tokens;       // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Models; // EncryptedDataModel
+using System.Diagnostics;                   // Stopwatch
+using System.Security.Cryptography;         // RandomNumberGenerator, AesGcm, RSAParameters, RSA, RSAEncryptionPadding
+using System.Text.Json;                     // JsonSerializer
 
 namespace SeelansTyres.Frontends.Mvc.Extensions;
 
 public static class CryptographyExtensions
 {
+    /// <summary>
+    /// Encrypts a model of type T using hybrid encryption
+    /// </summary>
+    /// <typeparam name="T">The modeltype to encrypt</typeparam>
+    /// <param name="model">The model</param>
+    /// <param name="client">An http client used to retrieve the discovery document from IdentityServer4</param>
+    /// <param name="configuration">An instance of IConfiguration to extract the identity server url</param>
+    /// <param name="logger">An instance of ILogger injected from the client code's constructor</param>
+    /// <returns>An encrypted data model</returns>
     public static async Task<EncryptedDataModel> EncryptAsync<T>(
         this T model, 
         HttpClient client, 
@@ -27,17 +36,17 @@ public static class CryptographyExtensions
 
         var encryptedDataModel = new EncryptedDataModel();
 
-        logger.LogDebug("Randomly generating a symmetric Aes key");
+        logger.LogInformation("Randomly generating a symmetric Aes key");
 
         var aesKey = RandomNumberGenerator.GetBytes(32);
 
-        logger.LogDebug("Creating a byte array to hold the encrypted data");
+        logger.LogInformation("Creating a byte array to hold the encrypted data");
 
         encryptedDataModel.AesGcmCipherText = new byte[modelAsJson.Length];
 
         using var aesGcm = new AesGcm(aesKey);
 
-        logger.LogDebug("Performing symmetric encryption of the data using AesGcm");
+        logger.LogInformation("Performing symmetric encryption of the data using AesGcm");
 
         aesGcm.Encrypt(
             nonce: encryptedDataModel.AesGcmNonce, 
@@ -45,7 +54,7 @@ public static class CryptographyExtensions
             ciphertext: encryptedDataModel.AesGcmCipherText, 
             tag: encryptedDataModel.AesGcmTag);
 
-        logger.LogDebug("Attempting to retrieve the discovery document from IdentityServer4");
+        logger.LogInformation("Attempting to retrieve the discovery document from IdentityServer4");
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
@@ -60,11 +69,11 @@ public static class CryptographyExtensions
                 discoveryDocument.Error);
         }
 
-        logger.LogDebug("Retrieving the Json Web Key from the discovery document");
+        logger.LogInformation("Retrieving the Json Web Key from the discovery document");
 
         var jsonWebKey = discoveryDocument.KeySet.Keys[0];
 
-        logger.LogDebug("Converting the Json Web Key to an RSA public key. Values were encoded in base64url according to the documentation");
+        logger.LogInformation("Converting the Json Web Key to an RSA public key. Values were encoded in base64url according to the documentation");
 
         var rsaParameters = new RSAParameters
         {
@@ -74,7 +83,7 @@ public static class CryptographyExtensions
 
         var rsa = RSA.Create(rsaParameters);
 
-        logger.LogDebug("Encrypting the Aes key");
+        logger.LogInformation("Encrypting the Aes key");
 
         encryptedDataModel.EncryptedAesKey = rsa.Encrypt(aesKey, RSAEncryptionPadding.OaepSHA256);
 

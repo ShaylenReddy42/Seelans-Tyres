@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Authentication
-@inject IHttpContextAccessor httpContextAccessor
+﻿@inject IHttpContextAccessor httpContextAccessor
 
 @{
     Layout = "_Layout";
@@ -11,6 +10,7 @@
     session.SetString("CartId", cartId);
 }
 
+@* This ensures that an administrator is locked into the Admin Portal *@
 @if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin") is false)
 {
     <script>

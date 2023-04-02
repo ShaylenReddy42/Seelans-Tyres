@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Services.TyresService.Services;
-using SeelansTyres.Services.TyresService.Data.Entities;
+﻿using AutoMapper;                                       // IMapper
+using Microsoft.AspNetCore.Mvc;                         // ApiController, ControllerBase, Http Methods, ActionResult
+using SeelansTyres.Services.TyresService.Services;      // ITyresRepository
+using SeelansTyres.Services.TyresService.Data.Entities; // Brand
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 

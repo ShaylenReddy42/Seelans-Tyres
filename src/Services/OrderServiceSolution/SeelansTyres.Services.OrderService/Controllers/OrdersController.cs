@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Data.OrderData.Entities;
-using SeelansTyres.Services.OrderService.Services;
+﻿using AutoMapper;                                    // IMapper
+using Microsoft.AspNetCore.Authentication.JwtBearer; // JwtBearerDefaults
+using Microsoft.AspNetCore.Authorization;            // Authorize
+using Microsoft.AspNetCore.Mvc;                      // ApiController, ControllerBase, Http Methods, ActionResult
+using SeelansTyres.Data.OrderData.Entities;          // Order
+using SeelansTyres.Services.OrderService.Services;   // IOrderRepository
 
 namespace SeelansTyres.Services.OrderService.Controllers;
 

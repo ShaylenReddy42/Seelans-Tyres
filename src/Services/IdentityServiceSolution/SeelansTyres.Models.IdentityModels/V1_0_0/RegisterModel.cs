@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations; // RegularExpression, Required, EmailAddress, MinLength, Compare
 
 namespace SeelansTyres.Models.IdentityModels.V1_0_0;
 

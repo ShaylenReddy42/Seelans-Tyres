@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Frontends.Mvc.Models;
-using SeelansTyres.Frontends.Mvc.Services;
-using SeelansTyres.Frontends.Mvc.ViewModels;
-using System.Diagnostics;
-using System.Security.Cryptography;
+﻿using Microsoft.AspNetCore.Authentication;               // SignOutAsync()
+using Microsoft.AspNetCore.Authentication.Cookies;       // CookieAuthenticationDefaults
+using Microsoft.AspNetCore.Authentication.OpenIdConnect; // OpenIdConnectDefaults
+using Microsoft.AspNetCore.Authorization;                // Authorize
+using SeelansTyres.Frontends.Mvc.Models;                 // ResetPasswordModel
+using SeelansTyres.Frontends.Mvc.Services;               // IAddressService, ICustomerService, IOrderService, IMailService
+using SeelansTyres.Frontends.Mvc.ViewModels;             // AccountViewModel, ResetPasswordViewModel
+using System.Security.Cryptography;                      // RandomNumberGenerator
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 

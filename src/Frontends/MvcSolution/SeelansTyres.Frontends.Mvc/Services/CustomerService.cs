@@ -1,6 +1,5 @@
-﻿using IdentityModel.Client;
-using SeelansTyres.Frontends.Mvc.Extensions;
-using System.Diagnostics;
+﻿using IdentityModel.Client;                  // SetBearerToken(), GetDiscoveryDocumentAsync(), RequestClientCredentialsTokenAsync(), ClientCredentialsTokenRequest
+using SeelansTyres.Frontends.Mvc.Extensions; // EncryptAsync()
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
@@ -220,6 +219,11 @@ public class CustomerService : ICustomerService
                 "SUCCEEDED", customerId);
     }
 
+    /// <summary>
+    /// Uses the client credential flow to get an access token from IdentityServer4 using specific scopes
+    /// </summary>
+    /// <param name="additionalScopes">Space-separated api scopes to request in order to access downstream apis</param>
+    /// <returns>A valid access token meant to be used with 'Bearer' authentication</returns>
     private async Task<string> GetClientAccessTokenAsync(string additionalScopes)
     {
         logger.LogInformation(

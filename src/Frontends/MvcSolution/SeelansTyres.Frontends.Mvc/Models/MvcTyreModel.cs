@@ -1,5 +1,5 @@
-﻿using SeelansTyres.Frontends.Mvc.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using SeelansTyres.Frontends.Mvc.Validation; // FileSizeLimit
+using System.ComponentModel.DataAnnotations; // FileExtensions
 
 namespace SeelansTyres.Frontends.Mvc.Models;
 

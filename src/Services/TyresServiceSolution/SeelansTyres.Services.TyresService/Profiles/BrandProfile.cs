@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using SeelansTyres.Services.TyresService.Data.Entities;
+﻿using AutoMapper;                                       // Profile, CreateMap(), ReverseMap()
+using SeelansTyres.Services.TyresService.Data.Entities; // Brand
 
 namespace SeelansTyres.Services.TyresService.Profiles;
 

@@ -1,8 +1,11 @@
-﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
+﻿using Azure.Storage.Blobs;        // BlobServiceClient
+using Azure.Storage.Blobs.Models; // PublicAccessType, BlobHttpHeaders, DeleteSnapshotsOption
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
+/// <summary>
+/// Provides a cloud implementation of the image service that uploads images to an Azure Storage account
+/// </summary>
 public class CloudImageService : IImageService
 {
     private readonly ILogger<CloudImageService> logger;

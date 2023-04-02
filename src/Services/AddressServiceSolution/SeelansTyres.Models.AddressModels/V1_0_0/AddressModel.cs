@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations; // Required, StringLength, RegularExpression
 
 namespace SeelansTyres.Models.AddressModels.V1_0_0;
 

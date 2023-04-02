@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Frontends.Mvc.Models;
-using SeelansTyres.Frontends.Mvc.Services;
-using SeelansTyres.Frontends.Mvc.ViewModels;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Authorization;    // Authorize
+using SeelansTyres.Frontends.Mvc.Models;     // MvcTyreModel
+using SeelansTyres.Frontends.Mvc.Services;   // IImageService, IOrderService, ITyresService
+using SeelansTyres.Frontends.Mvc.ViewModels; // AdminPortalViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 

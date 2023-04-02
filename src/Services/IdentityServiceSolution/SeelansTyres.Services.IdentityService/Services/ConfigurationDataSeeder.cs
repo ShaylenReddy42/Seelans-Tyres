@@ -1,7 +1,7 @@
-﻿using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+﻿using IdentityServer4.EntityFramework.DbContexts; // ConfigurationDbContext
+using IdentityServer4.EntityFramework.Mappers;    // ToEntity()
+using Microsoft.EntityFrameworkCore;              // ExecuteDelete
+using System.Diagnostics;                         // Stopwatch
 
 namespace SeelansTyres.Services.IdentityService.Services;
 

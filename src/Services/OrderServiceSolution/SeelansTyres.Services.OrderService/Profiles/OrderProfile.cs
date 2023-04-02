@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using SeelansTyres.Data.OrderData.Entities;
+﻿using AutoMapper;                           // Profile, CreateMap(), ReverseMap()
+using SeelansTyres.Data.OrderData.Entities; // Order
 
 namespace SeelansTyres.Services.OrderService.Profiles
 {

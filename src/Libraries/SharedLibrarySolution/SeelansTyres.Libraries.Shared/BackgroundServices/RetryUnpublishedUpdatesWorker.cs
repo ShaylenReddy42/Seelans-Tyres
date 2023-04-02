@@ -1,13 +1,19 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Libraries.Shared.Messages;
-using SeelansTyres.Libraries.Shared.Services;
-using System.Text.Json;
+﻿using Microsoft.Extensions.DependencyInjection; // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;             // BackgroundService
+using Microsoft.Extensions.Logging;             // ILogger
+using Microsoft.IdentityModel.Tokens;           // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Messages;   // BaseMessage
+using SeelansTyres.Libraries.Shared.Services;   // IMessagePublisher, IUnpublishedUpdateRepository
+using System.Text.Json;                         // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.BackgroundServices;
 
+/// <summary>
+/// Retrieves the unpublished messages from the database and retries them
+/// </summary>
+/// <remarks>
+/// Forms part of the solution to add resiliency for publishing messages to a message bus
+/// </remarks>
 public class RetryUnpublishedUpdatesWorker : BackgroundService
 {
     private readonly ILogger<RetryUnpublishedUpdatesWorker> logger;
@@ -28,6 +34,9 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
     {
         while (stoppingToken.IsCancellationRequested is false)
         {
+            // The 'IUnpublishedUpdateRepository' is registered as a scoped service
+            // which cannot be injected into the constructor of a service registered
+            // as a singleton, needing the service scope factory
             using var scope = serviceScopeFactory.CreateScope();
 
             var unpublishedUpdateRepository = scope.ServiceProvider.GetService<IUnpublishedUpdateRepository>();

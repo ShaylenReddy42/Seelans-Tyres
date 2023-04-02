@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using SeelansTyres.Services.IdentityService.Data.Entities;
+﻿using AutoMapper;                                          // Profile, CreateMap()
+using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
 
 namespace SeelansTyres.Services.IdentityService.Profiles;
 

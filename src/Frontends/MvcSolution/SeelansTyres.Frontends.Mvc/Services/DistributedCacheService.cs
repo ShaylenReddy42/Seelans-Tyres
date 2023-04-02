@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Caching.Distributed; // IDistributedCache, DistributedCacheEntryOptions
+using System.Text.Json;                         // JsonSerializer
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
+/// <summary>
+/// Provides the Redis implementation of the cache service
+/// </summary>
 public class DistributedCacheService : ICacheService
 {
     private readonly ILogger<DistributedCacheService> logger;

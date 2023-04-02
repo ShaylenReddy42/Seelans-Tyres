@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;                // Index
+using System.ComponentModel.DataAnnotations;        // Key, Required, StringLength, RegularExpression
+using System.ComponentModel.DataAnnotations.Schema; // DatabaseGenerated
 
 namespace SeelansTyres.Data.AddressData.Entities;
 

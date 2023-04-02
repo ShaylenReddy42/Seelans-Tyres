@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using SeelansTyres.Data.AddressData.Entities;
+﻿using AutoMapper;                             // Profile, CreateMap(), ReverseMap()
+using SeelansTyres.Data.AddressData.Entities; // Address
 
 namespace SeelansTyres.Services.AddressService.Profiles;
 

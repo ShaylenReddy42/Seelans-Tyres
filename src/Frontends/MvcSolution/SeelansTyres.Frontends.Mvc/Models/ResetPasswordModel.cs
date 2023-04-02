@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations; // EmailAddress, Required, MinLength, Compare
 
 namespace SeelansTyres.Frontends.Mvc.Models;
 

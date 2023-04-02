@@ -1,9 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
-using SeelansTyres.Libraries.Shared.Messages;
-using System.Threading.Channels;
+﻿using Microsoft.Extensions.Logging;           // ILogger
+using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
+using System.Threading.Channels;              // Channel, BoundedChannelOptions
 
 namespace SeelansTyres.Libraries.Shared.Channels;
 
+/// <summary>
+/// Used to pass updates for publishing from a request to a background service
+/// </summary>
+/// <remarks>
+/// Forms part of the solution to add resiliency for publishing messages to a message bus
+/// </remarks>
 public class PublishUpdateChannel
 {
     private readonly ILogger<PublishUpdateChannel> logger;

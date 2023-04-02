@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SeelansTyres.Services.IdentityService.Data.Entities;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Identity;                       // UserManager
+using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
+using System.Diagnostics;                                  // Stopwatch
 
 namespace SeelansTyres.Services.IdentityService.Services;
 

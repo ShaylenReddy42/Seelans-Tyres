@@ -1,5 +1,8 @@
 ﻿namespace SeelansTyres.Frontends.Mvc.Services;
 
+/// <summary>
+/// Provides a local implementation for the image service that uploads images to wwwroot/images/uploaded
+/// </summary>
 public class LocalImageService : IImageService
 {
     private readonly IWebHostEnvironment environment;

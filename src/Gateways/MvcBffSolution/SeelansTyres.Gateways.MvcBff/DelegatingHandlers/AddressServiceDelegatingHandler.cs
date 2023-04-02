@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Gateways.MvcBff.Services;
+﻿using SeelansTyres.Gateways.MvcBff.Services; // ITokenExchangeService
 
 namespace SeelansTyres.Gateways.MvcBff.DelegatingHandlers;
 
@@ -23,6 +23,7 @@ public class AddressServiceDelegatingHandler : DelegatingHandler
             "{announcement}: {delegatingHandler}",
             "DELEGATING HANDLER HIT", "AddressServiceDelegatingHandler");
 
+        // Gets 'AddressService' as audience in the exchanged access token
         var additionalScopes = "AddressService.fullaccess";
         
         request.Headers.Authorization = await tokenExchangeService.PerformTokenExchangeAsync(request, additionalScopes);

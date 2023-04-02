@@ -1,12 +1,20 @@
-﻿using Microsoft.Extensions.Configuration;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using SeelansTyres.Libraries.Shared.Models;
+﻿using Microsoft.Extensions.Configuration;   // IConfiguration
+using RabbitMQ.Client;                      // IModel, ConnectionFactory
+using RabbitMQ.Client.Events;               // EventingBasicConsumer
+using SeelansTyres.Libraries.Shared.Models; // RabbitMQSettingsModel
 
 namespace SeelansTyres.Libraries.Shared;
 
 public static class RabbitMQ
 {
+    /// <summary>
+    /// Provides an abstraction to configure a RabbitMQ connection
+    /// </summary>
+    /// <remarks>
+    ///     The fanout type is used since it's the best option [IMO] for RabbitMQ as it makes the exchanges future-proof
+    /// </remarks>
+    /// <param name="settings">Properties needed to configure RabbitMQ</param>
+    /// <param name="channel">An AMQP channel opened for publishing or receiving messages</param>
     public static void ConfigureCommonRabbitMQConnection(RabbitMQSettingsModel settings, out IModel channel)
     {
         var connectionFactory = new ConnectionFactory
@@ -39,6 +47,14 @@ public static class RabbitMQ
         }
     }
 
+    /// <summary>
+    /// Provides a second level of abstraction to configure a RabbitMQ consumer
+    /// </summary>
+    /// <param name="configuration">An instance of IConfiguration to configure RabbitMQ</param>
+    /// <param name="eventName">The event to be processed by the consumer, used to extract the correct exchange and queue from IConfiguration</param>
+    /// <param name="channel">An AMQP channel opened for publishing or receiving messages</param>
+    /// <param name="consumer">A configured RabbitMQ consumer linked to the event</param>
+    /// <returns>The original IConfiguration instance</returns>
     public static IConfiguration ConfigureCommonRabbitMQConsumer(
         this IConfiguration configuration,
         string eventName,

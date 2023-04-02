@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Primitives;
+﻿using Microsoft.AspNetCore.Authorization; // AuthorizationHandler, AuthorizationHandlerContext, AuthorizationFailureReason()
+using Microsoft.Extensions.Primitives;    // StringValues
 
 namespace SeelansTyres.Services.OrderService.Authorization;
 

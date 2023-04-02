@@ -1,14 +1,22 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Libraries.Shared.Channels;
-using SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities;
-using SeelansTyres.Libraries.Shared.Services;
-using System.Text.Json;
+﻿using Microsoft.Extensions.DependencyInjection;                                     // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;                                                 // BackgroundService
+using Microsoft.Extensions.Logging;                                                 // ILogger
+using Microsoft.IdentityModel.Tokens;                                               // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Channels;                                       // PublishUpdateChannel
+using SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities; // UnpublishedUpdate
+using SeelansTyres.Libraries.Shared.Services;                                       // IMessagePublisher, IUnpublishedUpdateRepository
+using System.Text.Json;                                                             // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.BackgroundServices;
 
+/// <summary>
+/// Reads in data from the 'PublishUpdateChannel' and attempts to publish it to the message bus<br/>
+/// <br/>
+/// Writes them to the database on failure
+/// </summary>
+/// <remarks>
+/// Forms part of the solution to add resiliency for publishing messages to a message bus
+/// </remarks>
 public class PublishUpdateChannelReaderBackgroundService : BackgroundService
 {
     private readonly ILogger<PublishUpdateChannelReaderBackgroundService> logger;
@@ -53,6 +61,9 @@ public class PublishUpdateChannelReaderBackgroundService : BackgroundService
                     "{announcement}: Attempt to publish update to {publishDestination} destination was unsuccessful, writing to the database to try again later",
                     "FAILED", destination);
 
+                // The 'IUnpublishedUpdateRepository' is registered as a scoped service
+                // which cannot be injected into the constructor of a service registered
+                // as a singleton, needing the service scope factory
                 using var scope = serviceScopeFactory.CreateScope();
 
                 var unpublishedUpdateRepository = scope.ServiceProvider.GetService<IUnpublishedUpdateRepository>();

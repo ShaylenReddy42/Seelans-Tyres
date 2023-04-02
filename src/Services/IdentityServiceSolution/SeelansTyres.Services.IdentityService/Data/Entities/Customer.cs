@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;         // IdentityUser
+using System.ComponentModel.DataAnnotations; // RegularExpression
 
 namespace SeelansTyres.Services.IdentityService.Data.Entities;
 

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Services.IdentityService.Data.Entities;
+﻿using Microsoft.AspNetCore.Identity;                       // IdentityRole
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;   // IdentityDbContext, Set()
+using Microsoft.EntityFrameworkCore;                       // DbContextOptions, DbSet
+using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
 
 namespace SeelansTyres.Services.IdentityService.Data;
 

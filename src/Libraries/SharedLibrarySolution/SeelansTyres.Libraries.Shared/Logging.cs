@@ -1,18 +1,52 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using SeelansTyres.Libraries.Shared.Models;
-using Serilog;
-using Serilog.Enrichers.Span;
-using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Sinks.Elasticsearch;
-using Serilog.Sinks.SystemConsole.Themes;
-using System.Reflection;
+﻿using Microsoft.Extensions.Configuration;   // GetValue()
+using Microsoft.Extensions.Hosting;         // IHostBuilder, Configuration
+using SeelansTyres.Libraries.Shared.Models; // CommonBuilderConfigurationModel
+using Serilog;                              // UseSerilog()
+using Serilog.Enrichers.Span;               // ActivityEnricher
+using Serilog.Events;                       // LogEventLevel
+using Serilog.Exceptions;                   // WithExceptionDetails()
+using Serilog.Sinks.Elasticsearch;          // ElasticsearchSinkOptions, AutoRegisterTemplateVersion
+using Serilog.Sinks.SystemConsole.Themes;   // AnsiConsoleTheme
+using System.Reflection;                    // GetCustomAttribute(), AssemblyProductAttribute, AssemblyInformationalVersionAttribute, AssemblyMetadataAttribute
 
 namespace SeelansTyres.Libraries.Shared;
 
 public static class Logging
 {
+    /// <summary>
+    /// Configures the default logging provider to Serilog
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     The logs are enriched with properties from the assembly<br/>
+    ///     that make the logs more useful<br/>
+    ///     <br/>
+    ///     Those properties are:<br/>
+    ///     1. The product name along with a descriptive version of it<br/>
+    ///     2. The codebase version
+    /// </para>
+    /// <para>
+    ///     The assembly may also contain custom metadata that is looped through<br/>
+    ///     and used to enrich the logs<br/>
+    ///     <br/>
+    ///     Currently, only the Commit Url is there
+    /// </para>
+    /// <para>
+    ///     The activity trace and span ids are also added via the 'ActivityEnricher' for distributed tracing
+    /// </para>
+    /// <para>
+    ///     Identity Server's original console output template and color scheme is maintained
+    /// </para>
+    /// <code>
+    ///     loggerConfiguration
+    ///         .WriteTo.Console(
+    ///             outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
+    ///             theme: AnsiConsoleTheme.Code);
+    /// </code>
+    /// </remarks>
+    /// <param name="hostBuilder">The web application's host builder</param>
+    /// <param name="commonBuilderConfigurationModel">A model containing properties to enrich the logs and configure the Elasticsearch sink</param>
+    /// <returns>The web application's host builder with Serilog as the logging provider</returns>
     public static IHostBuilder UseCommonSerilog(
         this IHostBuilder hostBuilder, 
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)

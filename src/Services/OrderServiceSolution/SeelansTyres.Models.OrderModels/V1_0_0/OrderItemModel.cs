@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations; // Required
 
 namespace SeelansTyres.Models.OrderModels.V1_0_0;
 

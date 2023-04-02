@@ -1,11 +1,17 @@
-﻿using Azure.Messaging.ServiceBus;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using SeelansTyres.Libraries.Shared.Messages;
-using System.Text.Json;
+﻿using Azure.Messaging.ServiceBus;             // ServiceBusClient()
+using Microsoft.Extensions.Configuration;     // IConfiguration
+using Microsoft.Extensions.Logging;           // ILogger
+using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
+using System.Text.Json;                       // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
+/// <summary>
+/// Provides the Azure Service Bus implementation for the message publisher
+/// </summary>
+/// <remarks>
+///     Used in environments other than Development [ASPNETCORE_ENVIRONMENT]
+/// </remarks>
 public class AzureServiceBusPublisher : IMessagePublisher
 {
     private readonly ILogger<AzureServiceBusPublisher> logger;

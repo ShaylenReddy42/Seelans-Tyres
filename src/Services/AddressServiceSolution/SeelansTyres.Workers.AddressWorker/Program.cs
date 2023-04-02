@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Data.AddressData;
-using SeelansTyres.Libraries.Shared;
-using SeelansTyres.Libraries.Shared.Extensions;
-using SeelansTyres.Libraries.Shared.Services;
-using SeelansTyres.Workers.AddressWorker.BackgroundServices;
-using SeelansTyres.Workers.AddressWorker.Services;
-using static System.Net.Mime.MediaTypeNames;
+using Microsoft.EntityFrameworkCore;                         // UseSqlServer()
+using SeelansTyres.Data.AddressData;                         // AddressDbContext
+using SeelansTyres.Libraries.Shared;                         // All common methods
+using SeelansTyres.Libraries.Shared.Extensions;              // AddCommonStartupDelay()
+using SeelansTyres.Libraries.Shared.Services;                // ITokenValidationService, TokenValidationService
+using SeelansTyres.Workers.AddressWorker.BackgroundServices; // DeleteAccountWorkerWithRabbitMQ, DeleteAccountWorkerWithAzureServiceBus
+using SeelansTyres.Workers.AddressWorker.Services;           // IAddressUpdateService, AddressUpdateService
+using static System.Net.Mime.MediaTypeNames;                 // Application
 
 var builder = WebApplication.CreateBuilder(args);
 

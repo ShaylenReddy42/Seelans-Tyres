@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
-using SeelansTyres.Gateways.MvcBff.DelegatingHandlers;
-using SeelansTyres.Gateways.MvcBff.Services;
-using SeelansTyres.Libraries.Shared;
-using static System.Net.Mime.MediaTypeNames;
-using HealthChecks.UI.Client;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using SeelansTyres.Gateways.MvcBff.Extensions;
-using SeelansTyres.Libraries.Shared.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;   // JwtBearerDefaults
+using Ocelot.DependencyInjection;                      // AddOcelot()
+using Ocelot.Middleware;                               // UseOcelot()
+using SeelansTyres.Gateways.MvcBff.DelegatingHandlers; // AddressServiceDelegatingHandler, CustomerServiceFullAccessDelegatingHandler, OrderServiceDelegatingHandler, TyresServiceDelegatingHandler
+using SeelansTyres.Gateways.MvcBff.Services;           // ITokenExchangeService, TokenExchangeService
+using SeelansTyres.Libraries.Shared;                   // All common methods
+using static System.Net.Mime.MediaTypeNames;           // Application
+using HealthChecks.UI.Client;                          // UIResponseWriter
+using Microsoft.Extensions.Diagnostics.HealthChecks;   // HealthCheckService
+using SeelansTyres.Gateways.MvcBff.Extensions;         // AddDownstreamChecks()
+using SeelansTyres.Libraries.Shared.Extensions;        // AddCommonStartupDelay
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,7 @@ builder.AddCommonBuilderConfiguration(new()
     DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Backend-for-Frontend"
 });
 
+// Against the norm, done for Ocelot
 var authenticationScheme = "SeelansTyresMvcBffAuthenticationScheme";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -59,6 +60,19 @@ app.UseAuthentication();
 
 await app.UseOcelot(ocelotPipelineConfiguration =>
 {
+    // Ocelot thinks the health checks are configured routes, which they aren't
+    // 
+    // Configure Ocelot in a way that matches the health check behavior of all applications
+    // in the architecture by manually retrieving and invoking the health checks via the HealthCheckService
+    // 
+    // Allow the two health check routes 'HealthCheckEndpoint' and 'LivenessCheckEndpoint' from configuration
+    // to be hit by catering for them
+    // 
+    // The regular app.MapHealthChecks() doesn't work with Ocelot and this is the workaround for that issue
+    // 
+    // The solution for this began with a comment on the same issue on Ocelot's repo
+    // https://github.com/ThreeMammals/Ocelot/issues/646#issuecomment-425686026
+
     ocelotPipelineConfiguration.PreErrorResponderMiddleware = async (httpContext, next) =>
     {
         var requestPath = httpContext.Request.Path.ToString();

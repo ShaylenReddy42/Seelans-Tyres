@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;        // Key, Required, MinLength
+using System.ComponentModel.DataAnnotations.Schema; // DatabaseGenerated
 
 namespace SeelansTyres.Services.TyresService.Data.Entities;
 

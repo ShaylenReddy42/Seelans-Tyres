@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;        // Required, StringLength, Range, MaxLength
+using System.ComponentModel.DataAnnotations.Schema; // Column
 
 namespace SeelansTyres.Models.TyresModels.V1_0_0;
 

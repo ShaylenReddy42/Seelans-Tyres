@@ -1,16 +1,16 @@
-using SeelansTyres.Frontends.Mvc.Services;
-using System.Net;
-using System.Net.Mail;
-using static System.Net.Mime.MediaTypeNames;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using SeelansTyres.Libraries.Shared;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using SeelansTyres.Frontends.Mvc.BackgroundServices;
-using SeelansTyres.Frontends.Mvc.Channels;
-using SeelansTyres.Libraries.Shared.Extensions;
+using SeelansTyres.Frontends.Mvc.Services;               // All strongly typed http clients and services
+using System.Net;                                        // NetworkCredential
+using System.Net.Mail;                                   // SmtpClient
+using static System.Net.Mime.MediaTypeNames;             // Application
+using Microsoft.AspNetCore.Authentication.Cookies;       // CookieAuthenticationDefaults
+using Microsoft.AspNetCore.Authentication.OpenIdConnect; // OpenIdConnectDefaults
+using Microsoft.AspNetCore.Authentication;               // MapUniqueJsonKey()
+using System.Security.Claims;                            // ClaimTypes
+using SeelansTyres.Libraries.Shared;                     // All common methods
+using Microsoft.Extensions.Diagnostics.HealthChecks;     // HealthStatus
+using SeelansTyres.Frontends.Mvc.BackgroundServices;     // SendReceiptChannelReaderBackgroundService
+using SeelansTyres.Frontends.Mvc.Channels;               // SendReceiptChannel
+using SeelansTyres.Libraries.Shared.Extensions;          // ConditionallyUseAzureAppConfiguration(), AddCommonStartupDelay()
 
 var builder = WebApplication.CreateBuilder(args);
 

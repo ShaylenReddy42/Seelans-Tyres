@@ -1,13 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Builder;             // WebApplication
+using Microsoft.EntityFrameworkCore;            // Database
+using Microsoft.Extensions.DependencyInjection; // CreateScope()
+using Microsoft.Extensions.Logging;             // LogInformation(), LogError()
+using System.Diagnostics;                       // Stopwatch
 
 namespace SeelansTyres.Libraries.Shared;
 
 public static class Database
 {
+    /// <summary>
+    /// Provides an abstraction to migrate a database
+    /// </summary>
+    /// <remarks>
+    /// Any time a database needs to be migrated using code,<br/>
+    /// a scope has to be created and the dbcontext has to be retrieved<br/>
+    /// from the service collection
+    /// </remarks>
+    /// <typeparam name="T">The DbContext to migrate</typeparam>
+    /// <param name="app">The web application used to configure the http pipeline</param>
+    /// <returns>The web application used to configure the http pipeline</returns>
     public static async Task<WebApplication> MigrateDatabaseAsync<T>(this WebApplication app) where T : DbContext
     {
         app.Logger.LogInformation(

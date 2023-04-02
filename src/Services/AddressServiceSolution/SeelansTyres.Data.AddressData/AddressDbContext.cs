@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Data.AddressData.Entities;
+﻿using Microsoft.EntityFrameworkCore;          // DbContext, DbContextOptions, DbSet, Set()
+using SeelansTyres.Data.AddressData.Entities; // Address
 
 namespace SeelansTyres.Data.AddressData;
 

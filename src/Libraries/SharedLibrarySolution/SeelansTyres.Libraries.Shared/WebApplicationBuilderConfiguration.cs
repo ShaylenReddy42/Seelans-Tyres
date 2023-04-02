@@ -1,20 +1,28 @@
-﻿using ConfigurationSubstitution;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using SeelansTyres.Libraries.Shared.Models;
+﻿using ConfigurationSubstitution;                // EnableSubstitutionsWithDelimitedFallbackDefaults()
+using Microsoft.AspNetCore.Builder;             // WebApplicationBuilder
+using Microsoft.Extensions.Configuration;       // GetValue(), AddAzureAppConfiguration()
+using Microsoft.Extensions.DependencyInjection; // AddApplicationInsightsTelemetry(), AddApplicationInsightsKubernetesEnricher(), AddHealthChecks()
+using Microsoft.Extensions.Logging;             // ClearProviders()
+using SeelansTyres.Libraries.Shared.Models;     // CommonBuilderConfigurationModel, HealthChecksModel
 
 namespace SeelansTyres.Libraries.Shared;
 
 public static class WebApplicationBuilderConfiguration
 {
+    /// <summary>
+    /// Adds common configuration to the web application builder for all applications in the architecture
+    /// </summary>
+    /// <param name="builder">The web application builder</param>
+    /// <param name="commonBuilderConfigurationModel">A model containing properties to enrich the logs and configure the Elasticsearch sink</param>
+    /// <returns>A preconfigured web application builder</returns>
     public static WebApplicationBuilder AddCommonBuilderConfiguration(
         this WebApplicationBuilder builder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
         if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
         {
+            // Adds Azure App Configuration support using 'SystemDegraded' as the sentinel key to enable configuration refresh
+            // It only has 'SystemDegraded' to have it toggled on by a function app and override the state to inform users
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
                 options
@@ -28,12 +36,15 @@ public static class WebApplicationBuilderConfiguration
             });
         }
 
+        // This has to be added last regardless if there are ten or a hundred configuration sources
+        // It proves to be a vital component in configuring the solution
         builder.Configuration.EnableSubstitutionsWithDelimitedFallbackDefaults("$(", ")", " ?? ");
 
         builder.Logging.ClearProviders();
 
         builder.Host.UseCommonSerilog(commonBuilderConfigurationModel);
 
+        // Instruments the solution with application insights
         if (builder.Configuration.GetValue<bool>("AppInsights:Enabled") is true)
         {
             builder.Services.AddApplicationInsightsTelemetry(

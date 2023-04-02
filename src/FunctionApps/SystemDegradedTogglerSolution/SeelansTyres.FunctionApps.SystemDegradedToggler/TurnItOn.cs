@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Azure.Data.AppConfiguration;
-using Azure.Identity;
-using static System.Environment;
+using Microsoft.AspNetCore.Mvc;                // IActionResult, OkResult()
+using Microsoft.Azure.WebJobs;                 // FunctionName, HttpTrigger
+using Microsoft.Azure.WebJobs.Extensions.Http; // AuthorizationLevel
+using Microsoft.AspNetCore.Http;               // HttpRequest
+using Microsoft.Extensions.Logging;            // ILogger
+using Azure.Data.AppConfiguration;             // ConfigurationClient, ConfigurationSetting
+using Azure.Identity;                          // DefaultAzureCredential
+using static System.Environment;               // GetEnvironmentVariable()
 
 namespace SeelansTyres.FunctionApps.SystemDegradedToggler;
 

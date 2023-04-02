@@ -1,7 +1,14 @@
-﻿using System.Threading.Channels;
+﻿using System.Threading.Channels; // Channel, BoundedChannelOptions
 
 namespace SeelansTyres.Frontends.Mvc.Channels;
 
+/// <summary>
+/// Used to pass placed orders by customers from a request to a background service
+/// </summary>
+/// <remarks>
+/// Forms part of the solution to improve performance when placing orders by sending the receipt in the background<br/>
+/// and providing a quicker response to the user
+/// </remarks>
 public class SendReceiptChannel
 {
     private readonly ILogger<SendReceiptChannel> logger;

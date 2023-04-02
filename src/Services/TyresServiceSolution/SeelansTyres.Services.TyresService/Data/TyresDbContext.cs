@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeelansTyres.Services.TyresService.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;                    // DbContext, DbContextOptions, DbSet, Set(), ModelBuilder
+using SeelansTyres.Services.TyresService.Data.Entities; // Brand, Tyre
 
 namespace SeelansTyres.Services.TyresService.Data;
 
@@ -10,6 +10,7 @@ public class TyresDbContext : DbContext
 	public DbSet<Tyre> Tyres => Set<Tyre>();
 	public DbSet<Brand> Brands => Set<Brand>();
 
+    // Persist sample data to database on creation
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);

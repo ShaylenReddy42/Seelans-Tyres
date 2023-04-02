@@ -1,5 +1,5 @@
-﻿using IdentityModel.Client;
-using System.Net.Http.Headers;
+﻿using IdentityModel.Client;    // GetDiscoveryDocumentAsync(), RequestTokenExchangeTokenAsync(), TokenExchangeTokenRequest
+using System.Net.Http.Headers; // AuthenticationHeaderValue
 
 namespace SeelansTyres.Gateways.MvcBff.Services;
 
