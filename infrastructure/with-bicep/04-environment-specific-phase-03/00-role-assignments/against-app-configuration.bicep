@@ -10,6 +10,8 @@ param roleDefinitionId string
 @description('Name of the role assignment [as a guid] created with the id of the assignee, the principal id, and the role definition id')
 param roleAssignmentName string
 
+// Needed to create the role assignment
+// acts as the scope rather than a resource group or subscription scope
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
   name: appConfigurationName
 }

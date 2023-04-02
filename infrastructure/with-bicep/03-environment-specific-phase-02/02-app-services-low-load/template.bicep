@@ -24,18 +24,30 @@ param sqlServerAdminPassword string
 
 var appServicePlanName = 'plan-seelantyres-ll-${environment}-${uniqueString(resourceGroup().id)}'
 
+// Needed to extract its connection string for app settings
+// listKeys() is used
+// see https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list-keys?tabs=HTTP
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
   name: 'appcs-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 }
 
+// Needed to extract its connection string for app setting
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: 'appi-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 }
 
+// Needed to extract a connection string for app settings
+// using the RootManageSharedAccessKey authorization rule
+// created by default when a namespace is created
+// listKeys() is used
+// see https://learn.microsoft.com/en-us/rest/api/servicebus/stable/namespaces-authorization-rules/list-keys?tabs=HTTP
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
   name: 'sb-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 }
 
+// Needed to build the connection string to the database
+// using its fully qualified domain name
+// part of app settings
 resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
   name: 'sql-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 }
