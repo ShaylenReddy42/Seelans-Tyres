@@ -24,13 +24,17 @@ It's also rewritten to utilize my Azure and DevOps skills since I had earned Mic
 
 View the AZ-400 that I prepared for and took [here](docs/az-400/README.md)
 
-As of right now, the solution is completed locally and is almost ready for Azure
+As of right now, the solution is completed locally, and in Azure
+
+Scroll down to the [Demos](#solution-in-azure) section to see it in Azure
 
 Initially I intended to make it cloud-native but I'd rather have it cloud-ready since "native" means it only runs in the cloud
 
 The definition of "cloud-native" seems to be up for debate from what I've seen and it makes sense as to why it is one
 
 NOTE: Since this project is a proof-of-concept, the payment system isn't integrated
+
+NOTE: A Wiki is now available on how the solution is built, ensure to have a look at it 🥹
 
 ## Architecture
 
