@@ -36,15 +36,24 @@ public static class Config
 
     public static List<ApiResource> ApiResources => new()
     {
-        new ApiResource("SeelansTyresMvcBff", "Seelan's Tyres Mvc Bff", new[] { ClaimTypes.Role })
+        new ApiResource(
+            name: "SeelansTyresMvcBff", 
+            displayName: "Seelan's Tyres Mvc Bff", 
+            userClaims: new[] { ClaimTypes.Role })
         {
             Scopes = { "SeelansTyresMvcBff.fullaccess" }
         },
-        new ApiResource("AddressService", "Address Microservice", new[] { ClaimTypes.Role })
+        new ApiResource(
+            name: "AddressService", 
+            displayName: "Address Microservice", 
+            userClaims: new[] { ClaimTypes.Role })
         {
             Scopes = { "AddressService.fullaccess" }
         },
-        new ApiResource("CustomerService", "Customer Microservice", new[] { ClaimTypes.Role })
+        new ApiResource(
+            name: "CustomerService",
+            displayName: "Customer Microservice", 
+            userClaims: new[] { ClaimTypes.Role })
         {
             Scopes = 
             { 
@@ -54,11 +63,17 @@ public static class Config
                 "CustomerService.resetpassword",
             }
         },
-        new ApiResource("OrderService", "Order Microservice", new[] { ClaimTypes.Role })
+        new ApiResource(
+            name: "OrderService", 
+            displayName: "Order Microservice", 
+            userClaims: new[] { ClaimTypes.Role })
         {
             Scopes = { "OrderService.fullaccess" }
         },
-        new ApiResource("TyresService", "Tyres Microservice", new[] { ClaimTypes.Role })
+        new ApiResource(
+            name: "TyresService", 
+            displayName: "Tyres Microservice", 
+            userClaims: new[] { ClaimTypes.Role })
         {
             Scopes = { "TyresService.fullaccess" }
         },
