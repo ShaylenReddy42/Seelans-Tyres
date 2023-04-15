@@ -280,7 +280,7 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-* [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.65.0 or later [For the hosts file editor]
+* [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.69.1 or later [For the hosts file editor]
 
 ## Build instructions
 
@@ -342,3 +342,7 @@ docker pull rabbitmq:3-management
 ### Solution in Azure
 
 [![Azure Thumbnail](docs/demos/azure-thumbnail.png)](https://drive.google.com/file/d/1IHLi6Q6hsFGMJCS53Y3Mb-hEVU8LyZ_8/view "Solution in Azure")
+
+### Setting up https locally
+
+[![HTTPS Thumbnail](docs/demos/https-thumbnail.png)](https://drive.google.com/file/d/1GVZgExSrd6z9P-Hjev04Gb5cME-xutN0/view "Setting Up HTTPS Locally")
