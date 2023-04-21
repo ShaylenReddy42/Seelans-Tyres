@@ -237,6 +237,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: Ben Weissman
 * [The IT Ops Sessions: ARM Templates vs. Terraform](https://www.pluralsight.com/courses/arm-templates-terraform-it-ops-sessions)
   * Author: Tim Warner
+* [ASP.NET Core 6 Performance](https://www.pluralsight.com/courses/asp-dot-net-core-6-performance)
+  * Author: Erik Dahl
 
 ### Whizlabs
 

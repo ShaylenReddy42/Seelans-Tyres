@@ -7,7 +7,6 @@ public class TyresService : ITyresService
 
 	public TyresService(
 		HttpClient client,
-		IHttpContextAccessor httpContextAccessor,
 		ILogger<TyresService> logger)
 	{
 		this.client = client;

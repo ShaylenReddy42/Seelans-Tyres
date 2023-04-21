@@ -5,14 +5,14 @@ namespace SeelansTyres.Services.OrderService.Authorization;
 
 public class MustSatisfyOrderRetrievalRulesHandler : AuthorizationHandler<MustSatisfyOrderRetrievalRulesRequirement>
 {
-    private readonly HttpContext httpContext;
+    private readonly IHttpContextAccessor httpContextAccessor;
     private readonly ILogger<MustSatisfyOrderRetrievalRulesHandler> logger;
 
     public MustSatisfyOrderRetrievalRulesHandler(
         IHttpContextAccessor httpContextAccessor,
         ILogger<MustSatisfyOrderRetrievalRulesHandler> logger)
     {
-        httpContext = httpContextAccessor.HttpContext!;
+        this.httpContextAccessor = httpContextAccessor;
         this.logger = logger;
     }
 
@@ -23,8 +23,8 @@ public class MustSatisfyOrderRetrievalRulesHandler : AuthorizationHandler<MustSa
         logger.LogInformation(
             "{announcement}: {authorizationRequirement}", 
             "AUTHORIZATION REQUIREMENT HIT", "MustSatisfyOrderRetrievalRules");
-        
-        httpContext.Request.Query.TryGetValue("customerId", out StringValues customerIds);
+
+        httpContextAccessor.HttpContext!.Request.Query.TryGetValue("customerId", out StringValues customerIds);
 
         string? customerIdFromQuery = customerIds.Count is not 0 ? customerIds[0] : null;
         var customerIdFromClaims = context.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value ?? "anonymous";

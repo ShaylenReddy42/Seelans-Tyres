@@ -5,7 +5,7 @@ namespace SeelansTyres.Frontends.Mvc.Services;
 
 public class CustomerService : ICustomerService
 {
-    private readonly HttpContext httpContext;
+    private readonly IHttpContextAccessor httpContextAccessor;
     private readonly HttpClient client;
     private readonly IConfiguration configuration;
     private readonly ICacheService cacheService;
@@ -19,7 +19,7 @@ public class CustomerService : ICustomerService
         ICacheService cacheService,
         ILogger<CustomerService> logger)
     {
-        httpContext = httpContextAccessor.HttpContext!;
+        this.httpContextAccessor = httpContextAccessor;
         this.client = client;
         this.configuration = configuration;
         this.cacheService = cacheService;
@@ -145,7 +145,7 @@ public class CustomerService : ICustomerService
 
     public async Task UpdateAsync(UpdateAccountModel updateAccountModel)
     {
-        var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+        var customerId = Guid.Parse(httpContextAccessor.HttpContext!.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
             "Service => Attempting to update account for customer {customerId}",
@@ -172,7 +172,7 @@ public class CustomerService : ICustomerService
 
     public async Task<bool> DeleteAsync(string password)
     {
-        var customerId = Guid.Parse(httpContext.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+        var customerId = Guid.Parse(httpContextAccessor.HttpContext!.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
             "Service => Attempting to delete account for customer {customerId}",

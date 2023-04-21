@@ -7,7 +7,6 @@ public class OrderService : IOrderService
 
     public OrderService(
         HttpClient client,
-        IHttpContextAccessor httpContextAccessor,
         ILogger<OrderService> logger)
     {
         this.client = client;

@@ -4,14 +4,14 @@ namespace SeelansTyres.Services.AddressService.Authorization;
 
 public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : AuthorizationHandler<CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement>
 {
-	private readonly HttpContext httpContext;
+	private readonly IHttpContextAccessor httpContextAccessor;
 	private readonly ILogger<CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler> logger;
 
 	public CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler(
 		IHttpContextAccessor httpContextAccessor,
 		ILogger<CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler> logger)
 	{
-		httpContext = httpContextAccessor.HttpContext!;
+        this.httpContextAccessor = httpContextAccessor;
 		this.logger = logger;
 	}
 
@@ -24,7 +24,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
             "AUTHORIZATION REQUIREMENT HIT", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
         var customerIdFromClaims = context.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value;
-        var customerIdFromRoute = httpContext.GetRouteValue("customerId")!.ToString();
+        var customerIdFromRoute = httpContextAccessor.HttpContext!.GetRouteValue("customerId")!.ToString();
 
         if (customerIdFromClaims != customerIdFromRoute)
         {
