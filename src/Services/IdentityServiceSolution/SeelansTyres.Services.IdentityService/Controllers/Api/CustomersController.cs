@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using IdentityServer4.Stores;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Libraries.Shared.Channels;
-using SeelansTyres.Libraries.Shared.Messages;
-using SeelansTyres.Libraries.Shared.Models;
-using SeelansTyres.Services.IdentityService.Data.Entities;
-using SeelansTyres.Services.IdentityService.Extensions;
-using SeelansTyres.Services.IdentityService.Services;
-using System.Diagnostics;
-using System.Text.Json;
+﻿using AutoMapper;                                          // IMapper
+using IdentityServer4.Stores;                              // ISigningCredentialStore
+using Microsoft.AspNetCore.Authentication.JwtBearer;       // JwtBearerDefaults
+using Microsoft.AspNetCore.Authorization;                  // Authorize
+using SeelansTyres.Libraries.Shared.Channels;              // PublishUpdateChannel
+using SeelansTyres.Libraries.Shared.Messages;              // BaseMessage
+using SeelansTyres.Libraries.Shared.Models;                // EncryptedDataModel
+using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
+using SeelansTyres.Services.IdentityService.Extensions;    // DecryptAsync()
+using SeelansTyres.Services.IdentityService.Services;      // ICustomerService
+using System.Diagnostics;                                  // Stopwatch, Activity
+using System.Text.Json;                                    // JsonSerializer
 
 namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 
