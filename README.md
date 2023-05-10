@@ -292,7 +292,7 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 
 docker pull elasticsearch:7.17.9
 docker pull kibana:7.17.9
-docker pull nginx:latest
+docker pull nginx:1-bullseye
 docker pull rabbitmq:3-management
 docker pull redis:latest
 
