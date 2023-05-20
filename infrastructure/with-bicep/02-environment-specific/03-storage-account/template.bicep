@@ -24,3 +24,5 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     intendedResourceName: 'st-seelanstyres-${environment}'
   }
 }
+
+output storageAccountName string = storageAccountName

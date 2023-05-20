@@ -139,3 +139,5 @@ resource sbt_seelanstyres_updatetyre 'Microsoft.ServiceBus/namespaces/topics@202
     }
   }
 }
+
+output serviceBusNamespaceName string = serviceBusNamespaceName

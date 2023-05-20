@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": ""
+    },
+    
+    "adminCredentialsEmail": {
+      "value": ""
+    },
+    "adminCredentialsPassword": {
+      "value": ""
+    },
+    "clientIPOfAgent": {
+      "value": ""
+    },
+    "emailAddressOfResponder": {
+      "value": ""
+    },
+    "emailCredentialsEmail": {
+      "value": ""
+    },
+    "emailCredentialsPassword": {
+      "value": ""
+    },
+    "healthCheckEndpoint": {
+      "value": ""
+    },
+    "mvcClientSecret": {
+      "value": ""
+    },
+    "mvcBffClientSecret": {
+      "value": ""
+    },
+    "sqlServerAdminLogin": {
+      "value": ""
+    },
+    "sqlServerAdminPassword": {
+      "value": ""
+    }
+  }
+}

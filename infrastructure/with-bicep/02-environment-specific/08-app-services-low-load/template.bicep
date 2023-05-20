@@ -22,34 +22,42 @@ param sqlServerAdminLogin string
 @description('The admin password for the server')
 param sqlServerAdminPassword string
 
-var appServicePlanName = 'plan-seelantyres-ml-${environment}-${uniqueString(resourceGroup().id)}'
+param existingAppConfigurationName string
+
+param existingApplicationInsightsName string
+
+param existingServiceBusNamespaceName string
+
+param existingSqlServerName string
+
+var appServicePlanName = 'plan-seelantyres-ll-${environment}-${uniqueString(resourceGroup().id)}'
 
 // Needed to extract its connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list-keys?tabs=HTTP
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
-  name: 'appcs-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingAppConfigurationName
 }
 
-// Needed to extract its connection string for app settings
+// Needed to extract its connection string for app setting
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: 'appi-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingApplicationInsightsName
 }
 
-// Needed to extract its connection string for app settings
+// Needed to extract a connection string for app settings
 // using the RootManageSharedAccessKey authorization rule
 // created by default when a namespace is created
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/servicebus/stable/namespaces-authorization-rules/list-keys?tabs=HTTP
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
-  name: 'sb-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingServiceBusNamespaceName
 }
 
 // Needed to build the connection string to the database
 // using its fully qualified domain name
 // part of app settings
 resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
-  name: 'sql-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingSqlServerName
 }
 
 var databaseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Database=$(Database:Name);User ID=${sqlServerAdminLogin};Password=${sqlServerAdminPassword};MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;'
@@ -60,35 +68,27 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   kind: 'linux'
   sku: environment == 'dev' ? {
                                 tier: 'Basic'
-                                name: 'B2'
+                                name: 'B1'
                               } : {
                                 tier: 'Standard'
-                                name: 'S2'
+                                name: 'S1'
                               }
   properties: {
     reserved: true
   }
   tags: {
-    intendedResourceName: 'plan-seelanstyres-ml-${environment}'
+    intendedResourceName: 'plan-seelanstyres-ll-${environment}'
   }
 }
 
-resource addressService 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'app-seelanstyres-addressservice-${environment}-${uniqueString(resourceGroup().id)}'
+resource healthChecksUI 'Microsoft.Web/sites@2022-03-01' = {
+  name: 'app-seelanstyres-healthchecksui-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
     siteConfig: {
       appSettings: [
-        {
-          name: 'AzureAppConfig__Enabled'
-          value: 'true'
-        }
-        {
-          name: 'AzureAppConfig__ConnectionString'
-          value: appConfiguration.listKeys().value[0].connectionString
-        }
         {
           name: 'AppInsights__Enabled'
           value: 'true'
@@ -98,12 +98,36 @@ resource addressService 'Microsoft.Web/sites@2022-03-01' = {
           value: applicationInsights.properties.ConnectionString
         }
         {
-          name: 'Database__ConnectionString'
-          value: databaseConnectionString
+          name: 'Applications__Mvc'
+          value: 'https://app-seelanstyres-mvc-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
-          name: 'IdentityServer'
+          name: 'Applications__MvcBff'
+          value: 'https://app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'Applications__AddressService'
+          value: 'https://app-seelanstyres-addressservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'Applications__AddressWorker'
+          value: 'https://app-seelanstyres-addressworker-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'Applications__IdentityService'
           value: 'https://app-seelanstyres-identityservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'Applications__OrderService'
+          value: 'https://app-seelanstyres-orderservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'Applications__OrderWorker'
+          value: 'https://app-seelanstyres-orderworker-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'Applications__TyresService'
+          value: 'https://app-seelanstyres-tyresservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
           name: 'HealthCheckEndpoint'
@@ -115,70 +139,17 @@ resource addressService 'Microsoft.Web/sites@2022-03-01' = {
           'https://*.azurewebsites.net'
         ]
       }
-      healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
       linuxFxVersion: 'DOTNETCORE|7.0'
     }
   }
   tags: {
-    intendedResourceName: 'app-seelanstyres-addressservice-${environment}'
+    intendedResourceName: 'app-seelanstyres-healthchecksui-${environment}'
   }
 }
 
-resource orderService 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'app-seelanstyres-orderservice-${environment}-${uniqueString(resourceGroup().id)}'
-  location: location
-  properties: {
-    serverFarmId: appServicePlan.id
-    httpsOnly: true
-    siteConfig: {
-      appSettings: [
-        {
-          name: 'AzureAppConfig__Enabled'
-          value: 'true'
-        }
-        {
-          name: 'AzureAppConfig__ConnectionString'
-          value: appConfiguration.listKeys().value[0].connectionString
-        }
-        {
-          name: 'AppInsights__Enabled'
-          value: 'true'
-        }
-        {
-          name: 'AppInsights__ConnectionString'
-          value: applicationInsights.properties.ConnectionString
-        }
-        {
-          name: 'Database__ConnectionString'
-          value: databaseConnectionString
-        }
-        {
-          name: 'IdentityServer'
-          value: 'https://app-seelanstyres-identityservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
-        }
-        {
-          name: 'HealthCheckEndpoint'
-          value: healthCheckEndpoint
-        }
-      ]
-      cors: {
-        allowedOrigins: [
-          'https://*.azurewebsites.net'
-        ]
-      }
-      healthCheckPath: '${healthCheckEndpoint}/liveness'
-      use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|7.0'
-    }
-  }
-  tags: {
-    intendedResourceName: 'app-seelanstyres-orderservice-${environment}'
-  }
-}
-
-resource tyresService 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'app-seelanstyres-tyresservice-${environment}-${uniqueString(resourceGroup().id)}'
+resource addressWorker 'Microsoft.Web/sites@2022-03-01' = {
+  name: 'app-seelanstyres-addressworker-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -229,6 +200,62 @@ resource tyresService 'Microsoft.Web/sites@2022-03-01' = {
     }
   }
   tags: {
-    intendedResourceName: 'app-seelanstyres-tyresservice-${environment}'
+    intendedResourceName: 'app-seelanstyres-addressworker-${environment}'
+  }
+}
+
+resource orderWorker 'Microsoft.Web/sites@2022-03-01' = {
+  name: 'app-seelanstyres-orderworker-${environment}-${uniqueString(resourceGroup().id)}'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    httpsOnly: true
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'AzureAppConfig__Enabled'
+          value: 'true'
+        }
+        {
+          name: 'AzureAppConfig__ConnectionString'
+          value: appConfiguration.listKeys().value[0].connectionString
+        }
+        {
+          name: 'AppInsights__Enabled'
+          value: 'true'
+        }
+        {
+          name: 'AppInsights__ConnectionString'
+          value: applicationInsights.properties.ConnectionString
+        }
+        {
+          name: 'Database__ConnectionString'
+          value: databaseConnectionString
+        }
+        {
+          name: 'IdentityServer'
+          value: 'https://app-seelanstyres-identityservice-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+        }
+        {
+          name: 'AzureServiceBus__ConnectionString'
+          value: '${listKeys('${serviceBus.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBus.apiVersion).primaryConnectionString}'
+        }
+        {
+          name: 'HealthCheckEndpoint'
+          value: healthCheckEndpoint
+        }
+      ]
+      cors: {
+        allowedOrigins: [
+          'https://*.azurewebsites.net'
+        ]
+      }
+      healthCheckPath: '${healthCheckEndpoint}/liveness'
+      use32BitWorkerProcess: false
+      linuxFxVersion: 'DOTNETCORE|7.0'
+    }
+  }
+  tags: {
+    intendedResourceName: 'app-seelanstyres-orderworker-${environment}'
   }
 }

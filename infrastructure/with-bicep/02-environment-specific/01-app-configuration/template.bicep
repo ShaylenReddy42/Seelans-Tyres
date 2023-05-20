@@ -30,3 +30,5 @@ resource systemDegradedKeyValue 'Microsoft.AppConfiguration/configurationStores/
     value: 'false'
   }
 }
+
+output appConfigurationName string = appConfigurationName

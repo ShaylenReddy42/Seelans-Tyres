@@ -13,20 +13,24 @@ param environment string = 'dev'
 @description('Your email address')
 param emailAddressOfResponder string
 
+param existingApplicationInsightsName string
+
+param existingFunctionAppName string
+
 var actionGroupName = 'ag-systemdegraded-${environment}-${uniqueString(resourceGroup().id)}'
 
 var scheduledQueryRuleName = 'sqrule-systemdegraded-${environment}-${uniqueString(resourceGroup().id)}'
 
 // Needed to tie the scheduled query rule to it
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: 'appi-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingApplicationInsightsName
 }
 
 // Needed to create the action group, and acts as a receiver
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-host-keys
 resource functionApp 'Microsoft.Web/sites@2022-03-01' existing = {
-  name: 'func-systemdegradedtoggler-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingFunctionAppName
 }
 
 resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {

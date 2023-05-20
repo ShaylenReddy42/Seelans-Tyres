@@ -46,18 +46,30 @@ param sqlServerAdminLogin string
 @description('The admin password for the server')
 param sqlServerAdminPassword string
 
+param existingAppConfigurationName string
+
+param existingApplicationInsightsName string
+
+param existingServiceBusNamespaceName string
+
+param existingRedisName string
+
+param existingSqlServerName string
+
+param existingStorageAccountName string
+
 var appServicePlanName = 'plan-seelantyres-hl-${environment}-${uniqueString(resourceGroup().id)}'
 
 // Needed to extract its connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list-keys?tabs=HTTP
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
-  name: 'appcs-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingAppConfigurationName
 }
 
 // Needed to extract its connection string for app setting
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: 'appi-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingApplicationInsightsName
 }
 
 // Needed to extract its connection string for app settings
@@ -66,28 +78,28 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/servicebus/stable/namespaces-authorization-rules/list-keys?tabs=HTTP
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
-  name: 'sb-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingServiceBusNamespaceName
 }
 
 // Needed to build the connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/redis/redis/list-keys?tabs=HTTP
 resource redis 'Microsoft.Cache/redis@2022-06-01' existing = {
-  name: 'redis-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingRedisName
 }
 
 // Needed to build the connection string to the database
 // using its fully qualified domain name
 // part of app settings
 resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
-  name: 'sql-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingSqlServerName
 }
 
 // Needed to build a connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list-keys?tabs=HTTP
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
-  name: substring('stseelanstyres${environment}${uniqueString(resourceGroup().id)}', 0, 24)
+  name: existingStorageAccountName
 }
 
 var databaseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Database=$(Database:Name);User ID=${sqlServerAdminLogin};Password=${sqlServerAdminPassword};MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;'

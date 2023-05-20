@@ -34,3 +34,5 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     intendedResourceName: 'appi-seelanstyres-${environment}'
   }
 }
+
+output applicationInsightsName string = applicationInsightsName

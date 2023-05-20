@@ -9,6 +9,12 @@ param location string = resourceGroup().location
 @description('Used to determine how the resources would be configured, instead of passing in params for all options')
 param environment string = 'dev'
 
+param existingAppConfigurationName string
+
+param existingApplicationInsightsName string
+
+param existingStorageAccountName string
+
 var appServicePlanName = 'plan-systemdegradedtoggler-${environment}-${uniqueString(resourceGroup().id)}'
 
 var functionAppName = 'func-systemdegradedtoggler-${environment}-${uniqueString(resourceGroup().id)}'
@@ -16,13 +22,13 @@ var functionAppName = 'func-systemdegradedtoggler-${environment}-${uniqueString(
 // Needed to extract the name of the instance,
 // part of the functionapp's app settings
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
-  name: 'appcs-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingAppConfigurationName
 }
 
 // Needed to instrument the functionapp,
 // part of the functionapp's app settings
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: 'appi-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
+  name: existingApplicationInsightsName
 }
 
 // Needed to configure storage for the functionapp
@@ -30,7 +36,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list-keys?tabs=HTTP
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
-  name: substring('stseelanstyres${environment}${uniqueString(resourceGroup().id)}', 0, 24)
+  name: existingStorageAccountName
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
@@ -105,3 +111,5 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
     intendedResourceName: 'func-systemdegradedtoggler-${environment}'
   }
 }
+
+output functionAppName string = functionAppName

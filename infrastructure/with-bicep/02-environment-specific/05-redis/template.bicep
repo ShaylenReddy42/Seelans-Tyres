@@ -31,3 +31,5 @@ resource redis 'Microsoft.Cache/redis@2022-06-01' = {
     intendedResourceName: 'redis-seelanstyres-${environment}'
   }
 }
+
+output redisName string = redisName

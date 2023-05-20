@@ -113,3 +113,5 @@ resource seelansTyresTyresDb 'Microsoft.Sql/servers/databases@2022-08-01-preview
                                 capacity: 1
                               }
 }
+
+output sqlServerName string = sqlServerName
