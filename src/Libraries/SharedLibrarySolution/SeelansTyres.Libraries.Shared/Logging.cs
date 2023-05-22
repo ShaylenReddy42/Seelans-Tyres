@@ -1,13 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;   // GetValue()
-using Microsoft.Extensions.Hosting;         // IHostBuilder, Configuration
-using SeelansTyres.Libraries.Shared.Models; // CommonBuilderConfigurationModel
-using Serilog;                              // UseSerilog()
-using Serilog.Enrichers.Span;               // ActivityEnricher
-using Serilog.Events;                       // LogEventLevel
-using Serilog.Exceptions;                   // WithExceptionDetails()
-using Serilog.Sinks.Elasticsearch;          // ElasticsearchSinkOptions, AutoRegisterTemplateVersion
-using Serilog.Sinks.SystemConsole.Themes;   // AnsiConsoleTheme
-using System.Reflection;                    // GetCustomAttribute(), AssemblyProductAttribute, AssemblyInformationalVersionAttribute, AssemblyMetadataAttribute
+﻿using Microsoft.ApplicationInsights.Extensibility; // TelemetryConfiguration
+using Microsoft.Extensions.Configuration;          // GetValue()
+using Microsoft.Extensions.DependencyInjection;    // GetRequiredService()
+using Microsoft.Extensions.Hosting;                // IHostBuilder, Configuration
+using SeelansTyres.Libraries.Shared.Models;        // CommonBuilderConfigurationModel
+using Serilog;                                     // UseSerilog()
+using Serilog.Enrichers.Span;                      // ActivityEnricher
+using Serilog.Events;                              // LogEventLevel
+using Serilog.Exceptions;                          // WithExceptionDetails()
+using Serilog.Sinks.Elasticsearch;                 // ElasticsearchSinkOptions, AutoRegisterTemplateVersion
+using Serilog.Sinks.SystemConsole.Themes;          // AnsiConsoleTheme
+using System.Reflection;                           // GetCustomAttribute(), AssemblyProductAttribute, AssemblyInformationalVersionAttribute, AssemblyMetadataAttribute
 
 namespace SeelansTyres.Libraries.Shared;
 
@@ -61,7 +63,7 @@ public static class Logging
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                     ?? "0.0.0+0-unknown";
 
-        hostBuilder.UseSerilog((hostBuilderContext, loggerConfiguration) =>
+        hostBuilder.UseSerilog((hostBuilderContext, serviceProvider, loggerConfiguration) =>
         {
             loggerConfiguration
                 .ReadFrom.Configuration(hostBuilderContext.Configuration)
@@ -102,6 +104,14 @@ public static class Logging
                             IndexFormat = "seelanstyres-logs-{0:yyyy.MM.dd}",
                             MinimumLogEventLevel = LogEventLevel.Debug
                         });
+            }
+
+            if (hostBuilderContext.Configuration.GetValue<bool>("AppInsights:Enabled") is true)
+            {
+                loggerConfiguration
+                    .WriteTo.ApplicationInsights(
+                        serviceProvider.GetRequiredService<TelemetryConfiguration>(),
+                        TelemetryConverter.Events);
             }
         });
 
