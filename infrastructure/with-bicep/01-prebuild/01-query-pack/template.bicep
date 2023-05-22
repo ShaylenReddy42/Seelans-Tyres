@@ -32,3 +32,24 @@ resource healthCheckStatusQuery 'microsoft.operationalInsights/querypacks/querie
     }
   }
 }
+
+resource matchElasticsearchAndKibanaExperienceQuery 'microsoft.operationalInsights/querypacks/queries@2019-09-01' = {
+  parent: queryPack
+  name: 'ae64d220-2476-4886-84fe-538eae3bab72'
+  properties: {
+    displayName: 'Match Elasticsearch and Kibana Experience'
+    description: 'A very specific query to attempt to match the search experience when using Elasticsearch and Kibana'
+    body: 'customEvents\r\n| sort by timestamp desc\r\n| project \r\n    timestamp,\r\n    DescriptiveApplicationName=customDimensions.["Custom: Descriptive Application Name"],\r\n    RenderedMessage=customDimensions.["RenderedMessage"],\r\n    CustomDimensions=customDimensions'
+    related: {
+      categories: []
+      resourceTypes: [
+        'microsoft.insights/components'
+      ]
+    }
+    tags: {
+      labels: [
+        'Custom'
+      ]
+    }
+  }
+}
