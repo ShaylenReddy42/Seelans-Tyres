@@ -43,7 +43,7 @@ public class TokenValidationService : ITokenValidationService
 
         var issuerSigningKeys = new List<SecurityKey>();
 
-        var jsonWebKeys = discoveryDocument.KeySet.Keys;
+        var jsonWebKeys = discoveryDocument.KeySet!.Keys;
 
         jsonWebKeys.ForEach(jwk =>
         {

@@ -20,9 +20,9 @@ steps:
       performMultiLevelLookup: true
 
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 7.0.203'
+    displayName: 'Use .NET SDK 7.0.302'
     inputs:
-      version: 7.0.203
+      version: 7.0.302
       performMultiLevelLookup: true
 
   - task: CMake@1

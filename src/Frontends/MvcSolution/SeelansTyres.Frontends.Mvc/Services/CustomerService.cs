@@ -247,7 +247,7 @@ public class CustomerService : ICustomerService
             await client.RequestClientCredentialsTokenAsync(
                 new ClientCredentialsTokenRequest
                 {
-                    ClientId = configuration["ClientCredentials:ClientId"],
+                    ClientId = configuration["ClientCredentials:ClientId"]!,
                     ClientSecret = configuration["ClientCredentials:ClientSecret"],
                     Address = discoveryDocument.TokenEndpoint,
                     Scope = $"SeelansTyresMvcBff.fullaccess {additionalScopes}"
@@ -268,6 +268,6 @@ public class CustomerService : ICustomerService
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds);
         }
 
-        return tokenResponse.AccessToken;
+        return tokenResponse.AccessToken!;
     }
 }

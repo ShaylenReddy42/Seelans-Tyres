@@ -277,7 +277,7 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 ## Required local setup to build and run
 
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.5.4 or later
-* .NET SDK [6.0.408](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.203](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* .NET SDK [6.0.408](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.302](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)

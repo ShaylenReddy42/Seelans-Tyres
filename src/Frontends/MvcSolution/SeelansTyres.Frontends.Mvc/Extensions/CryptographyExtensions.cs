@@ -71,7 +71,7 @@ public static class CryptographyExtensions
 
         logger.LogInformation("Retrieving the Json Web Key from the discovery document");
 
-        var jsonWebKey = discoveryDocument.KeySet.Keys[0];
+        var jsonWebKey = discoveryDocument.KeySet!.Keys[0];
 
         logger.LogInformation("Converting the Json Web Key to an RSA public key. Values were encoded in base64url according to the documentation");
 

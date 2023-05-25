@@ -40,9 +40,9 @@ public class TokenExchangeService : ITokenExchangeService
         {
             Address = discoveryDocument.TokenEndpoint,
             SubjectTokenType = "urn:ietf:params:oauth:token-type:access_token",
-            SubjectToken = incomingAccessToken,
+            SubjectToken = incomingAccessToken!,
             Scope = $"openid profile role {additionalScopes}",
-            ClientId = configuration["ClientCredentials:ClientId"],
+            ClientId = configuration["ClientCredentials:ClientId"]!,
             ClientSecret = configuration["ClientCredentials:ClientSecret"]
         });
 
