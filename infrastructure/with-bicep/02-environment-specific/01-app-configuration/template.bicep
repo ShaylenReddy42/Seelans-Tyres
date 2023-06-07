@@ -18,7 +18,7 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-0
     name: 'Standard'
   }
   properties: {
-    softDeleteRetentionInDays: 0
+    softDeleteRetentionInDays: 1
   }
   tags:{
     intendedResourceName: 'appcs-seelanstyres-${environment}'
