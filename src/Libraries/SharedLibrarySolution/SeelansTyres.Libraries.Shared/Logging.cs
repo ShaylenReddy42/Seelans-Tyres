@@ -7,6 +7,7 @@ using Serilog;                                     // UseSerilog()
 using Serilog.Enrichers.Span;                      // ActivityEnricher
 using Serilog.Events;                              // LogEventLevel
 using Serilog.Exceptions;                          // WithExceptionDetails()
+using Serilog.Settings.Configuration;              // ConfigurationReaderOptions
 using Serilog.Sinks.Elasticsearch;                 // ElasticsearchSinkOptions, AutoRegisterTemplateVersion
 using Serilog.Sinks.SystemConsole.Themes;          // AnsiConsoleTheme
 using System.Reflection;                           // GetCustomAttribute(), AssemblyProductAttribute, AssemblyInformationalVersionAttribute, AssemblyMetadataAttribute
@@ -63,10 +64,17 @@ public static class Logging
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                     ?? "0.0.0+0-unknown";
 
+        var configurationAssemblies = new Assembly[]
+        {
+            typeof(Logging).Assembly
+        };
+
+        var serilogConfigurationReaderOptions = new ConfigurationReaderOptions(configurationAssemblies);
+
         hostBuilder.UseSerilog((hostBuilderContext, serviceProvider, loggerConfiguration) =>
         {
             loggerConfiguration
-                .ReadFrom.Configuration(hostBuilderContext.Configuration)
+                .ReadFrom.Configuration(hostBuilderContext.Configuration, serilogConfigurationReaderOptions)
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .Enrich.With<ActivityEnricher>()
