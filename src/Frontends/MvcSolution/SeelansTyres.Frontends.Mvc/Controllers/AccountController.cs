@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;       // CookieAuthenticationDefaults
 using Microsoft.AspNetCore.Authentication.OpenIdConnect; // OpenIdConnectDefaults
 using Microsoft.AspNetCore.Authorization;                // Authorize
+using SeelansTyres.Frontends.Mvc.HttpClients;            // IAddressServiceClient, ICustomerServiceClient, IOrderServiceClient
 using SeelansTyres.Frontends.Mvc.Models;                 // ResetPasswordModel
-using SeelansTyres.Frontends.Mvc.Services;               // IAddressService, ICustomerService, IOrderService, IMailService
+using SeelansTyres.Frontends.Mvc.Services;               // IMailService
 using SeelansTyres.Frontends.Mvc.ViewModels;             // AccountViewModel, ResetPasswordViewModel
 using System.Security.Cryptography;                      // RandomNumberGenerator
 
@@ -12,23 +13,23 @@ namespace SeelansTyres.Frontends.Mvc.Controllers;
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> logger;
-    private readonly IAddressService addressService;
-    private readonly ICustomerService customerService;
-    private readonly IOrderService orderService;
+    private readonly IAddressServiceClient addressServiceClient;
+    private readonly ICustomerServiceClient customerServiceClient;
+    private readonly IOrderServiceClient orderServiceClient;
     private readonly IMailService mailService;
     private readonly Stopwatch stopwatch = new();
 
     public AccountController(
         ILogger<AccountController> logger,
-        IAddressService addressService,
-        ICustomerService customerService,
-        IOrderService orderService,
+        IAddressServiceClient addressServiceClient,
+        ICustomerServiceClient customerServiceClient,
+        IOrderServiceClient orderServiceClient,
         IMailService mailService)
     {
         this.logger = logger;
-        this.addressService = addressService;
-        this.customerService = customerService;
-        this.orderService = orderService;
+        this.addressServiceClient = addressServiceClient;
+        this.customerServiceClient = customerServiceClient;
+        this.orderServiceClient = orderServiceClient;
         this.mailService = mailService;
     }
 
@@ -43,19 +44,19 @@ public class AccountController : Controller
             "Controller => Retrieving information for customer {customerId}",
             customerId);
 
-        var customer = customerService.RetrieveSingleAsync(customerId);
+        var customer = customerServiceClient.RetrieveSingleAsync(customerId);
 
         logger.LogInformation(
             "Controller => Retrieving all addresses for customer {customerId}",
             customerId);
 
-        var addresses = addressService.RetrieveAllAsync(customerId);
+        var addresses = addressServiceClient.RetrieveAllAsync(customerId);
 
         logger.LogInformation(
             "Controller => Retrieving all orders for customer {customerId}",
             customerId);
 
-        var orders = orderService.RetrieveAllAsync(customerId: customerId);
+        var orders = orderServiceClient.RetrieveAllAsync(customerId: customerId);
 
         await Task.WhenAll(customer, addresses, orders);
 
@@ -123,7 +124,7 @@ public class AccountController : Controller
         logger.LogInformation(
             "Controller => Attempting to create a new customer account");
 
-        var (newCustomer, succeeded, errors) = await customerService.CreateAsync(model);
+        var (newCustomer, succeeded, errors) = await customerServiceClient.CreateAsync(model);
 
         if (succeeded is true && newCustomer is not null)
         {
@@ -152,7 +153,7 @@ public class AccountController : Controller
             "Controller => Attempting to update account for customer {customerId}. Encryption required",
             customerId);
         
-        await customerService.UpdateAsync(model.UpdateAccountModel);
+        await customerServiceClient.UpdateAsync(model.UpdateAccountModel);
 
         return RedirectToAction(nameof(Index));
     }
@@ -166,7 +167,7 @@ public class AccountController : Controller
             "Controller => Attempting to delete account for customer {customerId}. Encryption required",
             customerId);
 
-        var succeeded = await customerService.DeleteAsync(password);
+        var succeeded = await customerServiceClient.DeleteAsync(password);
 
         if (succeeded is true)
         {
@@ -193,7 +194,7 @@ public class AccountController : Controller
 
         addressModel.Id = Guid.Empty;
 
-        var requestSucceeded = await addressService.CreateAsync(addressModel, customerId);
+        var requestSucceeded = await addressServiceClient.CreateAsync(addressModel, customerId);
 
         if (requestSucceeded is false)
         {
@@ -222,7 +223,7 @@ public class AccountController : Controller
             "Controller => Attempting to mark address {addressId} for customer {customerId} as preferred",
             addressId, customerId);
 
-        await addressService.MarkAddressAsPreferredAsync(customerId, addressId);
+        await addressServiceClient.MarkAddressAsPreferredAsync(customerId, addressId);
 
         return RedirectToAction(nameof(Index));
     }
@@ -236,7 +237,7 @@ public class AccountController : Controller
             "Controller => Attempting to delete address {addressId} for customer {customerId}",
             addressId, customerId);
 
-        await addressService.DeleteAsync(customerId, addressId);
+        await addressServiceClient.DeleteAsync(customerId, addressId);
 
         return RedirectToAction(nameof(Index));
     }
@@ -255,7 +256,7 @@ public class AccountController : Controller
                 "Controller => Starting a reset password operation for customer with email {customerEmail}",
                 "***REDACTED***");
             
-            var customer = await customerService.RetrieveSingleAsync(model.SendCodeModel.Email);
+            var customer = await customerServiceClient.RetrieveSingleAsync(model.SendCodeModel.Email);
 
             if (customer is null)
             {
@@ -305,7 +306,7 @@ public class AccountController : Controller
         }
         else if (model.ResetPasswordModel is not null)
         {
-            var customer = await customerService.RetrieveSingleAsync(model.ResetPasswordModel.Email);
+            var customer = await customerServiceClient.RetrieveSingleAsync(model.ResetPasswordModel.Email);
 
             if (model.ResetPasswordModel.Token != HttpContext.Session.GetString("ResetPasswordToken"))
             {
@@ -324,7 +325,7 @@ public class AccountController : Controller
 
             HttpContext.Session.Remove("ResetPasswordToken");
 
-            await customerService.ResetPasswordAsync(customer!.Id, model.ResetPasswordModel.Password);
+            await customerServiceClient.ResetPasswordAsync(customer!.Id, model.ResetPasswordModel.Password);
 
             return RedirectToAction(nameof(Login));
         }

@@ -1,13 +1,13 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class OrderService : IOrderService
+public class OrderServiceClient : IOrderServiceClient
 {
     private readonly HttpClient client;
-    private readonly ILogger<OrderService> logger;
+    private readonly ILogger<OrderServiceClient> logger;
 
-    public OrderService(
+    public OrderServiceClient(
         HttpClient client,
-        ILogger<OrderService> logger)
+        ILogger<OrderServiceClient> logger)
     {
         this.client = client;
         this.logger = logger;
@@ -50,12 +50,12 @@ public class OrderService : IOrderService
             {
                 null => notDeliveredOnly switch
                 {
-                    true  => await client.GetAsync($"api/orders?notDeliveredOnly=true"),
+                    true => await client.GetAsync($"api/orders?notDeliveredOnly=true"),
                     false => await client.GetAsync($"api/orders")
                 },
-                _    => notDeliveredOnly switch
+                _ => notDeliveredOnly switch
                 {
-                    true  => await client.GetAsync($"api/orders?customerId={customerId}&notDeliveredOnly=true"),
+                    true => await client.GetAsync($"api/orders?customerId={customerId}&notDeliveredOnly=true"),
                     false => await client.GetAsync($"api/orders?customerId={customerId}")
                 }
             };
@@ -65,7 +65,7 @@ public class OrderService : IOrderService
 
             logger.LogInformation(
                 "{announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
-                "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", 
+                "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
                 notDeliveredOnly is true ? " except delivered ones" : "", orders!.Count());
 
             return orders!;
@@ -103,11 +103,11 @@ public class OrderService : IOrderService
         catch (HttpRequestException ex)
         {
             logger.LogError(
-				ex, 
-				"{announcement}: The API is unavailable",
-				"FAILED");
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
 
-			return null;
+            return null;
         }
     }
 

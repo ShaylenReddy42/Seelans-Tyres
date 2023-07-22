@@ -1,9 +1,9 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 /// <summary>
 /// A strongly-typed http client to communicate with the Order Microservice
 /// </summary>
-public interface IOrderService
+public interface IOrderServiceClient
 {
     /// <summary>
     /// Makes a get request to the orders microservice to retrieve an order

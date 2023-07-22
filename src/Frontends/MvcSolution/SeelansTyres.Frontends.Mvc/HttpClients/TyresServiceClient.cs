@@ -1,16 +1,16 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class TyresService : ITyresService
+public class TyresServiceClient : ITyresServiceClient
 {
-	private readonly HttpClient client;
-	private readonly ILogger<TyresService> logger;
+    private readonly HttpClient client;
+    private readonly ILogger<TyresServiceClient> logger;
 
-	public TyresService(
-		HttpClient client,
-		ILogger<TyresService> logger)
-	{
-		this.client = client;
-		this.logger = logger;
+    public TyresServiceClient(
+        HttpClient client,
+        ILogger<TyresServiceClient> logger)
+    {
+        this.client = client;
+        this.logger = logger;
     }
 
     public async Task<IEnumerable<BrandModel>> RetrieveAllBrandsAsync()
@@ -42,32 +42,32 @@ public class TyresService : ITyresService
     }
 
     public async Task<bool> CreateTyreAsync(TyreModel tyre)
-	{
+    {
         logger.LogInformation("Service => Attempting to add a new tyre");
 
         try
-		{
-			_ = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
+        {
+            _ = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
 
             logger.LogInformation(
-				"{announcement}: Attempt to add a new tyre completed successfully",
-				"SUCCEEDED");
+                "{announcement}: Attempt to add a new tyre completed successfully",
+                "SUCCEEDED");
 
             return true;
-		}
-		catch (HttpRequestException ex)
-		{
-			logger.LogError(
-				ex, 
-				"{announcement}: The API is unavailable",
-				"FAILED");
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(
+                ex,
+                "{announcement}: The API is unavailable",
+                "FAILED");
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 
-	public async Task<IEnumerable<TyreModel>> RetrieveAllTyresAsync(bool availableOnly = true)
-	{
+    public async Task<IEnumerable<TyreModel>> RetrieveAllTyresAsync(bool availableOnly = true)
+    {
         string includingUnavailable = availableOnly is false ? " including unavailable" : "";
 
         logger.LogInformation(
@@ -82,8 +82,8 @@ public class TyresService : ITyresService
             var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
 
             logger.LogInformation(
-				"{announcement}: Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
-				"SUCCEEDED", includingUnavailable, tyres!.Count());
+                "{announcement}: Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
+                "SUCCEEDED", includingUnavailable, tyres!.Count());
 
             return tyres!;
         }
@@ -98,62 +98,62 @@ public class TyresService : ITyresService
         }
     }
 
-	public async Task<TyreModel?> RetrieveSingleTyreAsync(Guid tyreId)
-	{
+    public async Task<TyreModel?> RetrieveSingleTyreAsync(Guid tyreId)
+    {
         logger.LogInformation(
             "Service => Attempting to retrieve tyre {tyreId}",
             tyreId);
 
         try
-		{
-			var response = await client.GetAsync($"api/tyres/{tyreId}");
+        {
+            var response = await client.GetAsync($"api/tyres/{tyreId}");
             response.EnsureSuccessStatusCode();
 
             var tyre = await response.Content.ReadFromJsonAsync<TyreModel>();
 
             logger.LogInformation(
-				"{announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
-				"SUCCEEDED", tyreId);
+                "{announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
+                "SUCCEEDED", tyreId);
 
             return tyre!;
-		}
-		catch (HttpRequestException ex)
-		{
+        }
+        catch (HttpRequestException ex)
+        {
             logger.LogError(
                 ex,
                 "{announcement}: The API is unavailable",
                 "FAILED");
 
             return null;
-		}
-	}
+        }
+    }
 
-	public async Task<bool> UpdateTyreAsync(Guid tyreId, TyreModel tyre)
-	{
+    public async Task<bool> UpdateTyreAsync(Guid tyreId, TyreModel tyre)
+    {
         logger.LogInformation(
             "Service => Attempting to update tyre {tyreId}",
             tyreId);
 
         try
-		{
-			await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
+        {
+            await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
 
             logger.LogInformation(
                 "{announcement}: Attempt to update tyre {tyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return true;
-		}
-		catch (HttpRequestException ex)
-		{
+        }
+        catch (HttpRequestException ex)
+        {
             logger.LogError(
                 ex,
                 "{announcement}: The API is unavailable",
                 "FAILED");
 
             return false;
-		}
-	}
+        }
+    }
 
     public async Task<bool> DeleteTyreAsync(Guid tyreId)
     {

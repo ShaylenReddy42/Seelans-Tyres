@@ -1,4 +1,4 @@
-using SeelansTyres.Frontends.Mvc.Services;               // All strongly typed http clients and services
+using SeelansTyres.Frontends.Mvc.Services;               // All services
 using System.Net;                                        // NetworkCredential
 using System.Net.Mail;                                   // SmtpClient
 using static System.Net.Mime.MediaTypeNames;             // Application
@@ -11,6 +11,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;     // HealthStatus
 using SeelansTyres.Frontends.Mvc.BackgroundServices;     // SendReceiptChannelReaderBackgroundService
 using SeelansTyres.Frontends.Mvc.Channels;               // SendReceiptChannel
 using SeelansTyres.Libraries.Shared.Extensions;          // ConditionallyUseAzureAppConfiguration(), AddCommonStartupDelay()
+using SeelansTyres.Frontends.Mvc.HttpClients;            // All strongly-typed http clients
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,37 +26,37 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddAccessTokenManagement();
 
-builder.Services.AddHttpClient<IAddressService, AddressService>(client =>
+builder.Services.AddHttpClient<IAddressServiceClient, AddressServiceClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:AddressService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler()
-    .AddCommonResiliencyPolicies<AddressService>(builder.Services);
+    .AddCommonResiliencyPolicies<AddressServiceClient>(builder.Services);
 
-builder.Services.AddHttpClient<ICustomerService, CustomerService>(client =>
+builder.Services.AddHttpClient<ICustomerServiceClient, CustomerServiceClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:CustomerService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler()
-    .AddCommonResiliencyPolicies<CustomerService>(builder.Services);
+    .AddCommonResiliencyPolicies<CustomerServiceClient>(builder.Services);
 
-builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
+builder.Services.AddHttpClient<IOrderServiceClient, OrderServiceClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:OrderService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler()
-    .AddCommonResiliencyPolicies<OrderService>(builder.Services);
+    .AddCommonResiliencyPolicies<OrderServiceClient>(builder.Services);
 
-builder.Services.AddHttpClient<ITyresService, TyresService>(client =>
+builder.Services.AddHttpClient<ITyresServiceClient, TyresServiceClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:TyresService"]!);
     client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
 })
     .AddUserAccessTokenHandler()
-    .AddCommonResiliencyPolicies<TyresService>(builder.Services);
+    .AddCommonResiliencyPolicies<TyresServiceClient>(builder.Services);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();

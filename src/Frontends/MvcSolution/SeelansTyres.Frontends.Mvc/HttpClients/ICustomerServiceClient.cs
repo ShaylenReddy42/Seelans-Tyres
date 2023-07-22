@@ -1,16 +1,16 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 /// <summary>
 /// A strongly-typed http client to communicate with the Identity / Customer Microservice
 /// </summary>
-public interface ICustomerService
+public interface ICustomerServiceClient
 {
     /// <summary>
     /// Makes a post request to the customer microservice to create a new customer account
     /// </summary>
     /// <param name="registerModel">The model containing the newly created customer</param>
     /// <returns>A tuple containing three pieces of data</returns>
-    
+
     // Adding a description of the return breaks the xml so I'm adding it as comment instead
     // 1. CustomerModel?: The model of the newly created customer or null if it failed
     // 2. bool: A boolean indicating if a success status code is returned

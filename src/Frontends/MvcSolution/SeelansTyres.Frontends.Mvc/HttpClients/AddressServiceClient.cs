@@ -1,13 +1,13 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class AddressService : IAddressService
+public class AddressServiceClient : IAddressServiceClient
 {
     private readonly HttpClient client;
-    private readonly ILogger<AddressService> logger;
+    private readonly ILogger<AddressServiceClient> logger;
 
-    public AddressService(
+    public AddressServiceClient(
         HttpClient client,
-        ILogger<AddressService> logger)
+        ILogger<AddressServiceClient> logger)
     {
         this.client = client;
         this.logger = logger;
@@ -18,7 +18,7 @@ public class AddressService : IAddressService
         logger.LogInformation(
             "Service => Attempting to add a new address for customer {customerId}",
             customerId);
-        
+
         try
         {
             await client.PostAsync($"api/customers/{customerId}/addresses", JsonContent.Create(address));
@@ -32,7 +32,7 @@ public class AddressService : IAddressService
         catch (HttpRequestException ex)
         {
             logger.LogError(
-                ex, 
+                ex,
                 "{announcement}: The API is unavailable",
                 "FAILED");
 
@@ -45,7 +45,7 @@ public class AddressService : IAddressService
         logger.LogInformation(
             "Service => Attempting to retrieve all addresses for customer {customerId}",
             customerId);
-        
+
         try
         {
             var response = await client.GetAsync($"api/customers/{customerId}/addresses");
@@ -62,10 +62,10 @@ public class AddressService : IAddressService
         catch (HttpRequestException ex)
         {
             logger.LogError(
-                ex, 
+                ex,
                 "{announcement}: The API is unavailable",
                 "FAILED");
-            
+
             return new List<AddressModel>();
         }
     }
@@ -75,7 +75,7 @@ public class AddressService : IAddressService
         logger.LogInformation(
             "Service => Attempting to mark address {addressId} as preferred for customer {customerId}",
             addressId, customerId);
-        
+
         try
         {
             await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", new StringContent(""));
@@ -89,10 +89,10 @@ public class AddressService : IAddressService
         catch (HttpRequestException ex)
         {
             logger.LogError(
-                ex, 
+                ex,
                 "{announcement}: The API is unavailable",
                 "FAILED");
-            
+
             return false;
         }
     }

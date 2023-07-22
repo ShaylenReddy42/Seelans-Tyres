@@ -1,35 +1,36 @@
-﻿using Microsoft.AspNetCore.Authorization;    // Authorize
-using RazorLight;                            // RazorLightEngineBuilder
-using SeelansTyres.Frontends.Mvc.Channels;   // SendReceiptChannel
-using SeelansTyres.Frontends.Mvc.Models;     // CartItemModel
-using SeelansTyres.Frontends.Mvc.Services;   // IAddressService, ICartService, ICustomerService, IOrderService
-using SeelansTyres.Frontends.Mvc.ViewModels; // CartViewModel
+﻿using Microsoft.AspNetCore.Authorization;     // Authorize
+using RazorLight;                             // RazorLightEngineBuilder
+using SeelansTyres.Frontends.Mvc.Channels;    // SendReceiptChannel
+using SeelansTyres.Frontends.Mvc.HttpClients; // IAddressServiceClient, ICustomerServiceClient, IOrderServiceClient
+using SeelansTyres.Frontends.Mvc.Models;      // CartItemModel
+using SeelansTyres.Frontends.Mvc.Services;    // ICartService
+using SeelansTyres.Frontends.Mvc.ViewModels;  // CartViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
 public class ShoppingController : Controller
 {
     private readonly ILogger<ShoppingController> logger;
-    private readonly IAddressService addressService;
+    private readonly IAddressServiceClient addressServiceClient;
     private readonly ICartService cartService;
-    private readonly ICustomerService customerService;
-    private readonly IOrderService orderService;
+    private readonly ICustomerServiceClient customerServiceClient;
+    private readonly IOrderServiceClient orderServiceClient;
     private readonly SendReceiptChannel sendReceiptChannel;
     private readonly Stopwatch stopwatch = new();
 
     public ShoppingController(
         ILogger<ShoppingController> logger,
-        IAddressService addressService,
+        IAddressServiceClient addressServiceClient,
         ICartService cartService,
-        ICustomerService customerService,
-        IOrderService orderService,
+        ICustomerServiceClient customerServiceClient,
+        IOrderServiceClient orderServiceClient,
         SendReceiptChannel sendReceiptChannel)
     {
         this.logger = logger;
-        this.addressService = addressService;
+        this.addressServiceClient = addressServiceClient;
         this.cartService = cartService;
-        this.customerService = customerService;
-        this.orderService = orderService;
+        this.customerServiceClient = customerServiceClient;
+        this.orderServiceClient = orderServiceClient;
         this.sendReceiptChannel = sendReceiptChannel;
     }
     
@@ -56,7 +57,7 @@ public class ShoppingController : Controller
         {
             var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-            numberOfAddresses = (await addressService.RetrieveAllAsync(customerId)).Count();
+            numberOfAddresses = (await addressServiceClient.RetrieveAllAsync(customerId)).Count();
         }
 
         var cartViewModel = new CartViewModel
@@ -119,8 +120,8 @@ public class ShoppingController : Controller
             "Controller => Attempting to place an order for customer {customerId}",
             customerId);
 
-        var customer = customerService.RetrieveSingleAsync(customerId);
-        var addresses = addressService.RetrieveAllAsync(customerId);
+        var customer = customerServiceClient.RetrieveSingleAsync(customerId);
+        var addresses = addressServiceClient.RetrieveAllAsync(customerId);
 
         await Task.WhenAll(
             Task.Run(() => customer),
@@ -157,7 +158,7 @@ public class ShoppingController : Controller
             });
         }
 
-        var placedOrder = await orderService.CreateAsync(order);
+        var placedOrder = await orderServiceClient.CreateAsync(order);
 
         if (placedOrder is not null)
         {
@@ -201,7 +202,7 @@ public class ShoppingController : Controller
             "Controller => Attempting to retrieve order {orderId}",
             orderId);
         
-        var order = await orderService.RetrieveSingleAsync(orderId);
+        var order = await orderServiceClient.RetrieveSingleAsync(orderId);
 
         var engine = new RazorLightEngineBuilder()
             .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "SeelansTyres.Frontends.Mvc.Templates")

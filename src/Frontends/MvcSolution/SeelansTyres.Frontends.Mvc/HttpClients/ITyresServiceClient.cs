@@ -1,9 +1,9 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 /// <summary>
 /// A strongly-typed http client to communicate with the Tyres Microservice
 /// </summary>
-public interface ITyresService
+public interface ITyresServiceClient
 {
     /// <summary>
     /// Makes a get request to the brands endpoint of the tyres microservice

@@ -1,12 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity
 
-@inject ICustomerService customerService
+@inject ICustomerServiceClient customerServiceClient
 
 <ul class="navbar-nav">
 @if (User.Identity!.IsAuthenticated)
 {
     var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-    var customer = await customerService.RetrieveSingleAsync(customerId);
+    var customer = await customerServiceClient.RetrieveSingleAsync(customerId);
     var (firstName, lastName) = (customer.FirstName, customer.LastName);
 
     if (User.IsInRole("Administrator") is false)

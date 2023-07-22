@@ -1,23 +1,24 @@
 ﻿using IdentityModel.Client;                  // SetBearerToken(), GetDiscoveryDocumentAsync(), RequestClientCredentialsTokenAsync(), ClientCredentialsTokenRequest
 using SeelansTyres.Frontends.Mvc.Extensions; // EncryptAsync()
+using SeelansTyres.Frontends.Mvc.Services;   // ICacheService
 
-namespace SeelansTyres.Frontends.Mvc.Services;
+namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class CustomerService : ICustomerService
+public class CustomerServiceClient : ICustomerServiceClient
 {
     private readonly IHttpContextAccessor httpContextAccessor;
     private readonly HttpClient client;
     private readonly IConfiguration configuration;
     private readonly ICacheService cacheService;
-    private readonly ILogger<CustomerService> logger;
+    private readonly ILogger<CustomerServiceClient> logger;
     private readonly Stopwatch stopwatch = new();
 
-    public CustomerService(
+    public CustomerServiceClient(
         HttpClient client,
         IHttpContextAccessor httpContextAccessor,
         IConfiguration configuration,
         ICacheService cacheService,
-        ILogger<CustomerService> logger)
+        ILogger<CustomerServiceClient> logger)
     {
         this.httpContextAccessor = httpContextAccessor;
         this.client = client;
@@ -29,7 +30,7 @@ public class CustomerService : ICustomerService
     public async Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
     {
         logger.LogInformation("Service => Attempting to create a new customer account");
-        
+
         CustomerModel? customer = null;
         bool succeeded = default;
         List<string> errors = new();
@@ -54,7 +55,7 @@ public class CustomerService : ICustomerService
                 logger.LogInformation(
                     "Customer with email {customerEmail} already exists",
                     "***REDACTED***");
-                
+
                 errors.Add($"Customer with email {registerModel.Email} already exists");
             }
         }
@@ -64,7 +65,7 @@ public class CustomerService : ICustomerService
                 ex,
                 "{announcement}: Attempt to create a new customer account was unsuccessful",
                 "FAILED");
-            
+
             errors.Add("The identity service is unavailable!");
         }
 
@@ -89,13 +90,13 @@ public class CustomerService : ICustomerService
                 ex,
                 "Cache is unavailable");
         }
-        
+
         if (customer is null)
         {
             logger.LogInformation(
                 "Customer {customerId} is not in the cache. Retrieving from downstream and adding it",
                 customerId);
-            
+
             var response = await client.GetAsync($"api/customers/{customerId}");
 
             if (response.IsSuccessStatusCode is false)
@@ -130,13 +131,13 @@ public class CustomerService : ICustomerService
         logger.LogInformation(
             "Service => Attempting to retrieve customer by email {customerEmail}",
             "***REDACTED***");
-        
+
         client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.retrievesinglebyemail"));
         var response = await client.GetAsync($"api/customers?email={email}");
 
         var customer = response.IsSuccessStatusCode switch
         {
-            true  => await response.Content.ReadFromJsonAsync<CustomerModel>(),
+            true => await response.Content.ReadFromJsonAsync<CustomerModel>(),
             false => null
         };
 
@@ -159,7 +160,7 @@ public class CustomerService : ICustomerService
             logger.LogInformation(
                 "{announcement}: Attempt to update account for customer {customerId} completed successfully. Removing the old customer info from the cache",
                 "SUCCEEDED", customerId);
-            
+
             await cacheService.DeleteAsync(customerId.ToString());
         }
         else
@@ -200,7 +201,7 @@ public class CustomerService : ICustomerService
         logger.LogInformation(
             "Service => Attempting a reset password operation for customer {customerId}",
             customerId);
-        
+
         client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.resetpassword"));
 
         var passwordModel = new PasswordModel { Password = password };
@@ -231,13 +232,13 @@ public class CustomerService : ICustomerService
             additionalScopes);
 
         stopwatch.Start();
-        
+
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
         if (discoveryDocument.IsError is true)
         {
             stopwatch.Stop();
-            
+
             logger.LogError(
                 "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);

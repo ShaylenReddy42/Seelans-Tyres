@@ -1,9 +1,9 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 /// <summary>
 /// A strongly-typed http client to communicate with the Address Microservice
 /// </summary>
-public interface IAddressService
+public interface IAddressServiceClient
 {
     /// <summary>
     /// Makes a get request for all addresses for a particular customer from the address microservice

@@ -1,17 +1,20 @@
-﻿using SeelansTyres.Frontends.Mvc.Models;   // ErrorViewModel
-using SeelansTyres.Frontends.Mvc.Services; // ITyresService
+﻿using SeelansTyres.Frontends.Mvc.HttpClients; // ITyresServiceClient
+using SeelansTyres.Frontends.Mvc.Models;      // ErrorViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> logger;
-    private readonly ITyresService tyresService;
+    private readonly ITyresServiceClient tyresServiceClient;
 
     public HomeController(
         ILogger<HomeController> logger,
-        ITyresService tyresService) => 
-            (this.logger, this.tyresService) = (logger, tyresService);
+        ITyresServiceClient tyresServiceClient)
+    {
+        this.logger = logger;
+        this.tyresServiceClient = tyresServiceClient;
+    }
 
     public IActionResult Index()
     {
@@ -32,7 +35,7 @@ public class HomeController : Controller
     {
         logger.LogInformation("Controller => Retrieving all tyres");
         
-        var tyres = await tyresService.RetrieveAllTyresAsync();
+        var tyres = await tyresServiceClient.RetrieveAllTyresAsync();
 
         return View(tyres);
     }

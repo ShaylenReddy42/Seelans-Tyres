@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;    // Authorize
-using SeelansTyres.Frontends.Mvc.Models;     // MvcTyreModel
-using SeelansTyres.Frontends.Mvc.Services;   // IImageService, IOrderService, ITyresService
-using SeelansTyres.Frontends.Mvc.ViewModels; // AdminPortalViewModel
+﻿using Microsoft.AspNetCore.Authorization;     // Authorize
+using SeelansTyres.Frontends.Mvc.HttpClients; // IOrderServiceClient, ITyresServiceClient
+using SeelansTyres.Frontends.Mvc.Models;      // MvcTyreModel
+using SeelansTyres.Frontends.Mvc.Services;    // IImageService
+using SeelansTyres.Frontends.Mvc.ViewModels;  // AdminPortalViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
@@ -10,20 +11,20 @@ public class AdminController : Controller
 {
     private readonly ILogger<AdminController> logger;
     private readonly IImageService imageService;
-    private readonly IOrderService orderService;
-    private readonly ITyresService tyresService;
+    private readonly IOrderServiceClient orderServiceClient;
+    private readonly ITyresServiceClient tyresServiceClient;
     private readonly Stopwatch stopwatch = new();
 
     public AdminController(
         ILogger<AdminController> logger,
         IImageService imageService,
-        IOrderService orderService,
-        ITyresService tyresService)
+        IOrderServiceClient orderServiceClient,
+        ITyresServiceClient tyresServiceClient)
     {
         this.logger = logger;
         this.imageService = imageService;
-        this.orderService = orderService;
-        this.tyresService = tyresService;
+        this.orderServiceClient = orderServiceClient;
+        this.tyresServiceClient = tyresServiceClient;
     }
     
     public async Task<IActionResult> Index()
@@ -32,15 +33,15 @@ public class AdminController : Controller
 
         logger.LogInformation("Controller => Retrieving all brands");
         
-        var brands = tyresService.RetrieveAllBrandsAsync();
+        var brands = tyresServiceClient.RetrieveAllBrandsAsync();
 
         logger.LogInformation("Controller => Retrieving all orders");
 
-        var orders = orderService.RetrieveAllAsync();
+        var orders = orderServiceClient.RetrieveAllAsync();
 
         logger.LogInformation("Controller => Retrieving all tyres including unavailable");
 
-        var tyres = tyresService.RetrieveAllTyresAsync(false);
+        var tyres = tyresServiceClient.RetrieveAllTyresAsync(false);
 
         await Task.WhenAll(brands, orders, tyres);
 
@@ -93,7 +94,7 @@ public class AdminController : Controller
             BrandId = model.BrandId
         };
 
-        var requestSucceeded = await tyresService.CreateTyreAsync(createTyreModel);
+        var requestSucceeded = await tyresServiceClient.CreateTyreAsync(createTyreModel);
 
         if (requestSucceeded is false)
         {
@@ -120,7 +121,7 @@ public class AdminController : Controller
             "Controller => Administrator is attempting to retrieve tyre {tyreId} for update",
             tyreId);
 
-        var tyre = await tyresService.RetrieveSingleTyreAsync(tyreId);
+        var tyre = await tyresServiceClient.RetrieveSingleTyreAsync(tyreId);
         
         var mvcTyreModel = new MvcTyreModel
         {
@@ -169,7 +170,7 @@ public class AdminController : Controller
             BrandId = model.BrandId
         };
 
-        var requestSucceeded = await tyresService.UpdateTyreAsync(model.Id, updateTyreModel);
+        var requestSucceeded = await tyresServiceClient.UpdateTyreAsync(model.Id, updateTyreModel);
 
         if (requestSucceeded is false)
         {
@@ -195,7 +196,7 @@ public class AdminController : Controller
             "Controller => Administrator is attempting to delete tyre {tyreId}",
             tyreId);
 
-        var succeeded = await tyresService.DeleteTyreAsync(tyreId);
+        var succeeded = await tyresServiceClient.DeleteTyreAsync(tyreId);
 
         if (succeeded is true)
         {
@@ -212,7 +213,7 @@ public class AdminController : Controller
             "Controller => Administrator is attempting to mark order {orderId} as delivered",
             orderId);
         
-        _ = await orderService.MarkOrderAsDeliveredAsync(orderId);
+        _ = await orderServiceClient.MarkOrderAsDeliveredAsync(orderId);
 
         return RedirectToAction(nameof(Index));
     }
