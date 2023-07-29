@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization; // AuthorizationHandler, AuthorizationHandlerContext, AuthorizationFailureReason()
+using Microsoft.AspNetCore.Http;          // IHttpContextAccessor
+using Microsoft.AspNetCore.Routing;       // GetRouteValue()
+using Microsoft.Extensions.Logging;       // ILogger
 
-namespace SeelansTyres.Services.AddressService.Authorization;
+namespace SeelansTyres.Libraries.Shared.Authorization;
 
 public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : AuthorizationHandler<CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement>
 {
@@ -24,7 +27,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
             "AUTHORIZATION REQUIREMENT HIT", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
         var customerIdFromClaims = context.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value;
-        var customerIdFromRoute = httpContextAccessor.HttpContext!.GetRouteValue("customerId")!.ToString();
+        var customerIdFromRoute = httpContextAccessor.HttpContext!.GetRouteValue(requirement.RouteValueKeyName)!.ToString();
 
         if (customerIdFromClaims != customerIdFromRoute)
         {

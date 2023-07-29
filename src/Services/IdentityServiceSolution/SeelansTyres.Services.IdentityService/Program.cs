@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;                  // IAuthorizationHand
 using Microsoft.AspNetCore.Identity;                       // IdentityRole, AddDefaultTokenProviders()
 using Microsoft.EntityFrameworkCore;                       // UseSqlServer()
 using SeelansTyres.Libraries.Shared;                       // All common methods
-using SeelansTyres.Services.IdentityService.Authorization; // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
 using SeelansTyres.Services.IdentityService.Data;          // CustomerDbContext
 using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
 using SeelansTyres.Services.IdentityService.Services;      // AdminAccountSeeder, ConfigurationDataSeeder, ICustomerService, CustomerService, TokenExchangeExtensionGrantValidator
@@ -11,6 +10,7 @@ using System.Reflection;                                   // Assembly
 using SeelansTyres.Services.IdentityService.Extensions;    // GenerateSigningCredentialsFromConfiguration(), RunSeedersAsync()
 using SeelansTyres.Libraries.Shared.Services;              // RabbitMQPublisher, AzureServiceBusPublisher
 using SeelansTyres.Libraries.Shared.Extensions;            // AddCommonStartupDelay()
+using SeelansTyres.Libraries.Shared.Authorization;         // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -115,7 +115,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CustomerIdFromClaimsMustMatchCustomerIdFromRoute", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.AddRequirements(new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement());
+        policy.AddRequirements(new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement("id"));
     });
 
     options.AddPolicy("CreateAccountPolicy", policy =>

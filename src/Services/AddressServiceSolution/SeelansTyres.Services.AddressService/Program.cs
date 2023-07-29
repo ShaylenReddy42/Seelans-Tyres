@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;      // JwtBearerDefaults
 using Microsoft.AspNetCore.Authorization;                 // IAuthorizationHandler
 using Microsoft.EntityFrameworkCore;                      // UseSqlServer()
 using SeelansTyres.Libraries.Shared;                      // All common methods
-using SeelansTyres.Services.AddressService.Authorization; // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
 using SeelansTyres.Data.AddressData;                      // AddressDbContext
 using SeelansTyres.Services.AddressService.Services;      // IAddressRepository, AddressRepository
 using System.Reflection;                                  // Assembly
 using SeelansTyres.Libraries.Shared.Extensions;           // AddCommonStartupDelay()
+using SeelansTyres.Libraries.Shared.Authorization;        // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +54,7 @@ builder.Services.AddAuthorization(configure =>
         policy.RequireAuthenticatedUser();
         policy.RequireAssertion(context => context.User.IsInRole("Administrator") is false);
         policy.AddRequirements(
-            new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement());
+            new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement("customerId"));
     });
 });
 
