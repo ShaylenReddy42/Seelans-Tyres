@@ -8,12 +8,15 @@ using SeelansTyres.Libraries.Shared.Channels;           // PublishUpdateChannel
 using SeelansTyres.Libraries.Shared.Messages;           // BaseMessage
 using System.Diagnostics;                               // Stopwatch, Activity
 using System.Text.Json;                                 // JsonSerializer
+using static System.Net.Mime.MediaTypeNames;            // Application
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+[Consumes(Application.Json)]
+[Produces(Application.Json)]
 public class TyresController : ControllerBase
 {
     private readonly ILogger<TyresController> logger;

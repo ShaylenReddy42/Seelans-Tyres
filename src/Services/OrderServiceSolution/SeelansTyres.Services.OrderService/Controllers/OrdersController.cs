@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Authorization;            // Authorize
 using Microsoft.AspNetCore.Mvc;                      // ApiController, ControllerBase, Http Methods, ActionResult
 using SeelansTyres.Data.OrderData.Entities;          // Order
 using SeelansTyres.Services.OrderService.Services;   // IOrderRepository
+using static System.Net.Mime.MediaTypeNames;         // Application
 
 namespace SeelansTyres.Services.OrderService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Consumes(Application.Json)]
+[Produces(Application.Json)]
 public class OrdersController : ControllerBase
 {
     private readonly ILogger<OrdersController> logger;

@@ -10,12 +10,15 @@ using SeelansTyres.Services.IdentityService.Extensions;    // DecryptAsync()
 using SeelansTyres.Services.IdentityService.Services;      // ICustomerService
 using System.Diagnostics;                                  // Stopwatch, Activity
 using System.Text.Json;                                    // JsonSerializer
+using static System.Net.Mime.MediaTypeNames;               // Application
 
 namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Consumes(Application.Json)]
+[Produces(Application.Json)]
 public class CustomersController : ControllerBase
 {
     private readonly ICustomerService customerService;

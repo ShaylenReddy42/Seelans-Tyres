@@ -1,15 +1,17 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using SeelansTyres.Services.AddressService.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using SeelansTyres.Data.AddressData.Entities;
+﻿using AutoMapper;                                    // IMapper
+using SeelansTyres.Services.AddressService.Services; // IAddressRepository
+using Microsoft.AspNetCore.Authorization;            // Authorize
+using Microsoft.AspNetCore.Authentication.JwtBearer; // JwtBearerDefaults
+using SeelansTyres.Data.AddressData.Entities;        // Address
+using static System.Net.Mime.MediaTypeNames;         // Application
 
 namespace SeelansTyres.Services.AddressService.Controllers;
 
 [Route("api/customers/{customerId}/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "MustBeARegularCustomer")]
+[Consumes(Application.Json)]
+[Produces(Application.Json)]
 public class AddressesController : ControllerBase
 {
     private readonly ILogger<AddressesController> logger;

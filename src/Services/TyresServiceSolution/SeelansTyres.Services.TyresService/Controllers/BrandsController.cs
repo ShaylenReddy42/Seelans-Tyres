@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc;                         // ApiController, ControllerBase, Http Methods, ActionResult
 using SeelansTyres.Services.TyresService.Services;      // ITyresRepository
 using SeelansTyres.Services.TyresService.Data.Entities; // Brand
+using static System.Net.Mime.MediaTypeNames;            // Application
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Consumes(Application.Json)]
+[Produces(Application.Json)]
 public class BrandsController : ControllerBase
 {
     private readonly ILogger<BrandsController> logger;
