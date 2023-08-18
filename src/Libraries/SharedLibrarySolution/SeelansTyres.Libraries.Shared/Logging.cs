@@ -81,19 +81,10 @@ public static class Logging
                 .Enrich.WithProperty("Custom: Application Name", hostBuilderContext.HostingEnvironment.ApplicationName)
                 .Enrich.WithProperty("Custom: Descriptive Application Name", descriptiveApplicationName)
                 .Enrich.WithProperty("Custom: Codebase Version", $"v{codebaseVersion}");
-            
-            if (hostBuilderContext.HostingEnvironment.ApplicationName.EndsWith("IdentityService") is true)
-            {
-                loggerConfiguration
-                    .WriteTo.Console(
-                        outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
-                        theme: AnsiConsoleTheme.Code);
-            }
-            else
-            {
-                loggerConfiguration
-                    .WriteTo.Console();
-            }
+
+            loggerConfiguration
+                .WriteTo.Console(
+                    outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level}] <{SourceContext}> {NewLine}{Message:lj} {NewLine}{Exception} {NewLine}");
 
             var metadata =
                 commonBuilderConfigurationModel.OriginAssembly
