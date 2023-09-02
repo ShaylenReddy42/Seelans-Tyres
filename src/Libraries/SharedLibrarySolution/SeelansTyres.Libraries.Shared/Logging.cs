@@ -37,15 +37,6 @@ public static class Logging
     /// <para>
     ///     The activity trace and span ids are also added via the 'ActivityEnricher' for distributed tracing
     /// </para>
-    /// <para>
-    ///     Identity Server's original console output template and color scheme is maintained
-    /// </para>
-    /// <code>
-    ///     loggerConfiguration
-    ///         .WriteTo.Console(
-    ///             outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
-    ///             theme: AnsiConsoleTheme.Code);
-    /// </code>
     /// </remarks>
     /// <param name="hostBuilder">The web application's host builder</param>
     /// <param name="commonBuilderConfigurationModel">A model containing properties to enrich the logs and configure the Elasticsearch sink</param>

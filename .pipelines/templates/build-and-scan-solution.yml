@@ -14,15 +14,15 @@ steps:
   - template: prebuild-iac.yml
 
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 6.0.412'
+    displayName: 'Use .NET SDK 6.0.413'
     inputs:
-      version: 6.0.412
+      version: 6.0.413
       performMultiLevelLookup: true
 
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 7.0.306'
+    displayName: 'Use .NET SDK 7.0.400'
     inputs:
-      version: 7.0.306
+      version: 7.0.400
       performMultiLevelLookup: true
 
   - task: CMake@1
