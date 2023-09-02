@@ -51,12 +51,12 @@ public class OrderServiceClient : IOrderServiceClient
                 null => notDeliveredOnly switch
                 {
                     true => await client.GetAsync($"api/orders?notDeliveredOnly=true"),
-                    false => await client.GetAsync($"api/orders")
+                    _    => await client.GetAsync($"api/orders")
                 },
                 _ => notDeliveredOnly switch
                 {
                     true => await client.GetAsync($"api/orders?customerId={customerId}&notDeliveredOnly=true"),
-                    false => await client.GetAsync($"api/orders?customerId={customerId}")
+                    _    => await client.GetAsync($"api/orders?customerId={customerId}")
                 }
             };
             response.EnsureSuccessStatusCode();

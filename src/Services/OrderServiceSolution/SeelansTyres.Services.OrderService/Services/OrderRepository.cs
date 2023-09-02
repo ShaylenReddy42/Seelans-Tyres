@@ -59,8 +59,8 @@ public class OrderRepository : IOrderRepository
         {
             var collection = notDeliveredOnly switch
             {
-                true  => context.Orders.Include(order => order.OrderItems).Where(order => !order.Delivered),
-                false => context.Orders.Include(order => order.OrderItems)
+                true => context.Orders.Include(order => order.OrderItems).Where(order => !order.Delivered),
+                _    => context.Orders.Include(order => order.OrderItems)
             };
 
             orders = customerId switch

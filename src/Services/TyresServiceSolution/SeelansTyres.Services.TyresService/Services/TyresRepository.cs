@@ -97,7 +97,7 @@ public class TyresRepository : ITyresRepository
             tyres = availableOnly switch
             {
                 true => await context.Tyres.Include(tyre => tyre.Brand).Where(tyre => tyre.Available).OrderBy(tyre => tyre.Name).ToListAsync(),
-                false => await context.Tyres.Include(tyre => tyre.Brand).OrderBy(tyre => tyre.Name).ToListAsync()
+                _    => await context.Tyres.Include(tyre => tyre.Brand).OrderBy(tyre => tyre.Name).ToListAsync()
             };
         }
         catch (Exception ex)
