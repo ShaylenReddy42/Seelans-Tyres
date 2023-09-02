@@ -41,7 +41,7 @@ public class ExternalController : Controller
         if (string.IsNullOrEmpty(returnUrl)) returnUrl = "~/";
 
         // validate returnUrl - either it is a valid OIDC URL or back to a local page
-        if (Url.IsLocalUrl(returnUrl) is false && _interaction.IsValidReturnUrl(returnUrl) is false)
+        if (!Url.IsLocalUrl(returnUrl) && !_interaction.IsValidReturnUrl(returnUrl))
         {
             // user might have clicked on a malicious link - should be logged
             throw new ArgumentException("invalid return URL");

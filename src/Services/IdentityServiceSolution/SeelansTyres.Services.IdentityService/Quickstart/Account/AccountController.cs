@@ -74,7 +74,7 @@ public class AccountController : Controller
         // check if we are in the context of an authorization request
         var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
-        if (ModelState.IsValid is false)
+        if (!ModelState.IsValid)
         {
             // something went wrong, show form with error
             return View(await BuildLoginViewModelAsync(model));
@@ -82,7 +82,7 @@ public class AccountController : Controller
 
         var customer = await _signInManager.UserManager.FindByEmailAsync(model.Username);
 
-        if (await _signInManager.UserManager.CheckPasswordAsync(customer, model.Password) is false)
+        if (!await _signInManager.UserManager.CheckPasswordAsync(customer, model.Password))
         {
             await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
             ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
@@ -150,7 +150,7 @@ public class AccountController : Controller
         // build a model so the logout page knows what to display
         var vm = await BuildLogoutViewModelAsync(logoutId);
 
-        if (vm.ShowLogoutPrompt is false)
+        if (!vm.ShowLogoutPrompt)
         {
             // if the request for logout was properly authenticated from IdentityServer, then
             // we don't need to show the prompt and can just log the user out directly.
@@ -170,7 +170,7 @@ public class AccountController : Controller
         // build a model so the logged out page knows what to display
         var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
 
-        if (User.Identity!.IsAuthenticated is true)
+        if (User.Identity!.IsAuthenticated)
         {
             // delete local authentication cookie
             await _signInManager.SignOutAsync();
@@ -216,7 +216,7 @@ public class AccountController : Controller
             {
                 EnableLocalLogin = local,
                 ReturnUrl = returnUrl,
-                Username = context?.LoginHint!,
+                Username = context.LoginHint,
             };
 
             if (!local)

@@ -19,8 +19,8 @@ public static class CookiePolicy
     /// <returns>The web application used to configure the http pipeline with the configured cookie policy</returns>
     public static WebApplication UseCommonCookiePolicy(this WebApplication app)
     {
-        if (app.Configuration.GetValue<bool>("InContainer") is false &&
-            app.Configuration.GetValue<bool>("InAzure") is false)
+        if (!app.Configuration.GetValue<bool>("InContainer") &&
+            !app.Configuration.GetValue<bool>("InAzure"))
         {
             app.UseCookiePolicy(new CookiePolicyOptions
             {

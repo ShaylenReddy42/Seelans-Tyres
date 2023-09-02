@@ -48,7 +48,7 @@ public class AdminAccountSeeder
 
             bool roleExists = await roleManager.RoleExistsAsync("Administrator");
 
-            if (roleExists is false)
+            if (!roleExists)
             {
                 logger.LogInformation(
                     "Creating role {role} because it doesn't exist", 

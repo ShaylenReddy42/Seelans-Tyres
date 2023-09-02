@@ -19,7 +19,7 @@ public static class WebApplicationBuilderConfiguration
         this WebApplicationBuilder builder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
-        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
+        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled"))
         {
             // Adds Azure App Configuration support using 'SystemDegraded' as the sentinel key to enable configuration refresh
             // It only has 'SystemDegraded' to have it toggled on by a function app and override the state to inform users
@@ -45,7 +45,7 @@ public static class WebApplicationBuilderConfiguration
         builder.Host.UseCommonSerilog(commonBuilderConfigurationModel);
 
         // Instruments the solution with application insights
-        if (builder.Configuration.GetValue<bool>("AppInsights:Enabled") is true)
+        if (builder.Configuration.GetValue<bool>("AppInsights:Enabled"))
         {
             builder.Services.AddApplicationInsightsTelemetry(
                 options => options.ConnectionString = 
@@ -65,7 +65,7 @@ public static class WebApplicationBuilderConfiguration
         builder.Services.AddHealthChecks()
             .AddCommonChecks(healthChecksModel);
 
-        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
+        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled"))
         {
             builder.Services.AddAzureAppConfiguration();
         }

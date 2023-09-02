@@ -69,7 +69,7 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> AddTyre(MvcTyreModel model)
     {
-        if (ModelState.IsValid is false)
+        if (!ModelState.IsValid)
         {
             return View(model);
         }
@@ -96,7 +96,7 @@ public class AdminController : Controller
 
         var requestSucceeded = await tyresServiceClient.CreateTyreAsync(createTyreModel);
 
-        if (requestSucceeded is false)
+        if (!requestSucceeded)
         {
             logger.LogError(
                 "{announcement}: Attempt to add a new tyre was unsuccessful",
@@ -143,7 +143,7 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateTyre(MvcTyreModel model)
     {
-        if (ModelState.IsValid is false)
+        if (!ModelState.IsValid)
         {
             return View(model);
         }
@@ -172,7 +172,7 @@ public class AdminController : Controller
 
         var requestSucceeded = await tyresServiceClient.UpdateTyreAsync(model.Id, updateTyreModel);
 
-        if (requestSucceeded is false)
+        if (!requestSucceeded)
         {
             logger.LogError(
                 "{announcement}: Attempt to update tyre {tyreId} was unsuccessful",
@@ -198,7 +198,7 @@ public class AdminController : Controller
 
         var succeeded = await tyresServiceClient.DeleteTyreAsync(tyreId);
 
-        if (succeeded is true)
+        if (succeeded)
         {
             await imageService.DeleteAsync(imageUrl);
         }

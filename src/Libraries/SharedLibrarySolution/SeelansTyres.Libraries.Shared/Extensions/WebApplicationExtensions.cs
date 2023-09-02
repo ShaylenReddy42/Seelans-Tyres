@@ -13,7 +13,7 @@ public static class WebApplicationExtensions
     /// <returns>The original web application</returns>
     public static WebApplication ConditionallyUseAzureAppConfiguration(this WebApplication app)
     {
-        if (app.Configuration.GetValue<bool>("AzureAppConfig:Enabled") is true)
+        if (app.Configuration.GetValue<bool>("AzureAppConfig:Enabled"))
         {
             app.UseAzureAppConfiguration();
         }

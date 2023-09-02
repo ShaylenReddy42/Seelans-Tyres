@@ -50,7 +50,7 @@ public class UpdateAccountWorkerWithAzureServiceBus : BackgroundService
             validAudience: "CustomerService",
             out bool tokenIsValid);
 
-        if (tokenIsValid is false)
+        if (!tokenIsValid)
         {
             await arg.CompleteMessageAsync(arg.Message);
             return;

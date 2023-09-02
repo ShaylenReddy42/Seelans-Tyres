@@ -58,7 +58,7 @@ public static class CryptographyExtensions
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
-        if (discoveryDocument.IsError is true)
+        if (discoveryDocument.IsError)
         {
             logger.LogError(
                 "{announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",

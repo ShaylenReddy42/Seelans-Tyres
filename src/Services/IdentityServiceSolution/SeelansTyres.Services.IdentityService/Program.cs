@@ -149,7 +149,7 @@ builder.Services.AddProblemDetails(configure =>
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<CustomerDbContext>();
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHealthChecks()
         .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);
@@ -180,7 +180,7 @@ app.UseCommonCookiePolicy();
 app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() is false)
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }

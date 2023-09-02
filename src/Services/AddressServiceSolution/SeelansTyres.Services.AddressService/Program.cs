@@ -52,7 +52,7 @@ builder.Services.AddAuthorization(configure =>
     configure.AddPolicy("MustBeARegularCustomer", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireAssertion(context => context.User.IsInRole("Administrator") is false);
+        policy.RequireAssertion(context => !context.User.IsInRole("Administrator"));
         policy.AddRequirements(
             new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement("customerId"));
     });
@@ -90,7 +90,7 @@ app.MapCommonHealthChecks();
 
 app.AddCommonStartupDelay();
 
-if (app.Configuration.GetValue<bool>("InContainer") is true)
+if (app.Configuration.GetValue<bool>("InContainer"))
 {
     await app.MigrateDatabaseAsync<AddressDbContext>();
 }

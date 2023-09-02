@@ -98,7 +98,7 @@ public class CustomersController : ControllerBase
             "API => Attempting to retrieve customer by email {customerEmail}",
             "***REDACTED***");
         
-        if (string.IsNullOrEmpty(email.Trim()) is true)
+        if (string.IsNullOrEmpty(email.Trim()))
         {
             logger.LogWarning(
                 "{announcement}: Authenticated user using client '{clientId}' attempted to retrieve all customers by not specifying an email",
@@ -157,7 +157,7 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        var configurationKeyForDestination = environment.IsDevelopment() is true
+        var configurationKeyForDestination = environment.IsDevelopment()
                                            ? "RabbitMQ:Exchanges:UpdateAccount"
                                            : "AzureServiceBus:Topics:UpdateAccount";
 
@@ -194,7 +194,7 @@ public class CustomersController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        var configurationKeyForDestination = environment.IsDevelopment() is true
+        var configurationKeyForDestination = environment.IsDevelopment()
                                            ? "RabbitMQ:Exchanges:DeleteAccount"
                                            : "AzureServiceBus:Topics:DeleteAccount";
 
@@ -232,7 +232,7 @@ public class CustomersController : ControllerBase
         
         var result = await customerService.VerifyPasswordAsync(id, passwordModel.Password);
 
-        return result is true ? Ok() : BadRequest();
+        return result ? Ok() : BadRequest();
     }
 
     [HttpPut("{id}/resetpassword")]

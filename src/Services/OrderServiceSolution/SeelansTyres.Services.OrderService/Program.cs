@@ -88,7 +88,7 @@ app.MapCommonHealthChecks();
 
 app.AddCommonStartupDelay();
 
-if (app.Configuration.GetValue<bool>("InContainer") is true)
+if (app.Configuration.GetValue<bool>("InContainer"))
 {
     await app.MigrateDatabaseAsync<OrderDbContext>();
 }

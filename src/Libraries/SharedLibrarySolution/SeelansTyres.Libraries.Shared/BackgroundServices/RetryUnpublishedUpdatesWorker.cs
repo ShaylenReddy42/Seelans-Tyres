@@ -32,7 +32,7 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (stoppingToken.IsCancellationRequested is false)
+        while (!stoppingToken.IsCancellationRequested)
         {
             // The 'IUnpublishedUpdateRepository' is registered as a scoped service
             // which cannot be injected into the constructor of a service registered

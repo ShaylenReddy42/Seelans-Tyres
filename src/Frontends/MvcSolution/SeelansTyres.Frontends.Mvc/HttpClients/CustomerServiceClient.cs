@@ -99,7 +99,7 @@ public class CustomerServiceClient : ICustomerServiceClient
 
             var response = await client.GetAsync($"api/customers/{customerId}");
 
-            if (response.IsSuccessStatusCode is false)
+            if (!response.IsSuccessStatusCode)
             {
                 logger.LogError(
                     "{announcement}: Attempt to retrieve customer {customerId} from downstream was unsuccessful with status code {statusCode}",
@@ -155,7 +155,7 @@ public class CustomerServiceClient : ICustomerServiceClient
         var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(await updateAccountModel.EncryptAsync(client, configuration, logger)));
 
         // Upon success, remove the model from the cache because it's outdated
-        if (response.IsSuccessStatusCode is true)
+        if (response.IsSuccessStatusCode)
         {
             logger.LogInformation(
                 "{announcement}: Attempt to update account for customer {customerId} completed successfully. Removing the old customer info from the cache",
@@ -183,7 +183,7 @@ public class CustomerServiceClient : ICustomerServiceClient
 
         var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(await passwordModel.EncryptAsync(client, configuration, logger)));
 
-        if (response.IsSuccessStatusCode is true)
+        if (response.IsSuccessStatusCode)
         {
             await client.DeleteAsync($"api/customers/{customerId}");
             return true;
@@ -208,7 +208,7 @@ public class CustomerServiceClient : ICustomerServiceClient
 
         var response = await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(await passwordModel.EncryptAsync(client, configuration, logger)));
 
-        if (response.IsSuccessStatusCode is false)
+        if (!response.IsSuccessStatusCode)
         {
             logger.LogError(
                 "{announcement}: Reset password operation for customer {customerId} was unsuccessful",
@@ -235,7 +235,7 @@ public class CustomerServiceClient : ICustomerServiceClient
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
-        if (discoveryDocument.IsError is true)
+        if (discoveryDocument.IsError)
         {
             stopwatch.Stop();
 
@@ -256,7 +256,7 @@ public class CustomerServiceClient : ICustomerServiceClient
 
         stopwatch.Start();
 
-        if (tokenResponse.IsError is true)
+        if (tokenResponse.IsError)
         {
             logger.LogError(
                 "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token was unsuccessful",

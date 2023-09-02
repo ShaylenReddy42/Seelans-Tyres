@@ -2,7 +2,7 @@
 
 @{
     string? name = null;
-    if (true.Equals(ViewData["signed-out"]) is false)
+    if (!true.Equals(ViewData["signed-out"]))
     {
         name = Context.User?.GetDisplayName();
     }
@@ -16,7 +16,7 @@
                 IdentityServer4
             </a>
 
-            @if (string.IsNullOrWhiteSpace(name) is false)
+            @if (!string.IsNullOrWhiteSpace(name))
             {
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">

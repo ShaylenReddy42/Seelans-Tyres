@@ -36,7 +36,7 @@ public static class BaseMessageExtensions
                 configuration["IdentityServer"]!,
                 validAudience).Result;
 
-        if (tokenIsValid is false)
+        if (!tokenIsValid)
         {
             logger.LogError(
                 "{announcement}: Attempt to validate the access token was unsuccessful",

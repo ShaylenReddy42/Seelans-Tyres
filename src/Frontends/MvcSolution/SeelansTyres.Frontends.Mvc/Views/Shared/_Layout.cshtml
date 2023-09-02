@@ -25,7 +25,7 @@
 </head>
 <body class="w-100 h-100 m-0 p-0">
     <header>
-        @if (Configuration.GetValue<bool>("SystemDegraded") is true)
+        @if (Configuration.GetValue<bool>("SystemDegraded"))
         {
             <div class="alert alert-danger text-center p-0" role="alert">
                 <div class="d-inline-flex py-3">
@@ -50,7 +50,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (User.IsInRole("Administrator") is false)
+                        @if (!User.IsInRole("Administrator"))
                         {
                             <li class="nav-item ms-2 ms-md-0">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
@@ -69,7 +69,7 @@
                     <hr class="d-block d-md-none" />
                     <div class="float-lg-right">
                         <ul class="navbar-nav mr-auto">
-                            @if (User.IsInRole("Administrator") is false)
+                            @if (!User.IsInRole("Administrator"))
                             {
                                 <li class="nav-item ms-2 ms-md-0">
                                     <a class="nav-link text-dark" href="https://www.facebook.com/Seelans-Tyres-Pry-Ltd-Ballito-976746385846679/"><span class="fab fa-facebook-f"></span><span class="d-md-none ms-2">Visit Our Facebook Page</span></a>
@@ -79,7 +79,7 @@
                                 </li>
                             }
                             <partial name="_LoginPartial" />
-                            @if (User.IsInRole("Administrator") is false)
+                            @if (!User.IsInRole("Administrator"))
                             {
                                 @await Component.InvokeAsync("ShoppingCartSummary")
                             }

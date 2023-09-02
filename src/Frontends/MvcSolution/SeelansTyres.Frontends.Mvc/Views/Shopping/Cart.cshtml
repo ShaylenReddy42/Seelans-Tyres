@@ -44,7 +44,7 @@
         }
         </tbody>
     </table>
-    @if (User.Identity!.IsAuthenticated is false)
+    @if (!User.Identity!.IsAuthenticated)
     {
         <div class="alert alert-danger text-center" role="alert">
             <p>You need to have an account to buy tyres</p>

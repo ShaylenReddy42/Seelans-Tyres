@@ -84,9 +84,9 @@ public class AccountController : Controller
     {
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
-        var isAdmin = User.IsInRole("Administrator") is true;
+        var isAdmin = User.IsInRole("Administrator");
 
-        if (isAdmin is true)
+        if (isAdmin)
         {
             logger.LogInformation("Logging out the administrator");
         }
@@ -116,7 +116,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-        if (ModelState.IsValid is false)
+        if (!ModelState.IsValid)
         {
             return View();
         }
@@ -126,7 +126,7 @@ public class AccountController : Controller
 
         var (newCustomer, succeeded, errors) = await customerServiceClient.CreateAsync(model);
 
-        if (succeeded is true && newCustomer is not null)
+        if (succeeded && newCustomer is not null)
         {
             logger.LogInformation(
                 "{announcement}: Attempt to create a new customer account completed successfully",
@@ -169,7 +169,7 @@ public class AccountController : Controller
 
         var succeeded = await customerServiceClient.DeleteAsync(password);
 
-        if (succeeded is true)
+        if (succeeded)
         {
             logger.LogInformation(
                 "{announcement}: Attempt to delete account for customer {customerId} completed successfully. Logging them out",
@@ -196,7 +196,7 @@ public class AccountController : Controller
 
         var requestSucceeded = await addressServiceClient.CreateAsync(addressModel, customerId);
 
-        if (requestSucceeded is false)
+        if (!requestSucceeded)
         {
             logger.LogError(
                 "{announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
@@ -286,7 +286,7 @@ public class AccountController : Controller
                     lastName: customer.LastName,
                     token: token);
 
-            if (result is false)
+            if (!result)
             {
                 logger.LogError(
                     "{announcement}: The system failed to send the token to customer with email {customerEmail}",

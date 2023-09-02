@@ -4,7 +4,7 @@
     <caption hidden>Tyres</caption>
     <thead>
         <tr>
-            @if (ViewData["IncludeEdit"] is true)
+            @if ((bool)ViewData["IncludeEdit"]!)
             {
                 <th class="table-dark text-center" colspan="11" scope="col">Tyres</th>
             }
@@ -23,7 +23,7 @@
             <th scope="col">Available?</th>
             <th scope="col">Image</th>
             <th scope="col">Associated Brand</th>
-            @if (ViewData["IncludeEdit"] is true)
+            @if ((bool)ViewData["IncludeEdit"]!)
             {
                 <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
@@ -43,7 +43,7 @@
             <td>@(tyre.Available ? "Yes" : "No")</td>
             <td>@tyre.ImageUrl</td>
             <td>@tyre.Brand!.Name</td>
-            @if (ViewData["IncludeEdit"] is true)
+            @if ((bool)ViewData["IncludeEdit"]!)
             {
                 <td>
                     <a class="btn btn-warning btn-sm w-100" asp-controller="Admin" asp-action="UpdateTyre" asp-route-tyreId="@tyre.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>

@@ -43,7 +43,7 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
 
         for (int i = 0; i < validationArray.GetLength(0); i++)
         {
-            if (validationArray[i, 0] is true)
+            if ((bool)validationArray[i, 0])
             {
                 logger.LogWarning(
                     "{announcement}: Token exchange validation failed with reason '{validationFailureReason}'",

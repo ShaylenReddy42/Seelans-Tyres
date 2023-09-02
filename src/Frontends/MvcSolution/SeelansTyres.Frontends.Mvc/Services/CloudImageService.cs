@@ -94,7 +94,7 @@ public class CloudImageService : IImageService
 
         var blobContainerUri = blobContainerClient.Uri.AbsoluteUri;
 
-        if (imageUrl.StartsWith(blobContainerUri) is false)
+        if (!imageUrl.StartsWith(blobContainerUri))
         {
             logger.LogWarning(
                 "{announcement}: The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",

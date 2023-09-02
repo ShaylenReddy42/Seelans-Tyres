@@ -83,7 +83,7 @@ public static class Logging
 
             metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value!));
 
-            if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled") is true)
+            if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"))
             {
                 loggerConfiguration
                     .WriteTo.Elasticsearch(
@@ -96,7 +96,7 @@ public static class Logging
                         });
             }
 
-            if (hostBuilderContext.Configuration.GetValue<bool>("AppInsights:Enabled") is true)
+            if (hostBuilderContext.Configuration.GetValue<bool>("AppInsights:Enabled"))
             {
                 loggerConfiguration
                     .WriteTo.ApplicationInsights(

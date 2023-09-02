@@ -64,7 +64,7 @@ public static class Swagger
         app.UseSwagger();
         app.UseSwaggerUI();
 
-        if (app.Environment.ApplicationName.EndsWith("IdentityService") is false)
+        if (!app.Environment.ApplicationName.EndsWith("IdentityService"))
         {
             app.Map("/", httpContext => Task.Run(() => httpContext.Response.Redirect("/swagger")));
         }

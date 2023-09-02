@@ -25,7 +25,7 @@ public class TokenExchangeService : ITokenExchangeService
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync();
 
-        if (discoveryDocument.IsError is true)
+        if (discoveryDocument.IsError)
         {
             logger.LogError(
                 "{announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful",
@@ -46,7 +46,7 @@ public class TokenExchangeService : ITokenExchangeService
             ClientSecret = configuration["ClientCredentials:ClientSecret"]
         });
 
-        if (tokenResponse.IsError is true)
+        if (tokenResponse.IsError)
         {
             logger.LogError(
                 "{announcement}: Token exchange request was unsuccessful",

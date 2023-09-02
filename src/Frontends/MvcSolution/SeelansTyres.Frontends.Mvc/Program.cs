@@ -61,7 +61,7 @@ builder.Services.AddHttpClient<ITyresServiceClient, TyresServiceClient>(client =
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 
-if (builder.Configuration.GetValue<bool>("Redis:Enabled") is false)
+if (!builder.Configuration.GetValue<bool>("Redis:Enabled"))
 {
     builder.Services.AddMemoryCache();
     builder.Services.AddScoped<ICacheService, InMemoryCacheService>(); 
@@ -78,7 +78,7 @@ else
 
 builder.Services.AddScoped<ICartService, CartService>();
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddTransient<IImageService, LocalImageService>();
 }
@@ -141,7 +141,7 @@ builder.Services.AddHealthChecks()
         name: "gateway",
         failureStatus: HealthStatus.Unhealthy);
 
-if (builder.Environment.IsDevelopment() is false)
+if (!builder.Environment.IsDevelopment())
 {
     builder.Services.AddHealthChecks()
         .AddAzureBlobStorage(
@@ -150,7 +150,7 @@ if (builder.Environment.IsDevelopment() is false)
             failureStatus: HealthStatus.Unhealthy);
 }
 
-if (builder.Configuration.GetValue<bool>("Redis:Enabled") is true)
+if (builder.Configuration.GetValue<bool>("Redis:Enabled"))
 {
     builder.Services.AddHealthChecks()
         .AddRedis(
@@ -166,7 +166,7 @@ app.HonorForwardedHeaders();
 app.UseCommonCookiePolicy();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() is false)
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }

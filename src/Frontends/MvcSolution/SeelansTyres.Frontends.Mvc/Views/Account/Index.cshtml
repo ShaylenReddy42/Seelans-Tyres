@@ -84,7 +84,7 @@
                                         <p class="card-text m-0 p-0">@address.City</p>
                                         <p class="card-text m-0 p-0">@address.PostalCode</p>
                                         <p class="card-text m-0 p-0 @(address.PreferredAddress ? "fw-bold text-success text-end" : "d-none")"><i class="fa fa-check"></i> Preferred Address</p>
-                                        @if (address.PreferredAddress is false)
+                                        @if (!address.PreferredAddress)
                                         {
                                             <hr class="my-3">
                                             <div class="d-flex justify-content-end">

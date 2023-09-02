@@ -31,7 +31,7 @@ public class MustSatisfyOrderRetrievalRulesHandler : AuthorizationHandler<MustSa
 
         var isAdmin = context.User.IsInRole("Administrator");
 
-        if (isAdmin is true && customerIdFromQuery is null)
+        if (isAdmin && customerIdFromQuery is null)
         {
             logger.LogInformation(
                 "{announcement}: An administrator is allowed to retrieve all orders but not for a specific customer, rules satisfied",
@@ -44,7 +44,7 @@ public class MustSatisfyOrderRetrievalRulesHandler : AuthorizationHandler<MustSa
             context.Succeed(requirement);
             return Task.CompletedTask;
         }
-        else if (context.User.Identity!.IsAuthenticated is true 
+        else if (context.User.Identity!.IsAuthenticated 
             && customerIdFromClaims == customerIdFromQuery)
         {
             logger.LogInformation(

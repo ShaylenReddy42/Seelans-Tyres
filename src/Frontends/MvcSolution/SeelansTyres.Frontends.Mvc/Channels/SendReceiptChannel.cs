@@ -30,7 +30,7 @@ public class SendReceiptChannel
     {
         while (await channel.Writer.WaitToWriteAsync())
         {
-            if (channel.Writer.TryWrite((order, activityTraceId, activitySpanId)) is true)
+            if (channel.Writer.TryWrite((order, activityTraceId, activitySpanId)))
             {
                 logger.LogInformation("Channel => The order has been written to the channel");
 

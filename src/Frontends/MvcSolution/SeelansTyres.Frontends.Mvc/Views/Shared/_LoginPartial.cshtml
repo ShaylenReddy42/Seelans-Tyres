@@ -9,7 +9,7 @@
     var customer = await customerServiceClient.RetrieveSingleAsync(customerId);
     var (firstName, lastName) = (customer.FirstName, customer.LastName);
 
-    if (User.IsInRole("Administrator") is false)
+    if (!User.IsInRole("Administrator"))
     {
         <li class="nav-item ms-2 ms-md-0">
             <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">@($"{firstName} {lastName}")</a>

@@ -42,7 +42,7 @@ public class OrderServiceClient : IOrderServiceClient
     {
         logger.LogInformation(
             "Service => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
-            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "");
+            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
         try
         {
@@ -66,7 +66,7 @@ public class OrderServiceClient : IOrderServiceClient
             logger.LogInformation(
                 "{announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
                 "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
-                notDeliveredOnly is true ? " except delivered ones" : "", orders!.Count());
+                notDeliveredOnly ? " except delivered ones" : "", orders!.Count());
 
             return orders!;
         }

@@ -35,7 +35,7 @@ public class OrdersController : ControllerBase
     {
         logger.LogInformation(
             "API => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
-            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly is true ? " except delivered ones" : "");
+            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
         var orders = await orderRepository.RetrieveAllAsync(customerId, notDeliveredOnly);
 

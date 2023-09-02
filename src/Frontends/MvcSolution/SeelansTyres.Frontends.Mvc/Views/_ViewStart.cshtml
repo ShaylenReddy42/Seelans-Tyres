@@ -11,7 +11,7 @@
 }
 
 @* This ensures that an administrator is locked into the Admin Portal *@
-@if (User.IsInRole("Administrator") && Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin") is false)
+@if (User.IsInRole("Administrator") && !Url.RouteUrl(ViewContext.RouteData.Values)!.ToString().Contains("Admin"))
 {
     <script>
         window.location.href = "@Url.Action("Index", "Admin")";

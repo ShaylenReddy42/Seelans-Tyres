@@ -11,6 +11,6 @@ public class LoginViewModel : LoginInputModel
     public IEnumerable<ExternalProvider> ExternalProviders { get; set; } = Enumerable.Empty<ExternalProvider>();
     public IEnumerable<ExternalProvider> VisibleExternalProviders => ExternalProviders.Where(x => !String.IsNullOrEmpty(x.DisplayName));
 
-    public bool IsExternalLoginOnly => EnableLocalLogin is false && ExternalProviders?.Count() == 1;
+    public bool IsExternalLoginOnly => !EnableLocalLogin && ExternalProviders?.Count() == 1;
     public string? ExternalLoginScheme => IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme : null;
 }

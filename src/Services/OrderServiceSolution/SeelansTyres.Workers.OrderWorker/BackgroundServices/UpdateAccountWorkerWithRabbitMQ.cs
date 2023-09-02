@@ -57,7 +57,7 @@ public class UpdateAccountWorkerWithRabbitMQ : BackgroundService
                 validAudience: "CustomerService",
                 out bool tokenIsValid);
 
-            if (tokenIsValid is false)
+            if (!tokenIsValid)
             {
                 channel.BasicAck(args.DeliveryTag, false);
                 return;

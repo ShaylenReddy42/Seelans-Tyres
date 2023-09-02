@@ -50,7 +50,7 @@ public class UpdateTyreWorkerWithAzureServiceBus : BackgroundService
             validAudience: "TyresService",
             out bool tokenIsValid);
 
-        if (tokenIsValid is false)
+        if (!tokenIsValid)
         {
             await arg.CompleteMessageAsync(arg.Message);
             return;

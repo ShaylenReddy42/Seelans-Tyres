@@ -31,7 +31,7 @@ public static class HealthChecks
                 check: () => HealthCheckResult.Healthy(),
                 tags: new[] { "self" });
 
-        if (healthChecksModel.EnableElasticsearchHealthCheck is true)
+        if (healthChecksModel.EnableElasticsearchHealthCheck)
         {
             healthChecks
                 .AddElasticsearch(
@@ -40,7 +40,7 @@ public static class HealthChecks
                     timeout: TimeSpan.FromSeconds(1.5));
         }
 
-        if (healthChecksModel.PublishHealthStatusToAppInsights is true)
+        if (healthChecksModel.PublishHealthStatusToAppInsights)
         {
             healthChecks.AddApplicationInsightsPublisher();
         }

@@ -68,7 +68,7 @@ public class TyresServiceClient : ITyresServiceClient
 
     public async Task<IEnumerable<TyreModel>> RetrieveAllTyresAsync(bool availableOnly = true)
     {
-        string includingUnavailable = availableOnly is false ? " including unavailable" : "";
+        string includingUnavailable = !availableOnly ? " including unavailable" : "";
 
         logger.LogInformation(
             "Service => Attempting to retrieve all tyres{includingUnavailable}",

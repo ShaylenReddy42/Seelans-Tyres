@@ -4,7 +4,7 @@
     <caption hidden>Orders</caption>
     <thead>
         <tr>
-        @if (ViewData["NotDeliveredOnly"] is true)
+        @if ((bool)ViewData["NotDeliveredOnly"]!)
         {
             <th class="table-dark text-center" colspan="8" scope="col">Undelivered Orders</th>
         }
@@ -19,7 +19,7 @@
             <th scope="col">Address</th>
             <th scope="col">Order Placed</th>
             <th scope="col">Total Price</th>
-        @if (ViewData["NotDeliveredOnly"] is true)
+        @if ((bool)ViewData["NotDeliveredOnly"]!)
         {
             <th scope="col">View Receipt</th>
             <th scope="col">Mark as Delivered</th>
@@ -40,7 +40,7 @@
             <td>@($"{order.AddressLine1}, {order.City}, {order.PostalCode}")</td>
             <td>@order.OrderPlaced</td>
             <td>@($"{order.TotalPrice:R0.00}")</td>
-        @if (ViewData["NotDeliveredOnly"] is true)
+        @if ((bool)ViewData["NotDeliveredOnly"]!)
         {
             <td>
                 <form class="viewReceiptForm">

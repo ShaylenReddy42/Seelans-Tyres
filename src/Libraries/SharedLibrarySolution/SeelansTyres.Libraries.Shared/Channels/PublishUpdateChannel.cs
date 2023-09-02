@@ -32,7 +32,7 @@ public class PublishUpdateChannel
     {
         while (await channel.Writer.WaitToWriteAsync())
         {
-            if (channel.Writer.TryWrite((message, destination)) is true)
+            if (channel.Writer.TryWrite((message, destination)))
             {
                 logger.LogInformation("Channel => Update has been written to the channel for publishing");
 

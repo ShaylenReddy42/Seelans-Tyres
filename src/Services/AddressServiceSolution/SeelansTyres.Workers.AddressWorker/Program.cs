@@ -22,7 +22,7 @@ builder.Services.AddDbContext<AddressDbContext>(options =>
 
 builder.Services.AddScoped<IAddressUpdateService, AddressUpdateService>();
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHostedService<DeleteAccountWorkerWithRabbitMQ>();
 }
@@ -42,7 +42,7 @@ builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<AddressDbContext>()
     .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!);
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHealthChecks()
         .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);

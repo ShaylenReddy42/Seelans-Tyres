@@ -57,7 +57,7 @@ public class UpdateTyreWorkerWithRabbitMQ : BackgroundService
                 validAudience: "TyresService",
                 out bool tokenIsValid);
 
-            if (tokenIsValid is false)
+            if (!tokenIsValid)
             {
                 channel.BasicAck(args.DeliveryTag, false);
                 return;

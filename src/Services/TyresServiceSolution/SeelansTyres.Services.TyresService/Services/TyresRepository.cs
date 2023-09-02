@@ -83,7 +83,7 @@ public class TyresRepository : ITyresRepository
 
     public async Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly)
     {
-        string includingUnavailable = availableOnly is false ? " including unavailable" : "";
+        string includingUnavailable = !availableOnly ? " including unavailable" : "";
 
         logger.LogInformation(
             "Repository => Attempting to retrieve all tyres{includingUnavailable}",

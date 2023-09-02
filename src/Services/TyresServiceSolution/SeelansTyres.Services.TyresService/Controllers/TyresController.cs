@@ -68,7 +68,7 @@ public class TyresController : ControllerBase
     {
         logger.LogInformation(
             "API => Attempting to retrieve all tyres{includingUnavailable}",
-            availableOnly is false ? " including unavailable" : "");
+            !availableOnly ? " including unavailable" : "");
         
         var tyres = await tyresRepository.RetrieveAllTyresAsync(availableOnly);
 
@@ -133,7 +133,7 @@ public class TyresController : ControllerBase
             IdOfEntityToUpdate = id
         };
 
-        var configurationKeyForDestination = environment.IsDevelopment() is true
+        var configurationKeyForDestination = environment.IsDevelopment()
                                            ? "RabbitMQ:Exchanges:UpdateTyre"
                                            : "AzureServiceBus:Topics:UpdateTyre";
 

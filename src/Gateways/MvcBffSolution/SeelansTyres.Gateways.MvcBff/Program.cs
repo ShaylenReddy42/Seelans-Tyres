@@ -84,7 +84,7 @@ await app.UseOcelot(ocelotPipelineConfiguration =>
             app.Configuration["LivenessCheckEndpoint"]!,
         };
 
-        if (healthCheckEndpoints.Contains(requestPath) is false)
+        if (!healthCheckEndpoints.Contains(requestPath))
         {
             await next.Invoke();
         }

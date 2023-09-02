@@ -98,7 +98,7 @@ public class ConsentController : Controller
         ConsentResponse? grantedConsent = null;
 
         // user clicked 'no' - send back the standard 'access_denied' response
-        if (model?.Button == "no")
+        if (model.Button is "no")
         {
             grantedConsent = new ConsentResponse { Error = AuthorizationError.AccessDenied };
 
@@ -106,13 +106,13 @@ public class ConsentController : Controller
             await _events.RaiseAsync(new ConsentDeniedEvent(User.GetSubjectId(), request.Client.ClientId, request.ValidatedResources.RawScopeValues));
         }
         // user clicked 'yes' - validate the data
-        else if (model?.Button == "yes")
+        else if (model.Button is "yes")
         {
             // if the user consented to some scope, build the response model
             if (model.ScopesConsented != null && model.ScopesConsented.Any())
             {
                 var scopes = model.ScopesConsented;
-                if (ConsentOptions.EnableOfflineAccess is false)
+                if (!ConsentOptions.EnableOfflineAccess)
                 {
                     scopes = scopes.Where(x => x != IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess);
                 }

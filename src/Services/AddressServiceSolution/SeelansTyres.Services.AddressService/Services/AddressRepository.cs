@@ -25,7 +25,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Start();
         try
         {
-            if (newAddress.PreferredAddress is true)
+            if (newAddress.PreferredAddress)
             {
                 logger.LogInformation("Customer marked the new address as preferred. Setting the rest to false");
 

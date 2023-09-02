@@ -57,7 +57,7 @@ builder.Services.AddProblemDetails(configure =>
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<TyresDbContext>();
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHealthChecks()
         .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);
@@ -98,7 +98,7 @@ app.MapCommonHealthChecks();
 
 app.AddCommonStartupDelay();
 
-if (app.Configuration.GetValue<bool>("InContainer") is true)
+if (app.Configuration.GetValue<bool>("InContainer"))
 {
     await app.MigrateDatabaseAsync<TyresDbContext>();
 }

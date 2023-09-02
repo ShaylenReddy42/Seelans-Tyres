@@ -54,7 +54,7 @@ public class LocalImageService : IImageService
     {
         logger.LogInformation("Service => Attempting to delete image");
         
-        if (imageUrl.StartsWith("/images/uploaded/") is false)
+        if (!imageUrl.StartsWith("/images/uploaded/"))
         {
             logger.LogWarning(
                 "{announcement}: The image url is invalid and cannot be acted upon. It needs to start with '/images/uploaded/'",
@@ -67,7 +67,7 @@ public class LocalImageService : IImageService
 
         imageUrl = Path.Combine(environment.WebRootPath, imageUrl);
 
-        if (File.Exists(imageUrl) is false)
+        if (!File.Exists(imageUrl))
         {
             logger.LogWarning(
                 "{announcement}: The image doesn't exist on disk. Exiting early",

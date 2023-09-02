@@ -22,7 +22,7 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 builder.Services.AddScoped<IOrderUpdateService, OrderUpdateService>();
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHostedService<DeleteAccountWorkerWithRabbitMQ>();
     builder.Services.AddHostedService<UpdateAccountWorkerWithRabbitMQ>();
@@ -46,7 +46,7 @@ builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<OrderDbContext>()
     .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!);
 
-if (builder.Environment.IsDevelopment() is true)
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHealthChecks()
         .AddCommonRabbitMQCheck(builder.Configuration["RabbitMQ:ConnectionProperties:ConnectionString"]!);

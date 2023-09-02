@@ -127,7 +127,7 @@ public class ShoppingController : Controller
             Task.Run(() => customer),
             Task.Run(() => addresses));
 
-        var preferredAddress = addresses.Result.Single(address => address.PreferredAddress is true);
+        var preferredAddress = addresses.Result.Single(address => address.PreferredAddress);
 
         var order = new OrderModel
         {
