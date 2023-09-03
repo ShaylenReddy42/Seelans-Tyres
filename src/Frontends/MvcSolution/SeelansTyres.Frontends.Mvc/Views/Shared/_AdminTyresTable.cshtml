@@ -1,60 +1,62 @@
 ﻿@model IEnumerable<TyreModel>
 
-<table class="table table-bordered table-responsive mb-4">
-    <caption hidden>Tyres</caption>
-    <thead>
-        <tr>
-            @if ((bool)ViewData["IncludeEdit"]!)
-            {
-                <th class="table-dark text-center" colspan="11" scope="col">Tyres</th>
-            }
-            else
-            {
-                <th class="table-dark text-center" colspan="9" scope="col">Tyres</th>
-            }
-        </tr>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Width</th>
-            <th scope="col">Ratio</th>
-            <th scope="col">Diameter</th>
-            <th scope="col">Vehicle Type</th>
-            <th scope="col">Price</th>
-            <th scope="col">Available?</th>
-            <th scope="col">Image</th>
-            <th scope="col">Associated Brand</th>
-            @if ((bool)ViewData["IncludeEdit"]!)
-            {
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var tyre in Model)
-    {
-        <tr>
-            <th scope="col">@tyre.Name</th>
-            <td>@tyre.Width</td>
-            <td>@tyre.Ratio</td>
-            <td>@tyre.Diameter</td>
-            <td>@tyre.VehicleType</td>
-            <td>@tyre.Price</td>
-            <td>@(tyre.Available ? "Yes" : "No")</td>
-            <td>@tyre.ImageUrl</td>
-            <td>@tyre.Brand!.Name</td>
-            @if ((bool)ViewData["IncludeEdit"]!)
-            {
-                <td>
-                    <a class="btn btn-warning btn-sm w-100" asp-controller="Admin" asp-action="UpdateTyre" asp-route-tyreId="@tyre.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                </td>
-                <td>
-                    <form method="post" asp-controller="Admin" asp-action="DeleteTyre" asp-route-tyreId="@tyre.Id" asp-route-imageUrl="@tyre.ImageUrl">
-                        <button class="btn btn-danger btn-sm w-100"><i class="fa fa-trash-can" aria-hidden="true"></i></button>
-                    </form>
-                </td>
-            }
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered table-responsive mb-4">
+        <caption hidden>Tyres</caption>
+        <thead>
+            <tr>
+                @if ((bool)ViewData["IncludeEdit"]!)
+                {
+                    <th class="table-dark text-center" colspan="11" scope="col">Tyres</th>
+                }
+                else
+                {
+                    <th class="table-dark text-center" colspan="9" scope="col">Tyres</th>
+                }
+            </tr>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Width</th>
+                <th scope="col">Ratio</th>
+                <th scope="col">Diameter</th>
+                <th scope="col">Vehicle Type</th>
+                <th scope="col">Price</th>
+                <th scope="col">Available?</th>
+                <th scope="col">Image</th>
+                <th scope="col">Associated Brand</th>
+                @if ((bool)ViewData["IncludeEdit"]!)
+                {
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var tyre in Model)
+        {
+            <tr>
+                <th scope="col">@tyre.Name</th>
+                <td>@tyre.Width</td>
+                <td>@tyre.Ratio</td>
+                <td>@tyre.Diameter</td>
+                <td>@tyre.VehicleType</td>
+                <td>@tyre.Price</td>
+                <td>@(tyre.Available ? "Yes" : "No")</td>
+                <td>@tyre.ImageUrl</td>
+                <td>@tyre.Brand!.Name</td>
+                @if ((bool)ViewData["IncludeEdit"]!)
+                {
+                    <td>
+                        <a class="btn btn-warning btn-sm w-100" asp-controller="Admin" asp-action="UpdateTyre" asp-route-tyreId="@tyre.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    </td>
+                    <td>
+                        <form method="post" asp-controller="Admin" asp-action="DeleteTyre" asp-route-tyreId="@tyre.Id" asp-route-imageUrl="@tyre.ImageUrl">
+                            <button class="btn btn-danger btn-sm w-100"><i class="fa fa-trash-can" aria-hidden="true"></i></button>
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

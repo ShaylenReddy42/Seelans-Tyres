@@ -1,23 +1,25 @@
 ﻿@model IEnumerable<BrandModel>
 
-<table class="table table-bordered mb-4">
-    <caption hidden>Brands</caption>
-    <thead>
-        <tr>
-            <th class="table-dark text-center" colspan="2" scope="col">Brands</th>
-        </tr>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var brand in Model)
-    {
-        <tr>
-            <th scope="col">@brand.Id</th>
-            <td>@brand.Name</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered mb-4">
+        <caption hidden>Brands</caption>
+        <thead>
+            <tr>
+                <th class="table-dark text-center" colspan="2" scope="col">Brands</th>
+            </tr>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var brand in Model)
+        {
+            <tr>
+                <th scope="col">@brand.Id</th>
+                <td>@brand.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

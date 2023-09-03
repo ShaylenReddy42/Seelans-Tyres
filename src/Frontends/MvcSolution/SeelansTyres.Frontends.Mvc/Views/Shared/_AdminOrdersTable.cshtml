@@ -1,70 +1,72 @@
 ﻿@model IEnumerable<OrderModel>
 
-<table class="table table-bordered table-responsive-lg mb-4">
-    <caption hidden>Orders</caption>
-    <thead>
-        <tr>
-        @if ((bool)ViewData["NotDeliveredOnly"]!)
+<div class="table-responsive">
+    <table class="table table-bordered table-responsive-lg mb-4">
+        <caption hidden>Orders</caption>
+        <thead>
+            <tr>
+            @if ((bool)ViewData["NotDeliveredOnly"]!)
+            {
+                <th class="table-dark text-center" colspan="8" scope="col">Undelivered Orders</th>
+            }
+            else
+            {
+                <th class="table-dark text-center" colspan="8" scope="col">Orders</th>
+            }
+            </tr>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Address</th>
+                <th scope="col">Order Placed</th>
+                <th scope="col">Total Price</th>
+            @if ((bool)ViewData["NotDeliveredOnly"]!)
+            {
+                <th scope="col">View Receipt</th>
+                <th scope="col">Mark as Delivered</th>
+            }
+            else
+            {
+                <th scope="col">Delivered?</th>
+                <th scope="col">View Receipt</th>
+            }
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in Model)
         {
-            <th class="table-dark text-center" colspan="8" scope="col">Undelivered Orders</th>
+            <tr>
+                <th scope="row">@order.Id</th>
+                <td>@($"{order.FirstName} {order.LastName}")</td>
+                <td>@($"{order.AddressLine1}, {order.City}, {order.PostalCode}")</td>
+                <td>@order.OrderPlaced</td>
+                <td>@($"{order.TotalPrice:R0.00}")</td>
+            @if ((bool)ViewData["NotDeliveredOnly"]!)
+            {
+                <td>
+                    <form class="viewReceiptForm">
+                        <input id="orderId" value="@order.Id" hidden>
+                        <button class="btn btn-info btn-sm w-100"><i class="fas fa-receipt" aria-hidden="true"></i></button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" asp-controller="Admin" asp-action="MarkOrderAsDelivered" asp-route-orderId="@order.Id">
+                        <button class="btn btn-success btn-sm w-100"><i class="fa fa-check" aria-hidden="true"></i></button>
+                    </form>
+                </td>
+            }
+            else
+            {
+                <td>@(order.Delivered ? "Yes" : "No")</td>
+                <td>
+                    <form class="viewReceiptForm">
+                        <input id="orderId" value="@order.Id" hidden>
+                        <button class="btn btn-info btn-sm w-100"><i class="fas fa-receipt" aria-hidden="true"></i></button>
+                    </form>
+                </td>
+            }
+            </tr>
         }
-        else
-        {
-            <th class="table-dark text-center" colspan="8" scope="col">Orders</th>
-        }
-        </tr>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Customer</th>
-            <th scope="col">Address</th>
-            <th scope="col">Order Placed</th>
-            <th scope="col">Total Price</th>
-        @if ((bool)ViewData["NotDeliveredOnly"]!)
-        {
-            <th scope="col">View Receipt</th>
-            <th scope="col">Mark as Delivered</th>
-        }
-        else
-        {
-            <th scope="col">Delivered?</th>
-            <th scope="col">View Receipt</th>
-        }
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var order in Model)
-    {
-        <tr>
-            <th scope="row">@order.Id</th>
-            <td>@($"{order.FirstName} {order.LastName}")</td>
-            <td>@($"{order.AddressLine1}, {order.City}, {order.PostalCode}")</td>
-            <td>@order.OrderPlaced</td>
-            <td>@($"{order.TotalPrice:R0.00}")</td>
-        @if ((bool)ViewData["NotDeliveredOnly"]!)
-        {
-            <td>
-                <form class="viewReceiptForm">
-                    <input id="orderId" value="@order.Id" hidden>
-                    <button class="btn btn-info btn-sm w-100"><i class="fas fa-receipt" aria-hidden="true"></i></button>
-                </form>
-            </td>
-            <td>
-                <form method="post" asp-controller="Admin" asp-action="MarkOrderAsDelivered" asp-route-orderId="@order.Id">
-                    <button class="btn btn-success btn-sm w-100"><i class="fa fa-check" aria-hidden="true"></i></button>
-                </form>
-            </td>
-        }
-        else
-        {
-            <td>@(order.Delivered ? "Yes" : "No")</td>
-            <td>
-                <form class="viewReceiptForm">
-                    <input id="orderId" value="@order.Id" hidden>
-                    <button class="btn btn-info btn-sm w-100"><i class="fas fa-receipt" aria-hidden="true"></i></button>
-                </form>
-            </td>
-        }
-        </tr>
-    }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>

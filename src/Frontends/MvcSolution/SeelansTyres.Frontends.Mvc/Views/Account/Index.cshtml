@@ -16,11 +16,11 @@
                 <p class="account-holder-name">@($"{Model.Customer.FirstName} {Model.Customer.LastName}")</p>
             </div>
             <div class="account-nav-div">
-                <ul class="nav nav-pills nav-stacked list-group">
-                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#orders-pill">My Orders</a></li>
-                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#addresses-pill">My Addresses</a></li>
-                    <li><a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#account-pill">My Account</a></li>
-                </ul>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#orders-pill">My Orders</a>
+                    <a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#addresses-pill">My Addresses</a>
+                    <a class="list-group-item list-group-item-action list-group-item-dark" data-bs-toggle="pill" data-bs-target="#account-pill">My Account</a>
+                </div>
             </div>
         </div>
         <div class="col-md-8 account-detail-div">
