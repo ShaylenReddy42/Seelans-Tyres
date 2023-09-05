@@ -1,20 +1,24 @@
-using Microsoft.AspNetCore.Mvc;                // IActionResult, OkResult()
-using Microsoft.Azure.WebJobs;                 // FunctionName, HttpTrigger
-using Microsoft.Azure.WebJobs.Extensions.Http; // AuthorizationLevel
-using Microsoft.AspNetCore.Http;               // HttpRequest
-using Microsoft.Extensions.Logging;            // ILogger
-using Azure.Data.AppConfiguration;             // ConfigurationClient, ConfigurationSetting
-using Azure.Identity;                          // DefaultAzureCredential
-using static System.Environment;               // GetEnvironmentVariable()
+using Microsoft.Extensions.Logging;          // ILogger, ILoggerFactory
+using Azure.Data.AppConfiguration;           // ConfigurationClient, ConfigurationSetting
+using Azure.Identity;                        // DefaultAzureCredential
+using static System.Environment;             // GetEnvironmentVariable()
+using Microsoft.Azure.Functions.Worker;      // Function, HttpTrigger, AuthorizationLevel
+using Microsoft.Azure.Functions.Worker.Http; // HttpResponseData, HttpRequestData
+using System.Net;                            // HttpStatusCode
 
 namespace SeelansTyres.FunctionApps.SystemDegradedToggler;
 
-public static class TurnItOn
+public class TurnItOn
 {
-    [FunctionName("TurnItOn")]
-    public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Admin, "post", Route = null)] HttpRequest request,
-        ILogger logger)
+    private readonly ILogger logger;
+    
+    public TurnItOn(ILoggerFactory loggerFactory)
+    {
+        logger = loggerFactory.CreateLogger<TurnItOn>();
+    }
+
+    [Function("TurnItOn")]
+    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Admin, "post")] HttpRequestData request)
     {
         var appConfigurationUri = new Uri($"https://{GetEnvironmentVariable("AzureAppConfigName")}.azconfig.io");
 
@@ -32,6 +36,8 @@ public static class TurnItOn
 
         await configurationClient.SetConfigurationSettingAsync(systemDegradedConfigurationSetting);
 
-        return new OkResult();
+        var response = request.CreateResponse(HttpStatusCode.OK);
+
+        return response;
     }
 }

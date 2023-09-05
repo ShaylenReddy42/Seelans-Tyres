@@ -80,7 +80,7 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet'
+          value: 'dotnet-isolated'
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
@@ -104,7 +104,7 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
       ]
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNET|6.0'
+      linuxFxVersion: 'DOTNET-ISOLATED|7.0'
     }
   }
   tags: {
