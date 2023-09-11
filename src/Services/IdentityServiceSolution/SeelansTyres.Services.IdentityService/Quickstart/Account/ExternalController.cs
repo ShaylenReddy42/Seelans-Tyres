@@ -5,7 +5,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Security.Authentication;
 using System.Security.Claims;
 
@@ -130,7 +130,7 @@ public class ExternalController : Controller
         // depending on the external provider, some other claim type might be used
         var userIdClaim = externalUser!.FindFirst(JwtClaimTypes.Subject) ??
                           externalUser.FindFirst(ClaimTypes.NameIdentifier) ??
-                          throw new Exception("Unknown userid");
+                          throw new AuthenticationException("Unknown userid");
 
         // remove the user id claim so we don't include it as an extra claim if/when we provision the user
         var claims = externalUser.Claims.ToList();
