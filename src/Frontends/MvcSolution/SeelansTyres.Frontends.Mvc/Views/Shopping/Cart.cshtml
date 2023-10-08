@@ -34,7 +34,7 @@
                 </td>
             </tr>
         }
-        @if (Model.CartItems.Count() is not 0)
+        @if (Model.CartItems.Count is not 0)
         {
             <tr>
                 <td class="text-end" colspan=3>Total</td>
@@ -58,7 +58,7 @@
             <p>Please add an address to your account</p>
         </div>
     }
-    else if (Model.CartItems.Count() is not 0)
+    else if (Model.CartItems.Count is not 0)
     {
         <div class="col-md-12 text-center mt-5">
             <form method="post" asp-controller="Shopping" asp-action="Checkout">

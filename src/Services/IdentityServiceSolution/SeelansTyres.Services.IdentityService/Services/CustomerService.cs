@@ -182,7 +182,7 @@ public class CustomerService : ICustomerService
 			"Service => Attempting a password verification process for customer {customerId}",
 			customerId);
 
-		bool passwordMatches = default;
+		bool passwordMatches;
 
 		stopwatch.Start();
 		try

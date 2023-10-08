@@ -51,7 +51,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
     {
         logger.LogInformation("Repository => Attempting to retrieve all unpublished updates");
 
-        List<UnpublishedUpdate> unpublishedUpdates = new();
+        List<UnpublishedUpdate> unpublishedUpdates;
 
         stopwatch.Start();
         try

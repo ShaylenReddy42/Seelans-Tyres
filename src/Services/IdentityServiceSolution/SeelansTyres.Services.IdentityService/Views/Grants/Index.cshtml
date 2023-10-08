@@ -6,7 +6,7 @@
         <p>Below is the list of applications you have given permission to and the resources they have access to.</p>
     </div>
 
-    @if (Model.Grants.Any() == false)
+    @if (!Model.Grants.Any())
     {
         <div class="row">
             <div class="col-sm-8">

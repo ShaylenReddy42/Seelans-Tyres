@@ -23,7 +23,7 @@ public class TyresRepository : ITyresRepository
     {
         logger.LogInformation("Repository => Attempting to retrieve all brands");
         
-        IEnumerable<Brand> brands = Enumerable.Empty<Brand>();
+        IEnumerable<Brand> brands;
 
         stopwatch.Start();
         try

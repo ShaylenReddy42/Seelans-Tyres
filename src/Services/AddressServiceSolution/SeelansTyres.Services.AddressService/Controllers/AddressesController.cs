@@ -45,7 +45,7 @@ public class AddressesController : ControllerBase
 
         return CreatedAtRoute(
             "GetAddressForCustomer",
-            new { customerId = customerId, addressId = createdAddress.Id },
+            new { customerId, addressId = createdAddress.Id },
             createdAddress);
     }
 

@@ -6,11 +6,13 @@
     var informationalVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                             ?? "0.0.0+0-unknown";
 
+    var defaultUrl = "https://github.com/ShaylenReddy42/Seelans-Tyres";
+
     var commitUrl =
         assembly
-            .GetCustomAttributes<AssemblyMetadataAttribute>().ToList()
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
             .SingleOrDefault(attribute => attribute.Key.EndsWith("Commit Url"))?.Value
-                ?? "https://github.com/ShaylenReddy42/Seelans-Tyres";
+                ?? defaultUrl;
 }
 
 <!DOCTYPE html>
