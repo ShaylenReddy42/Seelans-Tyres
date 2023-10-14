@@ -105,7 +105,7 @@
     },
     {
       "provider": "unpkg",
-      "library": "jquery-validation@1.19.5",
+      "library": "jquery-validation@1.20.0",
       "destination": "wwwroot/lib/jquery-validation/",
       "files": [
         "LICENSE.md",
