@@ -12,6 +12,13 @@
     <DockerfileTag>seelanstyres/services/identityservice</DockerfileTag>
   </PropertyGroup>
 
+  <!-- PropertyGroup for Swagger XML documentation -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>SeelansTyres.Services.IdentityService.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
   <!-- Manually added PropertyGroup for reducing files created during publishing -->
   <PropertyGroup>
     <DebugType>embedded</DebugType>

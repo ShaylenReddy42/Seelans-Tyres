@@ -9,19 +9,32 @@ using SeelansTyres.Services.OrderService.Services;      // IOrderRepository, Ord
 using System.Reflection;                                // Assembly
 using SeelansTyres.Libraries.Shared.Extensions;         // AddCommonStartupDelay()
 
+var descriptiveApplicationName = "Seelan's Tyres: Order Microservice";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
     OriginAssembly = typeof(Program).Assembly,
-    DefaultDescriptiveApplicationName = "Seelan's Tyres: Order Microservice"
+    DefaultDescriptiveApplicationName = descriptiveApplicationName
 });
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 
-builder.Services.AddCommonSwaggerGen();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(setup =>
+{
+    setup.AddCommonSwaggerSecurityDefinitions();
+    setup.AddCommonSwaggerDoc(descriptiveApplicationName, "This API allows you to manage orders for customers");
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    setup.IncludeXmlComments(xmlFilePath);
+});
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(
@@ -75,7 +88,7 @@ app.UseProblemDetails();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseCommonSwagger();
+    app.UseCommonSwagger(descriptiveApplicationName);
 }
 
 app.UseAuthentication();

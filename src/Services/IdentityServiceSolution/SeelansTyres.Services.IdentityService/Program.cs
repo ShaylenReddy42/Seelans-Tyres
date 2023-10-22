@@ -12,17 +12,30 @@ using SeelansTyres.Libraries.Shared.Services;              // RabbitMQPublisher,
 using SeelansTyres.Libraries.Shared.Extensions;            // AddCommonStartupDelay()
 using SeelansTyres.Libraries.Shared.Authorization;         // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
 
+var descriptiveApplicationName = "Seelan's Tyres: Identity / Customer Microservice";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
     OriginAssembly = typeof(Program).Assembly,
-    DefaultDescriptiveApplicationName = "Seelan's Tyres: Identity / Customer Microservice"
+    DefaultDescriptiveApplicationName = descriptiveApplicationName
 });
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddCommonSwaggerGen();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(setup =>
+{
+    setup.AddCommonSwaggerSecurityDefinitions();
+    setup.AddCommonSwaggerDoc(descriptiveApplicationName, "This API allows you to manage customers");
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    setup.IncludeXmlComments(xmlFilePath);
+});
 
 var connectionString = builder.Configuration["Database:ConnectionString"];
 var assemblyName = typeof(Program).Assembly.GetName().Name;
@@ -186,7 +199,7 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseCommonSwagger();
+    app.UseCommonSwagger(descriptiveApplicationName);
 }
 
 app.UseStaticFiles();

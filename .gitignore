@@ -18,3 +18,4 @@ scripts/run-all.cmd
 # File extensions
 .env
 *.user
+*.xml
