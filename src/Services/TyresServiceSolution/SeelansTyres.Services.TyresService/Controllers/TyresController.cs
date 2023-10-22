@@ -43,7 +43,15 @@ public class TyresController : ControllerBase
         this.publishUpdateChannel = publishUpdateChannel;
     }
 
+    /// <summary>
+    /// Create a new tyre in the catalog
+    /// </summary>
+    /// <param name="tyreModel">The new tyre to be created</param>
+    /// <response code="201">The newly created tyre</response>
+    /// <returns>The newly created tyre in the form of a Task of type ActionResult of type TyreModel</returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(TyreModel))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<TyreModel>> CreateAsync(TyreModel tyreModel)
     {
         logger.LogInformation("API => Attempting to add a new tyre");
@@ -62,8 +70,15 @@ public class TyresController : ControllerBase
             createdTyre);
     }
 
+    /// <summary>
+    /// Retrieves all tyres in the catalog
+    /// </summary>
+    /// <param name="availableOnly">Indicates whether to return tyres that are marked as available for purchase only or not</param>
+    /// <response code="200">A list of tyres</response>
+    /// <returns>A list of tyres in the form of a Task of type ActionResult of type IEnumberable of type TyreModel</returns>
     [HttpGet]
     [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TyreModel>))]
     public async Task<ActionResult<IEnumerable<TyreModel>>> RetrieveAllAsync(bool availableOnly = true)
     {
         logger.LogInformation(
@@ -75,7 +90,17 @@ public class TyresController : ControllerBase
         return Ok(mapper.Map<IEnumerable<Tyre>, IEnumerable<TyreModel>>(tyres));
     }
 
+    /// <summary>
+    /// Retrieves a tyre from the catalog
+    /// </summary>
+    /// <param name="id">The id of the tyre to be retrieved</param>
+    /// <response code="200">The requested tyre from the catalog</response>
+    /// <response code="404">Indicates that the requested tyre from the catalog doesn't exist in the database</response>
+    /// <returns>The requested tyre in the form of a Task of type ActionResult of type TyreModel</returns>
     [HttpGet("{id}", Name = "RetrieveSingleAsync")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TyreModel))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TyreModel>> RetrieveSingleAsync(Guid id)
     {
         logger.LogInformation(
@@ -96,7 +121,21 @@ public class TyresController : ControllerBase
         return Ok(mapper.Map<Tyre, TyreModel>(tyre));
     }
 
+    /// <summary>
+    /// Updates a tyre in the catalog
+    /// </summary>
+    /// <remarks>
+    /// This action also publishes the update to a message broker to be consumed by other microservices
+    /// </remarks>
+    /// <param name="tyreModel">The model containing the updated tyre properties</param>
+    /// <param name="id">The id of the tyre to be updated</param>
+    /// <response code="204">Indicates that the tyre was updated successfully</response>
+    /// <response code="404">Indicates that the tyre to be updated doesn't exist in the database</response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> UpdateAsync(TyreModel tyreModel, Guid id)
     {
         logger.LogInformation(
@@ -150,7 +189,14 @@ public class TyresController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Deletes a tyre from the catalog
+    /// </summary>
+    /// <param name="id">The id of the tyre to be deleted</param>
+    /// <response code="204">Indicates that the tyre was deleted from the catalog successfully</response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult<TyreModel>> DeleteTyreAsync(Guid id)
     {
         logger.LogInformation(
