@@ -239,6 +239,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
   * Author: Tim Warner
 * [ASP.NET Core 6 Performance](https://www.pluralsight.com/courses/asp-dot-net-core-6-performance)
   * Author: Erik Dahl
+* [Documenting an ASP.NET Core 6 Web API Using Swagger](https://www.pluralsight.com/courses/asp-dot-net-core-6-web-api-documenting-swagger)
+  * Author: Kevin Dockx
 
 ### Whizlabs
 

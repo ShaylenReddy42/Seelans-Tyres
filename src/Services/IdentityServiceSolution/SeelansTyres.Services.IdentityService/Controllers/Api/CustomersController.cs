@@ -19,6 +19,8 @@ namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Consumes(Application.Json)]
 [Produces(Application.Json)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class CustomersController : ControllerBase
 {
     private readonly ICustomerService customerService;
@@ -47,9 +49,36 @@ public class CustomersController : ControllerBase
         this.environment = environment;
         this.publishUpdateChannel = publishUpdateChannel;
     }
-    
+
+    /// <summary>
+    /// Creates a new customer account
+    /// </summary>
+    /// <remarks>
+    /// The register model is encrypted and stored in the EncryptedDataModel using hybrid encryption  
+    ///   
+    /// RegisterModel:  
+    /// 
+    ///     {  
+    ///         "firstName": "string",  
+    ///         "lastName": "string",  
+    ///         "email": "string",  
+    ///         "phoneNumber": "string",  
+    ///         "password": "string",  
+    ///         "confirmPassword": "string"  
+    ///     }  
+    /// 
+    /// </remarks>
+    /// <param name="encryptedDataModel">The model containing the encrypted register model used to create an account</param>
+    /// <response code="201">Indicates that the customer account was created successfully</response>
+    /// <response code="400">
+    /// Indicates that either decryption of the model failed due to the data being tampered with  
+    /// or that the account already exists
+    /// </response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpPost]
     [Authorize(Policy = "CreateAccountPolicy")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateAsync(EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation("API => Attempting to create a new customer account, decryption required");
@@ -90,8 +119,22 @@ public class CustomersController : ControllerBase
             value: createdCustomer);
     }
 
+    /// <summary>
+    /// Retrieves a customer via an email address
+    /// </summary>
+    /// <param name="email">The email address of the requested customer account</param>
+    /// <response code="200">The requested customer account</response>
+    /// <response code="400">
+    /// Indicates that the requester attempted to retrieve ALL customer accounts,  
+    /// which isn't allowed via the API for security reasons
+    /// </response>
+    /// <response code="404">Indicates that the requested customer account doesn't exist in the database</response>
+    /// <returns>A customer account in the form of a Task of type ActionResult of type CustomerModel</returns>
     [HttpGet]
     [Authorize(Policy = "RetrieveSingleByEmailPolicy")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(string email)
     {
         logger.LogInformation(
@@ -112,8 +155,15 @@ public class CustomersController : ControllerBase
         return customer is not null ? Ok(mapper.Map<Customer, CustomerModel>(customer)) : NotFound();
     }
 
+    /// <summary>
+    /// Retrieves a customer via an id
+    /// </summary>
+    /// <param name="id">The id of the requested customer</param>
+    /// <response code="200">The requested customer account</response>
+    /// <returns>A customer account in the form of a Task of type ActionResult of type CustomerModel</returns>
     [HttpGet("{id}", Name = "RetrieveSingleAsync")]
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerModel))]
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(Guid id)
     {
         logger.LogInformation(
@@ -125,8 +175,31 @@ public class CustomersController : ControllerBase
         return Ok(mapper.Map<Customer, CustomerModel>(customer));
     }
 
+    /// <summary>
+    /// Updates a customer's account
+    /// </summary>
+    /// <remarks>
+    /// The update account model is encrypted and stored in the EncryptedDataModel using hybrid encryption  
+    ///   
+    /// UpdateAccountModel:  
+    /// 
+    ///     {  
+    ///         "firstName": "string",  
+    ///         "lastName": "string",  
+    ///         "phoneNumber": "string"  
+    ///     }  
+    ///   
+    /// This action also publishes the update to a message broker to be consumed by other microservices  
+    /// </remarks>
+    /// <param name="id">The id of the customer account to be updated</param>
+    /// <param name="encryptedDataModel">The model containing the encrypted update account model used to update a customer's account</param>
+    /// <response code="204">Indicates that the customer's account was updated successfully</response>
+    /// <response code="400">Indicates that the decryption of the model failed due to the data being tampered with</response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpPut("{id}")]
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation(
@@ -174,8 +247,18 @@ public class CustomersController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Deletes a customer's account
+    /// </summary>
+    /// <remarks>
+    /// This action also publishes the account deletion to a message broker to be consumed by other microservices  
+    /// </remarks>
+    /// <param name="id">The id of the customer's account to be deleted</param>
+    /// <response code="204">Indicates that the customer's account was deleted successfully</response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpDelete("{id}")]
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
         logger.LogInformation(
@@ -211,8 +294,31 @@ public class CustomersController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Verifies if a customer's password matches their password in the database
+    /// </summary>
+    /// <remarks>
+    /// The password model is encrypted and stored in the EncryptedDataModel using hybrid encryption  
+    ///   
+    /// PasswordModel:  
+    /// 
+    ///     {  
+    ///         "password": "string"  
+    ///     }  
+    /// 
+    /// </remarks>
+    /// <param name="id">The id of the customer's account that requires password verification</param>
+    /// <param name="encryptedDataModel">The model containing the encrypted password model used to verify a customer's password</param>
+    /// <response code="200">Indicates that their password was a match</response>
+    /// <response code="400">
+    /// Indicates that either decryption of the model failed due to the data being tampered with  
+    /// or that their password wasn't a match
+    /// </response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpPost("{id}/verifypassword")]
     [Authorize(Policy = "CustomerIdFromClaimsMustMatchCustomerIdFromRoute")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> VerifyPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation(
@@ -235,8 +341,28 @@ public class CustomersController : ControllerBase
         return result ? Ok() : BadRequest();
     }
 
+    /// <summary>
+    /// Allows a customer to reset their password
+    /// </summary>
+    /// <remarks>
+    /// The password model is encrypted and stored in the EncryptedDataModel using hybrid encryption  
+    ///   
+    /// PasswordModel:  
+    /// 
+    ///     {  
+    ///         "password": "string"  
+    ///     }  
+    /// 
+    /// </remarks>
+    /// <param name="id">The id of the customer who wants to reset their password</param>
+    /// <param name="encryptedDataModel">The model containing the encrypted password model used to reset a customer's password</param>
+    /// <response code="200">Indicates that the customer's password was reset successfully</response>
+    /// <response code="400">Indicates that the decryption of the model failed due to the data being tampered with</response>
+    /// <returns>A Task of type ActionResult</returns>
     [HttpPut("{id}/resetpassword")]
     [Authorize(Policy = "ResetPasswordPolicy")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ResetPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation(

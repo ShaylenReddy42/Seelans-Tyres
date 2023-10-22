@@ -60,8 +60,10 @@ public class OrdersController : ControllerBase
     /// </summary>
     /// <remarks>
     /// This route must satisfy the following authorization rules:  
+    /// 
     ///     1. An administrator can retrieve all orders, but not for a particular customer  
-    ///     2. A customer is only allowed to retrieve their own orders, but not another customer's or all orders
+    ///     2. A customer is only allowed to retrieve their own orders, but not another customer's or all orders  
+    /// 
     /// </remarks>
     /// <param name="customerId">The id of the customer used to filter for their orders [OPTIONAL]</param>
     /// <param name="notDeliveredOnly">Indicates whether only the orders that have not been delivered should be returned or not</param>
@@ -107,7 +109,9 @@ public class OrdersController : ControllerBase
     /// </summary>
     /// <remarks>
     /// This route must satisfy the following authorization rules:  
-    ///     1. The user must be an administrator to perform this action
+    /// 
+    ///     1. The user must be an administrator to perform this action  
+    /// 
     /// </remarks>
     /// <param name="id">The id of the order to be marked as delivered</param>
     /// <param name="delivered">Indicates whether to mark the order as delivered or not [OPTIONAL: true]</param>
