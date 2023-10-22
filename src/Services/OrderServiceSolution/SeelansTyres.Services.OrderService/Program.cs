@@ -8,6 +8,7 @@ using SeelansTyres.Data.OrderData;                      // OrderDbContext
 using SeelansTyres.Services.OrderService.Services;      // IOrderRepository, OrderRepository
 using System.Reflection;                                // Assembly
 using SeelansTyres.Libraries.Shared.Extensions;         // AddCommonStartupDelay()
+using Microsoft.AspNetCore.Mvc;                         // ProducesResponseTypeAttribute()
 
 var descriptiveApplicationName = "Seelan's Tyres: Order Microservice";
 
@@ -21,7 +22,11 @@ builder.AddCommonBuilderConfiguration(new()
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(configure =>
+{
+    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status401Unauthorized));
+    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
