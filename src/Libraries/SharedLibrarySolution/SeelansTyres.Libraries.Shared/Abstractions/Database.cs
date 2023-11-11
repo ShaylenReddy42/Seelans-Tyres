@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection; // CreateScope()
 using Microsoft.Extensions.Logging;             // LogInformation(), LogError()
 using System.Diagnostics;                       // Stopwatch
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class Database
 {

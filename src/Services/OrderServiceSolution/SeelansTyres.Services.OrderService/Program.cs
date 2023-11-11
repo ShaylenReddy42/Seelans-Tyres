@@ -9,6 +9,7 @@ using SeelansTyres.Services.OrderService.Services;      // IOrderRepository, Ord
 using System.Reflection;                                // Assembly
 using SeelansTyres.Libraries.Shared.Extensions;         // AddCommonStartupDelay()
 using Microsoft.AspNetCore.Mvc;                         // ProducesResponseTypeAttribute()
+using SeelansTyres.Libraries.Shared.Abstractions;       // MigrateDatabaseAsync()
 
 var descriptiveApplicationName = "Seelan's Tyres: Order Microservice";
 

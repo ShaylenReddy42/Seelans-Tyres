@@ -8,7 +8,8 @@ using System.Reflection;                             // Assembly
 using SeelansTyres.Libraries.Shared.Services;        // RabbitMQPublisher, AzureServiceBusPublisher
 using SeelansTyres.Libraries.Shared.DbContexts;      // UnpublishedUpdateDbContext
 using SeelansTyres.Libraries.Shared.Extensions;      // AddCommonStartupDelay()
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;                      // ProducesResponseTypeAttribute
+using SeelansTyres.Libraries.Shared.Abstractions;    // MigrateDatabaseAsync()
 
 var descriptiveApplicationName = "Seelan's Tyres: Tyres Microservice";
 

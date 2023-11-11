@@ -12,6 +12,7 @@ using SeelansTyres.Frontends.Mvc.BackgroundServices;     // SendReceiptChannelRe
 using SeelansTyres.Frontends.Mvc.Channels;               // SendReceiptChannel
 using SeelansTyres.Libraries.Shared.Extensions;          // ConditionallyUseAzureAppConfiguration(), AddCommonStartupDelay()
 using SeelansTyres.Frontends.Mvc.HttpClients;            // All strongly-typed http clients
+using SeelansTyres.Libraries.Shared.Abstractions;        // AddCommonIdentityServerCheck(), MapCommonHealthChecks()
 
 var builder = WebApplication.CreateBuilder(args);
 

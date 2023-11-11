@@ -11,6 +11,7 @@ using SeelansTyres.Services.IdentityService.Extensions;    // GenerateSigningCre
 using SeelansTyres.Libraries.Shared.Services;              // RabbitMQPublisher, AzureServiceBusPublisher
 using SeelansTyres.Libraries.Shared.Extensions;            // AddCommonStartupDelay()
 using SeelansTyres.Libraries.Shared.Authorization;         // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
+using SeelansTyres.Libraries.Shared.Abstractions;          // All health check abstractions
 
 var descriptiveApplicationName = "Seelan's Tyres: Identity / Customer Microservice";
 

@@ -1,9 +1,10 @@
-﻿using ConfigurationSubstitution;                // EnableSubstitutionsWithDelimitedFallbackDefaults()
-using Microsoft.AspNetCore.Builder;             // WebApplicationBuilder
-using Microsoft.Extensions.Configuration;       // GetValue(), AddAzureAppConfiguration()
-using Microsoft.Extensions.DependencyInjection; // AddApplicationInsightsTelemetry(), AddApplicationInsightsKubernetesEnricher(), AddHealthChecks()
-using Microsoft.Extensions.Logging;             // ClearProviders()
-using SeelansTyres.Libraries.Shared.Models;     // CommonBuilderConfigurationModel, HealthChecksModel
+﻿using ConfigurationSubstitution;                 // EnableSubstitutionsWithDelimitedFallbackDefaults()
+using Microsoft.AspNetCore.Builder;              // WebApplicationBuilder
+using Microsoft.Extensions.Configuration;        // GetValue(), AddAzureAppConfiguration()
+using Microsoft.Extensions.DependencyInjection;  // AddApplicationInsightsTelemetry(), AddApplicationInsightsKubernetesEnricher(), AddHealthChecks()
+using Microsoft.Extensions.Logging;              // ClearProviders()
+using SeelansTyres.Libraries.Shared.Abstractions; // AddCommonChecks()
+using SeelansTyres.Libraries.Shared.Models;      // CommonBuilderConfigurationModel, HealthChecksModel
 
 namespace SeelansTyres.Libraries.Shared;
 

@@ -1,5 +1,5 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
-using SeelansTyres.Libraries.Shared;
+using SeelansTyres.Libraries.Shared.Abstractions;
 using SeelansTyres.Libraries.Shared.DbContexts;
 using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Services;

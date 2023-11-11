@@ -9,6 +9,7 @@ using HealthChecks.UI.Client;                          // UIResponseWriter
 using Microsoft.Extensions.Diagnostics.HealthChecks;   // HealthCheckService
 using SeelansTyres.Gateways.MvcBff.Extensions;         // AddDownstreamChecks()
 using SeelansTyres.Libraries.Shared.Extensions;        // AddCommonStartupDelay
+using SeelansTyres.Libraries.Shared.Abstractions;      // AddCommonIdentityServerCheck()
 
 var builder = WebApplication.CreateBuilder(args);
 

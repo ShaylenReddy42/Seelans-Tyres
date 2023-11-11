@@ -8,6 +8,7 @@ using SeelansTyres.Services.AddressService.Services; // IAddressRepository, Addr
 using System.Reflection;                             // Assembly
 using SeelansTyres.Libraries.Shared.Extensions;      // AddCommonStartupDelay()
 using SeelansTyres.Libraries.Shared.Authorization;   // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
+using SeelansTyres.Libraries.Shared.Abstractions;    // MigrateDatabaseAsync()
 
 var descriptiveApplicationName = "Seelan's Tyres: Address Microservice";
 

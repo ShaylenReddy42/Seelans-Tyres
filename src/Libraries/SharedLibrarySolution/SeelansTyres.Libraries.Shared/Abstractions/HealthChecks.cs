@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;      // IHealthChecksBuilder
 using Microsoft.Extensions.Diagnostics.HealthChecks; // HealthCheckResult, HealthStatus
 using SeelansTyres.Libraries.Shared.Models;          // HealthChecksModel
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class HealthChecks
 {
@@ -27,7 +27,7 @@ public static class HealthChecks
     {
         healthChecks
             .AddCheck(
-                name: "self", 
+                name: "self",
                 check: () => HealthCheckResult.Healthy(),
                 tags: new[] { "self" });
 
@@ -35,7 +35,7 @@ public static class HealthChecks
         {
             healthChecks
                 .AddElasticsearch(
-                    elasticsearchUri: healthChecksModel.ElasticsearchUrl, 
+                    elasticsearchUri: healthChecksModel.ElasticsearchUrl,
                     failureStatus: HealthStatus.Degraded,
                     timeout: TimeSpan.FromSeconds(1.5));
         }
@@ -112,7 +112,7 @@ public static class HealthChecks
             topicName: topicName,
             name: $"azureServiceBusTopic: {topicName}",
             failureStatus: HealthStatus.Degraded);
-        
+
         return healthChecks;
     }
 
