@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;     // IConfiguration
-using Microsoft.Extensions.Logging;           // ILogger
-using RabbitMQ.Client;                        // BasicPublish()
-using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
-using System.Text.Json;                       // JsonSerializer
+﻿using Microsoft.Extensions.Configuration;                                   // IConfiguration
+using Microsoft.Extensions.Logging;                                         // ILogger
+using RabbitMQ.Client;                                                      // BasicPublish()
+using SeelansTyres.Libraries.Shared.Messages;                               // BaseMessage
+using System.Text.Json;                                                     // JsonSerializer
+using static SeelansTyres.Libraries.Shared.Abstractions.Messaging.RabbitMQ; // ConfigureCommonRabbitMQConnection()
 
 namespace SeelansTyres.Libraries.Shared.Services;
 
@@ -29,7 +30,7 @@ public class RabbitMQPublisher : IMessagePublisher
     {
         logger.LogInformation("Configuring RabbitMQ Connection");
 
-        RabbitMQ.ConfigureCommonRabbitMQConnection(
+        ConfigureCommonRabbitMQConnection(
             settings: new()
             {
                 UserName = configuration["RabbitMQ:Credentials:UserName"]!,

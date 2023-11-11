@@ -3,7 +3,7 @@ using RabbitMQ.Client;                      // IModel, ConnectionFactory
 using RabbitMQ.Client.Events;               // EventingBasicConsumer
 using SeelansTyres.Libraries.Shared.Models; // RabbitMQSettingsModel
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions.Messaging;
 
 public static class RabbitMQ
 {
@@ -33,8 +33,8 @@ public static class RabbitMQ
         channel = connection.CreateModel();
 
         channel.ExchangeDeclare(
-            exchange: settings.Exchange, 
-            type: "fanout", 
+            exchange: settings.Exchange,
+            type: "fanout",
             durable: true,
             autoDelete: false);
 

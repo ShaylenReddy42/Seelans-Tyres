@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration; // IConfiguration
 using Microsoft.Extensions.Logging;       // ILogger
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions.Messaging;
 
 public static class AzureServiceBus
 {
