@@ -1,5 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;                                                  // ServiceBusProcessor, ProcessMessageEventArgs
-using SeelansTyres.Libraries.Shared;                                               // StartANewActivity()
+using SeelansTyres.Libraries.Shared.Abstractions;                                  // StartANewActivity()
 using SeelansTyres.Libraries.Shared.Extensions;                                    // ValidateTokenFromBaseMessage()
 using SeelansTyres.Libraries.Shared.Messages;                                      // BaseMessage
 using SeelansTyres.Libraries.Shared.Services;                                      // ITokenValidationService

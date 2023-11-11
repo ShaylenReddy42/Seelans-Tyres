@@ -1,7 +1,7 @@
 ﻿using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
 using System.Diagnostics;                     // Activity, ActivityTraceId, ActivitySpanId
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class DistributedTracing
 {

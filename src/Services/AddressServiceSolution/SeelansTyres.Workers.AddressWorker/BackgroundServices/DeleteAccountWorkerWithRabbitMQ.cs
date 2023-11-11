@@ -4,9 +4,9 @@ using SeelansTyres.Libraries.Shared.Messages;               // BaseMessage
 using System.Text.Json;                                     // JsonSerializer
 using SeelansTyres.Workers.AddressWorker.Services;          // IAddressUpdateService
 using SeelansTyres.Libraries.Shared.Services;               // ITokenValidationService
-using SeelansTyres.Libraries.Shared;                        // StartANewActivity()
 using SeelansTyres.Libraries.Shared.Extensions;             // ValidateTokenFromBaseMessage()
 using SeelansTyres.Libraries.Shared.Abstractions.Messaging; // ConfigureCommonRabbitMQConsumer()
+using SeelansTyres.Libraries.Shared.Abstractions;           // StartANewActivity()
 
 namespace SeelansTyres.Workers.AddressWorker.BackgroundServices;
 

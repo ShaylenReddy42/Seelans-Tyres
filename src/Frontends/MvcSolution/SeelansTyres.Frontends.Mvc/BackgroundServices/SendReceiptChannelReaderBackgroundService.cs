@@ -1,6 +1,6 @@
-﻿using SeelansTyres.Frontends.Mvc.Channels;                     // SendReceiptChannel
-using SeelansTyres.Frontends.Mvc.Services;                     // IMailService
-using static SeelansTyres.Libraries.Shared.DistributedTracing; // StartANewActivity()
+﻿using SeelansTyres.Frontends.Mvc.Channels;                                  // SendReceiptChannel
+using SeelansTyres.Frontends.Mvc.Services;                                  // IMailService
+using static SeelansTyres.Libraries.Shared.Abstractions.DistributedTracing; // StartANewActivity()
 
 namespace SeelansTyres.Frontends.Mvc.BackgroundServices;
 

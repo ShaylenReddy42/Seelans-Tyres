@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;                                                 // BackgroundService
 using Microsoft.Extensions.Logging;                                                 // ILogger
 using Microsoft.IdentityModel.Tokens;                                               // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Abstractions;                                   // StartANewActivity()
 using SeelansTyres.Libraries.Shared.Channels;                                       // PublishUpdateChannel
 using SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities; // UnpublishedUpdate
 using SeelansTyres.Libraries.Shared.Services;                                       // IMessagePublisher, IUnpublishedUpdateRepository

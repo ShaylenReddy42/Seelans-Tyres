@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection; // IServiceScopeFactory
-using Microsoft.Extensions.Hosting;             // BackgroundService
-using Microsoft.Extensions.Logging;             // ILogger
-using Microsoft.IdentityModel.Tokens;           // Base64UrlEncoder
-using SeelansTyres.Libraries.Shared.Messages;   // BaseMessage
-using SeelansTyres.Libraries.Shared.Services;   // IMessagePublisher, IUnpublishedUpdateRepository
-using System.Text.Json;                         // JsonSerializer
+﻿using Microsoft.Extensions.DependencyInjection;   // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;               // BackgroundService
+using Microsoft.Extensions.Logging;               // ILogger
+using Microsoft.IdentityModel.Tokens;             // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Abstractions; // StartANewActivity()
+using SeelansTyres.Libraries.Shared.Messages;     // BaseMessage
+using SeelansTyres.Libraries.Shared.Services;     // IMessagePublisher, IUnpublishedUpdateRepository
+using System.Text.Json;                           // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.BackgroundServices;
 
