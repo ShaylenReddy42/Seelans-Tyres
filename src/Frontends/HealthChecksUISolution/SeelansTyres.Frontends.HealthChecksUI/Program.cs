@@ -1,5 +1,5 @@
-using SeelansTyres.Libraries.Shared;            // AddCommonBuilderConfiguration(), HonorForwardedHeaders()
-using SeelansTyres.Libraries.Shared.Extensions; // AddCommonStartupDelay()
+using SeelansTyres.Libraries.Shared.Abstractions; // HonorForwardedHeaders()
+using SeelansTyres.Libraries.Shared.Extensions;   // AddCommonStartupDelay()
 
 var builder = WebApplication.CreateBuilder(args);
 

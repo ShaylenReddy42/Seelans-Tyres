@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;                         // UseSqlServer()
 using SeelansTyres.Data.AddressData;                         // AddressDbContext
-using SeelansTyres.Libraries.Shared;                         // All common methods
-using SeelansTyres.Libraries.Shared.Abstractions;            // All health check abstractions
+using SeelansTyres.Libraries.Shared.Abstractions;            // All common methods
 using SeelansTyres.Libraries.Shared.Extensions;              // AddCommonStartupDelay()
 using SeelansTyres.Libraries.Shared.Services;                // ITokenValidationService, TokenValidationService
 using SeelansTyres.Workers.AddressWorker.BackgroundServices; // DeleteAccountWorkerWithRabbitMQ, DeleteAccountWorkerWithAzureServiceBus

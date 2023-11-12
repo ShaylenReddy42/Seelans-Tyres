@@ -3,13 +3,12 @@ using Ocelot.DependencyInjection;                      // AddOcelot()
 using Ocelot.Middleware;                               // UseOcelot()
 using SeelansTyres.Gateways.MvcBff.DelegatingHandlers; // AddressServiceDelegatingHandler, CustomerServiceFullAccessDelegatingHandler, OrderServiceDelegatingHandler, TyresServiceDelegatingHandler
 using SeelansTyres.Gateways.MvcBff.Services;           // ITokenExchangeService, TokenExchangeService
-using SeelansTyres.Libraries.Shared;                   // All common methods
 using static System.Net.Mime.MediaTypeNames;           // Application
 using HealthChecks.UI.Client;                          // UIResponseWriter
 using Microsoft.Extensions.Diagnostics.HealthChecks;   // HealthCheckService
 using SeelansTyres.Gateways.MvcBff.Extensions;         // AddDownstreamChecks()
 using SeelansTyres.Libraries.Shared.Extensions;        // AddCommonStartupDelay
-using SeelansTyres.Libraries.Shared.Abstractions;      // AddCommonIdentityServerCheck()
+using SeelansTyres.Libraries.Shared.Abstractions;      // All common methods
 
 var builder = WebApplication.CreateBuilder(args);
 

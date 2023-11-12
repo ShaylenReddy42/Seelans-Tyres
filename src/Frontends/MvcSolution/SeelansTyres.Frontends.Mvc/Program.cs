@@ -6,13 +6,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;       // CookieAuthentication
 using Microsoft.AspNetCore.Authentication.OpenIdConnect; // OpenIdConnectDefaults
 using Microsoft.AspNetCore.Authentication;               // MapUniqueJsonKey()
 using System.Security.Claims;                            // ClaimTypes
-using SeelansTyres.Libraries.Shared;                     // All common methods
 using Microsoft.Extensions.Diagnostics.HealthChecks;     // HealthStatus
 using SeelansTyres.Frontends.Mvc.BackgroundServices;     // SendReceiptChannelReaderBackgroundService
 using SeelansTyres.Frontends.Mvc.Channels;               // SendReceiptChannel
 using SeelansTyres.Libraries.Shared.Extensions;          // ConditionallyUseAzureAppConfiguration(), AddCommonStartupDelay()
 using SeelansTyres.Frontends.Mvc.HttpClients;            // All strongly-typed http clients
-using SeelansTyres.Libraries.Shared.Abstractions;        // AddCommonIdentityServerCheck(), MapCommonHealthChecks()
+using SeelansTyres.Libraries.Shared.Abstractions;        // All common methods
 
 var builder = WebApplication.CreateBuilder(args);
 

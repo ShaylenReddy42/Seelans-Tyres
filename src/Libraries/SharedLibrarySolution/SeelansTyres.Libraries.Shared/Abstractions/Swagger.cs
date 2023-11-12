@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;                      // OpenApiSecurityScheme, S
 using Swashbuckle.AspNetCore.SwaggerGen;             // SwaggerGenOptions
 using System.Diagnostics.CodeAnalysis;               // SuppressMessage
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class Swagger
 {

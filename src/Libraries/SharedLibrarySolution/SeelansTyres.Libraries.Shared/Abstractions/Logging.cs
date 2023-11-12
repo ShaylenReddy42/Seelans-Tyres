@@ -9,10 +9,9 @@ using Serilog.Events;                              // LogEventLevel
 using Serilog.Exceptions;                          // WithExceptionDetails()
 using Serilog.Settings.Configuration;              // ConfigurationReaderOptions
 using Serilog.Sinks.Elasticsearch;                 // ElasticsearchSinkOptions, AutoRegisterTemplateVersion
-using Serilog.Sinks.SystemConsole.Themes;          // AnsiConsoleTheme
 using System.Reflection;                           // GetCustomAttribute(), AssemblyProductAttribute, AssemblyInformationalVersionAttribute, AssemblyMetadataAttribute
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class Logging
 {
@@ -42,15 +41,15 @@ public static class Logging
     /// <param name="commonBuilderConfigurationModel">A model containing properties to enrich the logs and configure the Elasticsearch sink</param>
     /// <returns>The web application's host builder with Serilog as the logging provider</returns>
     public static IHostBuilder UseCommonSerilog(
-        this IHostBuilder hostBuilder, 
+        this IHostBuilder hostBuilder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
-        string descriptiveApplicationName = 
+        string descriptiveApplicationName =
             commonBuilderConfigurationModel.OriginAssembly
                 .GetCustomAttribute<AssemblyProductAttribute>()?.Product
                     ?? commonBuilderConfigurationModel.DefaultDescriptiveApplicationName;
 
-        string codebaseVersion = 
+        string codebaseVersion =
             commonBuilderConfigurationModel.OriginAssembly
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                     ?? "0.0.0+0-unknown";

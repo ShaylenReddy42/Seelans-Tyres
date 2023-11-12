@@ -2,14 +2,13 @@ using Hellang.Middleware.ProblemDetails;                // UseProblemDetails()
 using Microsoft.AspNetCore.Authentication.JwtBearer;    // JwtBearerDefaults
 using Microsoft.AspNetCore.Authorization;               // IAuthorizationHandler
 using Microsoft.EntityFrameworkCore;                    // UseSqlServer()
-using SeelansTyres.Libraries.Shared;                    // All common methods
 using SeelansTyres.Services.OrderService.Authorization; // MustSatisfyOrderRetrievalRulesHandler, MustSatisfyOrderRetrievalRulesRequirement()
 using SeelansTyres.Data.OrderData;                      // OrderDbContext
 using SeelansTyres.Services.OrderService.Services;      // IOrderRepository, OrderRepository
 using System.Reflection;                                // Assembly
 using SeelansTyres.Libraries.Shared.Extensions;         // AddCommonStartupDelay()
 using Microsoft.AspNetCore.Mvc;                         // ProducesResponseTypeAttribute()
-using SeelansTyres.Libraries.Shared.Abstractions;       // MigrateDatabaseAsync()
+using SeelansTyres.Libraries.Shared.Abstractions;       // All common methods
 
 var descriptiveApplicationName = "Seelan's Tyres: Order Microservice";
 

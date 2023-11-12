@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Builder;              // WebApplicationBuilder
 using Microsoft.Extensions.Configuration;        // GetValue(), AddAzureAppConfiguration()
 using Microsoft.Extensions.DependencyInjection;  // AddApplicationInsightsTelemetry(), AddApplicationInsightsKubernetesEnricher(), AddHealthChecks()
 using Microsoft.Extensions.Logging;              // ClearProviders()
-using SeelansTyres.Libraries.Shared.Abstractions; // AddCommonChecks()
 using SeelansTyres.Libraries.Shared.Models;      // CommonBuilderConfigurationModel, HealthChecksModel
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class WebApplicationBuilderConfiguration
 {
@@ -49,7 +48,7 @@ public static class WebApplicationBuilderConfiguration
         if (builder.Configuration.GetValue<bool>("AppInsights:Enabled"))
         {
             builder.Services.AddApplicationInsightsTelemetry(
-                options => options.ConnectionString = 
+                options => options.ConnectionString =
                     builder.Configuration["AppInsights:ConnectionString"]);
 
             builder.Services.AddApplicationInsightsKubernetesEnricher();

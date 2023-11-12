@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;          // SameSiteMode
 using Microsoft.Extensions.Configuration; // GetValue()
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class CookiePolicy
 {

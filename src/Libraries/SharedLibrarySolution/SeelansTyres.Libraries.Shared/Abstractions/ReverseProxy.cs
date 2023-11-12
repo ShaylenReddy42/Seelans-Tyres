@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;       // WebApplication, ForwardedHeadersOptions
 using Microsoft.AspNetCore.HttpOverrides; // ForwardedHeaders
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
 public static class ReverseProxy
 {

@@ -4,9 +4,9 @@ using Polly;                                    // IAsyncPolicy, WaitAndRetryAsy
 using Polly.Extensions.Http;                    // HttpPolicyExtensions
 using System.Net;                               // HttpStatusCode
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.Abstractions;
 
-public static class Resiliency
+public static class HttpClientResiliency
 {
     /// <summary>
     /// Provides a high level abstraction for adding resiliency policies on http clients to handle transient faults
@@ -26,7 +26,7 @@ public static class Resiliency
     {
         builder
             .AddPolicyHandler(RetryPolicy<TService>(services));
-        
+
         return builder;
     }
 
