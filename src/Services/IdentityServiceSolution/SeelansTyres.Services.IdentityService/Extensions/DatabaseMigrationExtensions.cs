@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using SeelansTyres.Libraries.Shared.Abstractions;
-using SeelansTyres.Libraries.Shared.DbContexts;
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;
 using SeelansTyres.Services.IdentityService.Data;
 using SeelansTyres.Services.IdentityService.Services;
 

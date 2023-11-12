@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SeelansTyres.Libraries.Shared.DbContexts;
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;
 
 #nullable disable
 

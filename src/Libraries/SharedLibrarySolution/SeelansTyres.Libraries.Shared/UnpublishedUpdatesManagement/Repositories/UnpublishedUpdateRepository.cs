@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;                                                // ToListAsync()
-using Microsoft.Extensions.Logging;                                                 // ILogger
-using SeelansTyres.Libraries.Shared.DbContexts;                                     // UnpublishedUpdateDbContext
-using SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities; // UnpublishedUpdate
-using System.Diagnostics;                                                           // Stopwatch
+﻿using Microsoft.EntityFrameworkCore;                                            // ToListAsync()
+using Microsoft.Extensions.Logging;                                             // ILogger
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;          // UnpublishedUpdateDbContext
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
+using System.Diagnostics;                                                       // Stopwatch
 
-namespace SeelansTyres.Libraries.Shared.Services;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;
 
 public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
 {
@@ -19,7 +19,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
         this.context = context;
         this.logger = logger;
     }
-    
+
     public async Task CreateAsync(UnpublishedUpdate unpublishedUpdate)
     {
         logger.LogInformation("Repository => Attempting to add an unpublished update");

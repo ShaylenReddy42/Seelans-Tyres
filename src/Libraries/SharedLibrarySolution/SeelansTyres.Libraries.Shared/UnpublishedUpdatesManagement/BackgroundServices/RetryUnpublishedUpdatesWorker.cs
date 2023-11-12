@@ -1,13 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;   // IServiceScopeFactory
-using Microsoft.Extensions.Hosting;               // BackgroundService
-using Microsoft.Extensions.Logging;               // ILogger
-using Microsoft.IdentityModel.Tokens;             // Base64UrlEncoder
-using SeelansTyres.Libraries.Shared.Abstractions; // StartANewActivity()
-using SeelansTyres.Libraries.Shared.Messages;     // BaseMessage
-using SeelansTyres.Libraries.Shared.Services;     // IMessagePublisher, IUnpublishedUpdateRepository
-using System.Text.Json;                           // JsonSerializer
+﻿using Microsoft.Extensions.DependencyInjection;                                // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;                                            // BackgroundService
+using Microsoft.Extensions.Logging;                                            // ILogger
+using Microsoft.IdentityModel.Tokens;                                          // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Abstractions;                              // StartANewActivity()
+using SeelansTyres.Libraries.Shared.Messages;                                  // BaseMessage
+using SeelansTyres.Libraries.Shared.Services;                                  // IMessagePublisher
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories; // IUnpublishedUpdateRepository
+using System.Text.Json;                                                        // JsonSerializer
 
-namespace SeelansTyres.Libraries.Shared.BackgroundServices;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices;
 
 /// <summary>
 /// Retrieves the unpublished messages from the database and retries them
@@ -30,7 +31,7 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
         this.serviceScopeFactory = serviceScopeFactory;
         this.messagingServicePublisher = messagingServicePublisher;
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -47,7 +48,7 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
             unpublishedUpdates.ForEach(unpublishedUpdate =>
             {
                 unpublishedUpdate.Retries++;
-                
+
                 var message = JsonSerializer.Deserialize<BaseMessage>(Base64UrlEncoder.DecodeBytes(unpublishedUpdate.EncodedUpdate));
 
                 message!.StartANewActivity("Retrying to publish update");
@@ -69,7 +70,7 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
             });
 
             await unpublishedUpdateRepository.SaveChangesAsync();
-            
+
             Thread.Sleep(10 * 60_000); // 10 minutes
         }
     }

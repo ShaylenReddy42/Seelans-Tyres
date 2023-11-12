@@ -1,14 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;                                     // IServiceScopeFactory
-using Microsoft.Extensions.Hosting;                                                 // BackgroundService
-using Microsoft.Extensions.Logging;                                                 // ILogger
-using Microsoft.IdentityModel.Tokens;                                               // Base64UrlEncoder
-using SeelansTyres.Libraries.Shared.Abstractions;                                   // StartANewActivity()
-using SeelansTyres.Libraries.Shared.Channels;                                       // PublishUpdateChannel
-using SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities; // UnpublishedUpdate
-using SeelansTyres.Libraries.Shared.Services;                                       // IMessagePublisher, IUnpublishedUpdateRepository
-using System.Text.Json;                                                             // JsonSerializer
+﻿using Microsoft.Extensions.DependencyInjection;                                 // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;                                             // BackgroundService
+using Microsoft.Extensions.Logging;                                             // ILogger
+using Microsoft.IdentityModel.Tokens;                                           // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Abstractions;                               // StartANewActivity()
+using SeelansTyres.Libraries.Shared.Services;                                   // IMessagePublisher
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;      // PublishUpdateChannel
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;  // IUnpublishedUpdateRepository
+using System.Text.Json;                                                         // JsonSerializer
 
-namespace SeelansTyres.Libraries.Shared.BackgroundServices;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices;
 
 /// <summary>
 /// Reads in data from the 'PublishUpdateChannel' and attempts to publish it to the message bus<br/>
@@ -36,19 +37,19 @@ public class PublishUpdateChannelReaderBackgroundService : BackgroundService
         this.messagingServicePublisher = messagingServicePublisher;
         this.serviceScopeFactory = serviceScopeFactory;
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await foreach (var (message, destination) in publishUpdateChannel.ReadAllFromChannelAsync())
         {
             message.StartANewActivity("Attempting to publish update");
-            
+
             try
             {
                 logger.LogInformation(
                     "Background Service => Attempting to publish update to {publishDestination} destination",
                     destination);
-                
+
                 await messagingServicePublisher.PublishMessageAsync(message, destination);
 
                 logger.LogInformation(

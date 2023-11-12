@@ -1,6 +1,6 @@
-﻿using SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities; // UnpublishedUpdate
+﻿using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
 
-namespace SeelansTyres.Libraries.Shared.Services;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;
 
 /// <summary>
 /// Provides functionality to work with unpublished updates in the database

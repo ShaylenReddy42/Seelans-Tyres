@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema; // DatabaseGenerated
 using System.ComponentModel.DataAnnotations;        // Key, Required
 
-namespace SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities;
 
 public class UnpublishedUpdate
 {

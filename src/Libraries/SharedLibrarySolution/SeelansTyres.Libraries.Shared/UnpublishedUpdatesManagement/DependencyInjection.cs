@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;                    // UseSqlServer()
-using Microsoft.Extensions.DependencyInjection;         // IServiceCollection
-using SeelansTyres.Libraries.Shared.BackgroundServices; // PublishUpdateChannelReaderBackgroundService, RetryUnpublishedUpdatesWorker
-using SeelansTyres.Libraries.Shared.Channels;           // PublishUpdateChannel
-using SeelansTyres.Libraries.Shared.DbContexts;         // UnpublishedUpdateDbContext
-using SeelansTyres.Libraries.Shared.Services;           // IMessagePublisher, IUnpublishedUpdateRepository, UnpublishedUpdateRepository
+﻿using Microsoft.EntityFrameworkCore;                                                 // UseSqlServer()
+using Microsoft.Extensions.DependencyInjection;                                      // IServiceCollection
+using SeelansTyres.Libraries.Shared.Services;                                        // IMessagePublisher
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices; // PublishUpdateChannelReaderBackgroundService, RetryUnpublishedUpdatesWorker
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;           // PublishUpdateChannel
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;               // UnpublishedUpdateDbContext
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;       // IUnpublishedUpdateRepository, UnpublishedUpdateRepository
 
-namespace SeelansTyres.Libraries.Shared;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement;
 
-public static class UnpublishedUpdatesManagement
+public static class DependencyInjection
 {
     /// <summary>
     /// Adds services to the service collection to add resiliency for messages published to a message bus
@@ -60,18 +61,16 @@ public static class UnpublishedUpdatesManagement
         string databaseConnectionString) where TMessagePublisherImplementation : class, IMessagePublisher
     {
         services.AddDbContext<UnpublishedUpdateDbContext>(options =>
-            options.UseSqlServer(
-                databaseConnectionString,
-                options =>
-                {
-                    options.MigrationsAssembly(typeof(UnpublishedUpdateDbContext).Assembly.GetName().Name);
-                    options.EnableRetryOnFailure(maxRetryCount: 5);
-                }));
+            options.UseSqlServer(databaseConnectionString, sqlServerOptions =>
+            {
+                sqlServerOptions.MigrationsAssembly(typeof(UnpublishedUpdateDbContext).Assembly.GetName().Name);
+                sqlServerOptions.EnableRetryOnFailure(maxRetryCount: 5);
+            }));
 
         services.AddScoped<IUnpublishedUpdateRepository, UnpublishedUpdateRepository>();
 
         services.AddSingleton<IMessagePublisher, TMessagePublisherImplementation>();
-        
+
         services.AddSingleton<PublishUpdateChannel>();
         services.AddHostedService<PublishUpdateChannelReaderBackgroundService>();
         services.AddHostedService<RetryUnpublishedUpdatesWorker>();

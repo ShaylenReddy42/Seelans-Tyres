@@ -2,7 +2,7 @@
 using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
 using System.Threading.Channels;              // Channel, BoundedChannelOptions
 
-namespace SeelansTyres.Libraries.Shared.Channels;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;
 
 /// <summary>
 /// Used to pass updates for publishing from a request to a background service

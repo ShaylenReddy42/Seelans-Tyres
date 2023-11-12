@@ -1,16 +1,16 @@
-﻿using AutoMapper;                                          // IMapper
-using IdentityServer4.Stores;                              // ISigningCredentialStore
-using Microsoft.AspNetCore.Authentication.JwtBearer;       // JwtBearerDefaults
-using Microsoft.AspNetCore.Authorization;                  // Authorize
-using SeelansTyres.Libraries.Shared.Channels;              // PublishUpdateChannel
-using SeelansTyres.Libraries.Shared.Messages;              // BaseMessage
-using SeelansTyres.Libraries.Shared.Models;                // EncryptedDataModel
-using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
-using SeelansTyres.Services.IdentityService.Extensions;    // DecryptAsync()
-using SeelansTyres.Services.IdentityService.Services;      // ICustomerService
-using System.Diagnostics;                                  // Stopwatch, Activity
-using System.Text.Json;                                    // JsonSerializer
-using static System.Net.Mime.MediaTypeNames;               // Application
+﻿using AutoMapper;                                                          // IMapper
+using IdentityServer4.Stores;                                              // ISigningCredentialStore
+using Microsoft.AspNetCore.Authentication.JwtBearer;                       // JwtBearerDefaults
+using Microsoft.AspNetCore.Authorization;                                  // Authorize
+using SeelansTyres.Libraries.Shared.Messages;                              // BaseMessage
+using SeelansTyres.Libraries.Shared.Models;                                // EncryptedDataModel
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels; // PublishUpdateChannel
+using SeelansTyres.Services.IdentityService.Data.Entities;                 // Customer
+using SeelansTyres.Services.IdentityService.Extensions;                    // DecryptAsync()
+using SeelansTyres.Services.IdentityService.Services;                      // ICustomerService
+using System.Diagnostics;                                                  // Stopwatch, Activity
+using System.Text.Json;                                                    // JsonSerializer
+using static System.Net.Mime.MediaTypeNames;                               // Application
 
 namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 
