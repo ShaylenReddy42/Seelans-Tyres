@@ -1,4 +1,4 @@
-﻿using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
+﻿using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
 namespace SeelansTyres.Workers.OrderWorker.Services;
 

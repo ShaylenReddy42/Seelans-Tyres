@@ -1,4 +1,4 @@
-﻿namespace SeelansTyres.Libraries.Shared.Messages;
+﻿namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages;
 
 /// <summary>
 /// Used to send updates to other microservices

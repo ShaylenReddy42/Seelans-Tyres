@@ -1,6 +1,6 @@
-﻿using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
+﻿using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
-namespace SeelansTyres.Libraries.Shared.Services;
+namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;
 
 /// <summary>
 /// Provides functionality to publish messages to a message bus

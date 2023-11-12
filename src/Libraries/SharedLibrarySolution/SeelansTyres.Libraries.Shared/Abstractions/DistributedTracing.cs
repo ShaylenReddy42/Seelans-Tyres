@@ -1,5 +1,5 @@
-﻿using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
-using System.Diagnostics;                     // Activity, ActivityTraceId, ActivitySpanId
+﻿using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using System.Diagnostics;                                                  // Activity, ActivityTraceId, ActivitySpanId
 
 namespace SeelansTyres.Libraries.Shared.Abstractions;
 

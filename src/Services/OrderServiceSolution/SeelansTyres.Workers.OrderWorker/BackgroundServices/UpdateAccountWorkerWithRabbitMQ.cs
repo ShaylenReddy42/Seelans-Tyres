@@ -1,12 +1,12 @@
-﻿using RabbitMQ.Client;                                      // IModel
-using RabbitMQ.Client.Events;                               // EventingBasicConsumer
-using SeelansTyres.Libraries.Shared.Messages;               // BaseMessage
-using System.Text.Json;                                     // JsonSerializer
-using SeelansTyres.Workers.OrderWorker.Services;            // IOrderUpdateService
-using SeelansTyres.Libraries.Shared.Extensions;             // ValidateTokenFromBaseMessage()
-using SeelansTyres.Libraries.Shared.Abstractions.Messaging; // ConfigureCommonRabbitMQConsumer()
-using SeelansTyres.Libraries.Shared.Abstractions;           // StartANewActivity()
-using SeelansTyres.Libraries.Shared.HttpClients;            // ITokenValidationService
+﻿using RabbitMQ.Client;                                                     // IModel
+using RabbitMQ.Client.Events;                                              // EventingBasicConsumer
+using System.Text.Json;                                                    // JsonSerializer
+using SeelansTyres.Workers.OrderWorker.Services;                           // IOrderUpdateService
+using SeelansTyres.Libraries.Shared.Extensions;                            // ValidateTokenFromBaseMessage()
+using SeelansTyres.Libraries.Shared.Abstractions.Messaging;                // ConfigureCommonRabbitMQConsumer()
+using SeelansTyres.Libraries.Shared.Abstractions;                          // StartANewActivity()
+using SeelansTyres.Libraries.Shared.HttpClients;                           // ITokenValidationService
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
 namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 

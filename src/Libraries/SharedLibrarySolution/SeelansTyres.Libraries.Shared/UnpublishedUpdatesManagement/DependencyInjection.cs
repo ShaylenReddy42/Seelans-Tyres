@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;                                                 // UseSqlServer()
 using Microsoft.Extensions.DependencyInjection;                                      // IServiceCollection
-using SeelansTyres.Libraries.Shared.Services;                                        // IMessagePublisher
 using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices; // PublishUpdateChannelReaderBackgroundService, RetryUnpublishedUpdatesWorker
 using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;           // PublishUpdateChannel
 using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;               // UnpublishedUpdateDbContext
 using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;       // IUnpublishedUpdateRepository, UnpublishedUpdateRepository
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;           // IMessagePublisher
 
 namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement;
 

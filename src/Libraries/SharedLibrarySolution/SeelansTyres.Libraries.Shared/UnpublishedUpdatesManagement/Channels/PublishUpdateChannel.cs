@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;           // ILogger
-using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
-using System.Threading.Channels;              // Channel, BoundedChannelOptions
+﻿using Microsoft.Extensions.Logging;                                        // ILogger
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using System.Threading.Channels;                                           // Channel, BoundedChannelOptions
 
 namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;
 

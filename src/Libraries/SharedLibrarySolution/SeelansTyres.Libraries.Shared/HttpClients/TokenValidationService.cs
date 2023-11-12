@@ -1,9 +1,9 @@
-﻿using IdentityModel.Client;                   // DiscoveryDocumentResponse, GetDiscoveryDocumentAsync()
-using Microsoft.Extensions.Logging;           // ILogger
-using Microsoft.IdentityModel.Tokens;         // SecurityKey, Base64UrlEncoder, RsaSecurityKey, TokenValidationParameters
-using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
-using System.IdentityModel.Tokens.Jwt;        // JwtSecurityTokenHandler()
-using System.Security.Cryptography;           // RSAParameters
+﻿using IdentityModel.Client;                                                // DiscoveryDocumentResponse, GetDiscoveryDocumentAsync()
+using Microsoft.Extensions.Logging;                                        // ILogger
+using Microsoft.IdentityModel.Tokens;                                      // SecurityKey, Base64UrlEncoder, RsaSecurityKey, TokenValidationParameters
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using System.IdentityModel.Tokens.Jwt;                                     // JwtSecurityTokenHandler()
+using System.Security.Cryptography;                                        // RSAParameters
 
 namespace SeelansTyres.Libraries.Shared.HttpClients;
 

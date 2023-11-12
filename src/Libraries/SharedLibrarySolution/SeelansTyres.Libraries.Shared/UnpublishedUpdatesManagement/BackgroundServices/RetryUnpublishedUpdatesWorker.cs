@@ -3,9 +3,9 @@ using Microsoft.Extensions.Hosting;                                            /
 using Microsoft.Extensions.Logging;                                            // ILogger
 using Microsoft.IdentityModel.Tokens;                                          // Base64UrlEncoder
 using SeelansTyres.Libraries.Shared.Abstractions;                              // StartANewActivity()
-using SeelansTyres.Libraries.Shared.Messages;                                  // BaseMessage
-using SeelansTyres.Libraries.Shared.Services;                                  // IMessagePublisher
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages;     // BaseMessage
 using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories; // IUnpublishedUpdateRepository
+using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;     // IMessagePublisher
 using System.Text.Json;                                                        // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices;
