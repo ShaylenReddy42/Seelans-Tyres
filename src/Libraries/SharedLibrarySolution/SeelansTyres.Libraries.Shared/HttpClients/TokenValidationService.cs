@@ -5,7 +5,7 @@ using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
 using System.IdentityModel.Tokens.Jwt;        // JwtSecurityTokenHandler()
 using System.Security.Cryptography;           // RSAParameters
 
-namespace SeelansTyres.Libraries.Shared.Services;
+namespace SeelansTyres.Libraries.Shared.HttpClients;
 
 public class TokenValidationService : ITokenValidationService
 {
@@ -19,12 +19,12 @@ public class TokenValidationService : ITokenValidationService
         this.logger = logger;
         this.client = client;
     }
-    
+
     public async Task<bool> ValidateTokenAsync(BaseMessage message, string validIssuer, string validAudience)
     {
         // Gets the discovery document from IdentityServer4, extracts the json web keys
         // and converts them to RSA parameters to form RSA security keys used to validate the token
-        
+
         DiscoveryDocumentResponse? discoveryDocument = null;
 
         try
@@ -37,7 +37,7 @@ public class TokenValidationService : ITokenValidationService
                 ex,
                 "{announcement}: Could not retrieve the discovery document",
                 "FAILED");
-            
+
             return false;
         }
 
@@ -78,7 +78,7 @@ public class TokenValidationService : ITokenValidationService
         try
         {
             logger.LogInformation("Attempting to validate the access token");
-            
+
             _ = new JwtSecurityTokenHandler()
                 .ValidateToken(
                     token: message.AccessToken,
@@ -94,7 +94,7 @@ public class TokenValidationService : ITokenValidationService
 
             return false;
         }
-        
+
         return true;
     }
 }

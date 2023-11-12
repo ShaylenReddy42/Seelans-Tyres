@@ -1,6 +1,6 @@
 ﻿using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
 
-namespace SeelansTyres.Libraries.Shared.Services;
+namespace SeelansTyres.Libraries.Shared.HttpClients;
 
 /// <summary>
 /// Provides functionality to validate an access token

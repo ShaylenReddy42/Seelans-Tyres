@@ -3,10 +3,10 @@ using RabbitMQ.Client.Events;                               // EventingBasicCons
 using SeelansTyres.Libraries.Shared.Messages;               // BaseMessage
 using System.Text.Json;                                     // JsonSerializer
 using SeelansTyres.Workers.AddressWorker.Services;          // IAddressUpdateService
-using SeelansTyres.Libraries.Shared.Services;               // ITokenValidationService
 using SeelansTyres.Libraries.Shared.Extensions;             // ValidateTokenFromBaseMessage()
 using SeelansTyres.Libraries.Shared.Abstractions.Messaging; // ConfigureCommonRabbitMQConsumer()
 using SeelansTyres.Libraries.Shared.Abstractions;           // StartANewActivity()
+using SeelansTyres.Libraries.Shared.HttpClients;            // ITokenValidationService
 
 namespace SeelansTyres.Workers.AddressWorker.BackgroundServices;
 

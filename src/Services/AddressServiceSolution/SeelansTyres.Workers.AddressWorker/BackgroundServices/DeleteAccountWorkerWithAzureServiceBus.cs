@@ -1,8 +1,8 @@
 ﻿using Azure.Messaging.ServiceBus;                                                  // ServiceBusProcessor, ProcessMessageEventArgs
 using SeelansTyres.Libraries.Shared.Abstractions;                                  // StartANewActivity()
 using SeelansTyres.Libraries.Shared.Extensions;                                    // ValidateTokenFromBaseMessage()
+using SeelansTyres.Libraries.Shared.HttpClients;                                   // ITokenValidationService
 using SeelansTyres.Libraries.Shared.Messages;                                      // BaseMessage
-using SeelansTyres.Libraries.Shared.Services;                                      // ITokenValidationService
 using SeelansTyres.Workers.AddressWorker.Services;                                 // IAddressUpdateService
 using System.Text.Json;                                                            // JsonSerializer
 using static SeelansTyres.Libraries.Shared.Abstractions.Messaging.AzureServiceBus; // ConfigureCommonAzureServiceBusProcessor()

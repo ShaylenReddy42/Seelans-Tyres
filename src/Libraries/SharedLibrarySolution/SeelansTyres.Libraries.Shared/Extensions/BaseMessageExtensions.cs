@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;     // IConfiguration
-using Microsoft.Extensions.Logging;           // ILogger
-using SeelansTyres.Libraries.Shared.Messages; // BaseMessage
-using SeelansTyres.Libraries.Shared.Services; // ITokenValidationService
+﻿using Microsoft.Extensions.Configuration;        // IConfiguration
+using Microsoft.Extensions.Logging;              // ILogger
+using SeelansTyres.Libraries.Shared.HttpClients; // ITokenValidationService
+using SeelansTyres.Libraries.Shared.Messages;    // BaseMessage
 
 namespace SeelansTyres.Libraries.Shared.Extensions;
 
