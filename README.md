@@ -278,13 +278,13 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 
 ## Required local setup to build and run
 
-* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.7.5 or later
-* .NET SDK [6.0.415](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.402](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.7.6 or later
+* .NET SDK [6.0.416](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.403](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16#download-ssms)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-* [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.69.1 or later [For the hosts file editor]
+* [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.75.1 or later [For the hosts file editor and environment variables utility]
 
 ## Build instructions
 
@@ -292,8 +292,8 @@ The solution now comprises of 10 runnable projects with 17 projects in total
 
 ``` bat
 
-docker pull elasticsearch:7.17.13
-docker pull kibana:7.17.13
+docker pull elasticsearch:7.17.14
+docker pull kibana:7.17.14
 docker pull nginx:1-bullseye
 docker pull rabbitmq:3-management
 docker pull redis:latest
@@ -312,8 +312,8 @@ docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 ``` bat
 
-docker pull elasticsearch:7.17.13
-docker pull kibana:7.17.13
+docker pull elasticsearch:7.17.14
+docker pull kibana:7.17.14
 docker pull rabbitmq:3-management
 
 ```
