@@ -1,17 +1,17 @@
-using Hellang.Middleware.ProblemDetails;                          // UseProblemDetails()
-using Microsoft.AspNetCore.Authorization;                         // IAuthorizationHandler
-using Microsoft.AspNetCore.Identity;                              // IdentityRole, AddDefaultTokenProviders()
-using Microsoft.EntityFrameworkCore;                              // UseSqlServer()
-using SeelansTyres.Services.IdentityService.Data;                 // CustomerDbContext
-using SeelansTyres.Services.IdentityService.Data.Entities;        // Customer
-using SeelansTyres.Services.IdentityService.Services;             // AdminAccountSeeder, ConfigurationDataSeeder, ICustomerService, CustomerService, TokenExchangeExtensionGrantValidator
-using System.Reflection;                                          // Assembly
-using SeelansTyres.Services.IdentityService.Extensions;           // GenerateSigningCredentialsFromConfiguration(), RunSeedersAsync()
-using SeelansTyres.Libraries.Shared.Services;                     // RabbitMQPublisher, AzureServiceBusPublisher
-using SeelansTyres.Libraries.Shared.Extensions;                   // AddCommonStartupDelay()
-using SeelansTyres.Libraries.Shared.Authorization;                // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
-using SeelansTyres.Libraries.Shared.Abstractions;                 // All health check abstractions
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement; // AddUnpublishedUpdatesManagement()
+using Hellang.Middleware.ProblemDetails;                   // UseProblemDetails()
+using Microsoft.AspNetCore.Authorization;                  // IAuthorizationHandler
+using Microsoft.AspNetCore.Identity;                       // IdentityRole, AddDefaultTokenProviders()
+using Microsoft.EntityFrameworkCore;                       // UseSqlServer()
+using SeelansTyres.Services.IdentityService.Data;          // CustomerDbContext
+using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
+using SeelansTyres.Services.IdentityService.Services;      // AdminAccountSeeder, ConfigurationDataSeeder, ICustomerService, CustomerService, TokenExchangeExtensionGrantValidator
+using System.Reflection;                                   // Assembly
+using SeelansTyres.Services.IdentityService.Extensions;    // GenerateSigningCredentialsFromConfiguration(), RunSeedersAsync()
+using SeelansTyres.Libraries.Shared.Services;              // RabbitMQPublisher, AzureServiceBusPublisher
+using SeelansTyres.Libraries.Shared.Extensions;            // AddCommonStartupDelay()
+using SeelansTyres.Libraries.Shared.Authorization;         // CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement()
+using SeelansTyres.Libraries.Shared.Abstractions;          // All health check abstractions
+using ShaylenReddy42.UnpublishedUpdatesManagement;         // AddUnpublishedUpdatesManagement()
 
 var descriptiveApplicationName = "Seelan's Tyres: Identity / Customer Microservice";
 

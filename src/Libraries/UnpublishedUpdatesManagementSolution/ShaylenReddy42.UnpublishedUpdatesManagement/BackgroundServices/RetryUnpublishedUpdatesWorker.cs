@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;                                // IServiceScopeFactory
-using Microsoft.Extensions.Hosting;                                            // BackgroundService
-using Microsoft.Extensions.Logging;                                            // ILogger
-using Microsoft.IdentityModel.Tokens;                                          // Base64UrlEncoder
-using SeelansTyres.Libraries.Shared.Abstractions;                              // StartANewActivity()
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages;     // BaseMessage
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories; // IUnpublishedUpdateRepository
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;     // IMessagePublisher
-using System.Text.Json;                                                        // JsonSerializer
+﻿using Microsoft.Extensions.DependencyInjection;                 // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;                             // BackgroundService
+using Microsoft.Extensions.Logging;                             // ILogger
+using Microsoft.IdentityModel.Tokens;                           // Base64UrlEncoder
+using ShaylenReddy42.UnpublishedUpdatesManagement.Abstractions; // StartANewActivity()
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages;     // BaseMessage
+using ShaylenReddy42.UnpublishedUpdatesManagement.Repositories; // IUnpublishedUpdateRepository
+using ShaylenReddy42.UnpublishedUpdatesManagement.Services;     // IMessagePublisher
+using System.Text.Json;                                         // JsonSerializer
 
-namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.BackgroundServices;
 
 /// <summary>
 /// Retrieves the unpublished messages from the database and retries them

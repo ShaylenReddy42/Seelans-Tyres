@@ -1,7 +1,7 @@
 ﻿using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 using System.Diagnostics;                                   // Activity, ActivityTraceId, ActivitySpanId
 
-namespace SeelansTyres.Libraries.Shared.Abstractions;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.Abstractions;
 
 public static class DistributedTracing
 {

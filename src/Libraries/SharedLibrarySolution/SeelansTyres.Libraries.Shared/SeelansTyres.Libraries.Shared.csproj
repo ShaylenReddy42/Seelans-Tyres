@@ -47,4 +47,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\UnpublishedUpdatesManagementSolution\ShaylenReddy42.UnpublishedUpdatesManagement\ShaylenReddy42.UnpublishedUpdatesManagement.csproj" />
+  </ItemGroup>
+
 </Project>

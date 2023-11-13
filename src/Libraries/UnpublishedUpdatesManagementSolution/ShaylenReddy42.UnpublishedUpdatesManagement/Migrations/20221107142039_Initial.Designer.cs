@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;
+using ShaylenReddy42.UnpublishedUpdatesManagement.Data;
 
 #nullable disable
 
-namespace SeelansTyres.Libraries.Shared.Migrations
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.Migrations
 {
     [DbContext(typeof(UnpublishedUpdateDbContext))]
     [Migration("20221107142039_Initial")]
@@ -23,7 +23,7 @@ namespace SeelansTyres.Libraries.Shared.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SeelansTyres.Libraries.Shared.DbContexts.UnpublishedUpdateDbContext_Entities.UnpublishedUpdate", b =>
+            modelBuilder.Entity("ShaylenReddy42.UnpublishedUpdatesManagement.DbContexts.UnpublishedUpdateDbContext_Entities.UnpublishedUpdate", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

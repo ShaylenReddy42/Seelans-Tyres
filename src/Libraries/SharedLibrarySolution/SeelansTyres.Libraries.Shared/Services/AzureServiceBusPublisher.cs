@@ -1,9 +1,9 @@
-﻿using Azure.Messaging.ServiceBus;                                          // ServiceBusClient()
-using Microsoft.Extensions.Configuration;                                  // IConfiguration
-using Microsoft.Extensions.Logging;                                        // ILogger
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services; // IMessagePublisher
-using System.Text.Json;                                                    // JsonSerializer
+﻿using Azure.Messaging.ServiceBus;                           // ServiceBusClient()
+using Microsoft.Extensions.Configuration;                   // IConfiguration
+using Microsoft.Extensions.Logging;                         // ILogger
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using ShaylenReddy42.UnpublishedUpdatesManagement.Services; // IMessagePublisher
+using System.Text.Json;                                     // JsonSerializer
 
 namespace SeelansTyres.Libraries.Shared.Services;
 

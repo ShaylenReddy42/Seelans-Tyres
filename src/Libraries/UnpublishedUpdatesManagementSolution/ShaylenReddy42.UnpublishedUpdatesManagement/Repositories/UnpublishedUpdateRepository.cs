@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;                                            // ToListAsync()
-using Microsoft.Extensions.Logging;                                             // ILogger
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;          // UnpublishedUpdateDbContext
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
-using System.Diagnostics;                                                       // Stopwatch
+﻿using Microsoft.EntityFrameworkCore;                             // ToListAsync()
+using Microsoft.Extensions.Logging;                              // ILogger
+using ShaylenReddy42.UnpublishedUpdatesManagement.Data;          // UnpublishedUpdateDbContext
+using ShaylenReddy42.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
+using System.Diagnostics;                                        // Stopwatch
 
-namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.Repositories;
 
 public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
 {

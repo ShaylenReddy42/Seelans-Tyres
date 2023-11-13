@@ -1,4 +1,4 @@
-﻿namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages;
+﻿namespace ShaylenReddy42.UnpublishedUpdatesManagement.Messages;
 
 /// <summary>
 /// Used to send updates to other microservices

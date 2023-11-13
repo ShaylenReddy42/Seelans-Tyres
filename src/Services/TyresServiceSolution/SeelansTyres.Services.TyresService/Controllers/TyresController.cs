@@ -1,14 +1,14 @@
-﻿using AutoMapper;                                                          // IMapper
-using Microsoft.AspNetCore.Mvc;                                            // ApiController, ControllerBase, Http Methods, ActionResult
-using SeelansTyres.Services.TyresService.Services;                         // ITyresRepository
-using Microsoft.AspNetCore.Authorization;                                  // Authorize, AllowAnonymous
-using Microsoft.AspNetCore.Authentication.JwtBearer;                       // JwtBearerDefaults
-using SeelansTyres.Services.TyresService.Data.Entities;                    // Tyre
-using System.Diagnostics;                                                  // Stopwatch, Activity
-using System.Text.Json;                                                    // JsonSerializer
-using static System.Net.Mime.MediaTypeNames;                               // Application
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels; // PublishUpdateChannel
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
+﻿using AutoMapper;                                           // IMapper
+using Microsoft.AspNetCore.Mvc;                             // ApiController, ControllerBase, Http Methods, ActionResult
+using SeelansTyres.Services.TyresService.Services;          // ITyresRepository
+using Microsoft.AspNetCore.Authorization;                   // Authorize, AllowAnonymous
+using Microsoft.AspNetCore.Authentication.JwtBearer;        // JwtBearerDefaults
+using SeelansTyres.Services.TyresService.Data.Entities;     // Tyre
+using System.Diagnostics;                                   // Stopwatch, Activity
+using System.Text.Json;                                     // JsonSerializer
+using static System.Net.Mime.MediaTypeNames;                // Application
+using ShaylenReddy42.UnpublishedUpdatesManagement.Channels; // PublishUpdateChannel
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
 namespace SeelansTyres.Services.TyresService.Controllers;
 

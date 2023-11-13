@@ -10,6 +10,7 @@ RUN apk add --no-cache icu-libs
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
+COPY ["Libraries/UnpublishedUpdatesManagementSolution/ShaylenReddy42.UnpublishedUpdatesManagement/ShaylenReddy42.UnpublishedUpdatesManagement.csproj", "Libraries/UnpublishedUpdatesManagementSolution/ShaylenReddy42.UnpublishedUpdatesManagement/"]
 COPY ["Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/SeelansTyres.Frontends.HealthChecksUI.csproj", "Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/"]
 RUN dotnet restore "Frontends/HealthChecksUISolution/SeelansTyres.Frontends.HealthChecksUI/SeelansTyres.Frontends.HealthChecksUI.csproj"
 COPY . .

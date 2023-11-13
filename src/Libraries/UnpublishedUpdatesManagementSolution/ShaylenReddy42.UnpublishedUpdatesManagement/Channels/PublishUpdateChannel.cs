@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;                                        // ILogger
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
-using System.Threading.Channels;                                           // Channel, BoundedChannelOptions
+﻿using Microsoft.Extensions.Logging;                         // ILogger
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using System.Threading.Channels;                            // Channel, BoundedChannelOptions
 
-namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.Channels;
 
 /// <summary>
 /// Used to pass updates for publishing from a request to a background service

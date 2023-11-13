@@ -1,6 +1,6 @@
-﻿using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
+﻿using ShaylenReddy42.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
 
-namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.Repositories;
 
 /// <summary>
 /// Provides functionality to work with unpublished updates in the database

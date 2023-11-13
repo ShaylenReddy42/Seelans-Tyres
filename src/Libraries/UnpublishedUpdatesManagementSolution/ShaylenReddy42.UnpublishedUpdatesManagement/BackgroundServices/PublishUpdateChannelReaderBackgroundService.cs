@@ -1,15 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;                                 // IServiceScopeFactory
-using Microsoft.Extensions.Hosting;                                             // BackgroundService
-using Microsoft.Extensions.Logging;                                             // ILogger
-using Microsoft.IdentityModel.Tokens;                                           // Base64UrlEncoder
-using SeelansTyres.Libraries.Shared.Abstractions;                               // StartANewActivity()
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;      // PublishUpdateChannel
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;  // IUnpublishedUpdateRepository
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;      // IMessagePublisher
-using System.Text.Json;                                                         // JsonSerializer
+﻿using Microsoft.Extensions.DependencyInjection;                  // IServiceScopeFactory
+using Microsoft.Extensions.Hosting;                              // BackgroundService
+using Microsoft.Extensions.Logging;                              // ILogger
+using Microsoft.IdentityModel.Tokens;                            // Base64UrlEncoder
+using ShaylenReddy42.UnpublishedUpdatesManagement.Abstractions;  // StartANewActivity()
+using ShaylenReddy42.UnpublishedUpdatesManagement.Channels;      // PublishUpdateChannel
+using ShaylenReddy42.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedUpdate
+using ShaylenReddy42.UnpublishedUpdatesManagement.Repositories;  // IUnpublishedUpdateRepository
+using ShaylenReddy42.UnpublishedUpdatesManagement.Services;      // IMessagePublisher
+using System.Text.Json;                                          // JsonSerializer
 
-namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.BackgroundServices;
 
 /// <summary>
 /// Reads in data from the 'PublishUpdateChannel' and attempts to publish it to the message bus<br/>

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SeelansTyres.Libraries.Shared.Migrations
+namespace ShaylenReddy42.UnpublishedUpdatesManagement.Migrations
 {
     public partial class Initial : Migration
     {

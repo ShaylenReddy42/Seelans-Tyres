@@ -1,15 +1,15 @@
-using Hellang.Middleware.ProblemDetails;                               // UseProblemDetails()
-using Microsoft.AspNetCore.Authentication.JwtBearer;                   // JwtBearerDefaults
-using Microsoft.EntityFrameworkCore;                                   // UseSqlServer()
-using SeelansTyres.Services.TyresService.Data;                         // TyresDbContext
-using SeelansTyres.Services.TyresService.Services;                     // ITyresRepository, TyresRepository
-using System.Reflection;                                               // Assembly
-using SeelansTyres.Libraries.Shared.Services;                          // RabbitMQPublisher, AzureServiceBusPublisher
-using SeelansTyres.Libraries.Shared.Extensions;                        // AddCommonStartupDelay()
-using Microsoft.AspNetCore.Mvc;                                        // ProducesResponseTypeAttribute
-using SeelansTyres.Libraries.Shared.Abstractions;                      // MigrateDatabaseAsync()
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement;      // AddUnpublishedUpdatesManagement()
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data; // UnpublishedUpdateDbContext
+using Hellang.Middleware.ProblemDetails;                // UseProblemDetails()
+using Microsoft.AspNetCore.Authentication.JwtBearer;    // JwtBearerDefaults
+using Microsoft.EntityFrameworkCore;                    // UseSqlServer()
+using SeelansTyres.Services.TyresService.Data;          // TyresDbContext
+using SeelansTyres.Services.TyresService.Services;      // ITyresRepository, TyresRepository
+using System.Reflection;                                // Assembly
+using SeelansTyres.Libraries.Shared.Services;           // RabbitMQPublisher, AzureServiceBusPublisher
+using SeelansTyres.Libraries.Shared.Extensions;         // AddCommonStartupDelay()
+using Microsoft.AspNetCore.Mvc;                         // ProducesResponseTypeAttribute
+using SeelansTyres.Libraries.Shared.Abstractions;       // MigrateDatabaseAsync()
+using ShaylenReddy42.UnpublishedUpdatesManagement;      // AddUnpublishedUpdatesManagement()
+using ShaylenReddy42.UnpublishedUpdatesManagement.Data; // UnpublishedUpdateDbContext
 
 var descriptiveApplicationName = "Seelan's Tyres: Tyres Microservice";
 

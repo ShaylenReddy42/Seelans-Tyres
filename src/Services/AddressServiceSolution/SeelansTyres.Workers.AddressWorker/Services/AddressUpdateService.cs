@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;                                       // ExecuteDeleteAsync()
-using SeelansTyres.Data.AddressData;                                       // AddressDbContext
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
-using System.Diagnostics;                                                  // Stopwatch
+﻿using Microsoft.EntityFrameworkCore;                        // ExecuteDeleteAsync()
+using SeelansTyres.Data.AddressData;                        // AddressDbContext
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using System.Diagnostics;                                   // Stopwatch
 
 namespace SeelansTyres.Workers.AddressWorker.Services;
 

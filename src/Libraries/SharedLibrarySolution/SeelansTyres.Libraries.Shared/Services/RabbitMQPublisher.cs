@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;                                   // IConfiguration
 using Microsoft.Extensions.Logging;                                         // ILogger
 using RabbitMQ.Client;                                                      // BasicPublish()
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages;  // BaseMessage
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;  // IMessagePublisher
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages;                 // BaseMessage
+using ShaylenReddy42.UnpublishedUpdatesManagement.Services;                 // IMessagePublisher
 using System.Text.Json;                                                     // JsonSerializer
 using static SeelansTyres.Libraries.Shared.Abstractions.Messaging.RabbitMQ; // ConfigureCommonRabbitMQConnection()
 

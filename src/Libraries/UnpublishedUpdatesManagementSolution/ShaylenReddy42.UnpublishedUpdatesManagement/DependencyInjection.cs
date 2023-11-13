@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;                                                 // UseSqlServer()
-using Microsoft.Extensions.DependencyInjection;                                      // IServiceCollection
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.BackgroundServices; // PublishUpdateChannelReaderBackgroundService, RetryUnpublishedUpdatesWorker
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Channels;           // PublishUpdateChannel
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Data;               // UnpublishedUpdateDbContext
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Repositories;       // IUnpublishedUpdateRepository, UnpublishedUpdateRepository
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Services;           // IMessagePublisher
+﻿using Microsoft.EntityFrameworkCore;                                  // UseSqlServer()
+using Microsoft.Extensions.DependencyInjection;                       // IServiceCollection
+using ShaylenReddy42.UnpublishedUpdatesManagement.BackgroundServices; // PublishUpdateChannelReaderBackgroundService, RetryUnpublishedUpdatesWorker
+using ShaylenReddy42.UnpublishedUpdatesManagement.Channels;           // PublishUpdateChannel
+using ShaylenReddy42.UnpublishedUpdatesManagement.Data;               // UnpublishedUpdateDbContext
+using ShaylenReddy42.UnpublishedUpdatesManagement.Repositories;       // IUnpublishedUpdateRepository, UnpublishedUpdateRepository
+using ShaylenReddy42.UnpublishedUpdatesManagement.Services;           // IMessagePublisher
 
-namespace SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement;
+namespace ShaylenReddy42.UnpublishedUpdatesManagement;
 
 public static class DependencyInjection
 {
@@ -49,7 +49,7 @@ public static class DependencyInjection
     ///         This completes the solution to this problem and now
     ///     </para>
     ///     <para>
-    ///         Client code needs to inject the 'PublishUpdateChannel', form the BaseMessage and write to it, and every else is taken care of
+    ///         Client code needs to inject the 'PublishUpdateChannel', form the BaseMessage and write to it, and everything else is taken care of
     ///     </para>
     /// </remarks>
     /// <typeparam name="TMessagePublisherImplementation">Provides the implementation for publishing messages to a message bus</typeparam>

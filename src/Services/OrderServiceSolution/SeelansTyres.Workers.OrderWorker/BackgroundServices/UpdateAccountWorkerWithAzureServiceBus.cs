@@ -2,7 +2,7 @@
 using SeelansTyres.Libraries.Shared.Abstractions;                                  // StartANewActivity()
 using SeelansTyres.Libraries.Shared.Extensions;                                    // ValidateTokenFromBaseMessage()
 using SeelansTyres.Libraries.Shared.HttpClients;                                   // ITokenValidationService
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages;         // BaseMessage
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages;                        // BaseMessage
 using SeelansTyres.Workers.OrderWorker.Services;                                   // IOrderUpdateService
 using System.Text.Json;                                                            // JsonSerializer
 using static SeelansTyres.Libraries.Shared.Abstractions.Messaging.AzureServiceBus; // ConfigureCommonAzureServiceBusProcessor()

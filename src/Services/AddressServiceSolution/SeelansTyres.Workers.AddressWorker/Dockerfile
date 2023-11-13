@@ -12,6 +12,7 @@ RUN apk add --no-cache icu-libs
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
+COPY ["Libraries/UnpublishedUpdatesManagementSolution/ShaylenReddy42.UnpublishedUpdatesManagement/ShaylenReddy42.UnpublishedUpdatesManagement.csproj", "Libraries/UnpublishedUpdatesManagementSolution/ShaylenReddy42.UnpublishedUpdatesManagement/"]
 COPY ["Services/AddressServiceSolution/SeelansTyres.Data.AddressData/SeelansTyres.Data.AddressData.csproj", "Services/AddressServiceSolution/SeelansTyres.Data.AddressData/"]
 COPY ["Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/SeelansTyres.Workers.AddressWorker.csproj", "Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/"]
 RUN dotnet restore "Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/SeelansTyres.Workers.AddressWorker.csproj"

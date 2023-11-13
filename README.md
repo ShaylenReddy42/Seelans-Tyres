@@ -46,7 +46,7 @@ In the beginning, it was a distributed monolith with a frontend and backend API 
 
 The API has been broken down into microservices which then invited a backend-for-frontend to have a single point of entry into the microservices from the frontend
 
-The solution now comprises of 10 runnable projects with 17 projects in total
+The solution now comprises of 10 runnable projects with 18 projects in total
 
 ## Features
 

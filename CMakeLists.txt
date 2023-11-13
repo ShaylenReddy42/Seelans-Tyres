@@ -97,6 +97,7 @@ set(
 	"Gateways | MvcBffSolution | SeelansTyres.Gateways.MvcBff | Yes | 5050"
 
 	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No | 0"
+	"Libraries | UnpublishedUpdatesManagementSolution | ShaylenReddy42.UnpublishedUpdatesManagement | No | 0"
 
 	"Services | AddressServiceSolution | SeelansTyres.Data.AddressData | No | 0"
 	"Services | AddressServiceSolution | SeelansTyres.Models.AddressModels | No | 0"

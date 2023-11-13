@@ -1,12 +1,12 @@
-﻿using RabbitMQ.Client;                                                     // IModel
-using RabbitMQ.Client.Events;                                              // EventingBasicConsumer
-using System.Text.Json;                                                    // JsonSerializer
-using SeelansTyres.Workers.AddressWorker.Services;                         // IAddressUpdateService
-using SeelansTyres.Libraries.Shared.Extensions;                            // ValidateTokenFromBaseMessage()
-using SeelansTyres.Libraries.Shared.Abstractions.Messaging;                // ConfigureCommonRabbitMQConsumer()
-using SeelansTyres.Libraries.Shared.Abstractions;                          // StartANewActivity()
-using SeelansTyres.Libraries.Shared.HttpClients;                           // ITokenValidationService
-using SeelansTyres.Libraries.Shared.UnpublishedUpdatesManagement.Messages; // BaseMessage
+﻿using RabbitMQ.Client;                                      // IModel
+using RabbitMQ.Client.Events;                               // EventingBasicConsumer
+using System.Text.Json;                                     // JsonSerializer
+using SeelansTyres.Workers.AddressWorker.Services;          // IAddressUpdateService
+using SeelansTyres.Libraries.Shared.Extensions;             // ValidateTokenFromBaseMessage()
+using SeelansTyres.Libraries.Shared.Abstractions.Messaging; // ConfigureCommonRabbitMQConsumer()
+using SeelansTyres.Libraries.Shared.Abstractions;           // StartANewActivity()
+using SeelansTyres.Libraries.Shared.HttpClients;            // ITokenValidationService
+using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
 namespace SeelansTyres.Workers.AddressWorker.BackgroundServices;
 
