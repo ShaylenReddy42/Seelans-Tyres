@@ -1,8 +1,8 @@
-﻿using IdentityServer4.EntityFramework.DbContexts;
-using SeelansTyres.Libraries.Shared.Abstractions;
-using ShaylenReddy42.UnpublishedUpdatesManagement.Data;
-using SeelansTyres.Services.IdentityService.Data;
-using SeelansTyres.Services.IdentityService.Services;
+﻿using IdentityServer4.EntityFramework.DbContexts;               // ConfigurationDbContext, PersistedGrantDbContext
+using SeelansTyres.Libraries.Shared.Abstractions;               // MigrateDatabaseAsync()
+using SeelansTyres.Services.IdentityService.Data;               // CustomerDbContext
+using SeelansTyres.Services.IdentityService.Services;           // AdminAccountSeeder, ConfigurationDataSeeder
+using ShaylenReddy42.UnpublishedUpdatesManagement.Abstractions; // MigrateUnpublishedUpdatesManagementDatabaseAsync()
 
 namespace SeelansTyres.Services.IdentityService.Extensions;
 
@@ -21,7 +21,8 @@ public static class DatabaseMigrationExtensions
         await app.MigrateDatabaseAsync<ConfigurationDbContext>();
         await app.MigrateDatabaseAsync<PersistedGrantDbContext>();
         await app.MigrateDatabaseAsync<CustomerDbContext>();
-        await app.MigrateDatabaseAsync<UnpublishedUpdateDbContext>();
+
+        await app.MigrateUnpublishedUpdatesManagementDatabaseAsync();
 
         using var scope = app.Services.CreateScope();
 
