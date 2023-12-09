@@ -10,7 +10,7 @@ namespace ShaylenReddy42.UnpublishedUpdatesManagement.Abstractions;
 public static class DatabaseMigration
 {
     /// <summary>
-    /// Provides an abstraction over migrating the UnpublishedUpdateDbContext database
+    /// Provides an abstraction over migrating the <see cref="UnpublishedUpdateDbContext"/> database
     /// </summary>
     /// <remarks>
     /// Any time a database needs to be migrated using code,<br/>

@@ -9,8 +9,8 @@ public static class DistributedTracing
     /// Continues a broken activity to maintain distributed tracing
     /// </summary>
     /// <remarks>This abstracts away the complete implementation</remarks>
-    /// <param name="message"></param>
-    /// <param name="operationName"></param>
+    /// <param name="message">The message containing the ActivityTraceId and ActivitySpanId</param>
+    /// <param name="operationName">Name of the operation, needed to create a new activity</param>
     /// <returns>The original BaseMessage</returns>
     public static BaseMessage StartANewActivity(this BaseMessage message, string operationName = "Processing Message")
     {

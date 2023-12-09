@@ -3,6 +3,9 @@ using ShaylenReddy42.UnpublishedUpdatesManagement.Data.Entities; // UnpublishedU
 
 namespace ShaylenReddy42.UnpublishedUpdatesManagement.Data;
 
+/// <summary>
+/// The database used to store unpublished updates
+/// </summary>
 public class UnpublishedUpdateDbContext : DbContext
 {
     public UnpublishedUpdateDbContext(DbContextOptions<UnpublishedUpdateDbContext> options) : base(options) { }

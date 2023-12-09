@@ -12,7 +12,7 @@ using System.Text.Json;                                          // JsonSerializ
 namespace ShaylenReddy42.UnpublishedUpdatesManagement.BackgroundServices;
 
 /// <summary>
-/// Reads in data from the 'PublishUpdateChannel' and attempts to publish it to the message bus<br/>
+/// Reads in data from the <see cref="PublishUpdateChannel"/> and attempts to publish it to the message bus<br/>
 /// <br/>
 /// Writes them to the database on failure
 /// </summary>

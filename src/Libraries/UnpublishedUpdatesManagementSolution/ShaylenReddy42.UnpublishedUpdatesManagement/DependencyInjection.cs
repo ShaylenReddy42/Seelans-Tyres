@@ -22,25 +22,26 @@ public static class DependencyInjection
     ///     </para>
     ///     <para>
     ///         Having resiliency added during the lifecycle of a request would add a delay to the response from the api<br/>
-    ///         and to avoid this, the 'PublishUpdateChannel' was created to write the update through to the channel<br/>
+    ///         and to avoid this, the <see cref="PublishUpdateChannel"/> was created to write the update through to the channel<br/>
     ///         and processed on the other end to resolve the issue of a slow response and not having an internal server error<br/>
     ///         returned from the api
     ///     </para>
     ///     <para>
     ///         That, of course, is not the full story to the solution<br/>
     ///         <br/>
-    ///         Whenever a channel is created, automatically a channel reader background service has to be created to process the data sent through<br/>
+    ///         Whenever a channel is created, automatically a channel reader background service [<see cref="PublishUpdateChannelReaderBackgroundService"/>] 
+    ///         has to be created to process the data sent through<br/>
     ///     </para>
     ///     <para>
     ///         Having the channel in place and the reader for processing still doesn't add complete resiliency for this problem, it will still fail to publish
     ///     </para>
     ///     <para>
-    ///         This introduces the 'UnpublishedUpdateDbContext' that's used to store updates that fails to be published
+    ///         This introduces the <see cref="UnpublishedUpdateDbContext"/> that's used to store updates that fails to be published
     ///     </para>
     ///     <para>
     ///         Now the issue is, failed updates are written to the database but what exactly is retrying those updates ?<br/>
     ///         <br/>
-    ///         This introduces the second background service 'RetryUnpublishedUpdatesWorker'<br/>
+    ///         This introduces the second background service <see cref="RetryUnpublishedUpdatesWorker"/><br/>
     ///         <br/>
     ///         It's main function is to check the database every ten minutes for unpublished updates and retry them while incrementing the number of attempts<br/>
     ///         and updating the database on repeated failures while removing those that succeed
@@ -49,7 +50,7 @@ public static class DependencyInjection
     ///         This completes the solution to this problem and now
     ///     </para>
     ///     <para>
-    ///         Client code needs to inject the 'PublishUpdateChannel', form the BaseMessage and write to it, and everything else is taken care of
+    ///         Client code needs to inject the <see cref="PublishUpdateChannel"/>, form the BaseMessage and write to it, and everything else is taken care of
     ///     </para>
     /// </remarks>
     /// <typeparam name="TMessagePublisherImplementation">Provides the implementation for publishing messages to a message bus</typeparam>
