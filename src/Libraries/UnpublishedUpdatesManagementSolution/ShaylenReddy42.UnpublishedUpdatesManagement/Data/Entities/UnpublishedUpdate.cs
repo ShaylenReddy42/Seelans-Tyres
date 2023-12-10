@@ -19,7 +19,7 @@ public class UnpublishedUpdate
     public long Id { get; set; }
     
     /// <summary>
-    /// This is a base64-encoded string representation of the json of the original update
+    /// This is a base64url-encoded string representation of the json of the original update
     /// </summary>
     [Required]
     public string EncodedUpdate { get; set; } = string.Empty;

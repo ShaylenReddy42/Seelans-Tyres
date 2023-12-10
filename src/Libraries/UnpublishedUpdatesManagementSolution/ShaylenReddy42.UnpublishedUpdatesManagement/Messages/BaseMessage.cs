@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using System.Diagnostics;
+﻿using System.Text.Json;   // JsonSerializer
+using System.Diagnostics; // ActivityTraceId, ActivitySpanId
 
 namespace ShaylenReddy42.UnpublishedUpdatesManagement.Messages;
 
