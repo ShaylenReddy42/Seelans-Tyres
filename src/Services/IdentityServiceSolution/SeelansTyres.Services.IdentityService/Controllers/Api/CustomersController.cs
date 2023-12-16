@@ -227,7 +227,7 @@ public class CustomersController : ControllerBase
             SpanId = Activity.Current!.SpanId.ToString(),
             AccessToken = HttpContext.Request.Headers.Authorization[0]!.Replace("Bearer ", ""),
             SerializedModel = JsonSerializer.SerializeToUtf8Bytes(updateAccountModel),
-            IdOfEntityToUpdate = id
+            IdOfEntityToUpdate = id.ToString()
         };
 
         var configurationKeyForDestination = environment.IsDevelopment()
@@ -274,7 +274,7 @@ public class CustomersController : ControllerBase
             TraceId = Activity.Current!.TraceId.ToString(),
             SpanId = Activity.Current!.SpanId.ToString(),
             AccessToken = HttpContext.Request.Headers.Authorization[0]!.Replace("Bearer ", ""),
-            IdOfEntityToUpdate = id
+            IdOfEntityToUpdate = id.ToString()
         };
 
         var configurationKeyForDestination = environment.IsDevelopment()

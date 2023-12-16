@@ -29,7 +29,7 @@ public class AddressUpdateService : IAddressUpdateService
         try
         {
             await context.Addresses
-                .Where(address => address.CustomerId == message.IdOfEntityToUpdate)
+                .Where(address => address.CustomerId == Guid.Parse(message.IdOfEntityToUpdate))
                 .ExecuteDeleteAsync();
         }
         catch (Exception ex)

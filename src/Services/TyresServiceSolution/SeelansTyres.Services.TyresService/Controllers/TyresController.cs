@@ -169,7 +169,7 @@ public class TyresController : ControllerBase
             SpanId = Activity.Current!.SpanId.ToString(),
             AccessToken = HttpContext.Request.Headers.Authorization[0]!.Replace("Bearer ", ""),
             SerializedModel = JsonSerializer.SerializeToUtf8Bytes(tyreModel),
-            IdOfEntityToUpdate = id
+            IdOfEntityToUpdate = id.ToString()
         };
 
         var configurationKeyForDestination = environment.IsDevelopment()

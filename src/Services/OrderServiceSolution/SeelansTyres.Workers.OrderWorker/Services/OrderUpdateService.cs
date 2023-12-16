@@ -30,7 +30,7 @@ public class OrderUpdateService : IOrderUpdateService
         try
         {
             await context.Orders
-                .Where(order => order.CustomerId == message.IdOfEntityToUpdate)
+                .Where(order => order.CustomerId == Guid.Parse(message.IdOfEntityToUpdate))
                 .ExecuteDeleteAsync();
         }
         catch (Exception ex)
@@ -63,7 +63,7 @@ public class OrderUpdateService : IOrderUpdateService
         try
         {
             await context.Orders
-                .Where(order => order.CustomerId == message.IdOfEntityToUpdate)
+                .Where(order => order.CustomerId == Guid.Parse(message.IdOfEntityToUpdate))
                 .ExecuteUpdateAsync(
                     updates => updates
                         .SetProperty(order => order.FirstName, updateAccountModel!.FirstName)
@@ -101,7 +101,7 @@ public class OrderUpdateService : IOrderUpdateService
         {
             // The price will not be updated because the data will lose integrity
             await context.OrderItems
-                .Where(item => item.TyreId == message.IdOfEntityToUpdate)
+                .Where(item => item.TyreId == Guid.Parse(message.IdOfEntityToUpdate))
                 .ExecuteUpdateAsync(
                     updates => updates
                         .SetProperty(item => item.TyreName, tyreModel!.Name));

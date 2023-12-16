@@ -40,5 +40,9 @@ public class BaseMessage
     /// The id of the original resource that was updated<br/>
     /// used to filter the update for the other microservices
     /// </summary>
-    public Guid IdOfEntityToUpdate { get; set; }
+    /// <remarks>
+    /// Since most data types can move to and from strings, <br/>
+    /// this is the best data type since not all cases the id is of type GUID
+    /// </remarks>
+    public string IdOfEntityToUpdate { get; set; } = string.Empty;
 }
