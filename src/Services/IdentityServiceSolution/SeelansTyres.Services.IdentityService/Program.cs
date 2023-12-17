@@ -155,10 +155,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddProblemDetails(configure =>
-{
-    configure.IncludeExceptionDetails = (httpContext, exception) => false;
-});
+builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<CustomerDbContext>();

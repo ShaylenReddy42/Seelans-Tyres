@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;             // UseProblemDetails()
 using Microsoft.AspNetCore.Authentication.JwtBearer; // JwtBearerDefaults
 using Microsoft.AspNetCore.Authorization;            // IAuthorizationHandler
 using Microsoft.EntityFrameworkCore;                 // UseSqlServer()
@@ -77,10 +76,7 @@ builder.Services.AddAuthorization(configure =>
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddProblemDetails(configure =>
-{
-    configure.IncludeExceptionDetails = (httpContext, exception) => false;
-});
+builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<AddressDbContext>();
@@ -88,8 +84,6 @@ builder.Services.AddHealthChecks()
 var app = builder.Build();
 
 app.HonorForwardedHeaders();
-
-app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

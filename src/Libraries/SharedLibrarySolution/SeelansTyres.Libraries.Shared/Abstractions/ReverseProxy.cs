@@ -6,7 +6,7 @@ namespace SeelansTyres.Libraries.Shared.Abstractions;
 public static class ReverseProxy
 {
     /// <summary>
-    /// Allows the protocol and host to be overriden by headers forwarded by a reverse proxy
+    /// Allows the original client ip and protocol to be processed by headers forwarded by a reverse proxy
     /// </summary>
     /// <remarks>
     ///     Originally added to fix IdentityServer4 in docker compose but is now on all applications<br/>

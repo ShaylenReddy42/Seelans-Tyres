@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;                        // UseProblemDetails()
 using Microsoft.AspNetCore.Authentication.JwtBearer;            // JwtBearerDefaults
 using Microsoft.EntityFrameworkCore;                            // UseSqlServer()
 using SeelansTyres.Services.TyresService.Data;                  // TyresDbContext
@@ -67,10 +66,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddProblemDetails(configure =>
-{
-    configure.IncludeExceptionDetails = (httpContext, exception) => false;
-});
+builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<TyresDbContext>();
@@ -97,8 +93,6 @@ else
 var app = builder.Build();
 
 app.HonorForwardedHeaders();
-
-app.UseProblemDetails();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
