@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <InvariantGlobalization>false</InvariantGlobalization>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -15,7 +14,6 @@
   <!-- Manually added PropertyGroup for reducing files created during publishing -->
   <PropertyGroup>
     <DebugType>embedded</DebugType>
-    <SelfContained>false</SelfContained>
     <PublishDir>publish</PublishDir>
     <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>

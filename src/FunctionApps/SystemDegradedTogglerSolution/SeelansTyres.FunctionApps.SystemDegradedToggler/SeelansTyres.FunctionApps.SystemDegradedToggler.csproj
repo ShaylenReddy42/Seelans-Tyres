@@ -5,13 +5,11 @@
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <!-- Manually added PropertyGroup for reducing files created during publishing -->
   <PropertyGroup>
     <DebugType>embedded</DebugType>
-    <SelfContained>false</SelfContained>
     <PublishDir>publish</PublishDir>
   </PropertyGroup>
   <ItemGroup>
