@@ -299,10 +299,10 @@ docker pull rabbitmq:3-management
 docker pull redis:latest
 
 docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
-docker pull mcr.microsoft.com/dotnet/sdk:6.0-alpine
+docker pull mcr.microsoft.com/dotnet/sdk:6.0
 
 docker pull mcr.microsoft.com/dotnet/aspnet:7.0-alpine
-docker pull mcr.microsoft.com/dotnet/sdk:7.0-alpine
+docker pull mcr.microsoft.com/dotnet/sdk:7.0
 
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 
