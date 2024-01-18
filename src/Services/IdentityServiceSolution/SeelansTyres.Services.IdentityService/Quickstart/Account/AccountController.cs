@@ -10,7 +10,6 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using SeelansTyres.Services.IdentityService.Data.Entities;
 
 namespace IdentityServerHost.Quickstart.UI;

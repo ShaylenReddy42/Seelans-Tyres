@@ -173,7 +173,7 @@ public class AccountController : Controller
         {
             logger.LogInformation(
                 "{announcement}: Attempt to delete account for customer {customerId} completed successfully. Logging them out",
-                customerId);
+                "SUCCEEDED", customerId);
 
             return RedirectToAction(nameof(Logout));
         }

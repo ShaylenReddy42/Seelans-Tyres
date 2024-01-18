@@ -219,8 +219,8 @@ public class ShoppingController : Controller
         }
 
         logger.LogInformation(
-            "{SUCCEEDED}: Attempt to retrieve order {orderId} completed successfully",
-            orderId);
+            "{announcement}: Attempt to retrieve order {orderId} completed successfully",
+            "SUCCEEDED", orderId);
 
         return await engine.CompileRenderAsync("Receipt", order);
     }
