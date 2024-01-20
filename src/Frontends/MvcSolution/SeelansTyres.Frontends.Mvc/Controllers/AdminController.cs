@@ -7,26 +7,14 @@ using SeelansTyres.Frontends.Mvc.ViewModels;  // AdminPortalViewModel
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
 [Authorize(Roles = "Administrator")]
-public class AdminController : Controller
+public class AdminController(
+    ILogger<AdminController> logger,
+    IImageService imageService,
+    IOrderServiceClient orderServiceClient,
+    ITyresServiceClient tyresServiceClient) : Controller
 {
-    private readonly ILogger<AdminController> logger;
-    private readonly IImageService imageService;
-    private readonly IOrderServiceClient orderServiceClient;
-    private readonly ITyresServiceClient tyresServiceClient;
     private readonly Stopwatch stopwatch = new();
 
-    public AdminController(
-        ILogger<AdminController> logger,
-        IImageService imageService,
-        IOrderServiceClient orderServiceClient,
-        ITyresServiceClient tyresServiceClient)
-    {
-        this.logger = logger;
-        this.imageService = imageService;
-        this.orderServiceClient = orderServiceClient;
-        this.tyresServiceClient = tyresServiceClient;
-    }
-    
     public async Task<IActionResult> Index()
     {
         stopwatch.Start();

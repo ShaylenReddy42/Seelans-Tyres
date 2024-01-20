@@ -2,19 +2,10 @@
 
 namespace SeelansTyres.Gateways.MvcBff.DelegatingHandlers;
 
-public class TyresServiceDelegatingHandler : DelegatingHandler
+public class TyresServiceDelegatingHandler(
+    ITokenExchangeService tokenExchangeService,
+    ILogger<TyresServiceDelegatingHandler> logger) : DelegatingHandler
 {
-    private readonly ITokenExchangeService tokenExchangeService;
-    private readonly ILogger<TyresServiceDelegatingHandler> logger;
-
-    public TyresServiceDelegatingHandler(
-        ITokenExchangeService tokenExchangeService,
-        ILogger<TyresServiceDelegatingHandler> logger)
-    {
-        this.tokenExchangeService = tokenExchangeService;
-        this.logger = logger;
-    }
-
     protected override async Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request, 
         CancellationToken cancellationToken)

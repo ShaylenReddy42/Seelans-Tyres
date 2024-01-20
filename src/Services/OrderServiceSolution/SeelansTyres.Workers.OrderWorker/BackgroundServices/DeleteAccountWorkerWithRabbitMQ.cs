@@ -10,26 +10,14 @@ using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
 namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 
-public class DeleteAccountWorkerWithRabbitMQ : BackgroundService
+public class DeleteAccountWorkerWithRabbitMQ(
+    ILogger<DeleteAccountWorkerWithRabbitMQ> logger,
+    IConfiguration configuration,
+    IServiceScopeFactory serviceScopeFactory,
+    ITokenValidationService tokenValidationService) : BackgroundService
 {
-    private readonly ILogger<DeleteAccountWorkerWithRabbitMQ> logger;
-    private readonly IConfiguration configuration;
-    private readonly IServiceScopeFactory serviceScopeFactory;
-    private readonly ITokenValidationService tokenValidationService;
     private IModel? channel;
     private EventingBasicConsumer? consumer;
-
-    public DeleteAccountWorkerWithRabbitMQ(
-        ILogger<DeleteAccountWorkerWithRabbitMQ> logger,
-        IConfiguration configuration,
-        IServiceScopeFactory serviceScopeFactory,
-        ITokenValidationService tokenValidationService)
-    {
-        this.logger = logger;
-        this.configuration = configuration;
-        this.serviceScopeFactory = serviceScopeFactory;
-        this.tokenValidationService = tokenValidationService;
-    }
 
     private void ConfigureConsumer()
     {

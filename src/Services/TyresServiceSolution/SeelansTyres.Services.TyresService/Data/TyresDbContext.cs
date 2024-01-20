@@ -3,11 +3,9 @@ using SeelansTyres.Services.TyresService.Data.Entities; // Brand, Tyre
 
 namespace SeelansTyres.Services.TyresService.Data;
 
-public class TyresDbContext : DbContext
+public class TyresDbContext(DbContextOptions<TyresDbContext> options) : DbContext(options)
 {
-	public TyresDbContext(DbContextOptions<TyresDbContext> options) : base(options) { }
-
-	public DbSet<Tyre> Tyres => Set<Tyre>();
+    public DbSet<Tyre> Tyres => Set<Tyre>();
 	public DbSet<Brand> Brands => Set<Brand>();
 
     // Persist sample data to database on creation

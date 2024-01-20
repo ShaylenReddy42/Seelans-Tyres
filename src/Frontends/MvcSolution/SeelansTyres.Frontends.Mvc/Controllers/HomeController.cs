@@ -3,30 +3,21 @@ using SeelansTyres.Frontends.Mvc.Models;      // ErrorViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
-public class HomeController : Controller
+public class HomeController(
+    ILogger<HomeController> logger,
+    ITyresServiceClient tyresServiceClient) : Controller
 {
-    private readonly ILogger<HomeController> logger;
-    private readonly ITyresServiceClient tyresServiceClient;
-
-    public HomeController(
-        ILogger<HomeController> logger,
-        ITyresServiceClient tyresServiceClient)
-    {
-        this.logger = logger;
-        this.tyresServiceClient = tyresServiceClient;
-    }
-
     public IActionResult Index()
     {
-        List<string> brands = new()
-        {
+        List<string> brands =
+        [
             "bfgoodrich",
             "continental",
             "goodyear",
             "hankook",
             "michelin",
             "pirelli"
-        };
+        ];
 
         return View(brands);
     }

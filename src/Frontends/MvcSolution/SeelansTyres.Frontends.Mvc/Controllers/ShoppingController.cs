@@ -8,37 +8,21 @@ using SeelansTyres.Frontends.Mvc.ViewModels;  // CartViewModel
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
-public class ShoppingController : Controller
+public class ShoppingController(
+    ILogger<ShoppingController> logger,
+    IAddressServiceClient addressServiceClient,
+    ICartService cartService,
+    ICustomerServiceClient customerServiceClient,
+    IOrderServiceClient orderServiceClient,
+    SendReceiptChannel sendReceiptChannel) : Controller
 {
-    private readonly ILogger<ShoppingController> logger;
-    private readonly IAddressServiceClient addressServiceClient;
-    private readonly ICartService cartService;
-    private readonly ICustomerServiceClient customerServiceClient;
-    private readonly IOrderServiceClient orderServiceClient;
-    private readonly SendReceiptChannel sendReceiptChannel;
     private readonly Stopwatch stopwatch = new();
 
-    public ShoppingController(
-        ILogger<ShoppingController> logger,
-        IAddressServiceClient addressServiceClient,
-        ICartService cartService,
-        ICustomerServiceClient customerServiceClient,
-        IOrderServiceClient orderServiceClient,
-        SendReceiptChannel sendReceiptChannel)
-    {
-        this.logger = logger;
-        this.addressServiceClient = addressServiceClient;
-        this.cartService = cartService;
-        this.customerServiceClient = customerServiceClient;
-        this.orderServiceClient = orderServiceClient;
-        this.sendReceiptChannel = sendReceiptChannel;
-    }
-    
     public async Task<IActionResult> Cart()
     {
         stopwatch.Start();
 
-        List<CartItemModel>? cartItems = new();
+        List<CartItemModel>? cartItems = [];
 
         try
         {

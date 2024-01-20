@@ -9,25 +9,12 @@ using static SeelansTyres.Libraries.Shared.Abstractions.Messaging.AzureServiceBu
 
 namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 
-public class DeleteAccountWorkerWithAzureServiceBus : BackgroundService
+public class DeleteAccountWorkerWithAzureServiceBus(
+    ILogger<DeleteAccountWorkerWithAzureServiceBus> logger,
+    IConfiguration configuration,
+    IServiceScopeFactory serviceScopeFactory,
+    ITokenValidationService tokenValidationService) : BackgroundService
 {
-    private readonly ILogger<DeleteAccountWorkerWithAzureServiceBus> logger;
-    private readonly IConfiguration configuration;
-    private readonly IServiceScopeFactory serviceScopeFactory;
-    private readonly ITokenValidationService tokenValidationService;
-
-    public DeleteAccountWorkerWithAzureServiceBus(
-        ILogger<DeleteAccountWorkerWithAzureServiceBus> logger,
-        IConfiguration configuration,
-        IServiceScopeFactory serviceScopeFactory,
-        ITokenValidationService tokenValidationService)
-    {
-        this.logger = logger;
-        this.configuration = configuration;
-        this.serviceScopeFactory = serviceScopeFactory;
-        this.tokenValidationService = tokenValidationService;
-    }
-    
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         ConfigureCommonAzureServiceBusProcessor(configuration, logger, "DeleteAccount", out ServiceBusProcessor serviceBusProcessor);

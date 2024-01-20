@@ -5,19 +5,10 @@ namespace SeelansTyres.Frontends.Mvc.Components;
 /// <summary>
 /// Provides the number of items in the cart for the user
 /// </summary>
-public class ShoppingCartSummary : ViewComponent
+public class ShoppingCartSummary(
+    ILogger<ShoppingCartSummary> logger,
+    ICartService cartService) : ViewComponent
 {
-    private readonly ILogger<ShoppingCartSummary> logger;
-    private readonly ICartService cartService;
-
-    public ShoppingCartSummary(
-        ILogger<ShoppingCartSummary> logger,
-        ICartService cartService)
-    {
-        this.logger = logger;
-        this.cartService = cartService;
-    }
-
     public IViewComponentResult Invoke()
     {
         logger.LogInformation("ViewComponent => Retrieving cart to extract the number of items in it");

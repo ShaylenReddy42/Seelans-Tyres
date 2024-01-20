@@ -125,7 +125,7 @@ resource addressService 'Microsoft.Web/sites@2022-03-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|7.0'
+      linuxFxVersion: 'DOTNETCORE|8.0'
     }
   }
   tags: {
@@ -177,7 +177,7 @@ resource orderService 'Microsoft.Web/sites@2022-03-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|7.0'
+      linuxFxVersion: 'DOTNETCORE|8.0'
     }
   }
   tags: {
@@ -233,7 +233,7 @@ resource tyresService 'Microsoft.Web/sites@2022-03-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|7.0'
+      linuxFxVersion: 'DOTNETCORE|8.0'
     }
   }
   tags: {

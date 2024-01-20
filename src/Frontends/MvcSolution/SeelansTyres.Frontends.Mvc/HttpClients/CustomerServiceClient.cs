@@ -4,28 +4,14 @@ using SeelansTyres.Frontends.Mvc.Services;   // ICacheService
 
 namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class CustomerServiceClient : ICustomerServiceClient
+public class CustomerServiceClient(
+    HttpClient client,
+    IHttpContextAccessor httpContextAccessor,
+    IConfiguration configuration,
+    ICacheService cacheService,
+    ILogger<CustomerServiceClient> logger) : ICustomerServiceClient
 {
-    private readonly IHttpContextAccessor httpContextAccessor;
-    private readonly HttpClient client;
-    private readonly IConfiguration configuration;
-    private readonly ICacheService cacheService;
-    private readonly ILogger<CustomerServiceClient> logger;
     private readonly Stopwatch stopwatch = new();
-
-    public CustomerServiceClient(
-        HttpClient client,
-        IHttpContextAccessor httpContextAccessor,
-        IConfiguration configuration,
-        ICacheService cacheService,
-        ILogger<CustomerServiceClient> logger)
-    {
-        this.httpContextAccessor = httpContextAccessor;
-        this.client = client;
-        this.configuration = configuration;
-        this.cacheService = cacheService;
-        this.logger = logger;
-    }
 
     public async Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
     {
@@ -33,7 +19,7 @@ public class CustomerServiceClient : ICustomerServiceClient
 
         CustomerModel? customer = null;
         bool succeeded = default;
-        List<string> errors = new();
+        List<string> errors = [];
 
         try
         {

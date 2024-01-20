@@ -3,19 +3,10 @@ using Microsoft.Extensions.Primitives;    // StringValues
 
 namespace SeelansTyres.Services.OrderService.Authorization;
 
-public class MustSatisfyOrderRetrievalRulesHandler : AuthorizationHandler<MustSatisfyOrderRetrievalRulesRequirement>
+public class MustSatisfyOrderRetrievalRulesHandler(
+    IHttpContextAccessor httpContextAccessor,
+    ILogger<MustSatisfyOrderRetrievalRulesHandler> logger) : AuthorizationHandler<MustSatisfyOrderRetrievalRulesRequirement>
 {
-    private readonly IHttpContextAccessor httpContextAccessor;
-    private readonly ILogger<MustSatisfyOrderRetrievalRulesHandler> logger;
-
-    public MustSatisfyOrderRetrievalRulesHandler(
-        IHttpContextAccessor httpContextAccessor,
-        ILogger<MustSatisfyOrderRetrievalRulesHandler> logger)
-    {
-        this.httpContextAccessor = httpContextAccessor;
-        this.logger = logger;
-    }
-
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context, 
         MustSatisfyOrderRetrievalRulesRequirement requirement)

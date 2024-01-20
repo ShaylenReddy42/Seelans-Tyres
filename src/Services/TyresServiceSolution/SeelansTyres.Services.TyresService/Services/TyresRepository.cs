@@ -5,19 +5,11 @@ using System.Diagnostics;                               // Stopwatch
 
 namespace SeelansTyres.Services.TyresService.Services;
 
-public class TyresRepository : ITyresRepository
+public class TyresRepository(
+    TyresDbContext context,
+    ILogger<TyresRepository> logger) : ITyresRepository
 {
-    private readonly TyresDbContext context;
-    private readonly ILogger<TyresRepository> logger;
     private readonly Stopwatch stopwatch = new();
-
-    public TyresRepository(
-        TyresDbContext context, 
-        ILogger<TyresRepository> logger)
-    {
-        this.context = context;
-        this.logger = logger;
-    }
 
     public async Task<IEnumerable<Brand>> RetrieveAllBrandsAsync()
     {

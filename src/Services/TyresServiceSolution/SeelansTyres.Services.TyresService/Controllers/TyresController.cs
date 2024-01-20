@@ -17,31 +17,15 @@ namespace SeelansTyres.Services.TyresService.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
 [Consumes(Application.Json)]
 [Produces(Application.Json)]
-public class TyresController : ControllerBase
+public class TyresController(
+    ILogger<TyresController> logger,
+    ITyresRepository tyresRepository,
+    IMapper mapper,
+    IConfiguration configuration,
+    IWebHostEnvironment environment,
+    PublishUpdateChannel publishUpdateChannel) : ControllerBase
 {
-    private readonly ILogger<TyresController> logger;
-    private readonly ITyresRepository tyresRepository;
-    private readonly IMapper mapper;
-    private readonly IConfiguration configuration;
-    private readonly IWebHostEnvironment environment;
-    private readonly PublishUpdateChannel publishUpdateChannel;
     private readonly Stopwatch stopwatch = new();
-
-    public TyresController(
-        ILogger<TyresController> logger,
-        ITyresRepository tyresRepository,
-        IMapper mapper,
-        IConfiguration configuration,
-        IWebHostEnvironment environment,
-        PublishUpdateChannel publishUpdateChannel)
-    {
-        this.logger = logger;
-        this.tyresRepository = tyresRepository;
-        this.mapper = mapper;
-        this.configuration = configuration;
-        this.environment = environment;
-        this.publishUpdateChannel = publishUpdateChannel;
-    }
 
     /// <summary>
     /// Create a new tyre in the catalog

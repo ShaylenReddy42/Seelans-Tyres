@@ -12,21 +12,11 @@ namespace SeelansTyres.Services.AddressService.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "MustBeARegularCustomer")]
 [Consumes(Application.Json)]
 [Produces(Application.Json)]
-public class AddressesController : ControllerBase
+public class AddressesController(
+    ILogger<AddressesController> logger,
+    IAddressRepository addressRepository,
+    IMapper mapper) : ControllerBase
 {
-    private readonly ILogger<AddressesController> logger;
-    private readonly IAddressRepository addressRepository;
-    private readonly IMapper mapper;
-
-    public AddressesController(
-        ILogger<AddressesController> logger,
-        IAddressRepository addressRepository,
-        IMapper mapper)
-    {
-        this.logger = logger;
-        this.addressRepository = addressRepository;
-        this.mapper = mapper;
-    }
 
     /// <summary>
     /// Adds a new address to the customer's address book

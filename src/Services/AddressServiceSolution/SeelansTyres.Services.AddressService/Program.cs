@@ -57,22 +57,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "AddressService";
-        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+        configure.TokenValidationParameters.ValidTypes = [ "at+jwt" ];
         configure.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddTransient<IAuthorizationHandler, CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler>();
 
-builder.Services.AddAuthorization(configure =>
-{
-    configure.AddPolicy("MustBeARegularCustomer", policy =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("MustBeARegularCustomer", policy =>
     {
         policy.RequireAuthenticatedUser();
         policy.RequireAssertion(context => !context.User.IsInRole("Administrator"));
         policy.AddRequirements(
             new CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement("customerId"));
     });
-});
 
 builder.Services.AddHttpContextAccessor();
 

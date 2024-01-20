@@ -58,20 +58,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "OrderService";
-        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+        configure.TokenValidationParameters.ValidTypes = [ "at+jwt" ];
         configure.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddTransient<IAuthorizationHandler, MustSatisfyOrderRetrievalRulesHandler>();
 
-builder.Services.AddAuthorization(configure =>
-{
-    configure.AddPolicy("MustSatisfyOrderRetrievalRules", policy =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("MustSatisfyOrderRetrievalRules", policy =>
     {
         policy.RequireAuthenticatedUser();
         policy.AddRequirements(new MustSatisfyOrderRetrievalRulesRequirement());
     });
-});
 
 builder.Services.AddHttpContextAccessor();
 

@@ -2,20 +2,12 @@
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
-public class MailService : IMailService
+public class MailService(
+    ILogger<MailService> logger,
+    IFluentEmailFactory fluentEmailFactory) : IMailService
 {
-    private readonly ILogger<MailService> logger;
-    private readonly IFluentEmail email;
     private readonly Stopwatch stopwatch = new();
 
-    public MailService(
-        ILogger<MailService> logger,
-        IFluentEmail email)
-    {
-        this.logger = logger;
-        this.email = email;
-    }
-    
     public async Task SendReceiptAsync(OrderModel order)
     {
         logger.LogInformation(
@@ -25,7 +17,9 @@ public class MailService : IMailService
         stopwatch.Start();
         try
         {
-            _ = await email
+            var email = fluentEmailFactory.Create();
+            
+            await email
                 .To(order.Email, $"{order.FirstName} {order.LastName}")
                 .Subject($"Your Seelan's Tyres Order #{order.Id}")
                 .UsingTemplateFromEmbedded(
@@ -60,7 +54,9 @@ public class MailService : IMailService
         stopwatch.Start();
         try
         {
-            _ = await email
+            var email = fluentEmailFactory.Create();
+            
+            await email
                 .To(customerEmail, $"{firstName} {lastName}")
                 .Subject("Seelan's Tyres: Your Reset Password Token")
                 .UsingTemplateFromEmbedded(

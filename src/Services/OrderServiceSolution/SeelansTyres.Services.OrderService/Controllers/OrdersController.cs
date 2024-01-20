@@ -13,21 +13,11 @@ namespace SeelansTyres.Services.OrderService.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Consumes(Application.Json)]
 [Produces(Application.Json)]
-public class OrdersController : ControllerBase
+public class OrdersController(
+    ILogger<OrdersController> logger,
+    IOrderRepository orderRepository,
+    IMapper mapper) : ControllerBase
 {
-    private readonly ILogger<OrdersController> logger;
-    private readonly IOrderRepository orderRepository;
-    private readonly IMapper mapper;
-
-    public OrdersController(
-        ILogger<OrdersController> logger,
-        IOrderRepository orderRepository,
-        IMapper mapper)
-    {
-        this.logger = logger;
-        this.orderRepository = orderRepository;
-        this.mapper = mapper;
-    }
 
     /// <summary>
     /// Creates an order for a particular customer

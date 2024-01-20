@@ -8,11 +8,9 @@ namespace SeelansTyres.Frontends.Mvc.Validation;
 /// <remarks>
 /// Usage: The file size of an IFormFile [IFormFile.Length] is extracted into its own property and is then validated
 /// </remarks>
-public class FileSizeLimitAttribute : ValidationAttribute
+public class FileSizeLimitAttribute(int limitInMB) : ValidationAttribute
 {
-    public int LimitInMB { get; }
-    
-    public FileSizeLimitAttribute(int limitInMB) => LimitInMB = limitInMB;
+    public int LimitInMB { get; } = limitInMB;
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {

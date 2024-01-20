@@ -8,14 +8,9 @@ using System.Net;                            // HttpStatusCode
 
 namespace SeelansTyres.FunctionApps.SystemDegradedToggler;
 
-public class TurnItOn
+public class TurnItOn(ILoggerFactory loggerFactory)
 {
-    private readonly ILogger logger;
-    
-    public TurnItOn(ILoggerFactory loggerFactory)
-    {
-        logger = loggerFactory.CreateLogger<TurnItOn>();
-    }
+    private readonly ILogger logger = loggerFactory.CreateLogger<TurnItOn>();
 
     [Function("TurnItOn")]
     public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Admin, "post")] HttpRequestData request)

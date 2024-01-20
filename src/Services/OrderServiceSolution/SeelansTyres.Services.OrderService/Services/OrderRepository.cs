@@ -5,19 +5,11 @@ using System.Diagnostics;                   // Stopwatch
 
 namespace SeelansTyres.Services.OrderService.Services;
 
-public class OrderRepository : IOrderRepository
+public class OrderRepository(
+    OrderDbContext context,
+    ILogger<OrderRepository> logger) : IOrderRepository
 {
-    private readonly OrderDbContext context;
-    private readonly ILogger<OrderRepository> logger;
     private readonly Stopwatch stopwatch = new();
-
-    public OrderRepository(
-        OrderDbContext context,
-        ILogger<OrderRepository> logger)
-    {
-        this.context = context;
-        this.logger = logger;
-    }
 
     public async Task CreateAsync(Order order)
     {

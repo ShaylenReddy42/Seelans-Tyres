@@ -3,19 +3,10 @@
 /// <summary>
 /// Provides a local implementation for the image service that uploads images to wwwroot/images/uploaded
 /// </summary>
-public class LocalImageService : IImageService
+public class LocalImageService(
+    IWebHostEnvironment environment,
+    ILogger<LocalImageService> logger) : IImageService
 {
-    private readonly IWebHostEnvironment environment;
-    private readonly ILogger<LocalImageService> logger;
-
-    public LocalImageService(
-        IWebHostEnvironment environment,
-        ILogger<LocalImageService> logger)
-    {
-        this.environment = environment;
-        this.logger = logger;
-    }
-
     public async Task<string> UploadAsync(IFormFile? image, string defaultImage)
     {
         if (image is null)

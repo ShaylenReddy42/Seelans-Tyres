@@ -1,18 +1,9 @@
 ﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class AddressServiceClient : IAddressServiceClient
+public class AddressServiceClient(
+    HttpClient client,
+    ILogger<AddressServiceClient> logger) : IAddressServiceClient
 {
-    private readonly HttpClient client;
-    private readonly ILogger<AddressServiceClient> logger;
-
-    public AddressServiceClient(
-        HttpClient client,
-        ILogger<AddressServiceClient> logger)
-    {
-        this.client = client;
-        this.logger = logger;
-    }
-
     public async Task<bool> CreateAsync(AddressModel address, Guid customerId)
     {
         logger.LogInformation(

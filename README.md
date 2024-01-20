@@ -279,7 +279,7 @@ The solution now comprises of 10 runnable projects with 18 projects in total
 ## Required local setup to build and run
 
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.8.5 or later
-* .NET SDK [6.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [7.0.405](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* .NET SDK [6.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [8.0.101](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [CMake](https://cmake.org/download/) 3.21.4 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16#download-ssms)
@@ -287,36 +287,6 @@ The solution now comprises of 10 runnable projects with 18 projects in total
 * [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.77.0 or later [For the hosts file editor and environment variables utility]
 
 ## Build instructions
-
-* NOTE: If you use `build-with-docker.cmd`, I recommend you pull these images beforehand:
-
-``` bat
-
-docker pull elasticsearch:7.17.16
-docker pull kibana:7.17.16
-docker pull nginx:1-bullseye
-docker pull rabbitmq:3-management
-docker pull redis:latest
-
-docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
-docker pull mcr.microsoft.com/dotnet/sdk:6.0
-
-docker pull mcr.microsoft.com/dotnet/aspnet:7.0-alpine
-docker pull mcr.microsoft.com/dotnet/sdk:7.0
-
-docker pull mcr.microsoft.com/mssql/server:2022-latest
-
-```
-
-* If you use `build-with-services.cmd`, pull only these images beforehand:
-
-``` bat
-
-docker pull elasticsearch:7.17.16
-docker pull kibana:7.17.16
-docker pull rabbitmq:3-management
-
-```
 
 * Ensure to set environment variables listed in the `RequiredEnvironmentVariables.txt` file
   * Press <kbd>🪟</kbd> and search for `Edit environment variables for your account`
@@ -333,6 +303,7 @@ docker pull rabbitmq:3-management
       * `01-build-images.cmd`
       * `02-deploy.cmd`
       * `03-delete.cmd`
+* **NOTE**: For Docker builds, run the `pull-required-docker-images.cmd` script beforehand
 
 * Once you run either `build.cmd` or `build-with-services.cmd`, CMake will generate `run-all.cmd`
 * Thereafter, run `run-all.cmd` which will start all applications minimized and launch the site, simulating orchestration

@@ -10,28 +10,14 @@ using System.Security.Cryptography;                      // RandomNumberGenerato
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
-public class AccountController : Controller
+public class AccountController(
+    ILogger<AccountController> logger,
+    IAddressServiceClient addressServiceClient,
+    ICustomerServiceClient customerServiceClient,
+    IOrderServiceClient orderServiceClient,
+    IMailService mailService) : Controller
 {
-    private readonly ILogger<AccountController> logger;
-    private readonly IAddressServiceClient addressServiceClient;
-    private readonly ICustomerServiceClient customerServiceClient;
-    private readonly IOrderServiceClient orderServiceClient;
-    private readonly IMailService mailService;
     private readonly Stopwatch stopwatch = new();
-
-    public AccountController(
-        ILogger<AccountController> logger,
-        IAddressServiceClient addressServiceClient,
-        ICustomerServiceClient customerServiceClient,
-        IOrderServiceClient orderServiceClient,
-        IMailService mailService)
-    {
-        this.logger = logger;
-        this.addressServiceClient = addressServiceClient;
-        this.customerServiceClient = customerServiceClient;
-        this.orderServiceClient = orderServiceClient;
-        this.mailService = mailService;
-    }
 
     [Authorize]
     public async Task<IActionResult> Index()

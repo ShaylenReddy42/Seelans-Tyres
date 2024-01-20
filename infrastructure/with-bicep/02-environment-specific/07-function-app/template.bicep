@@ -83,6 +83,10 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
           value: 'dotnet-isolated'
         }
         {
+          name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
+          value: '1'
+        }
+        {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: applicationInsights.properties.InstrumentationKey
         }
@@ -104,7 +108,7 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
       ]
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNET-ISOLATED|7.0'
+      linuxFxVersion: 'DOTNET-ISOLATED|8.0'
     }
   }
   tags: {

@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         configure.Authority = builder.Configuration["IdentityServer"];
         configure.Audience = "SeelansTyresMvcBff";
-        configure.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+        configure.TokenValidationParameters.ValidTypes = [ "at+jwt" ];
         configure.RequireHttpsMetadata = false;
     });
 

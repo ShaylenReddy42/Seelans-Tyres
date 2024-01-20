@@ -1,18 +1,9 @@
 ﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class TyresServiceClient : ITyresServiceClient
+public class TyresServiceClient(
+    HttpClient client,
+    ILogger<TyresServiceClient> logger) : ITyresServiceClient
 {
-    private readonly HttpClient client;
-    private readonly ILogger<TyresServiceClient> logger;
-
-    public TyresServiceClient(
-        HttpClient client,
-        ILogger<TyresServiceClient> logger)
-    {
-        this.client = client;
-        this.logger = logger;
-    }
-
     public async Task<IEnumerable<BrandModel>> RetrieveAllBrandsAsync()
     {
         logger.LogInformation("Service => Attempting to retrieve all brands");

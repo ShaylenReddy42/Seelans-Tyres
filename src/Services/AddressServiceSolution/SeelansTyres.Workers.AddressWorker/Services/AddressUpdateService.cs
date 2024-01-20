@@ -5,20 +5,12 @@ using System.Diagnostics;                                   // Stopwatch
 
 namespace SeelansTyres.Workers.AddressWorker.Services;
 
-public class AddressUpdateService : IAddressUpdateService
+public class AddressUpdateService(
+    ILogger<AddressUpdateService> logger,
+    AddressDbContext context) : IAddressUpdateService
 {
-    private readonly ILogger<AddressUpdateService> logger;
-    private readonly AddressDbContext context;
     private readonly Stopwatch stopwatch = new();
 
-    public AddressUpdateService(
-        ILogger<AddressUpdateService> logger,
-        AddressDbContext context)
-    {
-        this.logger = logger;
-        this.context = context;
-    }
-    
     public async Task DeleteAsync(BaseMessage message)
     {
         logger.LogInformation(

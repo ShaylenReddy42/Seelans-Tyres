@@ -2,22 +2,14 @@
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
-public class CartService : ICartService
+public class CartService(
+    ILogger<CartService> logger,
+    IHttpContextAccessor httpContextAccessor,
+    ICacheService cacheService) : ICartService
 {
-    private readonly ILogger<CartService> logger;
-    private readonly string cartId;
-    private readonly ICacheService cacheService;
+    private readonly string cartId = httpContextAccessor.HttpContext?.Session.GetString("CartId")
+                                  ?? throw new InvalidOperationException("The cartId cannot be null");
 
-    public CartService(
-        ILogger<CartService> logger,
-        IHttpContextAccessor httpContextAccessor,
-        ICacheService cacheService)
-    {
-        this.logger = logger;
-        cartId = httpContextAccessor.HttpContext!.Session.GetString("CartId")!;
-        this.cacheService = cacheService;
-    }
-    
     public async Task CreateItemAsync(CartItemModel newItem)
     {
         logger.LogInformation(
@@ -60,7 +52,7 @@ public class CartService : ICartService
                 "Cart {cartId} doesn't exist in the cache. Adding it",
                 cartId);
             
-            cart = new List<CartItemModel>();
+            cart = [];
             await UpdateAsync(cart);
         }
 

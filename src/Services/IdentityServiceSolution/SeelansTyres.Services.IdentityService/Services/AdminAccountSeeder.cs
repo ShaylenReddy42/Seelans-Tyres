@@ -71,10 +71,10 @@ public class AdminAccountSeeder
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, "Admin User"),
-                new Claim(JwtRegisteredClaimNames.GivenName, "Admin"),
-                new Claim(JwtRegisteredClaimNames.FamilyName, "User"),
-                new Claim(ClaimTypes.Role, "Administrator")
+                new(ClaimTypes.Name, "Admin User"),
+                new(JwtRegisteredClaimNames.GivenName, "Admin"),
+                new(JwtRegisteredClaimNames.FamilyName, "User"),
+                new(ClaimTypes.Role, "Administrator")
             };
 
             await userManager.CreateAsync(admin, configuration["AdminCredentials:Password"]);

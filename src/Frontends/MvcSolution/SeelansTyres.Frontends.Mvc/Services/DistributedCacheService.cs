@@ -6,19 +6,10 @@ namespace SeelansTyres.Frontends.Mvc.Services;
 /// <summary>
 /// Provides the Redis implementation of the cache service
 /// </summary>
-public class DistributedCacheService : ICacheService
+public class DistributedCacheService(
+    ILogger<DistributedCacheService> logger,
+    IDistributedCache cache) : ICacheService
 {
-    private readonly ILogger<DistributedCacheService> logger;
-    private readonly IDistributedCache cache;
-
-    public DistributedCacheService(
-        ILogger<DistributedCacheService> logger,
-        IDistributedCache cache)
-    {
-        this.logger = logger;
-        this.cache = cache;
-    }
-
     public async Task<T?> RetrieveAsync<T>(string cacheKey)
     {
         logger.LogInformation(

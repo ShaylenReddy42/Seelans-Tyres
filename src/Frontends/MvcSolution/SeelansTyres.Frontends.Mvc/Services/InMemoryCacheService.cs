@@ -6,19 +6,10 @@ namespace SeelansTyres.Frontends.Mvc.Services;
 /// <summary>
 /// Provides an in-memory implementation of the cache service
 /// </summary>
-public class InMemoryCacheService : ICacheService
+public class InMemoryCacheService(
+    ILogger<InMemoryCacheService> logger,
+    IMemoryCache cache) : ICacheService
 {
-    private readonly ILogger<InMemoryCacheService> logger;
-    private readonly IMemoryCache cache;
-
-    public InMemoryCacheService(
-        ILogger<InMemoryCacheService> logger,
-        IMemoryCache cache)
-    {
-        this.logger = logger;
-        this.cache = cache;
-    }
-
     public Task<T?> RetrieveAsync<T>(string cacheKey)
     {
         logger.LogInformation(

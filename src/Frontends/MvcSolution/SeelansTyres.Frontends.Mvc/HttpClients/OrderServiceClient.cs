@@ -1,18 +1,9 @@
 ﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
-public class OrderServiceClient : IOrderServiceClient
+public class OrderServiceClient(
+    HttpClient client,
+    ILogger<OrderServiceClient> logger) : IOrderServiceClient
 {
-    private readonly HttpClient client;
-    private readonly ILogger<OrderServiceClient> logger;
-
-    public OrderServiceClient(
-        HttpClient client,
-        ILogger<OrderServiceClient> logger)
-    {
-        this.client = client;
-        this.logger = logger;
-    }
-
     public async Task<OrderModel?> CreateAsync(OrderModel order)
     {
         logger.LogInformation("Service => Attempting to place a new order");

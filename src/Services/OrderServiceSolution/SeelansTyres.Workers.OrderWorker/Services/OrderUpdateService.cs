@@ -6,19 +6,11 @@ using System.Text.Json;                                     // JsonSerializer
 
 namespace SeelansTyres.Workers.OrderWorker.Services;
 
-public class OrderUpdateService : IOrderUpdateService
+public class OrderUpdateService(
+    ILogger<OrderUpdateService> logger,
+    OrderDbContext context) : IOrderUpdateService
 {
-    private readonly ILogger<OrderUpdateService> logger;
-    private readonly OrderDbContext context;
     private readonly Stopwatch stopwatch = new();
-
-    public OrderUpdateService(
-        ILogger<OrderUpdateService> logger,
-        OrderDbContext context)
-    {
-        this.logger = logger;
-        this.context = context;
-    }
 
     public async Task DeleteAccountAsync(BaseMessage message)
     {

@@ -11,22 +11,11 @@ namespace SeelansTyres.Frontends.Mvc.BackgroundServices;
 /// Forms part of the solution to improve performance when placing orders by sending the receipt in the background<br/>
 /// and providing a quicker response to the user
 /// </remarks>
-public class SendReceiptChannelReaderBackgroundService : BackgroundService
+public class SendReceiptChannelReaderBackgroundService(
+    ILogger<SendReceiptChannelReaderBackgroundService> logger,
+    SendReceiptChannel channel,
+    IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
-    private readonly ILogger<SendReceiptChannelReaderBackgroundService> logger;
-    private readonly SendReceiptChannel channel;
-    private readonly IServiceScopeFactory serviceScopeFactory;
-
-    public SendReceiptChannelReaderBackgroundService(
-        ILogger<SendReceiptChannelReaderBackgroundService> logger,
-        SendReceiptChannel channel,
-        IServiceScopeFactory serviceScopeFactory)
-    {
-        this.logger = logger;
-        this.channel = channel;
-        this.serviceScopeFactory = serviceScopeFactory;
-    }
-    
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await foreach (var (order, activityTraceId, activitySpanId) in channel.ReadAllFromChannelAsync())

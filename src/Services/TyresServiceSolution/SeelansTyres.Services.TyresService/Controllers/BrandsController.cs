@@ -10,21 +10,11 @@ namespace SeelansTyres.Services.TyresService.Controllers;
 [ApiController]
 [Consumes(Application.Json)]
 [Produces(Application.Json)]
-public class BrandsController : ControllerBase
+public class BrandsController(
+    ILogger<BrandsController> logger,
+    ITyresRepository tyresRepository,
+    IMapper mapper) : ControllerBase
 {
-    private readonly ILogger<BrandsController> logger;
-    private readonly ITyresRepository tyresRepository;
-    private readonly IMapper mapper;
-
-    public BrandsController(
-        ILogger<BrandsController> logger,
-        ITyresRepository tyresRepository,
-        IMapper mapper)
-    {
-        this.logger = logger;
-        this.tyresRepository = tyresRepository;
-        this.mapper = mapper;
-    }
 
     /// <summary>
     /// Retrieves all the brands

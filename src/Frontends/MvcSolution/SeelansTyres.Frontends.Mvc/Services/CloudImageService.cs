@@ -6,19 +6,10 @@ namespace SeelansTyres.Frontends.Mvc.Services;
 /// <summary>
 /// Provides a cloud implementation of the image service that uploads images to an Azure Storage account
 /// </summary>
-public class CloudImageService : IImageService
+public class CloudImageService(
+    ILogger<CloudImageService> logger,
+    IConfiguration configuration) : IImageService
 {
-    private readonly ILogger<CloudImageService> logger;
-    private readonly IConfiguration configuration;
-
-    public CloudImageService(
-        ILogger<CloudImageService> logger,
-        IConfiguration configuration)
-    {
-        this.logger = logger;
-        this.configuration = configuration;
-    }
-
     public async Task<string> UploadAsync(IFormFile? image, string defaultImage)
     {
         if (image is null)

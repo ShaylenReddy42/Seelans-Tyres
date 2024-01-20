@@ -44,7 +44,7 @@ public static class CryptographyExtensions
 
         encryptedDataModel.AesGcmCipherText = new byte[modelAsJson.Length];
 
-        using var aesGcm = new AesGcm(aesKey);
+        using var aesGcm = new AesGcm(aesKey, 16);
 
         logger.LogInformation("Performing symmetric encryption of the data using AesGcm");
 

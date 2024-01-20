@@ -10,26 +10,14 @@ using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
 namespace SeelansTyres.Workers.OrderWorker.BackgroundServices;
 
-public class UpdateAccountWorkerWithRabbitMQ : BackgroundService
+public class UpdateAccountWorkerWithRabbitMQ(
+    ILogger<UpdateAccountWorkerWithRabbitMQ> logger,
+    IConfiguration configuration,
+    IServiceScopeFactory serviceScopeFactory,
+    ITokenValidationService tokenValidationService) : BackgroundService
 {
-    private readonly ILogger<UpdateAccountWorkerWithRabbitMQ> logger;
-    private readonly IConfiguration configuration;
-    private readonly IServiceScopeFactory serviceScopeFactory;
-    private readonly ITokenValidationService tokenValidationService;
     private IModel? channel;
     private EventingBasicConsumer? consumer;
-
-    public UpdateAccountWorkerWithRabbitMQ(
-        ILogger<UpdateAccountWorkerWithRabbitMQ> logger,
-        IConfiguration configuration,
-        IServiceScopeFactory serviceScopeFactory,
-        ITokenValidationService tokenValidationService)
-    {
-        this.logger = logger;
-        this.configuration = configuration;
-        this.serviceScopeFactory = serviceScopeFactory;
-        this.tokenValidationService = tokenValidationService;
-    }
 
     private void ConfigureConsumer()
     {

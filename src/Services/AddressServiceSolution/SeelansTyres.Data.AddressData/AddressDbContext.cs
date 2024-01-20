@@ -3,9 +3,7 @@ using SeelansTyres.Data.AddressData.Entities; // Address
 
 namespace SeelansTyres.Data.AddressData;
 
-public class AddressDbContext : DbContext
+public class AddressDbContext(DbContextOptions<AddressDbContext> options) : DbContext(options)
 {
-	public AddressDbContext(DbContextOptions<AddressDbContext> options) : base(options) { }
-
-	public DbSet<Address> Addresses => Set<Address>();
+    public DbSet<Address> Addresses => Set<Address>();
 }
