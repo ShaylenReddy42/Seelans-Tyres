@@ -40,7 +40,7 @@ public class CartService(
 
     public async Task<List<CartItemModel>> RetrieveAsync()
     {
-        logger.LogInformation(
+        logger.LogDebug(
             "Service => Attempting to retrieve cart {cartId}",
             cartId);
 
@@ -48,7 +48,7 @@ public class CartService(
 
         if (cart is null)
         {
-            logger.LogInformation(
+            logger.LogWarning(
                 "Cart {cartId} doesn't exist in the cache. Adding it",
                 cartId);
             

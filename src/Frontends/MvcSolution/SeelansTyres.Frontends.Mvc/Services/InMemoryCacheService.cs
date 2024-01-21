@@ -12,7 +12,7 @@ public class InMemoryCacheService(
 {
     public Task<T?> RetrieveAsync<T>(string cacheKey)
     {
-        logger.LogInformation(
+        logger.LogDebug(
             "Cache Service => Attempting to retrieve data using cache key {cacheKey}",
             cacheKey);
         
@@ -20,7 +20,7 @@ public class InMemoryCacheService(
 
         if (data is not null)
         {
-            logger.LogInformation(
+            logger.LogDebug(
                 "The cache does contain data linked to the cache key, deserializing to {modelType}",
                 typeof(T).Name);
 
