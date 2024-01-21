@@ -18,7 +18,7 @@
 
 This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which - compared to this - was very poorly written and insecure
 
-Originally, it was written using PHP. This is written using C# and .NET 6 and 7
+Originally, it was written using PHP. This is written using C# and .NET 6 and 8
 
 It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifications and needed a way to prove my skills with a project
 
