@@ -27,20 +27,12 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Retrieving information for customer {customerId}",
+            "Controller => Retrieving customer details, addresses and orders for customer {customerId}",
             customerId);
 
         var customer = customerServiceClient.RetrieveSingleAsync(customerId);
 
-        logger.LogInformation(
-            "Controller => Retrieving all addresses for customer {customerId}",
-            customerId);
-
         var addresses = addressServiceClient.RetrieveAllAsync(customerId);
-
-        logger.LogInformation(
-            "Controller => Retrieving all orders for customer {customerId}",
-            customerId);
 
         var orders = orderServiceClient.RetrieveAllAsync(customerId: customerId);
 
