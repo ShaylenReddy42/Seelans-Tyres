@@ -5,10 +5,10 @@ using SeelansTyres.Gateways.MvcBff.DelegatingHandlers; // AddressServiceDelegati
 using SeelansTyres.Gateways.MvcBff.Services;           // ITokenExchangeService, TokenExchangeService
 using static System.Net.Mime.MediaTypeNames;           // Application
 using HealthChecks.UI.Client;                          // UIResponseWriter
-using Microsoft.Extensions.Diagnostics.HealthChecks;   // HealthCheckService
 using SeelansTyres.Gateways.MvcBff.Extensions;         // AddDownstreamChecks()
 using SeelansTyres.Libraries.Shared.Extensions;        // AddCommonStartupDelay
 using SeelansTyres.Libraries.Shared.Abstractions;      // All common methods
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;   // HealthCheckOptions
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,52 +58,18 @@ app.HonorForwardedHeaders();
 
 app.UseAuthentication();
 
-await app.UseOcelot(ocelotPipelineConfiguration =>
+await app.UseOcelot();
+
+app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"]!, new HealthCheckOptions
 {
-    // Ocelot thinks the health checks are configured routes, which they aren't
-    // 
-    // Configure Ocelot in a way that matches the health check behavior of all applications
-    // in the architecture by manually retrieving and invoking the health checks via the HealthCheckService
-    // 
-    // Allow the two health check routes 'HealthCheckEndpoint' and 'LivenessCheckEndpoint' from configuration
-    // to be hit by catering for them
-    // 
-    // The regular app.MapHealthChecks() doesn't work with Ocelot and this is the workaround for that issue
-    // 
-    // The solution for this began with a comment on the same issue on Ocelot's repo
-    // https://github.com/ThreeMammals/Ocelot/issues/646#issuecomment-425686026
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+}).ShortCircuit();
 
-    ocelotPipelineConfiguration.PreErrorResponderMiddleware = async (httpContext, next) =>
-    {
-        var requestPath = httpContext.Request.Path.ToString();
-        var healthCheckService = app.Services.GetService<HealthCheckService>();
-
-        var healthCheckEndpoints = new List<string>()
-        {
-            app.Configuration["HealthCheckEndpoint"]!,
-            app.Configuration["LivenessCheckEndpoint"]!,
-        };
-
-        if (!healthCheckEndpoints.Contains(requestPath))
-        {
-            await next.Invoke();
-        }
-        else if (requestPath == app.Configuration["LivenessCheckEndpoint"])
-        {
-            await UIResponseWriter.WriteHealthCheckUIResponse(
-                httpContext, 
-                await healthCheckService!.CheckHealthAsync(
-                    healthCheckRegistration =>  
-                        healthCheckRegistration.Tags.Contains("self")));
-        }
-        else if (requestPath == app.Configuration["HealthCheckEndpoint"])
-        {
-            await UIResponseWriter.WriteHealthCheckUIResponse(
-                httpContext, 
-                await healthCheckService!.CheckHealthAsync());
-        }
-    };
-});
+app.MapHealthChecks(app.Configuration["LivenessCheckEndpoint"]!, new HealthCheckOptions
+{
+    Predicate = healthCheckRegistration => healthCheckRegistration.Tags.Contains("self"),
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+}).ShortCircuit();
 
 app.AddCommonStartupDelay();
 
