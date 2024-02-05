@@ -9,7 +9,7 @@ public class ShoppingCartSummary(
     ILogger<ShoppingCartSummary> logger,
     ICartService cartService) : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    public async Task<IViewComponentResult> InvokeAsync()
     {
         logger.LogDebug("ViewComponent => Retrieving cart to extract the number of items in it");
 
@@ -18,8 +18,7 @@ public class ShoppingCartSummary(
         // This exception is allowed to bubble up, happens when redis is used for caching
         try
         {
-            // awaiting RetrieveAsync breaks the code
-            cartItemCount = cartService.RetrieveAsync().Result.Count;
+            cartItemCount = (await cartService.RetrieveAsync()).Count;
         }
         catch (Exception ex)
         {

@@ -81,7 +81,7 @@
                             <partial name="_LoginPartial" />
                             @if (!User.IsInRole("Administrator"))
                             {
-                                @await Component.InvokeAsync("ShoppingCartSummary")
+                                <vc:shopping-cart-summary />
                             }
                         </ul>
                     </div>
