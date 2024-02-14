@@ -1,0 +1,52 @@
+[
+  {
+    "Name": "All Projects",
+    "Projects": [
+      {
+        "Name": "Frontends\\HealthChecksUISolution\\SeelansTyres.Frontends.HealthChecksUI\\SeelansTyres.Frontends.HealthChecksUI.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Frontends\\MvcSolution\\SeelansTyres.Frontends.Mvc\\SeelansTyres.Frontends.Mvc.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Gateways\\MvcBffSolution\\SeelansTyres.Gateways.MvcBff\\SeelansTyres.Gateways.MvcBff.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Services\\AddressServiceSolution\\SeelansTyres.Services.AddressService\\SeelansTyres.Services.AddressService.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Services\\AddressServiceSolution\\SeelansTyres.Workers.AddressWorker\\SeelansTyres.Workers.AddressWorker.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Services\\IdentityServiceSolution\\SeelansTyres.Services.IdentityService\\SeelansTyres.Services.IdentityService.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Services\\OrderServiceSolution\\SeelansTyres.Services.OrderService\\SeelansTyres.Services.OrderService.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Services\\OrderServiceSolution\\SeelansTyres.Workers.OrderWorker\\SeelansTyres.Workers.OrderWorker.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "Services\\TyresServiceSolution\\SeelansTyres.Services.TyresService\\SeelansTyres.Services.TyresService.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      }
+    ]
+  }
+]

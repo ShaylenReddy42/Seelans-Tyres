@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   elasticsearch:
-    image: elasticsearch:7.17.16
+    image: elasticsearch:7.17.18
     container_name: elasticsearch
     ports:
       - 9201:9200
@@ -21,7 +21,7 @@ services:
       - services-network
 
   kibana:
-    image: kibana:7.17.16
+    image: kibana:7.17.18
     container_name: kibana
     ports:
       - 5602:5601

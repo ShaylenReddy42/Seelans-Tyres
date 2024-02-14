@@ -17,7 +17,7 @@ spec:
         app: kibana
     spec:
       containers:
-        - image: kibana:7.17.16
+        - image: kibana:7.17.18
           name: kibana
           imagePullPolicy: IfNotPresent
           securityContext:
