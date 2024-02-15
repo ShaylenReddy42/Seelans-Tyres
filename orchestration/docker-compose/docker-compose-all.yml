@@ -46,7 +46,7 @@ services:
       - EmailCredentials__Email=${EmailCredentials__Email}
       - EmailCredentials__Password=${EmailCredentials__Password}
       - IdentityServer=${IDENTITYSERVER}
-      - MvcBffUrl=http://${HOST}:5050
+      - MvcBffUrl=http://${HOST}:7050
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -67,10 +67,10 @@ services:
     container_name: 'seelanstyres_gateways_mvcbff'
     image: 'seelanstyres/gateways/mvcbff:${TAG}'
     ports:
-      - 5050:5050
+      - 7050:7050
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://*:5050
+      - ASPNETCORE_URLS=http://*:7050
       - AzureAppConfig__Enabled=${AzureAppConfig__Enabled}
       - AzureAppConfig__ConnectionString=${AzureAppConfig__ConnectionString}
       - AppInsights__Enabled=${AppInsights__Enabled}
@@ -79,7 +79,7 @@ services:
       - envCustomerServiceHost=id-local.seelanstyres.com
       - envOrderServiceHost=${HOST}
       - envTyresServiceHost=${HOST}
-      - envBaseUrl=http://${HOST}:5050
+      - envBaseUrl=http://${HOST}:7050
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}

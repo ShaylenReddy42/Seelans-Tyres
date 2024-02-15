@@ -7,7 +7,7 @@ metadata:
   namespace: default
 data:
   ASPNETCORE_URLS: http://*:5001
-  MvcBffUrl: http://seelanstyres-gateways-mvcbff:5050
+  MvcBffUrl: http://seelanstyres-gateways-mvcbff:7050
   Redis__Enabled: 'true'
 
 ---

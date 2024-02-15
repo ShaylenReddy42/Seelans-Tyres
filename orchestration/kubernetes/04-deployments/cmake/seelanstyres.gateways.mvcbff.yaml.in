@@ -6,12 +6,12 @@ metadata:
   name: seelanstyres-gateways-mvcbff
   namespace: default
 data:
-  ASPNETCORE_URLS: http://*:5050
+  ASPNETCORE_URLS: http://*:7050
   envAddressServiceHost: seelanstyres-services-addressservice
   envCustomerServiceHost: seelanstyres-services-identityservice
   envOrderServiceHost: seelanstyres-services-orderservice
   envTyresServiceHost: seelanstyres-services-tyresservice
-  envBaseUrl: http://seelanstyres-gateways-mvcbff:5050
+  envBaseUrl: http://seelanstyres-gateways-mvcbff:7050
 
 ---
 
@@ -40,7 +40,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 5050
+            - containerPort: 7050
           envFrom:
             - configMapRef:
                 name: configmap-global
@@ -57,21 +57,21 @@ spec:
               memory: 384Mi
           startupProbe:
             tcpSocket:
-              port: 5050
+              port: 7050
             initialDelaySeconds: 25
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           readinessProbe:
             tcpSocket:
-              port: 5050
+              port: 7050
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
             timeoutSeconds: 5
           livenessProbe:
             tcpSocket:
-              port: 5050
+              port: 7050
             initialDelaySeconds: 3
             periodSeconds: 5
             failureThreshold: 3
@@ -90,9 +90,9 @@ metadata:
   namespace: default
 spec:
   ports:
-  - port: 5050
+  - port: 7050
     protocol: TCP
-    targetPort: 5050
+    targetPort: 7050
   selector:
     app: seelanstyres-gateways-mvcbff
   type: ClusterIP
