@@ -18,8 +18,17 @@ set(TAG "0.0.0")
 set(REVISION "0")
 set(COMMIT_ID "unknown")
 set(COMMIT_URL "https://github.com/ShaylenReddy42/Seelans-Tyres")
+set(GIT_BRANCH "unknown")
 
 if(${GIT_FOUND} AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+	execute_process(
+		COMMAND ${GIT_EXECUTABLE} branch --show-current
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_BRANCH
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		ERROR_QUIET
+	)
+
 	execute_process(
 		COMMAND ${GIT_EXECUTABLE} rev-list --all --abbrev-commit --abbrev=7 --max-count=1
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -75,6 +84,7 @@ endif()
 message(STATUS "File Version: ${FILE_VERSION}")
 message(STATUS "Informational Version: ${INFORMATIONAL_VERSION}")
 message(STATUS "Commit Url: ${COMMIT_URL}")
+message(STATUS "Git Branch: ${GIT_BRANCH}")
 
 # Handle option "DOCKER_REGISTRY"
 

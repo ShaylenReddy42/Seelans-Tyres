@@ -30,3 +30,4 @@ using System.Runtime.InteropServices;
 
 // Custom Metadata
 [assembly: AssemblyMetadata("Commit Url", "@COMMIT_URL@")]
+[assembly: AssemblyMetadata("Git Branch", "@GIT_BRANCH@")]
