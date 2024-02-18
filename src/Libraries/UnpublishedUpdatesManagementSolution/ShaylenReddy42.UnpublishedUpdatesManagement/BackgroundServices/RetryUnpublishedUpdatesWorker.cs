@@ -41,21 +41,22 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
             // as a singleton, needing the service scope factory
             using var scope = serviceScopeFactory.CreateScope();
 
-            var unpublishedUpdateRepository = scope.ServiceProvider.GetService<IUnpublishedUpdateRepository>();
+            var unpublishedUpdateRepository = scope.ServiceProvider.GetRequiredService<IUnpublishedUpdateRepository>();
 
-            var unpublishedUpdates = await unpublishedUpdateRepository!.RetrieveAllAsync();
+            var unpublishedUpdates = await unpublishedUpdateRepository.RetrieveAllAsync();
 
             unpublishedUpdates.ForEach(unpublishedUpdate =>
             {
                 unpublishedUpdate.Retries++;
 
-                var message = JsonSerializer.Deserialize<BaseMessage>(Base64UrlEncoder.DecodeBytes(unpublishedUpdate.EncodedUpdate));
+                var message = JsonSerializer.Deserialize<BaseMessage>(Base64UrlEncoder.DecodeBytes(unpublishedUpdate.EncodedUpdate))
+                           ?? throw new InvalidOperationException("message cannot be null");
 
-                message!.StartANewActivity("Retrying to publish update");
+                message.StartANewActivity("Retrying to publish update");
 
                 try
                 {
-                    messagingServicePublisher.PublishMessageAsync(message!, unpublishedUpdate.Destination);
+                    messagingServicePublisher.PublishMessageAsync(message, unpublishedUpdate.Destination);
 
                     logger.LogInformation(
                         "Worker => Unpublished update was published successfully to {destination} after {retries} retries",
@@ -71,7 +72,7 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
 
             await unpublishedUpdateRepository.SaveChangesAsync();
 
-            Thread.Sleep(10 * 60_000); // 10 minutes
+            Thread.Sleep(TimeSpan.FromMinutes(10));
         }
     }
 }
