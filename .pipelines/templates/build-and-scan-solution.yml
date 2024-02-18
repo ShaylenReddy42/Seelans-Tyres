@@ -20,9 +20,9 @@ steps:
       performMultiLevelLookup: true
 
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 8.0.200'
+    displayName: 'Use .NET SDK 8.0.201'
     inputs:
-      version: 8.0.200
+      version: 8.0.201
       performMultiLevelLookup: true
 
   - task: CMake@1
