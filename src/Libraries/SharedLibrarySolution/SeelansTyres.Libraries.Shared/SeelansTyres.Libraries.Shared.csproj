@@ -21,7 +21,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="8.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="8.0.0" />
-    <PackageReference Include="Azure.Core" Version="1.37.0" />
+    <PackageReference Include="Azure.Core" Version="1.38.0" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.3" />
     <PackageReference Include="ConfigurationSubstitutor" Version="1.5.1" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />
