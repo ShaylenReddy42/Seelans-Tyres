@@ -43,7 +43,8 @@ public class TokenValidationService : ITokenValidationService
 
         var issuerSigningKeys = new List<SecurityKey>();
 
-        var jsonWebKeys = discoveryDocument.KeySet!.Keys;
+        var jsonWebKeys = discoveryDocument.KeySet?.Keys
+                       ?? throw new InvalidOperationException("jsonWebKeys cannot be null");
 
         jsonWebKeys.ForEach(jwk =>
         {
@@ -71,7 +72,17 @@ public class TokenValidationService : ITokenValidationService
             ValidTypes = new[] { "at+jwt" },
             LifetimeValidator = (notBefore, expires, securityToken, tokenValidationParameters) =>
             {
-                return expires!.Value.ToUniversalTime() > message.CreationTime.ToUniversalTime();
+                if (expires is null)
+                {
+                    throw new InvalidOperationException("'expires' cannot be null");
+                }
+
+                logger.LogInformation(
+                    "The message's creation time was {LocalMessageCreationTime} in local time and {MessageCreationTimeInUtc} in UTC,\nwith the token's expiration time being {TokenExpirationTimeInUtc} in UTC",
+                    message.CreationTime.ToString("dd MMM yyyy HH:mm:ss.fff zzz"), message.CreationTime.ToUniversalTime().ToString("dd MMM yyyy HH:mm:ss.fff zzz"), 
+                    expires.Value.ToUniversalTime().ToString("dd MMM yyyy HH:mm:ss.fff zzz"));
+                
+                return expires.Value.ToUniversalTime() > message.CreationTime.ToUniversalTime();
             }
         };
 
@@ -79,7 +90,7 @@ public class TokenValidationService : ITokenValidationService
         {
             logger.LogInformation("Attempting to validate the access token");
 
-            _ = new JwtSecurityTokenHandler()
+            new JwtSecurityTokenHandler()
                 .ValidateToken(
                     token: message.AccessToken,
                     validationParameters: tokenValidationParameters,

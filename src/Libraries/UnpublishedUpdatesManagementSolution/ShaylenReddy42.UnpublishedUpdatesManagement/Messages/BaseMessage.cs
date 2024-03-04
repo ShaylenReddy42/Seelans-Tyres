@@ -27,9 +27,9 @@ public class BaseMessage
     public string AccessToken { get; set; } = string.Empty;
 
     /// <summary>
-    /// The time the <see cref="BaseMessage"/> was created
+    /// The time the <see cref="BaseMessage"/> was created with the local time's offset
     /// </summary>
-    public DateTime CreationTime { get; set; } = DateTime.Now;
+    public DateTimeOffset CreationTime { get; set; } = DateTimeOffset.Now;
 
     /// <summary>
     /// An array created from serializing the original update using the <see cref="JsonSerializer.SerializeToUtf8Bytes"/>
