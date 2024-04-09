@@ -32,9 +32,14 @@ public class OrderServiceClient(
 
     public async Task<IEnumerable<OrderModel>> RetrieveAllAsync(Guid? customerId = null, bool notDeliveredOnly = false)
     {
+        var loggerForPlaceholderValue = customerId is not null ? " for customer " : "";
+        var loggerCustomerIdPlaceholderValue = customerId is not null ? customerId.ToString() : "";
+        var loggerExceptDeliveredPlaceholderValue = notDeliveredOnly ? " except delivered ones" : "";
+
+
         logger.LogInformation(
             "Service => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
-            customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
+            loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue);
 
         try
         {
@@ -57,8 +62,7 @@ public class OrderServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
-                "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
-                notDeliveredOnly ? " except delivered ones" : "", orders!.Count());
+                "SUCCEEDED", loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue, orders?.Count() ?? 0);
 
             return orders ?? [];
         }
@@ -67,8 +71,7 @@ public class OrderServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered}",
-                "FAILED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
-                notDeliveredOnly ? " except delivered ones" : "");
+                "FAILED", loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue);
 
             return [];
         }
@@ -117,7 +120,7 @@ public class OrderServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to mark order {orderId} as delivered completed successfully",
-                orderId);
+                "SUCCEEDED", orderId);
 
             return true;
         }
@@ -126,7 +129,7 @@ public class OrderServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to mark order {orderId} as delivered was unsuccessful",
-                "FAILED");
+                "FAILED", orderId);
 
             return false;
         }

@@ -142,7 +142,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to update tyre {tyreId} was unsuccessful",
-                "FAILED");
+                "FAILED", tyreId);
 
             return false;
         }
