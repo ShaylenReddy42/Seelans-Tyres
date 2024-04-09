@@ -21,14 +21,14 @@ public class TyresServiceClient(
 
             return brands!;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
+                "{Announcement}: Attempt to retrieve all brands was unsuccessful",
                 "FAILED");
 
-            return new List<BrandModel>();
+            return [];
         }
     }
 
@@ -38,7 +38,8 @@ public class TyresServiceClient(
 
         try
         {
-            _ = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
+            var response = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{Announcement}: Attempt to add a new tyre completed successfully",
@@ -46,11 +47,11 @@ public class TyresServiceClient(
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
+                "{Announcement}: Attempt to add a new tyre was unsuccessful",
                 "FAILED");
 
             return false;
@@ -74,18 +75,18 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
-                "SUCCEEDED", includingUnavailable, tyres!.Count());
+                "SUCCEEDED", includingUnavailable, tyres?.Count() ?? 0);
 
-            return tyres!;
+            return tyres ?? [];
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to retrieve all tyres{includingUnavailable} was unsuccessful",
+                "FAILED", includingUnavailable);
 
-            return new List<TyreModel>();
+            return [];
         }
     }
 
@@ -106,14 +107,14 @@ public class TyresServiceClient(
                 "{Announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
-            return tyre!;
+            return tyre;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to retrieve tyre {tyreId} was unsuccessful",
+                "FAILED", tyreId);
 
             return null;
         }
@@ -127,7 +128,8 @@ public class TyresServiceClient(
 
         try
         {
-            await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
+            var response = await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{Announcement}: Attempt to update tyre {tyreId} completed successfully",
@@ -135,11 +137,11 @@ public class TyresServiceClient(
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
+                "{Announcement}: Attempt to update tyre {tyreId} was unsuccessful",
                 "FAILED");
 
             return false;
@@ -154,7 +156,8 @@ public class TyresServiceClient(
 
         try
         {
-            await client.DeleteAsync($"api/tyres/{tyreId}");
+            var response = await client.DeleteAsync($"api/tyres/{tyreId}");
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{Announcement}: Attempt to delete tyre {tyreId} completed successfully",
@@ -162,12 +165,12 @@ public class TyresServiceClient(
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to delete tyre {tyreId} was unsuccessful",
+                "FAILED", tyreId);
 
             return false;
         }

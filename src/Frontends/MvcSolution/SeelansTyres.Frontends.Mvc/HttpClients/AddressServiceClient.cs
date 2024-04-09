@@ -12,7 +12,8 @@ public class AddressServiceClient(
 
         try
         {
-            await client.PostAsync($"api/customers/{customerId}/addresses", JsonContent.Create(address));
+            var response = await client.PostAsync($"api/customers/{customerId}/addresses", JsonContent.Create(address));
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{Announcement}: Attempt to add a new address for customer {customerId} completed successfully",
@@ -20,12 +21,12 @@ public class AddressServiceClient(
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
+                "FAILED", customerId);
 
             return false;
         }
@@ -46,16 +47,16 @@ public class AddressServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all addresses for customer {customerId} completed successfully with {addressesCount} address(es)",
-                "SUCCEEDED", customerId, addresses!.Count());
+                "SUCCEEDED", customerId, addresses?.Count() ?? 0);
 
-            return addresses!;
+            return addresses ?? [];
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to retrieve all addresses for customer {customerId} was unsuccessful",
+                "FAILED", customerId);
 
             return [];
         }

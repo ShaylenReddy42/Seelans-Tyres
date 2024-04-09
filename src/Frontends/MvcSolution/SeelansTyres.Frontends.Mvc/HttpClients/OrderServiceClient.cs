@@ -11,6 +11,7 @@ public class OrderServiceClient(
         try
         {
             var response = await client.PostAsync("api/orders", JsonContent.Create(order));
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{Announcement}: Attempt to place a new order completed successfully",
@@ -18,11 +19,11 @@ public class OrderServiceClient(
 
             return await response.Content.ReadFromJsonAsync<OrderModel>();
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
+                "{Announcement}: Attempt to place a new order was unsuccessful",
                 "FAILED");
 
             return null;
@@ -59,16 +60,17 @@ public class OrderServiceClient(
                 "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
                 notDeliveredOnly ? " except delivered ones" : "", orders!.Count());
 
-            return orders!;
+            return orders ?? [];
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered}",
+                "FAILED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
+                notDeliveredOnly ? " except delivered ones" : "");
 
-            return new List<OrderModel>();
+            return [];
         }
     }
 
@@ -89,14 +91,14 @@ public class OrderServiceClient(
                 "{Announcement}: Attempt to retrieve order {orderId} completed successfully",
                 "SUCCEEDED", orderId);
 
-            return order!;
+            return order;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{Announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to retrieve order {orderId} was unsuccessful",
+                "FAILED", orderId);
 
             return null;
         }

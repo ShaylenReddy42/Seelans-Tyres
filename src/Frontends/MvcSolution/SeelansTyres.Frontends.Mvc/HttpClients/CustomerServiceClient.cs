@@ -45,7 +45,7 @@ public class CustomerServiceClient(
                 errors.Add($"Customer with email {registerModel.Email} already exists");
             }
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
@@ -104,7 +104,7 @@ public class CustomerServiceClient(
             await cacheService.SetAsync(customerId.ToString(), customer, 5, null);
         }
 
-        if (customer!.Id == Guid.Empty)
+        if (customer?.Id == Guid.Empty)
         {
             await cacheService.DeleteAsync(customerId.ToString());
         }
