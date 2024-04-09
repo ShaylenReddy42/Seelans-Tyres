@@ -110,19 +110,20 @@ public class OrderServiceClient(
 
         try
         {
-            _ = await client.PutAsync($"api/orders/{orderId}?delivered=true", new StringContent(""));
+            var response = await client.PutAsync($"api/orders/{orderId}?delivered=true", null);
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "Attempt to mark order {orderId} as delivered completed successfully",
+                "{announcement}: Attempt to mark order {orderId} as delivered completed successfully",
                 orderId);
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{announcement}: Attempt to mark order {orderId} as delivered was unsuccessful",
                 "FAILED");
 
             return false;

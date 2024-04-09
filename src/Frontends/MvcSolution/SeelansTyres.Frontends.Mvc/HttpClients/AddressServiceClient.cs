@@ -57,7 +57,7 @@ public class AddressServiceClient(
                 "{announcement}: The API is unavailable",
                 "FAILED");
 
-            return new List<AddressModel>();
+            return [];
         }
     }
 
@@ -69,7 +69,8 @@ public class AddressServiceClient(
 
         try
         {
-            await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", new StringContent(""));
+            var response = await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", null);
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{announcement}: Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
@@ -77,12 +78,12 @@ public class AddressServiceClient(
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
-                "FAILED");
+                "{Announcement}: Attempt to mark address {addressId} as preferred for customer {customerId} was unsuccessful",
+                "FAILED", addressId, customerId);
 
             return false;
         }
@@ -96,7 +97,8 @@ public class AddressServiceClient(
 
         try
         {
-            await client.DeleteAsync($"api/customers/{customerId}/addresses/{addressId}");
+            var response = await client.DeleteAsync($"api/customers/{customerId}/addresses/{addressId}");
+            response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
                 "{announcement}: Attempt to delete address {addressId} for customer {customerId} completed successfully",
@@ -104,12 +106,12 @@ public class AddressServiceClient(
 
             return true;
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
-                "FAILED");
+                "{announcement}: Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
+                "FAILED", addressId, customerId);
 
             return false;
         }
