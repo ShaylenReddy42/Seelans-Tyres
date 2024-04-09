@@ -33,7 +33,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to create a new customer account was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to create a new customer account was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds);
 
 			throw ex.GetBaseException();
@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to create a new customer account completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to create a new customer account completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds);
 
 		return customer;
@@ -66,7 +66,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by Id {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by Id {customerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -74,7 +74,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by Id {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by Id {customerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
 
 		return customer;
@@ -98,7 +98,7 @@ public class CustomerService : ICustomerService
 			stopwatch.Stop();
 
 			logger.LogError(
-				"{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by email {customerEmail} was unsuccessful",
+				"{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by email {customerEmail} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
 			throw ex.GetBaseException();
@@ -106,7 +106,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by email {customerEmail} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by email {customerEmail} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
 		return customer;
@@ -135,7 +135,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to update account for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update account for customer {customerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -143,7 +143,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to update account for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update account for customer {customerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
     }
 
@@ -164,7 +164,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete account for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete account for customer {customerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customer.Id);
 
 			throw ex.GetBaseException();
@@ -172,7 +172,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete account for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete account for customer {customerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customer.Id);
 	}
 
@@ -195,7 +195,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Password verification process for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Password verification process for customer {customerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -203,7 +203,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-			"{announcement} ({stopwatchElapsedTime}ms): Password verification process for customer {customerId} completed successfully",
+			"{Announcement} ({stopwatchElapsedTime}ms): Password verification process for customer {customerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
 
 		return passwordMatches;
@@ -229,7 +229,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Password reset operation for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Password reset operation for customer {customerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -237,7 +237,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Password reset operation for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Password reset operation for customer {customerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
 	}
 }

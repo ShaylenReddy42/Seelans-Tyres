@@ -35,7 +35,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new unpublished update was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new unpublished update was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -43,7 +43,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new unpublished update completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new unpublished update completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 
@@ -64,7 +64,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -72,7 +72,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates completed successfully with {unpublishedUpdatesCount} updates",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates completed successfully with {unpublishedUpdatesCount} updates",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, unpublishedUpdates.Count);
 
         return unpublishedUpdates;

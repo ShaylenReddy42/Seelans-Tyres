@@ -96,7 +96,7 @@ public class TyresController(
         if (tyre is null)
         {
             logger.LogWarning(
-                "{announcement}: Tyre {tyreId} does not exist!",
+                "{Announcement}: Tyre {tyreId} does not exist!",
                 "NULL", id);
             
             return NotFound();
@@ -131,7 +131,7 @@ public class TyresController(
         if (tyre is null)
         {
             logger.LogWarning(
-                "{announcement}: Tyre {tyreId} does not exist!",
+                "{Announcement}: Tyre {tyreId} does not exist!",
                 "NULL", id);
 
             return NotFound();

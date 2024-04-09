@@ -26,7 +26,7 @@ public class OrderRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -34,7 +34,7 @@ public class OrderRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 
@@ -70,7 +70,7 @@ public class OrderRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds,
                 customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
@@ -79,7 +79,7 @@ public class OrderRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds,
             customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "",
             orders.Count());
@@ -108,7 +108,7 @@ public class OrderRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, orderId);
             
             throw ex.GetBaseException();
@@ -116,7 +116,7 @@ public class OrderRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, orderId);
 
         return order;

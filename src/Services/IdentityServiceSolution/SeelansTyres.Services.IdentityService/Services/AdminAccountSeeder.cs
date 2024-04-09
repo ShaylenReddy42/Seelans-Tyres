@@ -40,7 +40,7 @@ public class AdminAccountSeeder
                 stopwatch.Stop();
 
                 logger.LogWarning(
-                    "{announcement} ({stopwatchElapsedTime}ms): Administrator account already exists",
+                    "{Announcement} ({stopwatchElapsedTime}ms): Administrator account already exists",
                     "ABORTED", stopwatch.ElapsedMilliseconds);
                 
                 return;
@@ -87,7 +87,7 @@ public class AdminAccountSeeder
             
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): The database is unavailable",
+                "{Announcement} ({stopwatchElapsedTime}ms): The database is unavailable",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw;
@@ -95,7 +95,7 @@ public class AdminAccountSeeder
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to create an administrator account completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to create an administrator account completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 }

@@ -30,7 +30,7 @@ public class AddressUpdateService(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -38,7 +38,7 @@ public class AddressUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

@@ -12,7 +12,7 @@ public class LocalImageService(
         if (image is null)
         {
             logger.LogInformation(
-                "{announcement}: Administrator didn't attempt to upload a new image",
+                "{Announcement}: Administrator didn't attempt to upload a new image",
                 "NULL");
 
             return defaultImage;
@@ -48,7 +48,7 @@ public class LocalImageService(
         if (!imageUrl.StartsWith("/images/uploaded/"))
         {
             logger.LogWarning(
-                "{announcement}: The image url is invalid and cannot be acted upon. It needs to start with '/images/uploaded/'",
+                "{Announcement}: The image url is invalid and cannot be acted upon. It needs to start with '/images/uploaded/'",
                 "ABORTED");
             
             return Task.CompletedTask;
@@ -61,7 +61,7 @@ public class LocalImageService(
         if (!File.Exists(imageUrl))
         {
             logger.LogWarning(
-                "{announcement}: The image doesn't exist on disk. Exiting early",
+                "{Announcement}: The image doesn't exist on disk. Exiting early",
                 "ABORTED");
 
             return Task.CompletedTask;
@@ -70,7 +70,7 @@ public class LocalImageService(
         File.Delete(imageUrl);
 
         logger.LogInformation(
-            "{announcement}: Attempt to delete image completed successfully",
+            "{Announcement}: Attempt to delete image completed successfully",
             "SUCCEEDED");
 
         return Task.CompletedTask;

@@ -12,7 +12,7 @@ public class MustSatisfyOrderRetrievalRulesHandler(
         MustSatisfyOrderRetrievalRulesRequirement requirement)
     {
         logger.LogInformation(
-            "{announcement}: {authorizationRequirement}", 
+            "{Announcement}: {authorizationRequirement}", 
             "AUTHORIZATION REQUIREMENT HIT", "MustSatisfyOrderRetrievalRules");
 
         httpContextAccessor.HttpContext!.Request.Query.TryGetValue("customerId", out StringValues customerIds);
@@ -25,11 +25,11 @@ public class MustSatisfyOrderRetrievalRulesHandler(
         if (isAdmin && customerIdFromQuery is null)
         {
             logger.LogInformation(
-                "{announcement}: An administrator is allowed to retrieve all orders but not for a specific customer, rules satisfied",
+                "{Announcement}: An administrator is allowed to retrieve all orders but not for a specific customer, rules satisfied",
                 "SUCCEEDED");
 
             logger.LogInformation(
-                "{announcement}: {authorizationRequirement}", 
+                "{Announcement}: {authorizationRequirement}", 
                 "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
 
             context.Succeed(requirement);
@@ -39,11 +39,11 @@ public class MustSatisfyOrderRetrievalRulesHandler(
             && customerIdFromClaims == customerIdFromQuery)
         {
             logger.LogInformation(
-                "{announcement}: Customer {customerId} is allowed to retrieve their own orders, requirement rules satisfied",
+                "{Announcement}: Customer {customerId} is allowed to retrieve their own orders, requirement rules satisfied",
                 "SUCCEEDED", customerIdFromClaims);
 
             logger.LogInformation(
-                "{announcement}: {authorizationRequirement}", 
+                "{Announcement}: {authorizationRequirement}", 
                 "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
 
             context.Succeed(requirement);
@@ -59,11 +59,11 @@ public class MustSatisfyOrderRetrievalRulesHandler(
             ".Trim();
 
         logger.LogWarning(
-            "{announcement}: {failureMessage}",
+            "{Announcement}: {failureMessage}",
             "FAILED", failureMessage);
 
         logger.LogInformation(
-            "{announcement}: {authorizationRequirement}", 
+            "{Announcement}: {authorizationRequirement}", 
             "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
 
         context.Fail(new AuthorizationFailureReason(this, failureMessage));

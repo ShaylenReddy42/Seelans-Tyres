@@ -46,7 +46,7 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
             if ((bool)validationArray[i, 0])
             {
                 logger.LogWarning(
-                    "{announcement}: Token exchange validation failed with reason '{validationFailureReason}'",
+                    "{Announcement}: Token exchange validation failed with reason '{validationFailureReason}'",
                     "FAILED", validationArray[i, 1]);
                 
                 context.Result =
@@ -59,7 +59,7 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
         }
 
         logger.LogInformation(
-            "{announcement}: Token exchange validation completed successfully",
+            "{Announcement}: Token exchange validation completed successfully",
             "SUCCEEDED");
 
         context.Result = 

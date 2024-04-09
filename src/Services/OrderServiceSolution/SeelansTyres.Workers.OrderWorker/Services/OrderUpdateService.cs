@@ -31,7 +31,7 @@ public class OrderUpdateService(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -39,7 +39,7 @@ public class OrderUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 
@@ -68,7 +68,7 @@ public class OrderUpdateService(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -76,7 +76,7 @@ public class OrderUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 
@@ -104,7 +104,7 @@ public class OrderUpdateService(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -112,7 +112,7 @@ public class OrderUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

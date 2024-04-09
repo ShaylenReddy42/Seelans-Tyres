@@ -107,14 +107,14 @@ public class AccountController(
         if (succeeded && newCustomer is not null)
         {
             logger.LogInformation(
-                "{announcement}: Attempt to create a new customer account completed successfully",
+                "{Announcement}: Attempt to create a new customer account completed successfully",
                 "SUCCEEDED");
 
             return RedirectToAction(nameof(Login));
         }
 
         logger.LogWarning(
-            "{announcement}: Attempt to create a new customer account was unsuccessful",
+            "{Announcement}: Attempt to create a new customer account was unsuccessful",
             "FAILED");
 
         errors.ForEach(error => ModelState.AddModelError(string.Empty, error));
@@ -150,7 +150,7 @@ public class AccountController(
         if (succeeded)
         {
             logger.LogInformation(
-                "{announcement}: Attempt to delete account for customer {customerId} completed successfully. Logging them out",
+                "{Announcement}: Attempt to delete account for customer {customerId} completed successfully. Logging them out",
                 "SUCCEEDED", customerId);
 
             return RedirectToAction(nameof(Logout));
@@ -177,7 +177,7 @@ public class AccountController(
         if (!requestSucceeded)
         {
             logger.LogError(
-                "{announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
                 "FAILED", customerId);
             
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
@@ -185,7 +185,7 @@ public class AccountController(
         else
         {
             logger.LogInformation(
-                "{announcement}: Attempt to add a new address for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to add a new address for customer {customerId} completed successfully",
                 "SUCCEEDED", customerId);
         }
 
@@ -267,7 +267,7 @@ public class AccountController(
             if (!result)
             {
                 logger.LogError(
-                    "{announcement}: The system failed to send the token to customer with email {customerEmail}",
+                    "{Announcement}: The system failed to send the token to customer with email {customerEmail}",
                     "FAILED", "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, "The system failed to send you an email with the token,\nplease resubmit and try again");
@@ -289,7 +289,7 @@ public class AccountController(
             if (model.ResetPasswordModel.Token != HttpContext.Session.GetString("ResetPasswordToken"))
             {
                 logger.LogError(
-                    "{announcement}: Customer with email {customerEmail} entered an invalid token to try and reset their password",
+                    "{Announcement}: Customer with email {customerEmail} entered an invalid token to try and reset their password",
                     "FAILED", "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, "Invalid token!");
@@ -298,7 +298,7 @@ public class AccountController(
             }
 
             logger.LogError(
-                "{announcement}: Customer with email {customerEmail} entered a valid token. The reset password operation will begin",
+                "{Announcement}: Customer with email {customerEmail} entered a valid token. The reset password operation will begin",
                 "SUCCEEDED", "***REDACTED***");
 
             HttpContext.Session.Remove("ResetPasswordToken");

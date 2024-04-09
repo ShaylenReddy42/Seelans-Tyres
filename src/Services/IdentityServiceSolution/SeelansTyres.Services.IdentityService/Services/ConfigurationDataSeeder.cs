@@ -86,7 +86,7 @@ public class ConfigurationDataSeeder
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Configuration data seeded successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Configuration data seeded successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 }

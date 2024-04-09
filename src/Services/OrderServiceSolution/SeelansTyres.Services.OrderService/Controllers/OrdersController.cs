@@ -123,7 +123,7 @@ public class OrdersController(
         if (order is null)
         {
             logger.LogWarning(
-                "{announcement}: Order {orderId} does not exist!",
+                "{Announcement}: Order {orderId} does not exist!",
                 "NULL", id);
             
             return NotFound();

@@ -88,7 +88,7 @@ public class CustomersController : ControllerBase
         if (registerModel is null)
         {
             logger.LogWarning(
-                "{announcement}: Decryption process failed",
+                "{Announcement}: Decryption process failed",
                 "NULL");
             
             return BadRequest("Data got corrupted in transit, decryption failed!");
@@ -99,7 +99,7 @@ public class CustomersController : ControllerBase
         if (customer is not null)
         {
             logger.LogWarning(
-                "{announcement}: Customer with email {customerEmail} already exists",
+                "{Announcement}: Customer with email {customerEmail} already exists",
                 "ABORTED", "***REDACTED***");
 
             return BadRequest("Customer already exists");
@@ -144,7 +144,7 @@ public class CustomersController : ControllerBase
         if (string.IsNullOrEmpty(email.Trim()))
         {
             logger.LogWarning(
-                "{announcement}: Authenticated user using client '{clientId}' attempted to retrieve all customers by not specifying an email",
+                "{Announcement}: Authenticated user using client '{clientId}' attempted to retrieve all customers by not specifying an email",
                 "FAILED", User.Claims.Single(claim => claim.Type is "client_id").Value);
 
             return BadRequest();
@@ -211,7 +211,7 @@ public class CustomersController : ControllerBase
         if (updateAccountModel is null)
         {
             logger.LogWarning(
-                "{announcement}: Decryption process failed",
+                "{Announcement}: Decryption process failed",
                 "NULL");
 
             return BadRequest("Data got corrupted in transit, decryption failed!");
@@ -330,7 +330,7 @@ public class CustomersController : ControllerBase
         if (passwordModel is null)
         {
             logger.LogWarning(
-                "{announcement}: Decryption process failed",
+                "{Announcement}: Decryption process failed",
                 "NULL");
 
             return BadRequest("Data got corrupted in transit, decryption failed!");
@@ -374,7 +374,7 @@ public class CustomersController : ControllerBase
         if (passwordModel is null)
         {
             logger.LogWarning(
-                "{announcement}: Decryption process failed",
+                "{Announcement}: Decryption process failed",
                 "NULL");
 
             return BadRequest("Data got corrupted in transit, decryption failed!");

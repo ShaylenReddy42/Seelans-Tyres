@@ -16,7 +16,7 @@ public class TyresServiceClient(
             var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
 
             logger.LogInformation(
-                "{announcement}: Attempt to retrieve all brands completed successfully with {brandsCount} brands",
+                "{Announcement}: Attempt to retrieve all brands completed successfully with {brandsCount} brands",
                 "SUCCEEDED", brands!.Count());
 
             return brands!;
@@ -25,7 +25,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return new List<BrandModel>();
@@ -41,7 +41,7 @@ public class TyresServiceClient(
             _ = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
 
             logger.LogInformation(
-                "{announcement}: Attempt to add a new tyre completed successfully",
+                "{Announcement}: Attempt to add a new tyre completed successfully",
                 "SUCCEEDED");
 
             return true;
@@ -50,7 +50,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return false;
@@ -73,7 +73,7 @@ public class TyresServiceClient(
             var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
 
             logger.LogInformation(
-                "{announcement}: Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
+                "{Announcement}: Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
                 "SUCCEEDED", includingUnavailable, tyres!.Count());
 
             return tyres!;
@@ -82,7 +82,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return new List<TyreModel>();
@@ -103,7 +103,7 @@ public class TyresServiceClient(
             var tyre = await response.Content.ReadFromJsonAsync<TyreModel>();
 
             logger.LogInformation(
-                "{announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
+                "{Announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return tyre!;
@@ -112,7 +112,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return null;
@@ -130,7 +130,7 @@ public class TyresServiceClient(
             await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
 
             logger.LogInformation(
-                "{announcement}: Attempt to update tyre {tyreId} completed successfully",
+                "{Announcement}: Attempt to update tyre {tyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return true;
@@ -139,7 +139,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return false;
@@ -157,7 +157,7 @@ public class TyresServiceClient(
             await client.DeleteAsync($"api/tyres/{tyreId}");
 
             logger.LogInformation(
-                "{announcement}: Attempt to delete tyre {tyreId} completed successfully",
+                "{Announcement}: Attempt to delete tyre {tyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return true;
@@ -166,7 +166,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return false;

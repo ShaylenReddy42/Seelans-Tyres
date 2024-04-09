@@ -23,7 +23,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
 		CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement requirement)
 	{
         logger.LogInformation(
-            "{announcement}: {authorizationRequirement}",
+            "{Announcement}: {authorizationRequirement}",
             "AUTHORIZATION REQUIREMENT HIT", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
         var customerIdFromClaims = context.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value;
@@ -32,11 +32,11 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
         if (customerIdFromClaims != customerIdFromRoute)
         {
             logger.LogWarning(
-                "{announcement}: CustomerId from claims {customerIdFromClaims} does not match customerId from route {customerIdFromRoute}",
+                "{Announcement}: CustomerId from claims {customerIdFromClaims} does not match customerId from route {customerIdFromRoute}",
                 "FAILED", customerIdFromClaims, customerIdFromRoute);
 
             logger.LogInformation(
-                "{announcement}: {authorizationRequirement}",
+                "{Announcement}: {authorizationRequirement}",
                 "AUTHORIZATION REQUIREMENT COMPLETED", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
             context.Fail(new AuthorizationFailureReason(this, $"CustomerId from claims does not match customerId from route"));
@@ -44,11 +44,11 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
         }
 
         logger.LogInformation(
-            "{announcement}: customerId from claims matches customerId from route, satisfying the rules for this requirement",
+            "{Announcement}: customerId from claims matches customerId from route, satisfying the rules for this requirement",
             "SUCCEEDED");
 
         logger.LogInformation(
-            "{announcement}: {authorizationRequirement}",
+            "{Announcement}: {authorizationRequirement}",
             "AUTHORIZATION REQUIREMENT COMPLETED", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
         context.Succeed(requirement);

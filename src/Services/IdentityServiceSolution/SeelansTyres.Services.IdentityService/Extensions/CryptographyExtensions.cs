@@ -93,7 +93,7 @@ public static class CryptographyExtensions
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Decryption failed, integrity checks by the AesGcm algorithm indicates that the data has been compromised",
+                "{Announcement} ({stopwatchElapsedTime}ms): Decryption failed, integrity checks by the AesGcm algorithm indicates that the data has been compromised",
                 "FAILED", stopwatch.ElapsedMilliseconds);
             
             return default;
@@ -102,7 +102,7 @@ public static class CryptographyExtensions
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Decryption process for model of type {modelType} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Decryption process for model of type {modelType} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return JsonSerializer.Deserialize<T>(modelAsBytes);

@@ -11,7 +11,7 @@ public class AddressServiceDelegatingHandler(
         CancellationToken cancellationToken)
     {
         logger.LogInformation(
-            "{announcement}: {delegatingHandler}",
+            "{Announcement}: {delegatingHandler}",
             "DELEGATING HANDLER HIT", "AddressServiceDelegatingHandler");
 
         // Gets 'AddressService' as audience in the exchanged access token

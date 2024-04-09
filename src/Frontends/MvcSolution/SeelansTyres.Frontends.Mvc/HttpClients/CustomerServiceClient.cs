@@ -33,7 +33,7 @@ public class CustomerServiceClient(
                 customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
 
                 logger.LogInformation(
-                    "{announcement}: Attempt to create a new customer account completed successfully. Customer {customerId} created",
+                    "{Announcement}: Attempt to create a new customer account completed successfully. Customer {customerId} created",
                     "SUCCEEDED", customer!.Id);
             }
             else
@@ -49,7 +49,7 @@ public class CustomerServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: Attempt to create a new customer account was unsuccessful",
+                "{Announcement}: Attempt to create a new customer account was unsuccessful",
                 "FAILED");
 
             errors.Add("The identity service is unavailable!");
@@ -88,7 +88,7 @@ public class CustomerServiceClient(
             if (!response.IsSuccessStatusCode)
             {
                 logger.LogError(
-                    "{announcement}: Attempt to retrieve customer {customerId} from downstream was unsuccessful with status code {statusCode}",
+                    "{Announcement}: Attempt to retrieve customer {customerId} from downstream was unsuccessful with status code {statusCode}",
                     "FAILED", customerId, response.StatusCode);
 
                 customer = new CustomerModel
@@ -144,7 +144,7 @@ public class CustomerServiceClient(
         if (response.IsSuccessStatusCode)
         {
             logger.LogInformation(
-                "{announcement}: Attempt to update account for customer {customerId} completed successfully. Removing the old customer info from the cache",
+                "{Announcement}: Attempt to update account for customer {customerId} completed successfully. Removing the old customer info from the cache",
                 "SUCCEEDED", customerId);
 
             await cacheService.DeleteAsync(customerId.ToString());
@@ -152,7 +152,7 @@ public class CustomerServiceClient(
         else
         {
             logger.LogError(
-                "{announcement}: Attempt to update account for customer {customerId} was unsuccessful with status code {statusCode}",
+                "{Announcement}: Attempt to update account for customer {customerId} was unsuccessful with status code {statusCode}",
                 "FAILED", customerId, response.StatusCode);
         }
     }
@@ -176,7 +176,7 @@ public class CustomerServiceClient(
         }
 
         logger.LogError(
-            "{announcement}: Attempt to delete account for customer {customerId} was unsuccessful with status code {statusCode}",
+            "{Announcement}: Attempt to delete account for customer {customerId} was unsuccessful with status code {statusCode}",
             "FAILED", customerId, response.StatusCode);
 
         return false;
@@ -197,12 +197,12 @@ public class CustomerServiceClient(
         if (!response.IsSuccessStatusCode)
         {
             logger.LogError(
-                "{announcement}: Reset password operation for customer {customerId} was unsuccessful",
+                "{Announcement}: Reset password operation for customer {customerId} was unsuccessful",
                 "FAILED", customerId);
         }
 
         logger.LogInformation(
-                "{announcement}: Reset password operation for customer {customerId} completed successfully",
+                "{Announcement}: Reset password operation for customer {customerId} completed successfully",
                 "SUCCEEDED", customerId);
     }
 
@@ -226,7 +226,7 @@ public class CustomerServiceClient(
             stopwatch.Stop();
 
             logger.LogError(
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
         }
 
@@ -245,13 +245,13 @@ public class CustomerServiceClient(
         if (tokenResponse.IsError)
         {
             logger.LogError(
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
         }
         else
         {
             logger.LogInformation(
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token completed successfully",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token completed successfully",
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds);
         }
 

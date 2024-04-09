@@ -28,7 +28,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all brands was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all brands was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -36,7 +36,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all brands completed successfully with {brandsCount} brands",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all brands completed successfully with {brandsCount} brands",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, brands.Count());
 
         return brands;
@@ -61,7 +61,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new tyre was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new tyre was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -69,7 +69,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new tyre completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new tyre completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 
@@ -98,7 +98,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all tyres{includingUnavailable} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all tyres{includingUnavailable} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, includingUnavailable);
 
             throw ex.GetBaseException();
@@ -106,7 +106,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, includingUnavailable, tyres.Count());
 
         return tyres;
@@ -131,7 +131,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve tyre {tyreId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve tyre {tyreId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
 
             throw ex.GetBaseException();
@@ -139,7 +139,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve tyre {tyreId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve tyre {tyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
 
         return tyre;
@@ -164,7 +164,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
 
             throw ex.GetBaseException();
@@ -172,7 +172,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
     }
 

@@ -88,7 +88,7 @@ public class AddressesController(
         if (address is null)
         {
             logger.LogWarning(
-                "{announcement}: Address {addressId} for customer {customerId} does not exist!",
+                "{Announcement}: Address {addressId} for customer {customerId} does not exist!",
                 "NULL", addressId, customerId);
 
             return NotFound();
@@ -120,7 +120,7 @@ public class AddressesController(
         if (address is null)
         {
             logger.LogWarning(
-                "{announcement}: Address {addressId} for customer {customerId} does not exist!",
+                "{Announcement}: Address {addressId} for customer {customerId} does not exist!",
                 "NULL", addressId, customerId);
 
             return NotFound();

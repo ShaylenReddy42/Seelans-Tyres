@@ -31,7 +31,7 @@ public class MailService(
             stopwatch.Stop();
 
             logger.LogInformation(
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} completed successfully",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} completed successfully",
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
         catch (Exception ex)
@@ -40,7 +40,7 @@ public class MailService(
             
             logger.LogWarning(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
     }
@@ -72,7 +72,7 @@ public class MailService(
             stopwatch.Stop();
 
             logger.LogInformation(
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} completed successfully",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} completed successfully",
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
         }
         catch (Exception ex)
@@ -81,7 +81,7 @@ public class MailService(
             
             logger.LogWarning(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
             return false;

@@ -15,7 +15,7 @@ public class AddressServiceClient(
             await client.PostAsync($"api/customers/{customerId}/addresses", JsonContent.Create(address));
 
             logger.LogInformation(
-                "{announcement}: Attempt to add a new address for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to add a new address for customer {customerId} completed successfully",
                 "SUCCEEDED", customerId);
 
             return true;
@@ -24,7 +24,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return false;
@@ -45,7 +45,7 @@ public class AddressServiceClient(
             var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
             logger.LogInformation(
-                "{announcement}: Attempt to retrieve all addresses for customer {customerId} completed successfully with {addressesCount} address(es)",
+                "{Announcement}: Attempt to retrieve all addresses for customer {customerId} completed successfully with {addressesCount} address(es)",
                 "SUCCEEDED", customerId, addresses!.Count());
 
             return addresses!;
@@ -54,7 +54,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return [];
@@ -73,7 +73,7 @@ public class AddressServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{announcement}: Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
                 "SUCCEEDED", addressId, customerId);
 
             return true;
@@ -101,7 +101,7 @@ public class AddressServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{announcement}: Attempt to delete address {addressId} for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to delete address {addressId} for customer {customerId} completed successfully",
                 "SUCCEEDED", addressId, customerId);
 
             return true;
@@ -110,7 +110,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
                 "FAILED", addressId, customerId);
 
             return false;

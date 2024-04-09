@@ -44,7 +44,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
             throw ex.GetBaseException();
@@ -52,7 +52,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
     }
 
@@ -75,7 +75,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
             throw ex.GetBaseException();
@@ -83,7 +83,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {customerId} completed successfully, returning {addressCount} address(es)",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {customerId} completed successfully, returning {addressCount} address(es)",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId, addresses.Count());
 
         return addresses;
@@ -108,7 +108,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve address {addressId} for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve address {addressId} for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
 
             throw ex.GetBaseException();
@@ -116,7 +116,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve address {addressId} for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve address {addressId} for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
 
         return address;
@@ -147,7 +147,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
 
             throw ex.GetBaseException();
@@ -155,7 +155,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
     }
 
@@ -178,7 +178,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
 
             throw ex.GetBaseException();
@@ -186,7 +186,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
     }
 

@@ -61,7 +61,7 @@ public static class CryptographyExtensions
         if (discoveryDocument.IsError)
         {
             logger.LogError(
-                "{announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
+                "{Announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
                 "FAILED");
 
             logger.LogError(
@@ -90,7 +90,7 @@ public static class CryptographyExtensions
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Encryption process for model of type {modelType} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Encryption process for model of type {modelType} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return encryptedDataModel;

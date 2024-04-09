@@ -42,7 +42,7 @@ public static class AzureServiceBus
         {
             logger.LogError(
                 arg.Exception,
-                "{announcement}: A error occured when trying to process the message",
+                "{Announcement}: A error occured when trying to process the message",
                 "FAILED");
 
             return Task.CompletedTask;

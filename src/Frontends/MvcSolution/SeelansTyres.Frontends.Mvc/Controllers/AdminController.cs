@@ -87,7 +87,7 @@ public class AdminController(
         if (!requestSucceeded)
         {
             logger.LogError(
-                "{announcement}: Attempt to add a new tyre was unsuccessful",
+                "{Announcement}: Attempt to add a new tyre was unsuccessful",
                 "FAILED");
             
             ModelState.AddModelError(string.Empty, "API is not available");
@@ -96,7 +96,7 @@ public class AdminController(
         }
 
         logger.LogInformation(
-            "{announcement}: Attempt to add a new tyre completed successfully",
+            "{Announcement}: Attempt to add a new tyre completed successfully",
             "SUCCEEDED");
 
         return RedirectToAction(nameof(Index));
@@ -163,7 +163,7 @@ public class AdminController(
         if (!requestSucceeded)
         {
             logger.LogError(
-                "{announcement}: Attempt to update tyre {tyreId} was unsuccessful",
+                "{Announcement}: Attempt to update tyre {tyreId} was unsuccessful",
                 "FAILED", model.Id);
 
             ModelState.AddModelError(string.Empty, "API is not available");
@@ -171,7 +171,7 @@ public class AdminController(
         }
 
         logger.LogInformation(
-            "{announcement}: Attempt to update tyre {tyreId} completed successfully",
+            "{Announcement}: Attempt to update tyre {tyreId} completed successfully",
             "SUCCEEDED", model.Id);
 
         return RedirectToAction(nameof(Index));

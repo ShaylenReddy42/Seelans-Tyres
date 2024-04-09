@@ -40,7 +40,7 @@ public static class DatabaseMigration
 
             app.Logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to migrate the Unpublished Updates Management database was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to migrate the Unpublished Updates Management database was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             return app;
@@ -48,7 +48,7 @@ public static class DatabaseMigration
         stopwatch.Stop();
 
         app.Logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to migrate the Unpublished Updates Management database completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to migrate the Unpublished Updates Management database completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
 
         return app;

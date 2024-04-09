@@ -149,7 +149,7 @@ public class ShoppingController(
             await cartService.DeleteAsync();
 
             logger.LogInformation(
-                "{announcement}: Attempt to place an order for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to place an order for customer {customerId} completed successfully",
                 "SUCCEEDED", customerId);
 
             logger.LogInformation("Controller => Writing the order to the channel for sending to the customer");
@@ -171,7 +171,7 @@ public class ShoppingController(
             stopwatch.Stop();
             
             logger.LogInformation(
-                "{announcement}: Attempt to place an order for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to place an order for customer {customerId} was unsuccessful",
                 "FAILED", customerId);
         }
 
@@ -196,14 +196,14 @@ public class ShoppingController(
         if (order is null)
         {
             logger.LogWarning(
-                "{announcement}: Order {orderId} does not exist!",
+                "{Announcement}: Order {orderId} does not exist!",
                 "NULL", orderId);
             
             return string.Empty;
         }
 
         logger.LogInformation(
-            "{announcement}: Attempt to retrieve order {orderId} completed successfully",
+            "{Announcement}: Attempt to retrieve order {orderId} completed successfully",
             "SUCCEEDED", orderId);
 
         return await engine.CompileRenderAsync("Receipt", order);

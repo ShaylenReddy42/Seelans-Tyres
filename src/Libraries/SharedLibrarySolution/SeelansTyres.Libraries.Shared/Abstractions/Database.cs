@@ -41,7 +41,7 @@ public static class Database
 
             app.Logger.LogError(
                 ex,
-                "{announcement} ({stopwatchElapsedTime}ms): Attempt to migrate database {dbContext} was unsuccessful",
+                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to migrate database {dbContext} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
             throw ex.GetBaseException();
@@ -49,7 +49,7 @@ public static class Database
         stopwatch.Stop();
 
         app.Logger.LogInformation(
-            "{announcement} ({stopwatchElapsedTime}ms): Attempt to migrate database {dbContext} completed successfully",
+            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to migrate database {dbContext} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return app;

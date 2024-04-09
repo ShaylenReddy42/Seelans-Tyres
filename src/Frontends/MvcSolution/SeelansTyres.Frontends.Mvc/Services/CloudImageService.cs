@@ -15,7 +15,7 @@ public class CloudImageService(
         if (image is null)
         {
             logger.LogInformation(
-                "{announcement}: Administrator didn't attempt to upload a new image",
+                "{Announcement}: Administrator didn't attempt to upload a new image",
                 "NULL");
 
             return defaultImage;
@@ -58,14 +58,14 @@ public class CloudImageService(
         {
             logger.LogError(
                 ex,
-                "{announcement}: Attempt to upload the blob to the storage account failed",
+                "{Announcement}: Attempt to upload the blob to the storage account failed",
                 "FAILED");
 
             return defaultImage;
         }
 
         logger.LogInformation(
-            "{announcement}: Attempt to upload the blob to the storage account completed successfully",
+            "{Announcement}: Attempt to upload the blob to the storage account completed successfully",
             "SUCCEEDED");
 
         logger.LogInformation("Attempting to delete the older image");
@@ -88,7 +88,7 @@ public class CloudImageService(
         if (!imageUrl.StartsWith(blobContainerUri))
         {
             logger.LogWarning(
-                "{announcement}: The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",
+                "{Announcement}: The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",
                 "ABORTED", blobContainerUri);
 
             return;
@@ -99,7 +99,7 @@ public class CloudImageService(
         await blobContainerClient.DeleteBlobIfExistsAsync(imageUrl, DeleteSnapshotsOption.IncludeSnapshots);
 
         logger.LogInformation(
-            "{announcement}: Attempt to delete image completed successfully if it existed prior",
+            "{Announcement}: Attempt to delete image completed successfully if it existed prior",
             "SUCCEEDED");
     }
 }

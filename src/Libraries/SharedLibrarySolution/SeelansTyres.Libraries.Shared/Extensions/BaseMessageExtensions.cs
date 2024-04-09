@@ -39,13 +39,13 @@ public static class BaseMessageExtensions
         if (!tokenIsValid)
         {
             logger.LogError(
-                "{announcement}: Attempt to validate the access token was unsuccessful",
+                "{Announcement}: Attempt to validate the access token was unsuccessful",
                 "FAILED");
         }
         else
         {
             logger.LogInformation(
-                "{announcement}: Attempt to validate the access token completed successfully",
+                "{Announcement}: Attempt to validate the access token completed successfully",
                 "SUCCEEDED");
         }
 

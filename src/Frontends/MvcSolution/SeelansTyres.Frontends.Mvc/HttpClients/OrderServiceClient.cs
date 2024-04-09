@@ -13,7 +13,7 @@ public class OrderServiceClient(
             var response = await client.PostAsync("api/orders", JsonContent.Create(order));
 
             logger.LogInformation(
-                "{announcement}: Attempt to place a new order completed successfully",
+                "{Announcement}: Attempt to place a new order completed successfully",
                 "SUCCEEDED");
 
             return await response.Content.ReadFromJsonAsync<OrderModel>();
@@ -22,7 +22,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return null;
@@ -55,7 +55,7 @@ public class OrderServiceClient(
             var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
 
             logger.LogInformation(
-                "{announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
+                "{Announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
                 "SUCCEEDED", customerId is not null ? " for customer " : "", customerId is not null ? customerId : "",
                 notDeliveredOnly ? " except delivered ones" : "", orders!.Count());
 
@@ -65,7 +65,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return new List<OrderModel>();
@@ -86,7 +86,7 @@ public class OrderServiceClient(
             var order = await response.Content.ReadFromJsonAsync<OrderModel>();
 
             logger.LogInformation(
-                "{announcement}: Attempt to retrieve order {orderId} completed successfully",
+                "{Announcement}: Attempt to retrieve order {orderId} completed successfully",
                 "SUCCEEDED", orderId);
 
             return order!;
@@ -95,7 +95,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: The API is unavailable",
+                "{Announcement}: The API is unavailable",
                 "FAILED");
 
             return null;
@@ -114,7 +114,7 @@ public class OrderServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{announcement}: Attempt to mark order {orderId} as delivered completed successfully",
+                "{Announcement}: Attempt to mark order {orderId} as delivered completed successfully",
                 orderId);
 
             return true;
@@ -123,7 +123,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{announcement}: Attempt to mark order {orderId} as delivered was unsuccessful",
+                "{Announcement}: Attempt to mark order {orderId} as delivered was unsuccessful",
                 "FAILED");
 
             return false;

@@ -11,7 +11,7 @@ public class OrderServiceDelegatingHandler(
         CancellationToken cancellationToken)
     {
         logger.LogInformation(
-            "{announcement}: {delegatingHandler}",
+            "{Announcement}: {delegatingHandler}",
             "DELEGATING HANDLER HIT", "OrderServiceDelegatingHandler");
 
         // Gets 'OrderService' as audience in the exchanged access token

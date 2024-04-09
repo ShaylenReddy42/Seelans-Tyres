@@ -35,7 +35,7 @@ public class TokenValidationService : ITokenValidationService
         {
             logger.LogError(
                 ex,
-                "{announcement}: Could not retrieve the discovery document",
+                "{Announcement}: Could not retrieve the discovery document",
                 "FAILED");
 
             return false;
@@ -100,7 +100,7 @@ public class TokenValidationService : ITokenValidationService
         {
             logger.LogError(
                 ex,
-                "{announcement}: Attempt to validate token failed",
+                "{Announcement}: Attempt to validate token failed",
                 "FAILED");
 
             return false;

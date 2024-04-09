@@ -28,7 +28,7 @@ public class TokenExchangeService : ITokenExchangeService
         if (discoveryDocument.IsError)
         {
             logger.LogError(
-                "{announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful",
+                "{Announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful",
                 "FAILED");
 
             logger.LogError(
@@ -49,7 +49,7 @@ public class TokenExchangeService : ITokenExchangeService
         if (tokenResponse.IsError)
         {
             logger.LogError(
-                "{announcement}: Token exchange request was unsuccessful",
+                "{Announcement}: Token exchange request was unsuccessful",
                 "FAILED");
         }
         else
