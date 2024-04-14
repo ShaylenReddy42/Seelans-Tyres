@@ -38,7 +38,7 @@ public class OrderServiceClient(
 
 
         logger.LogInformation(
-            "Service => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
+            "Service => Attempting to retrieve all orders{For}{CustomerId}{ExceptDelivered}",
             loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue);
 
         try
@@ -61,7 +61,7 @@ public class OrderServiceClient(
             var orders = await response.Content.ReadFromJsonAsync<IEnumerable<OrderModel>>();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
+                "{Announcement}: Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered} completed successfully with {OrdersCount} order(s)",
                 "SUCCEEDED", loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue, orders?.Count() ?? 0);
 
             return orders ?? [];
@@ -70,7 +70,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to retrieve all orders{for}{customerId}{exceptDelivered}",
+                "{Announcement}: Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered}",
                 "FAILED", loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue);
 
             return [];
@@ -80,7 +80,7 @@ public class OrderServiceClient(
     public async Task<OrderModel?> RetrieveSingleAsync(int orderId)
     {
         logger.LogInformation(
-            "Service => Attempting to retrieve order {orderId}",
+            "Service => Attempting to retrieve order {OrderId}",
             orderId);
 
         try
@@ -91,7 +91,7 @@ public class OrderServiceClient(
             var order = await response.Content.ReadFromJsonAsync<OrderModel>();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to retrieve order {orderId} completed successfully",
+                "{Announcement}: Attempt to retrieve order {OrderId} completed successfully",
                 "SUCCEEDED", orderId);
 
             return order;
@@ -100,7 +100,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to retrieve order {orderId} was unsuccessful",
+                "{Announcement}: Attempt to retrieve order {OrderId} was unsuccessful",
                 "FAILED", orderId);
 
             return null;
@@ -110,7 +110,7 @@ public class OrderServiceClient(
     public async Task<bool> MarkOrderAsDeliveredAsync(int orderId)
     {
         logger.LogInformation(
-            "Service => Attempting to mark order {orderId} as delivered",
+            "Service => Attempting to mark order {OrderId} as delivered",
             orderId);
 
         try
@@ -119,7 +119,7 @@ public class OrderServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to mark order {orderId} as delivered completed successfully",
+                "{Announcement}: Attempt to mark order {OrderId} as delivered completed successfully",
                 "SUCCEEDED", orderId);
 
             return true;
@@ -128,7 +128,7 @@ public class OrderServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to mark order {orderId} as delivered was unsuccessful",
+                "{Announcement}: Attempt to mark order {OrderId} as delivered was unsuccessful",
                 "FAILED", orderId);
 
             return false;

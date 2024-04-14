@@ -53,7 +53,7 @@ public class ShoppingController(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "Building the Cart View Model took {stopwatchElapsedTime}ms to complete",
+            "Building the Cart View Model took {StopwatchElapsedTime}ms to complete",
             stopwatch.ElapsedMilliseconds);
         
         return View(cartViewModel);
@@ -63,7 +63,7 @@ public class ShoppingController(
     public async Task<IActionResult> AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
     {
         logger.LogInformation(
-            "Controller => Adding tyre {tyreId} to cart with quantity {quantity}",
+            "Controller => Adding tyre {TyreId} to cart with quantity {Quantity}",
             tyreId, quantity);
         
         var cartItem = new CartItemModel
@@ -83,7 +83,7 @@ public class ShoppingController(
     public async Task<IActionResult> RemoveTyreFromCart(Guid tyreId)
     {
         logger.LogInformation(
-            "Controller => Removing tyre {tyreId} from cart",
+            "Controller => Removing tyre {TyreId} from cart",
             tyreId);
 
         await cartService.DeleteItemAsync(tyreId);
@@ -101,7 +101,7 @@ public class ShoppingController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Attempting to place an order for customer {customerId}",
+            "Controller => Attempting to place an order for customer {CustomerId}",
             customerId);
 
         var customer = customerServiceClient.RetrieveSingleAsync(customerId);
@@ -149,7 +149,7 @@ public class ShoppingController(
             await cartService.DeleteAsync();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to place an order for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to place an order for customer {CustomerId} completed successfully",
                 "SUCCEEDED", customerId);
 
             logger.LogInformation("Controller => Writing the order to the channel for sending to the customer");
@@ -163,7 +163,7 @@ public class ShoppingController(
             stopwatch.Stop();
 
             logger.LogInformation(
-                "Placing an order for customer {customerId} took {stopwatchElapsedTime}ms to complete",
+                "Placing an order for customer {CustomerId} took {StopwatchElapsedTime}ms to complete",
                 customerId, stopwatch.ElapsedMilliseconds);
         }
         else
@@ -171,7 +171,7 @@ public class ShoppingController(
             stopwatch.Stop();
             
             logger.LogInformation(
-                "{Announcement}: Attempt to place an order for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to place an order for customer {CustomerId} was unsuccessful",
                 "FAILED", customerId);
         }
 
@@ -183,7 +183,7 @@ public class ShoppingController(
     public async Task<string> ViewReceipt(int orderId)
     {
         logger.LogInformation(
-            "Controller => Attempting to retrieve order {orderId}",
+            "Controller => Attempting to retrieve order {OrderId}",
             orderId);
         
         var order = await orderServiceClient.RetrieveSingleAsync(orderId);
@@ -196,14 +196,14 @@ public class ShoppingController(
         if (order is null)
         {
             logger.LogWarning(
-                "{Announcement}: Order {orderId} does not exist!",
+                "{Announcement}: Order {OrderId} does not exist!",
                 "NULL", orderId);
             
             return string.Empty;
         }
 
         logger.LogInformation(
-            "{Announcement}: Attempt to retrieve order {orderId} completed successfully",
+            "{Announcement}: Attempt to retrieve order {OrderId} completed successfully",
             "SUCCEEDED", orderId);
 
         return await engine.CompileRenderAsync("Receipt", order);

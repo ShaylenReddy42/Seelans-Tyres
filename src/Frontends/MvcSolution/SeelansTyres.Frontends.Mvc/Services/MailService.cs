@@ -11,7 +11,7 @@ public class MailService(
     public async Task SendReceiptAsync(OrderModel order)
     {
         logger.LogInformation(
-            "Attempting to send a receipt for order {orderId} to customer {customerId}",
+            "Attempting to send a receipt for order {OrderId} to customer {CustomerId}",
             order.Id, order.CustomerId);
         
         stopwatch.Start();
@@ -31,7 +31,7 @@ public class MailService(
             stopwatch.Stop();
 
             logger.LogInformation(
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} completed successfully",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a receipt for order {OrderId} to customer {CustomerId} completed successfully",
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
         catch (Exception ex)
@@ -40,7 +40,7 @@ public class MailService(
             
             logger.LogWarning(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a receipt for order {orderId} to customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a receipt for order {OrderId} to customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
     }
@@ -48,7 +48,7 @@ public class MailService(
     public async Task<bool> SendResetPasswordTokenAsync(string customerEmail, string firstName, string lastName, string token)
     {
         logger.LogInformation(
-            "Attempting to send a reset password token to customer with email {customerEmail}",
+            "Attempting to send a reset password token to customer with email {CustomerEmail}",
             "***REDACTED***");
 
         stopwatch.Start();
@@ -72,7 +72,7 @@ public class MailService(
             stopwatch.Stop();
 
             logger.LogInformation(
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} completed successfully",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {CustomerEmail} completed successfully",
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
         }
         catch (Exception ex)
@@ -81,7 +81,7 @@ public class MailService(
             
             logger.LogWarning(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {customerEmail} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {CustomerEmail} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
             return false;

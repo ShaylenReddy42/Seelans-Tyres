@@ -13,7 +13,7 @@ public class DistributedCacheService(
     public async Task<T?> RetrieveAsync<T>(string cacheKey)
     {
         logger.LogDebug(
-            "Cache Service => Attempting to retrieve data using cache key {cacheKey}",
+            "Cache Service => Attempting to retrieve data using cache key {CacheKey}",
             cacheKey);
 
         var data = await cache.GetAsync(cacheKey);
@@ -21,7 +21,7 @@ public class DistributedCacheService(
         if (data is not null)
         {
             logger.LogDebug(
-                "The cache does contain data linked to the cache key, deserializing to {modelType}",
+                "The cache does contain data linked to the cache key, deserializing to {ModelType}",
                 typeof(T).Name);
 
             return JsonSerializer.Deserialize<T>(data);
@@ -33,7 +33,7 @@ public class DistributedCacheService(
     public async Task SetAsync<T>(string cacheKey, T data, int? slidingExpirationInMinutes, int? absoluteExpirationInMinutes)
     {
         logger.LogInformation(
-            "Cache Service => Attempting to set cache key {cacheKey}",
+            "Cache Service => Attempting to set cache key {CacheKey}",
             cacheKey);
 
         var cacheEntryOptions =
@@ -61,7 +61,7 @@ public class DistributedCacheService(
     public async Task DeleteAsync(string cacheKey)
     {
         logger.LogInformation(
-            "Cache Service => Attempting to remove data linked to cache key {cacheKey}",
+            "Cache Service => Attempting to remove data linked to cache key {CacheKey}",
             cacheKey);
 
         try

@@ -23,7 +23,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
 		CustomerIdFromClaimsMustMatchCustomerIdFromRouteRequirement requirement)
 	{
         logger.LogInformation(
-            "{Announcement}: {authorizationRequirement}",
+            "{Announcement}: {AuthorizationRequirement}",
             "AUTHORIZATION REQUIREMENT HIT", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
         var customerIdFromClaims = context.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value;
@@ -32,11 +32,11 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
         if (customerIdFromClaims != customerIdFromRoute)
         {
             logger.LogWarning(
-                "{Announcement}: CustomerId from claims {customerIdFromClaims} does not match customerId from route {customerIdFromRoute}",
+                "{Announcement}: CustomerId from claims {CustomerIdFromClaims} does not match customerId from route {CustomerIdFromRoute}",
                 "FAILED", customerIdFromClaims, customerIdFromRoute);
 
             logger.LogInformation(
-                "{Announcement}: {authorizationRequirement}",
+                "{Announcement}: {AuthorizationRequirement}",
                 "AUTHORIZATION REQUIREMENT COMPLETED", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
             context.Fail(new AuthorizationFailureReason(this, $"CustomerId from claims does not match customerId from route"));
@@ -48,7 +48,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
             "SUCCEEDED");
 
         logger.LogInformation(
-            "{Announcement}: {authorizationRequirement}",
+            "{Announcement}: {AuthorizationRequirement}",
             "AUTHORIZATION REQUIREMENT COMPLETED", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
         context.Succeed(requirement);

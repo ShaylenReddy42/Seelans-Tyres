@@ -65,7 +65,7 @@ public class OrdersController(
     public async Task<ActionResult<IEnumerable<OrderModel>>> RetrieveAll(Guid? customerId = null, bool notDeliveredOnly = false)
     {
         logger.LogInformation(
-            "API => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
+            "API => Attempting to retrieve all orders{For}{CustomerId}{ExceptDelivered}",
             customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
         var orders = await orderRepository.RetrieveAllAsync(customerId, notDeliveredOnly);
@@ -86,7 +86,7 @@ public class OrdersController(
     public async Task<ActionResult<OrderModel>> RetrieveSingle(int id)
     {
         logger.LogInformation(
-            "API => Attempting to retrieve order {orderId}",
+            "API => Attempting to retrieve order {OrderId}",
             id);
 
         var order = await orderRepository.RetrieveSingleAsync(id);
@@ -115,7 +115,7 @@ public class OrdersController(
     public async Task<ActionResult> MarkOrderAsDelivered(int id, bool delivered = true)
     {
         logger.LogInformation(
-            "API => Attempting to mark order {orderId} as delivered",
+            "API => Attempting to mark order {OrderId} as delivered",
             id);
 
         var order = await orderRepository.RetrieveSingleAsync(id);
@@ -123,7 +123,7 @@ public class OrdersController(
         if (order is null)
         {
             logger.LogWarning(
-                "{Announcement}: Order {orderId} does not exist!",
+                "{Announcement}: Order {OrderId} does not exist!",
                 "NULL", id);
             
             return NotFound();

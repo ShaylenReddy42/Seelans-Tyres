@@ -13,7 +13,7 @@ public class CartService(
     public async Task CreateItemAsync(CartItemModel newItem)
     {
         logger.LogInformation(
-            "Service => Attempting to add tyre {tyreId} to cart {cartId} with quantity {quantity}",
+            "Service => Attempting to add tyre {TyreId} to cart {CartId} with quantity {Quantity}",
             newItem.TyreId, cartId, newItem.Quantity);
         
         var cart = await RetrieveAsync();
@@ -27,7 +27,7 @@ public class CartService(
         else
         {
             logger.LogInformation(
-                "Tyre {tyreId} exists in the cart. Updating its quantity",
+                "Tyre {TyreId} exists in the cart. Updating its quantity",
                 newItem.TyreId);
             
             cart.Remove(cartItem);
@@ -41,7 +41,7 @@ public class CartService(
     public async Task<List<CartItemModel>> RetrieveAsync()
     {
         logger.LogDebug(
-            "Service => Attempting to retrieve cart {cartId}",
+            "Service => Attempting to retrieve cart {CartId}",
             cartId);
 
         var cart = await cacheService.RetrieveAsync<List<CartItemModel>>(cartId);
@@ -49,7 +49,7 @@ public class CartService(
         if (cart is null)
         {
             logger.LogWarning(
-                "Cart {cartId} doesn't exist in the cache. Adding it",
+                "Cart {CartId} doesn't exist in the cache. Adding it",
                 cartId);
             
             cart = [];
@@ -62,7 +62,7 @@ public class CartService(
     private async Task UpdateAsync(List<CartItemModel> cart)
     {
         logger.LogInformation(
-            "Service => Attempting to update cart {cartId}",
+            "Service => Attempting to update cart {CartId}",
             cartId);
         
         await cacheService.SetAsync(cartId, cart, 30, 2 * 60);
@@ -71,7 +71,7 @@ public class CartService(
     public async Task DeleteItemAsync(Guid tyreId)
     {
         logger.LogInformation(
-            "Service => Attempting to remove tyre {tyreId} from cart {cartId}",
+            "Service => Attempting to remove tyre {TyreId} from cart {CartId}",
             tyreId, cartId);
         
         var cart = await RetrieveAsync();
@@ -84,7 +84,7 @@ public class CartService(
     public async Task DeleteAsync()
     {
         logger.LogInformation(
-            "Service => Attempting to remove cart {cartId} from the cache",
+            "Service => Attempting to remove cart {CartId} from the cache",
             cartId);
         
         await cacheService.DeleteAsync(cartId);

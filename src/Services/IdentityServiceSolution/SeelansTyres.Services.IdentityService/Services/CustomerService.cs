@@ -33,7 +33,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to create a new customer account was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to create a new customer account was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds);
 
 			throw ex.GetBaseException();
@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to create a new customer account completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to create a new customer account completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds);
 
 		return customer;
@@ -50,7 +50,7 @@ public class CustomerService : ICustomerService
 	public async Task<Customer> RetrieveSingleAsync(Guid customerId)
 	{
 		logger.LogInformation(
-			"Service => Attempting to retrieve customer by Id {customerId}",
+			"Service => Attempting to retrieve customer by Id {CustomerId}",
 			customerId);
 		
 		Customer customer;
@@ -66,7 +66,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by Id {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by Id {CustomerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -74,7 +74,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by Id {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by Id {CustomerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
 
 		return customer;
@@ -83,7 +83,7 @@ public class CustomerService : ICustomerService
 	public async Task<Customer?> RetrieveSingleAsync(string email)
 	{
 		logger.LogInformation(
-			"Service => Attempting to retrieve customer by email {customerEmail}",
+			"Service => Attempting to retrieve customer by email {CustomerEmail}",
 			"***REDACTED***");
 
 		Customer? customer;
@@ -98,7 +98,8 @@ public class CustomerService : ICustomerService
 			stopwatch.Stop();
 
 			logger.LogError(
-				"{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by email {customerEmail} was unsuccessful",
+				ex,
+				"{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by email {CustomerEmail} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
 			throw ex.GetBaseException();
@@ -106,7 +107,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve customer by email {customerEmail} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by email {CustomerEmail} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
 		return customer;
@@ -115,7 +116,7 @@ public class CustomerService : ICustomerService
 	public async Task UpdateAsync(Guid customerId, UpdateAccountModel updateAccountModel)
 	{
 		logger.LogInformation(
-			"Service => Attempting to update account for customer {customerId}",
+			"Service => Attempting to update account for customer {CustomerId}",
 			customerId);
 
 		stopwatch.Start();
@@ -135,7 +136,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update account for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update account for customer {CustomerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -143,14 +144,14 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update account for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update account for customer {CustomerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
     }
 
 	public async Task DeleteAsync(Customer customer)
 	{
 		logger.LogInformation(
-			"Service => Attempting to delete account for customer {customerId}",
+			"Service => Attempting to delete account for customer {CustomerId}",
 			customer.Id);
 
 		stopwatch.Start();
@@ -164,7 +165,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete account for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete account for customer {CustomerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customer.Id);
 
 			throw ex.GetBaseException();
@@ -172,14 +173,14 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete account for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete account for customer {CustomerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customer.Id);
 	}
 
 	public async Task<bool> VerifyPasswordAsync(Guid customerId, string password)
 	{
 		logger.LogInformation(
-			"Service => Attempting a password verification process for customer {customerId}",
+			"Service => Attempting a password verification process for customer {CustomerId}",
 			customerId);
 
 		bool passwordMatches;
@@ -195,7 +196,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Password verification process for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Password verification process for customer {CustomerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -203,7 +204,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-			"{Announcement} ({stopwatchElapsedTime}ms): Password verification process for customer {customerId} completed successfully",
+			"{Announcement} ({StopwatchElapsedTime}ms): Password verification process for customer {CustomerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
 
 		return passwordMatches;
@@ -212,7 +213,7 @@ public class CustomerService : ICustomerService
 	public async Task ResetPasswordAsync(Guid customerId, string password)
 	{
 		logger.LogInformation(
-			"Service => Attempting a password reset operation for customer {customerId}",
+			"Service => Attempting a password reset operation for customer {CustomerId}",
 			customerId);
 		
 		stopwatch.Start();
@@ -229,7 +230,7 @@ public class CustomerService : ICustomerService
 
 			logger.LogError(
 				ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Password reset operation for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Password reset operation for customer {CustomerId} was unsuccessful",
 				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
@@ -237,7 +238,7 @@ public class CustomerService : ICustomerService
 		stopwatch.Stop();
 
 		logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Password reset operation for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Password reset operation for customer {CustomerId} completed successfully",
 			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
 	}
 }

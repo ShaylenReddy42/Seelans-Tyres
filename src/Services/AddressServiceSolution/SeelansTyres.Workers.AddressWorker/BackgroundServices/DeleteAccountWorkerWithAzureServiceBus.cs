@@ -44,7 +44,7 @@ public class DeleteAccountWorkerWithAzureServiceBus(
         }
 
         logger.LogInformation(
-            "Worker => Attempting to remove addresses for customer {customerId}",
+            "Worker => Attempting to remove addresses for customer {CustomerId}",
             baseMessage!.IdOfEntityToUpdate);
 
         using var scope = serviceScopeFactory.CreateScope();

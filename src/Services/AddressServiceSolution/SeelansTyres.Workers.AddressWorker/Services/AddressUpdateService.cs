@@ -14,7 +14,7 @@ public class AddressUpdateService(
     public async Task DeleteAsync(BaseMessage message)
     {
         logger.LogInformation(
-            "Service => Attempting to remove all addresses for customer {customerId}",
+            "Service => Attempting to remove all addresses for customer {CustomerId}",
             message.IdOfEntityToUpdate);
 
         stopwatch.Start();
@@ -30,7 +30,7 @@ public class AddressUpdateService(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all addresses for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -38,7 +38,7 @@ public class AddressUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all addresses for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all addresses for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

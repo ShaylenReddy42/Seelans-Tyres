@@ -78,7 +78,7 @@ public class ExternalController : Controller
         if (_logger.IsEnabled(LogLevel.Debug))
         {
             var externalClaims = result.Principal!.Claims.Select(c => $"{c.Type}: {c.Value}");
-            _logger.LogDebug("External claims: {@claims}", externalClaims);
+            _logger.LogDebug("External claims: {@Claims}", externalClaims);
         }
 
         // lookup our user and external provider info

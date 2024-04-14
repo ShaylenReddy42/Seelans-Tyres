@@ -11,7 +11,7 @@ public class CustomerServiceFullAccessDelegatingHandler(
         CancellationToken cancellationToken)
     {
         logger.LogInformation(
-            "{Announcement}: {delegatingHandler}",
+            "{Announcement}: {DelegatingHandler}",
             "DELEGATING HANDLER HIT", "CustomerServiceFullAccessDelegatingHandler");
 
         // Gets 'CustomerService' as audience in the exchanged access token

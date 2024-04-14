@@ -56,7 +56,7 @@ public static class CryptographyExtensions
         stopwatch.Start();
         
         logger.LogInformation(
-            "Beginning decryption process for model of type {modelType}", 
+            "Beginning decryption process for model of type {ModelType}", 
             typeof(T).Name);
 
         logger.LogInformation("Retrieving the RSA Security Key from the signing credential store");
@@ -93,7 +93,7 @@ public static class CryptographyExtensions
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Decryption failed, integrity checks by the AesGcm algorithm indicates that the data has been compromised",
+                "{Announcement} ({StopwatchElapsedTime}ms): Decryption failed, integrity checks by the AesGcm algorithm indicates that the data has been compromised",
                 "FAILED", stopwatch.ElapsedMilliseconds);
             
             return default;
@@ -102,7 +102,7 @@ public static class CryptographyExtensions
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Decryption process for model of type {modelType} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Decryption process for model of type {ModelType} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return JsonSerializer.Deserialize<T>(modelAsBytes);

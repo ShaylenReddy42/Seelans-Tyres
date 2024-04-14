@@ -27,7 +27,7 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Retrieving customer details, addresses and orders for customer {customerId}",
+            "Controller => Retrieving customer details, addresses and orders for customer {CustomerId}",
             customerId);
 
         var customer = customerServiceClient.RetrieveSingleAsync(customerId);
@@ -48,7 +48,7 @@ public class AccountController(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "Building the Account View Model for customer {customerId} took {stopwatchElapsedTime}ms to complete",
+            "Building the Account View Model for customer {CustomerId} took {StopwatchElapsedTime}ms to complete",
             customerId, stopwatch.ElapsedMilliseconds);
 
         return View(accountViewModel);
@@ -71,7 +71,7 @@ public class AccountController(
         else
         {
             logger.LogInformation(
-                "Logging out customer {customerId}",
+                "Logging out customer {CustomerId}",
                 customerId);
         }
 
@@ -99,8 +99,7 @@ public class AccountController(
             return View();
         }
 
-        logger.LogInformation(
-            "Controller => Attempting to create a new customer account");
+        logger.LogInformation("Controller => Attempting to create a new customer account");
 
         var (newCustomer, succeeded, errors) = await customerServiceClient.CreateAsync(model);
 
@@ -128,7 +127,7 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Attempting to update account for customer {customerId}. Encryption required",
+            "Controller => Attempting to update account for customer {CustomerId}. Encryption required",
             customerId);
         
         await customerServiceClient.UpdateAsync(model.UpdateAccountModel);
@@ -142,7 +141,7 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Attempting to delete account for customer {customerId}. Encryption required",
+            "Controller => Attempting to delete account for customer {CustomerId}. Encryption required",
             customerId);
 
         var succeeded = await customerServiceClient.DeleteAsync(password);
@@ -150,7 +149,7 @@ public class AccountController(
         if (succeeded)
         {
             logger.LogInformation(
-                "{Announcement}: Attempt to delete account for customer {customerId} completed successfully. Logging them out",
+                "{Announcement}: Attempt to delete account for customer {CustomerId} completed successfully. Logging them out",
                 "SUCCEEDED", customerId);
 
             return RedirectToAction(nameof(Logout));
@@ -165,7 +164,7 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Attempting to add a new address for customer {customerId}",
+            "Controller => Attempting to add a new address for customer {CustomerId}",
             customerId);
 
         var addressModel = model.AddressModel;
@@ -177,7 +176,7 @@ public class AccountController(
         if (!requestSucceeded)
         {
             logger.LogError(
-                "{Announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to add a new address for customer {CustomerId} was unsuccessful",
                 "FAILED", customerId);
             
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
@@ -185,7 +184,7 @@ public class AccountController(
         else
         {
             logger.LogInformation(
-                "{Announcement}: Attempt to add a new address for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to add a new address for customer {CustomerId} completed successfully",
                 "SUCCEEDED", customerId);
         }
 
@@ -198,7 +197,7 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Attempting to mark address {addressId} for customer {customerId} as preferred",
+            "Controller => Attempting to mark address {AddressId} for customer {CustomerId} as preferred",
             addressId, customerId);
 
         await addressServiceClient.MarkAddressAsPreferredAsync(customerId, addressId);
@@ -212,7 +211,7 @@ public class AccountController(
         var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Controller => Attempting to delete address {addressId} for customer {customerId}",
+            "Controller => Attempting to delete address {AddressId} for customer {CustomerId}",
             addressId, customerId);
 
         await addressServiceClient.DeleteAsync(customerId, addressId);
@@ -231,7 +230,7 @@ public class AccountController(
         if (model.SendCodeModel is not null)
         {
             logger.LogInformation(
-                "Controller => Starting a reset password operation for customer with email {customerEmail}",
+                "Controller => Starting a reset password operation for customer with email {CustomerEmail}",
                 "***REDACTED***");
             
             var customer = await customerServiceClient.RetrieveSingleAsync(model.SendCodeModel.Email);
@@ -239,7 +238,7 @@ public class AccountController(
             if (customer is null)
             {
                 logger.LogWarning(
-                    "Customer with email {customerEmail} does not exist!",
+                    "Customer with email {CustomerEmail} does not exist!",
                     "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, $"Customer with email {model.SendCodeModel.Email} does not exist!");
@@ -254,7 +253,7 @@ public class AccountController(
             HttpContext.Session.SetString("ResetPasswordToken", token);
 
             logger.LogInformation(
-                "Sending token to customer with email {customerEmail}",
+                "Sending token to customer with email {CustomerEmail}",
                 "***REDACTED***");
 
              var result = 
@@ -267,7 +266,7 @@ public class AccountController(
             if (!result)
             {
                 logger.LogError(
-                    "{Announcement}: The system failed to send the token to customer with email {customerEmail}",
+                    "{Announcement}: The system failed to send the token to customer with email {CustomerEmail}",
                     "FAILED", "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, "The system failed to send you an email with the token,\nplease resubmit and try again");
@@ -289,7 +288,7 @@ public class AccountController(
             if (model.ResetPasswordModel.Token != HttpContext.Session.GetString("ResetPasswordToken"))
             {
                 logger.LogError(
-                    "{Announcement}: Customer with email {customerEmail} entered an invalid token to try and reset their password",
+                    "{Announcement}: Customer with email {CustomerEmail} entered an invalid token to try and reset their password",
                     "FAILED", "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, "Invalid token!");
@@ -298,7 +297,7 @@ public class AccountController(
             }
 
             logger.LogError(
-                "{Announcement}: Customer with email {customerEmail} entered a valid token. The reset password operation will begin",
+                "{Announcement}: Customer with email {CustomerEmail} entered a valid token. The reset password operation will begin",
                 "SUCCEEDED", "***REDACTED***");
 
             HttpContext.Session.Remove("ResetPasswordToken");

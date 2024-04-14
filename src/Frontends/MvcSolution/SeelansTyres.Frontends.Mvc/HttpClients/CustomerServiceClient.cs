@@ -33,13 +33,13 @@ public class CustomerServiceClient(
                 customer = await response.Content.ReadFromJsonAsync<CustomerModel>();
 
                 logger.LogInformation(
-                    "{Announcement}: Attempt to create a new customer account completed successfully. Customer {customerId} created",
+                    "{Announcement}: Attempt to create a new customer account completed successfully. Customer {CustomerId} created",
                     "SUCCEEDED", customer!.Id);
             }
             else
             {
                 logger.LogInformation(
-                    "Customer with email {customerEmail} already exists",
+                    "Customer with email {CustomerEmail} already exists",
                     "***REDACTED***");
 
                 errors.Add($"Customer with email {registerModel.Email} already exists");
@@ -61,7 +61,7 @@ public class CustomerServiceClient(
     public async Task<CustomerModel> RetrieveSingleAsync(Guid customerId)
     {
         logger.LogInformation(
-            "Service => Attempting to retrieve customer {customerId}",
+            "Service => Attempting to retrieve customer {CustomerId}",
             customerId);
 
         CustomerModel? customer = null;
@@ -80,7 +80,7 @@ public class CustomerServiceClient(
         if (customer is null)
         {
             logger.LogInformation(
-                "Customer {customerId} is not in the cache. Retrieving from downstream and adding it",
+                "Customer {CustomerId} is not in the cache. Retrieving from downstream and adding it",
                 customerId);
 
             var response = await client.GetAsync($"api/customers/{customerId}");
@@ -88,7 +88,7 @@ public class CustomerServiceClient(
             if (!response.IsSuccessStatusCode)
             {
                 logger.LogError(
-                    "{Announcement}: Attempt to retrieve customer {customerId} from downstream was unsuccessful with status code {statusCode}",
+                    "{Announcement}: Attempt to retrieve customer {CustomerId} from downstream was unsuccessful with status code {StatusCode}",
                     "FAILED", customerId, response.StatusCode);
 
                 customer = new CustomerModel
@@ -115,7 +115,7 @@ public class CustomerServiceClient(
     public async Task<CustomerModel?> RetrieveSingleAsync(string email)
     {
         logger.LogInformation(
-            "Service => Attempting to retrieve customer by email {customerEmail}",
+            "Service => Attempting to retrieve customer by email {CustomerEmail}",
             "***REDACTED***");
 
         client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.retrievesinglebyemail"));
@@ -135,7 +135,7 @@ public class CustomerServiceClient(
         var customerId = Guid.Parse(httpContextAccessor.HttpContext!.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Service => Attempting to update account for customer {customerId}",
+            "Service => Attempting to update account for customer {CustomerId}",
             customerId);
 
         var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(await updateAccountModel.EncryptAsync(client, configuration, logger)));
@@ -144,7 +144,7 @@ public class CustomerServiceClient(
         if (response.IsSuccessStatusCode)
         {
             logger.LogInformation(
-                "{Announcement}: Attempt to update account for customer {customerId} completed successfully. Removing the old customer info from the cache",
+                "{Announcement}: Attempt to update account for customer {CustomerId} completed successfully. Removing the old customer info from the cache",
                 "SUCCEEDED", customerId);
 
             await cacheService.DeleteAsync(customerId.ToString());
@@ -152,7 +152,7 @@ public class CustomerServiceClient(
         else
         {
             logger.LogError(
-                "{Announcement}: Attempt to update account for customer {customerId} was unsuccessful with status code {statusCode}",
+                "{Announcement}: Attempt to update account for customer {CustomerId} was unsuccessful with status code {StatusCode}",
                 "FAILED", customerId, response.StatusCode);
         }
     }
@@ -162,7 +162,7 @@ public class CustomerServiceClient(
         var customerId = Guid.Parse(httpContextAccessor.HttpContext!.User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
 
         logger.LogInformation(
-            "Service => Attempting to delete account for customer {customerId}",
+            "Service => Attempting to delete account for customer {CustomerId}",
             customerId);
 
         var passwordModel = new PasswordModel { Password = password };
@@ -176,7 +176,7 @@ public class CustomerServiceClient(
         }
 
         logger.LogError(
-            "{Announcement}: Attempt to delete account for customer {customerId} was unsuccessful with status code {statusCode}",
+            "{Announcement}: Attempt to delete account for customer {CustomerId} was unsuccessful with status code {statusCode}",
             "FAILED", customerId, response.StatusCode);
 
         return false;
@@ -185,7 +185,7 @@ public class CustomerServiceClient(
     public async Task ResetPasswordAsync(Guid customerId, string password)
     {
         logger.LogInformation(
-            "Service => Attempting a reset password operation for customer {customerId}",
+            "Service => Attempting a reset password operation for customer {CustomerId}",
             customerId);
 
         client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.resetpassword"));
@@ -197,12 +197,12 @@ public class CustomerServiceClient(
         if (!response.IsSuccessStatusCode)
         {
             logger.LogError(
-                "{Announcement}: Reset password operation for customer {customerId} was unsuccessful",
+                "{Announcement}: Reset password operation for customer {CustomerId} was unsuccessful",
                 "FAILED", customerId);
         }
 
         logger.LogInformation(
-                "{Announcement}: Reset password operation for customer {customerId} completed successfully",
+                "{Announcement}: Reset password operation for customer {CustomerId} completed successfully",
                 "SUCCEEDED", customerId);
     }
 
@@ -214,7 +214,7 @@ public class CustomerServiceClient(
     private async Task<string> GetClientAccessTokenAsync(string additionalScopes)
     {
         logger.LogInformation(
-            "Attempting to retrieve an access token from IdentityServer4 using the client credentials flow with {additionalScopes} as additional scope(s)",
+            "Attempting to retrieve an access token from IdentityServer4 using the client credentials flow with {AdditionalScopes} as additional scope(s)",
             additionalScopes);
 
         stopwatch.Start();
@@ -226,7 +226,7 @@ public class CustomerServiceClient(
             stopwatch.Stop();
 
             logger.LogError(
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
         }
 
@@ -245,13 +245,13 @@ public class CustomerServiceClient(
         if (tokenResponse.IsError)
         {
             logger.LogError(
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve an access token was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
         }
         else
         {
             logger.LogInformation(
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve an access token completed successfully",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve an access token completed successfully",
                 "SUCCEEDED", stopwatch.ElapsedMilliseconds);
         }
 

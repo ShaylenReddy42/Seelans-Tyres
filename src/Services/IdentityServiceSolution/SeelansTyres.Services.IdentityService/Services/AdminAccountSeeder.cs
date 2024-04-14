@@ -40,7 +40,7 @@ public class AdminAccountSeeder
                 stopwatch.Stop();
 
                 logger.LogWarning(
-                    "{Announcement} ({stopwatchElapsedTime}ms): Administrator account already exists",
+                    "{Announcement} ({StopwatchElapsedTime}ms): Administrator account already exists",
                     "ABORTED", stopwatch.ElapsedMilliseconds);
                 
                 return;
@@ -51,7 +51,7 @@ public class AdminAccountSeeder
             if (!roleExists)
             {
                 logger.LogInformation(
-                    "Creating role {role} because it doesn't exist", 
+                    "Creating role {Role} because it doesn't exist", 
                     "Administrator");
                 
                 await roleManager.CreateAsync(
@@ -87,7 +87,7 @@ public class AdminAccountSeeder
             
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): The database is unavailable",
+                "{Announcement} ({StopwatchElapsedTime}ms): The database is unavailable",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw;
@@ -95,7 +95,7 @@ public class AdminAccountSeeder
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to create an administrator account completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to create an administrator account completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 }

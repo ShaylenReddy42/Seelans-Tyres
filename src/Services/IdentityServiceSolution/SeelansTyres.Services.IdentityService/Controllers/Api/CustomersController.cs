@@ -99,7 +99,7 @@ public class CustomersController : ControllerBase
         if (customer is not null)
         {
             logger.LogWarning(
-                "{Announcement}: Customer with email {customerEmail} already exists",
+                "{Announcement}: Customer with email {CustomerEmail} already exists",
                 "ABORTED", "***REDACTED***");
 
             return BadRequest("Customer already exists");
@@ -138,13 +138,13 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(string email)
     {
         logger.LogInformation(
-            "API => Attempting to retrieve customer by email {customerEmail}",
+            "API => Attempting to retrieve customer by email {CustomerEmail}",
             "***REDACTED***");
         
         if (string.IsNullOrEmpty(email.Trim()))
         {
             logger.LogWarning(
-                "{Announcement}: Authenticated user using client '{clientId}' attempted to retrieve all customers by not specifying an email",
+                "{Announcement}: Authenticated user using client '{ClientId}' attempted to retrieve all customers by not specifying an email",
                 "FAILED", User.Claims.Single(claim => claim.Type is "client_id").Value);
 
             return BadRequest();
@@ -167,7 +167,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult<CustomerModel>> RetrieveSingleAsync(Guid id)
     {
         logger.LogInformation(
-            "API => Attempting to retrieve customer by Id {customerId}",
+            "API => Attempting to retrieve customer by Id {CustomerId}",
             id);
         
         var customer = await customerService.RetrieveSingleAsync(id);
@@ -203,7 +203,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult> UpdateAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation(
-            "API => Attempting to update account for customer {customerId}, decryption required",
+            "API => Attempting to update account for customer {CustomerId}, decryption required",
             id);
 
         var updateAccountModel = await encryptedDataModel.DecryptAsync<UpdateAccountModel>(signingCredentialStore, logger);
@@ -241,7 +241,7 @@ public class CustomersController : ControllerBase
         stopwatch.Stop();
 
         logger.LogInformation(
-            "It took {stopwatchElapsedTime}ms to write the update to the channel",
+            "It took {StopwatchElapsedTime}ms to write the update to the channel",
             stopwatch.ElapsedMilliseconds);
 
         return NoContent();
@@ -262,7 +262,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
         logger.LogInformation(
-            "API => Attempting to delete account for customer {customerId}",
+            "API => Attempting to delete account for customer {CustomerId}",
             id);
 
         await customerService.DeleteAsync(await customerService.RetrieveSingleAsync(id));
@@ -288,7 +288,7 @@ public class CustomersController : ControllerBase
         stopwatch.Stop();
 
         logger.LogInformation(
-            "It took {stopwatchElapsedTime}ms to write the update to the channel",
+            "It took {StopwatchElapsedTime}ms to write the update to the channel",
             stopwatch.ElapsedMilliseconds);
 
         return NoContent();
@@ -322,7 +322,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult> VerifyPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation(
-            "API => Attempting a password verification process for customer {customerId}, decryption required",
+            "API => Attempting a password verification process for customer {CustomerId}, decryption required",
             id);
 
         var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore, logger);
@@ -366,7 +366,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult> ResetPasswordAsync(Guid id, EncryptedDataModel encryptedDataModel)
     {
         logger.LogInformation(
-            "API => Attempting a password reset operation for customer {customerId}, decryption required",
+            "API => Attempting a password reset operation for customer {CustomerId}, decryption required",
             id);
 
         var passwordModel = await encryptedDataModel.DecryptAsync<PasswordModel>(signingCredentialStore, logger);

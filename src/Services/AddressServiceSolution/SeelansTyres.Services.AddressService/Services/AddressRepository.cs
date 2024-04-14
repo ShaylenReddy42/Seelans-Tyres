@@ -17,7 +17,7 @@ public class AddressRepository : IAddressRepository
     public async Task CreateAsync(Guid customerId, Address newAddress)
     {
         logger.LogInformation(
-            "Repository => Adding a new address for customer {customerId}",
+            "Repository => Adding a new address for customer {CustomerId}",
             customerId);
 
         newAddress.CustomerId = customerId;
@@ -44,7 +44,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new address for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
             throw ex.GetBaseException();
@@ -52,14 +52,14 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new address for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new address for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
     }
 
     public async Task<IEnumerable<Address>> RetrieveAllAsync(Guid customerId)
     {
         logger.LogInformation(
-            "Repository => Retrieving addresses for customer {customerId}", 
+            "Repository => Retrieving addresses for customer {CustomerId}", 
             customerId);
         
         IEnumerable<Address> addresses = Enumerable.Empty<Address>();
@@ -75,7 +75,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, customerId);
 
             throw ex.GetBaseException();
@@ -83,7 +83,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {customerId} completed successfully, returning {addressCount} address(es)",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {CustomerId} completed successfully, returning {AddressesCount} address(es)",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId, addresses.Count());
 
         return addresses;
@@ -92,7 +92,7 @@ public class AddressRepository : IAddressRepository
     public async Task<Address?> RetrieveSingleAsync(Guid customerId, Guid addressId)
     {
         logger.LogInformation(
-            "Repository => Retrieving address {addressId} for customer {customerId}", 
+            "Repository => Retrieving address {AddressId} for customer {CustomerId}", 
             addressId, customerId);
 
         Address? address = null;
@@ -108,7 +108,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve address {addressId} for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve address {AddressId} for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
 
             throw ex.GetBaseException();
@@ -116,7 +116,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve address {addressId} for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve address {AddressId} for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
 
         return address;
@@ -125,13 +125,13 @@ public class AddressRepository : IAddressRepository
     public async Task MarkAsPreferredAsync(Guid customerId, Address addressToMarkAsPreferred)
     {
         logger.LogInformation(
-            "Repository => Marking address {addressId} as preferred for customer {customerId}", 
+            "Repository => Marking address {AddressId} as preferred for customer {CustomerId}", 
             addressToMarkAsPreferred.Id, customerId);
 
         stopwatch.Start();
         try
         {
-            logger.LogInformation("Setting preference for other addresses to false for customer {customerId}", customerId);
+            logger.LogInformation("Setting preference for other addresses to false for customer {CustomerId}", customerId);
 
             await context.Addresses
                 .Where(address => address.CustomerId == customerId)
@@ -147,7 +147,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to mark address {AddressId} as preferred for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
 
             throw ex.GetBaseException();
@@ -155,14 +155,14 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to mark address {AddressId} as preferred for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
     }
 
     public async Task DeleteAsync(Guid customerId, Guid addressId)
     {
         logger.LogInformation(
-            "Repository => Attempting to delete address {addressId} for customer {customerId}",
+            "Repository => Attempting to delete address {AddressId} for customer {CustomerId}",
             addressId, customerId);
 
         stopwatch.Start();
@@ -178,7 +178,7 @@ public class AddressRepository : IAddressRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete address {AddressId} for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
 
             throw ex.GetBaseException();
@@ -186,7 +186,7 @@ public class AddressRepository : IAddressRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete address {addressId} for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete address {AddressId} for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
     }
 

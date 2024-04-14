@@ -15,7 +15,7 @@ public class OrderUpdateService(
     public async Task DeleteAccountAsync(BaseMessage message)
     {
         logger.LogInformation(
-            "Service => Attempting to remove all orders for customer {customerId}",
+            "Service => Attempting to remove all orders for customer {CustomerId}",
             message.IdOfEntityToUpdate);
 
         stopwatch.Start();
@@ -31,7 +31,7 @@ public class OrderUpdateService(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all orders for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -39,14 +39,14 @@ public class OrderUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to remove all orders for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all orders for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 
     public async Task UpdateAccountAsync(BaseMessage message)
     {
         logger.LogInformation(
-            "Service => Attempting to update all orders for customer {customerId}",
+            "Service => Attempting to update all orders for customer {CustomerId}",
             message.IdOfEntityToUpdate);
 
         var updateAccountModel = JsonSerializer.Deserialize<UpdateAccountModel>(message.SerializedModel);
@@ -68,7 +68,7 @@ public class OrderUpdateService(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders for customer {CustomerId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -76,14 +76,14 @@ public class OrderUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders for customer {customerId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders for customer {CustomerId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 
     public async Task UpdateTyreAsync(BaseMessage message)
     {
         logger.LogInformation(
-            "Service => Attempting to update all orders with tyre {tyreId}",
+            "Service => Attempting to update all orders with tyre {TyreId}",
             message.IdOfEntityToUpdate);
 
         var tyreModel = JsonSerializer.Deserialize<TyreModel>(message.SerializedModel);
@@ -104,7 +104,7 @@ public class OrderUpdateService(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders with tyre {TyreId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
@@ -112,7 +112,7 @@ public class OrderUpdateService(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to update all orders with tyre {tyreId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders with tyre {TyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

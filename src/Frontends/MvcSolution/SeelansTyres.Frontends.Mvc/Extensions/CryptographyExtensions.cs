@@ -29,7 +29,7 @@ public static class CryptographyExtensions
         stopwatch.Start();
 
         logger.LogInformation(
-            "Beginning encryption process for model of type {modelType}",
+            "Beginning encryption process for model of type {ModelType}",
             typeof(T).Name);
 
         var modelAsJson = JsonSerializer.SerializeToUtf8Bytes(model);
@@ -90,7 +90,7 @@ public static class CryptographyExtensions
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Encryption process for model of type {modelType} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Encryption process for model of type {ModelType} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return encryptedDataModel;

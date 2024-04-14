@@ -88,7 +88,7 @@ public class CloudImageService(
         if (!imageUrl.StartsWith(blobContainerUri))
         {
             logger.LogWarning(
-                "{Announcement}: The image url is invalid and cannot be acted upon. It needs to start with '{blobContainerUri}'",
+                "{Announcement}: The image url is invalid and cannot be acted upon. It needs to start with '{BlobContainerUri}'",
                 "ABORTED", blobContainerUri);
 
             return;

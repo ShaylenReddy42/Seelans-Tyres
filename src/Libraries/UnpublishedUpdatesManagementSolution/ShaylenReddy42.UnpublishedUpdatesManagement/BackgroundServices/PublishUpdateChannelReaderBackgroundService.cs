@@ -47,20 +47,20 @@ public class PublishUpdateChannelReaderBackgroundService : BackgroundService
             try
             {
                 logger.LogInformation(
-                    "Background Service => Attempting to publish update to {publishDestination} destination",
+                    "Background Service => Attempting to publish update to {PublishDestination} destination",
                     destination);
 
                 await messagingServicePublisher.PublishMessageAsync(message, destination);
 
                 logger.LogInformation(
-                    "{Announcement}: Attempt to publish update to {publishDestination} destination completed successfully",
+                    "{Announcement}: Attempt to publish update to {PublishDestination} destination completed successfully",
                     "SUCCEEDED", destination);
             }
             catch (Exception ex)
             {
                 logger.LogError(
                     ex,
-                    "{Announcement}: Attempt to publish update to {publishDestination} destination was unsuccessful, writing to the database to try again later",
+                    "{Announcement}: Attempt to publish update to {PublishDestination} destination was unsuccessful, writing to the database to try again later",
                     "FAILED", destination);
 
                 // The 'IUnpublishedUpdateRepository' is registered as a scoped service

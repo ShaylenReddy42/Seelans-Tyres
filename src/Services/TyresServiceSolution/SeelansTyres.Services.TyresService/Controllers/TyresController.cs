@@ -66,7 +66,7 @@ public class TyresController(
     public async Task<ActionResult<IEnumerable<TyreModel>>> RetrieveAllAsync(bool availableOnly = true)
     {
         logger.LogInformation(
-            "API => Attempting to retrieve all tyres{includingUnavailable}",
+            "API => Attempting to retrieve all tyres{IncludingUnavailable}",
             !availableOnly ? " including unavailable" : "");
         
         var tyres = await tyresRepository.RetrieveAllTyresAsync(availableOnly);
@@ -88,7 +88,7 @@ public class TyresController(
     public async Task<ActionResult<TyreModel>> RetrieveSingleAsync(Guid id)
     {
         logger.LogInformation(
-            "API => Attempting to retrieve tyre {tyreId}",
+            "API => Attempting to retrieve tyre {TyreId}",
             id);
         
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
@@ -96,7 +96,7 @@ public class TyresController(
         if (tyre is null)
         {
             logger.LogWarning(
-                "{Announcement}: Tyre {tyreId} does not exist!",
+                "{Announcement}: Tyre {TyreId} does not exist!",
                 "NULL", id);
             
             return NotFound();
@@ -123,7 +123,7 @@ public class TyresController(
     public async Task<ActionResult> UpdateAsync(TyreModel tyreModel, Guid id)
     {
         logger.LogInformation(
-            "API => Attempting to update tyre {tyreId}",
+            "API => Attempting to update tyre {TyreId}",
             id);
         
         var tyre = await tyresRepository.RetrieveSingleTyreAsync(id);
@@ -131,7 +131,7 @@ public class TyresController(
         if (tyre is null)
         {
             logger.LogWarning(
-                "{Announcement}: Tyre {tyreId} does not exist!",
+                "{Announcement}: Tyre {TyreId} does not exist!",
                 "NULL", id);
 
             return NotFound();
@@ -167,7 +167,7 @@ public class TyresController(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "It took {stopwatchElapsedTime}ms to write the update to the channel",
+            "It took {StopwatchElapsedTime}ms to write the update to the channel",
             stopwatch.ElapsedMilliseconds);
 
         return NoContent();
@@ -184,7 +184,7 @@ public class TyresController(
     public async Task<ActionResult<TyreModel>> DeleteTyreAsync(Guid id)
     {
         logger.LogInformation(
-            "API => Attempting to delete tyre {tyreId}",
+            "API => Attempting to delete tyre {TyreId}",
             id);
 
         await tyresRepository.DeleteTyreAsync(id);

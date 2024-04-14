@@ -7,7 +7,7 @@ public class AddressServiceClient(
     public async Task<bool> CreateAsync(AddressModel address, Guid customerId)
     {
         logger.LogInformation(
-            "Service => Attempting to add a new address for customer {customerId}",
+            "Service => Attempting to add a new address for customer {CustomerId}",
             customerId);
 
         try
@@ -16,7 +16,7 @@ public class AddressServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to add a new address for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to add a new address for customer {CustomerId} completed successfully",
                 "SUCCEEDED", customerId);
 
             return true;
@@ -25,7 +25,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to add a new address for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to add a new address for customer {CustomerId} was unsuccessful",
                 "FAILED", customerId);
 
             return false;
@@ -35,7 +35,7 @@ public class AddressServiceClient(
     public async Task<IEnumerable<AddressModel>> RetrieveAllAsync(Guid customerId)
     {
         logger.LogInformation(
-            "Service => Attempting to retrieve all addresses for customer {customerId}",
+            "Service => Attempting to retrieve all addresses for customer {CustomerId}",
             customerId);
 
         try
@@ -46,7 +46,7 @@ public class AddressServiceClient(
             var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to retrieve all addresses for customer {customerId} completed successfully with {addressesCount} address(es)",
+                "{Announcement}: Attempt to retrieve all addresses for customer {CustomerId} completed successfully with {AddressesCount} address(es)",
                 "SUCCEEDED", customerId, addresses?.Count() ?? 0);
 
             return addresses ?? [];
@@ -55,7 +55,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to retrieve all addresses for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to retrieve all addresses for customer {CustomerId} was unsuccessful",
                 "FAILED", customerId);
 
             return [];
@@ -65,7 +65,7 @@ public class AddressServiceClient(
     public async Task<bool> MarkAddressAsPreferredAsync(Guid customerId, Guid addressId)
     {
         logger.LogInformation(
-            "Service => Attempting to mark address {addressId} as preferred for customer {customerId}",
+            "Service => Attempting to mark address {AddressId} as preferred for customer {CustomerId}",
             addressId, customerId);
 
         try
@@ -74,7 +74,7 @@ public class AddressServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to mark address {addressId} as preferred for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to mark address {AddressId} as preferred for customer {CustomerId} completed successfully",
                 "SUCCEEDED", addressId, customerId);
 
             return true;
@@ -83,7 +83,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to mark address {addressId} as preferred for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to mark address {AddressId} as preferred for customer {CustomerId} was unsuccessful",
                 "FAILED", addressId, customerId);
 
             return false;
@@ -93,7 +93,7 @@ public class AddressServiceClient(
     public async Task<bool> DeleteAsync(Guid customerId, Guid addressId)
     {
         logger.LogInformation(
-            "Service => Attempting to delete address {addressId} for customer {customerId}",
+            "Service => Attempting to delete address {AddressId} for customer {CustomerId}",
             addressId, customerId);
 
         try
@@ -102,7 +102,7 @@ public class AddressServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to delete address {addressId} for customer {customerId} completed successfully",
+                "{Announcement}: Attempt to delete address {AddressId} for customer {CustomerId} completed successfully",
                 "SUCCEEDED", addressId, customerId);
 
             return true;
@@ -111,7 +111,7 @@ public class AddressServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to delete address {addressId} for customer {customerId} was unsuccessful",
+                "{Announcement}: Attempt to delete address {AddressId} for customer {CustomerId} was unsuccessful",
                 "FAILED", addressId, customerId);
 
             return false;

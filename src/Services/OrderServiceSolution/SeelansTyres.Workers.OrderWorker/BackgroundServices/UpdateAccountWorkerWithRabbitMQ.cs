@@ -53,7 +53,7 @@ public class UpdateAccountWorkerWithRabbitMQ(
             }
 
             logger.LogInformation(
-                "Worker => Attempting to update orders for customer {customerId}",
+                "Worker => Attempting to update orders for customer {CustomerId}",
                 baseMessage!.IdOfEntityToUpdate);
 
             using var scope = serviceScopeFactory.CreateScope();

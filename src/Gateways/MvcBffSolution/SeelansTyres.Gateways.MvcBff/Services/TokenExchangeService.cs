@@ -18,7 +18,7 @@ public class TokenExchangeService : ITokenExchangeService
     public async Task<AuthenticationHeaderValue> PerformTokenExchangeAsync(HttpRequestMessage incomingRequest, string additionalScopes)
     {
         logger.LogInformation(
-            "Token exchange request triggered with {additionalScopes} as requested scope(s)",
+            "Token exchange request triggered with {AdditionalScopes} as requested scope(s)",
             additionalScopes);
         
         var incomingAccessToken = incomingRequest.Headers.Authorization!.Parameter;

@@ -26,7 +26,7 @@ public class OrderRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to place a new order was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -34,14 +34,14 @@ public class OrderRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to place a new order completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to place a new order completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 
     public async Task<IEnumerable<Order>> RetrieveAllAsync(Guid? customerId, bool notDeliveredOnly)
     {
         logger.LogInformation(
-            "Repository => Attempting to retrieve all orders{for}{customerId}{exceptDelivered}",
+            "Repository => Attempting to retrieve all orders{For}{CustomerId}{ExceptDelivered}",
             customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
         IEnumerable<Order> orders = Enumerable.Empty<Order>();
@@ -70,7 +70,7 @@ public class OrderRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds,
                 customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
@@ -79,7 +79,7 @@ public class OrderRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all orders{for}{customerId}{exceptDelivered} completed successfully with {ordersCount} order(s)",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered} completed successfully with {OrdersCount} order(s)",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds,
             customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "",
             orders.Count());
@@ -90,7 +90,7 @@ public class OrderRepository(
     public async Task<Order?> RetrieveSingleAsync(int orderId)
     {
         logger.LogInformation(
-            "Repository => Attempting to retrieve order {orderId}",
+            "Repository => Attempting to retrieve order {OrderId}",
             orderId);
 
         Order? order = null;
@@ -108,7 +108,7 @@ public class OrderRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve order {OrderId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, orderId);
             
             throw ex.GetBaseException();
@@ -116,7 +116,7 @@ public class OrderRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve order {orderId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve order {OrderId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, orderId);
 
         return order;

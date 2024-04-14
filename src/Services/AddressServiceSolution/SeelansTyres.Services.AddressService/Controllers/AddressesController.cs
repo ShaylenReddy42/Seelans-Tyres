@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;         // Application
 
 namespace SeelansTyres.Services.AddressService.Controllers;
 
-[Route("api/customers/{customerId}/[controller]")]
+[Route("api/customers/{CustomerId}/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "MustBeARegularCustomer")]
 [Consumes(Application.Json)]
@@ -30,7 +30,7 @@ public class AddressesController(
     public async Task<ActionResult<AddressModel>> CreateAsync(Guid customerId, AddressModel newAddress)
     {
         logger.LogInformation(
-            "API => Adding a new address for customer {customerId}",
+            "API => Adding a new address for customer {CustomerId}",
             customerId);
 
         var addressEntity = mapper.Map<AddressModel, Address>(newAddress);
@@ -58,7 +58,7 @@ public class AddressesController(
     public async Task<ActionResult<IEnumerable<AddressModel>>> RetrieveAllAsync(Guid customerId)
     {
         logger.LogInformation(
-            "API => Retrieving addresses for customer {customerId}", 
+            "API => Retrieving addresses for customer {CustomerId}", 
             customerId);
 
         var addresses = await addressRepository.RetrieveAllAsync(customerId);
@@ -80,7 +80,7 @@ public class AddressesController(
     public async Task<ActionResult<AddressModel>> RetrieveSingleAsync(Guid customerId, Guid addressId)
     {
         logger.LogInformation(
-            "API => Retrieving address {addressId} for customer {customerId}", 
+            "API => Retrieving address {AddressId} for customer {CustomerId}", 
             addressId, customerId);
 
         var address = await addressRepository.RetrieveSingleAsync(customerId, addressId);
@@ -88,7 +88,7 @@ public class AddressesController(
         if (address is null)
         {
             logger.LogWarning(
-                "{Announcement}: Address {addressId} for customer {customerId} does not exist!",
+                "{Announcement}: Address {AddressId} for customer {CustomerId} does not exist!",
                 "NULL", addressId, customerId);
 
             return NotFound();
@@ -112,7 +112,7 @@ public class AddressesController(
     public async Task<ActionResult> MarkAddressAsPreferredAsync(Guid customerId, Guid addressId, bool markAsPreferred)
     {
         logger.LogInformation(
-            "API => Marking address {addressId} as preferred for customer {customerId}",
+            "API => Marking address {AddressId} as preferred for customer {CustomerId}",
             addressId, customerId);
 
         var address = await addressRepository.RetrieveSingleAsync(customerId, addressId);
@@ -120,7 +120,7 @@ public class AddressesController(
         if (address is null)
         {
             logger.LogWarning(
-                "{Announcement}: Address {addressId} for customer {customerId} does not exist!",
+                "{Announcement}: Address {AddressId} for customer {CustomerId} does not exist!",
                 "NULL", addressId, customerId);
 
             return NotFound();
@@ -144,7 +144,7 @@ public class AddressesController(
     public async Task<ActionResult> DeleteAsync(Guid customerId, Guid addressId)
     {
         logger.LogInformation(
-            "API => Attempting to delete address {addressId} for customer {customerId}",
+            "API => Attempting to delete address {AddressId} for customer {CustomerId}",
             addressId, customerId);
 
         await addressRepository.DeleteAsync(customerId, addressId);

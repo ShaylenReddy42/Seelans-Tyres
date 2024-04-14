@@ -13,7 +13,7 @@ public class InMemoryCacheService(
     public Task<T?> RetrieveAsync<T>(string cacheKey)
     {
         logger.LogDebug(
-            "Cache Service => Attempting to retrieve data using cache key {cacheKey}",
+            "Cache Service => Attempting to retrieve data using cache key {CacheKey}",
             cacheKey);
         
         cache.TryGetValue(cacheKey, out byte[]? data);
@@ -21,7 +21,7 @@ public class InMemoryCacheService(
         if (data is not null)
         {
             logger.LogDebug(
-                "The cache does contain data linked to the cache key, deserializing to {modelType}",
+                "The cache does contain data linked to the cache key, deserializing to {ModelType}",
                 typeof(T).Name);
 
             return Task.FromResult(JsonSerializer.Deserialize<T>(data));
@@ -33,7 +33,7 @@ public class InMemoryCacheService(
     public Task SetAsync<T>(string cacheKey, T data, int? slidingExpirationInMinutes, int? absoluteExpirationInMinutes)
     {
         logger.LogInformation(
-            "Cache Service => Attempting to set cache key {cacheKey}",
+            "Cache Service => Attempting to set cache key {CacheKey}",
             cacheKey);
 
         var cacheEntryOptions =
@@ -54,7 +54,7 @@ public class InMemoryCacheService(
     public Task DeleteAsync(string cacheKey)
     {
         logger.LogInformation(
-            "Cache Service => Attempting to remove data linked to cache key {cacheKey}",
+            "Cache Service => Attempting to remove data linked to cache key {CacheKey}",
             cacheKey);
 
         cache.Remove(cacheKey);

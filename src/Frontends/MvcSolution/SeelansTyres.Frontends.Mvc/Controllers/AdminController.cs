@@ -43,7 +43,7 @@ public class AdminController(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "Building the Admin Portal View Model took {stopwatchElapsedTime}ms to complete",
+            "Building the Admin Portal View Model took {StopwatchElapsedTime}ms to complete",
             stopwatch.ElapsedMilliseconds);
         
         return View(adminPortalViewModel);
@@ -102,11 +102,11 @@ public class AdminController(
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet("Admin/UpdateTyre/{tyreId}")]
+    [HttpGet("Admin/UpdateTyre/{TyreId}")]
     public async Task<IActionResult> UpdateTyre(Guid tyreId)
     {
         logger.LogInformation(
-            "Controller => Administrator is attempting to retrieve tyre {tyreId} for update",
+            "Controller => Administrator is attempting to retrieve tyre {TyreId} for update",
             tyreId);
 
         var tyre = await tyresServiceClient.RetrieveSingleTyreAsync(tyreId);
@@ -137,7 +137,7 @@ public class AdminController(
         }
 
         logger.LogInformation(
-            "Controller => Administrator is attempting to update tyre {tyreId}",
+            "Controller => Administrator is attempting to update tyre {TyreId}",
             model.Id);
 
         logger.LogInformation("Attempting to upload image");
@@ -163,7 +163,7 @@ public class AdminController(
         if (!requestSucceeded)
         {
             logger.LogError(
-                "{Announcement}: Attempt to update tyre {tyreId} was unsuccessful",
+                "{Announcement}: Attempt to update tyre {TyreId} was unsuccessful",
                 "FAILED", model.Id);
 
             ModelState.AddModelError(string.Empty, "API is not available");
@@ -171,7 +171,7 @@ public class AdminController(
         }
 
         logger.LogInformation(
-            "{Announcement}: Attempt to update tyre {tyreId} completed successfully",
+            "{Announcement}: Attempt to update tyre {TyreId} completed successfully",
             "SUCCEEDED", model.Id);
 
         return RedirectToAction(nameof(Index));
@@ -181,7 +181,7 @@ public class AdminController(
     public async Task<IActionResult> DeleteTyre(Guid tyreId, string imageUrl)
     {
         logger.LogInformation(
-            "Controller => Administrator is attempting to delete tyre {tyreId}",
+            "Controller => Administrator is attempting to delete tyre {TyreId}",
             tyreId);
 
         var succeeded = await tyresServiceClient.DeleteTyreAsync(tyreId);
@@ -198,7 +198,7 @@ public class AdminController(
     public async Task<IActionResult> MarkOrderAsDelivered(int orderId)
     {
         logger.LogInformation(
-            "Controller => Administrator is attempting to mark order {orderId} as delivered",
+            "Controller => Administrator is attempting to mark order {OrderId} as delivered",
             orderId);
         
         _ = await orderServiceClient.MarkOrderAsDeliveredAsync(orderId);

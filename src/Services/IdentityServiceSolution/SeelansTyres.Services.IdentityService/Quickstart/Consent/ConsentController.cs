@@ -164,7 +164,7 @@ public class ConsentController : Controller
         }
         else
         {
-            _logger.LogError("No consent request matching request: {returnUrl}", returnUrl);
+            _logger.LogError("No consent request matching request: {ReturnUrl}", returnUrl);
         }
 
         return null;

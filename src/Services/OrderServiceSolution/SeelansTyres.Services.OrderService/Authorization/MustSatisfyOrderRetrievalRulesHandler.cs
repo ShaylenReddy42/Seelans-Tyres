@@ -12,7 +12,7 @@ public class MustSatisfyOrderRetrievalRulesHandler(
         MustSatisfyOrderRetrievalRulesRequirement requirement)
     {
         logger.LogInformation(
-            "{Announcement}: {authorizationRequirement}", 
+            "{Announcement}: {AuthorizationRequirement}", 
             "AUTHORIZATION REQUIREMENT HIT", "MustSatisfyOrderRetrievalRules");
 
         httpContextAccessor.HttpContext!.Request.Query.TryGetValue("customerId", out StringValues customerIds);
@@ -29,7 +29,7 @@ public class MustSatisfyOrderRetrievalRulesHandler(
                 "SUCCEEDED");
 
             logger.LogInformation(
-                "{Announcement}: {authorizationRequirement}", 
+                "{Announcement}: {AuthorizationRequirement}", 
                 "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
 
             context.Succeed(requirement);
@@ -39,11 +39,11 @@ public class MustSatisfyOrderRetrievalRulesHandler(
             && customerIdFromClaims == customerIdFromQuery)
         {
             logger.LogInformation(
-                "{Announcement}: Customer {customerId} is allowed to retrieve their own orders, requirement rules satisfied",
+                "{Announcement}: Customer {CustomerId} is allowed to retrieve their own orders, requirement rules satisfied",
                 "SUCCEEDED", customerIdFromClaims);
 
             logger.LogInformation(
-                "{Announcement}: {authorizationRequirement}", 
+                "{Announcement}: {AuthorizationRequirement}", 
                 "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
 
             context.Succeed(requirement);
@@ -59,11 +59,11 @@ public class MustSatisfyOrderRetrievalRulesHandler(
             ".Trim();
 
         logger.LogWarning(
-            "{Announcement}: {failureMessage}",
+            "{Announcement}: {FailureMessage}",
             "FAILED", failureMessage);
 
         logger.LogInformation(
-            "{Announcement}: {authorizationRequirement}", 
+            "{Announcement}: {AuthorizationRequirement}", 
             "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
 
         context.Fail(new AuthorizationFailureReason(this, failureMessage));

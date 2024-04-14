@@ -35,7 +35,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new unpublished update was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new unpublished update was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -43,7 +43,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new unpublished update completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new unpublished update completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 
@@ -64,7 +64,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -72,7 +72,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates completed successfully with {unpublishedUpdatesCount} updates",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all unpublished updates completed successfully with {UnpublishedUpdatesCount} updates",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, unpublishedUpdates.Count);
 
         return unpublishedUpdates;
@@ -81,7 +81,7 @@ public class UnpublishedUpdateRepository : IUnpublishedUpdateRepository
     public Task DeleteAsync(UnpublishedUpdate unpublishedUpdate)
     {
         logger.LogInformation(
-            "Repository => Attempting to remove unpublished update {updateId}",
+            "Repository => Attempting to remove unpublished update {UpdateId}",
             unpublishedUpdate.Id);
 
         context.UnpublishedUpdates.Remove(unpublishedUpdate);

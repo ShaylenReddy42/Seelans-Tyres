@@ -16,7 +16,7 @@ public class TyresServiceClient(
             var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to retrieve all brands completed successfully with {brandsCount} brands",
+                "{Announcement}: Attempt to retrieve all brands completed successfully with {BrandsCount} brands",
                 "SUCCEEDED", brands!.Count());
 
             return brands!;
@@ -63,7 +63,7 @@ public class TyresServiceClient(
         string includingUnavailable = !availableOnly ? " including unavailable" : "";
 
         logger.LogInformation(
-            "Service => Attempting to retrieve all tyres{includingUnavailable}",
+            "Service => Attempting to retrieve all tyres{IncludingUnavailable}",
             includingUnavailable);
 
         try
@@ -74,7 +74,7 @@ public class TyresServiceClient(
             var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
+                "{Announcement}: Attempt to retrieve all tyres{IncludingUnavailable} completed successfully with {TyresCount} tyre(s)",
                 "SUCCEEDED", includingUnavailable, tyres?.Count() ?? 0);
 
             return tyres ?? [];
@@ -83,7 +83,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to retrieve all tyres{includingUnavailable} was unsuccessful",
+                "{Announcement}: Attempt to retrieve all tyres{IncludingUnavailable} was unsuccessful",
                 "FAILED", includingUnavailable);
 
             return [];
@@ -93,7 +93,7 @@ public class TyresServiceClient(
     public async Task<TyreModel?> RetrieveSingleTyreAsync(Guid tyreId)
     {
         logger.LogInformation(
-            "Service => Attempting to retrieve tyre {tyreId}",
+            "Service => Attempting to retrieve tyre {TyreId}",
             tyreId);
 
         try
@@ -104,7 +104,7 @@ public class TyresServiceClient(
             var tyre = await response.Content.ReadFromJsonAsync<TyreModel>();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to retrieve tyre {tyreId} completed successfully",
+                "{Announcement}: Attempt to retrieve tyre {TyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return tyre;
@@ -113,7 +113,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to retrieve tyre {tyreId} was unsuccessful",
+                "{Announcement}: Attempt to retrieve tyre {TyreId} was unsuccessful",
                 "FAILED", tyreId);
 
             return null;
@@ -123,7 +123,7 @@ public class TyresServiceClient(
     public async Task<bool> UpdateTyreAsync(Guid tyreId, TyreModel tyre)
     {
         logger.LogInformation(
-            "Service => Attempting to update tyre {tyreId}",
+            "Service => Attempting to update tyre {TyreId}",
             tyreId);
 
         try
@@ -132,7 +132,7 @@ public class TyresServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to update tyre {tyreId} completed successfully",
+                "{Announcement}: Attempt to update tyre {TyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return true;
@@ -141,7 +141,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to update tyre {tyreId} was unsuccessful",
+                "{Announcement}: Attempt to update tyre {TyreId} was unsuccessful",
                 "FAILED", tyreId);
 
             return false;
@@ -151,7 +151,7 @@ public class TyresServiceClient(
     public async Task<bool> DeleteTyreAsync(Guid tyreId)
     {
         logger.LogInformation(
-            "Service => Attempting to delete tyre {tyreId}",
+            "Service => Attempting to delete tyre {TyreId}",
             tyreId);
 
         try
@@ -160,7 +160,7 @@ public class TyresServiceClient(
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
-                "{Announcement}: Attempt to delete tyre {tyreId} completed successfully",
+                "{Announcement}: Attempt to delete tyre {TyreId} completed successfully",
                 "SUCCEEDED", tyreId);
 
             return true;
@@ -169,7 +169,7 @@ public class TyresServiceClient(
         {
             logger.LogError(
                 ex,
-                "{Announcement}: Attempt to delete tyre {tyreId} was unsuccessful",
+                "{Announcement}: Attempt to delete tyre {TyreId} was unsuccessful",
                 "FAILED", tyreId);
 
             return false;

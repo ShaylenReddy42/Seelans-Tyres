@@ -11,7 +11,7 @@ public class TyresServiceDelegatingHandler(
         CancellationToken cancellationToken)
     {
         logger.LogInformation(
-            "{Announcement}: {delegatingHandler}",
+            "{Announcement}: {DelegatingHandler}",
             "DELEGATING HANDLER HIT", "TyresServiceDelegatingHandler");
         
         // Gets 'TyresService' as audience in the exchanged access token

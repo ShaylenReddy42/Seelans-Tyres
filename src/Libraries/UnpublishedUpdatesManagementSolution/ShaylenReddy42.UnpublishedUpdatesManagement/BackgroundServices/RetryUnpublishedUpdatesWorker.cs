@@ -59,7 +59,7 @@ public class RetryUnpublishedUpdatesWorker : BackgroundService
                     messagingServicePublisher.PublishMessageAsync(message, unpublishedUpdate.Destination);
 
                     logger.LogInformation(
-                        "Worker => Unpublished update was published successfully to {destination} after {retries} retries",
+                        "Worker => Unpublished update was published successfully to {Destination} after {Retries} retries",
                         unpublishedUpdate.Destination, unpublishedUpdate.Retries);
 
                     unpublishedUpdateRepository.DeleteAsync(unpublishedUpdate);

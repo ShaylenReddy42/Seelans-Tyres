@@ -44,7 +44,7 @@ public class UpdateTyreWorkerWithAzureServiceBus(
         }
 
         logger.LogInformation(
-            "Worker => Attempting to update all orders with tyre {tyreId}",
+            "Worker => Attempting to update all orders with tyre {TyreId}",
             baseMessage!.IdOfEntityToUpdate);
 
         using var scope = serviceScopeFactory.CreateScope();

@@ -28,7 +28,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all brands was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all brands was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -36,7 +36,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all brands completed successfully with {brandsCount} brands",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all brands completed successfully with {BrandsCount} brands",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, brands.Count());
 
         return brands;
@@ -61,7 +61,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new tyre was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new tyre was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
@@ -69,7 +69,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to add a new tyre completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new tyre completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds);
     }
 
@@ -78,7 +78,7 @@ public class TyresRepository(
         string includingUnavailable = !availableOnly ? " including unavailable" : "";
 
         logger.LogInformation(
-            "Repository => Attempting to retrieve all tyres{includingUnavailable}",
+            "Repository => Attempting to retrieve all tyres{IncludingUnavailable}",
             includingUnavailable);
         
         IEnumerable<Tyre> tyres = Enumerable.Empty<Tyre>();
@@ -98,7 +98,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all tyres{includingUnavailable} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all tyres{IncludingUnavailable} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, includingUnavailable);
 
             throw ex.GetBaseException();
@@ -106,7 +106,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve all tyres{includingUnavailable} completed successfully with {tyresCount} tyre(s)",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all tyres{IncludingUnavailable} completed successfully with {TyresCount} tyre(s)",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, includingUnavailable, tyres.Count());
 
         return tyres;
@@ -115,7 +115,7 @@ public class TyresRepository(
     public async Task<Tyre?> RetrieveSingleTyreAsync(Guid tyreId)
     {
         logger.LogInformation(
-            "Repository => Attempting to retrieve tyre {tyreId}",
+            "Repository => Attempting to retrieve tyre {TyreId}",
             tyreId);
 
         Tyre? tyre = null;
@@ -131,7 +131,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve tyre {tyreId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve tyre {TyreId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
 
             throw ex.GetBaseException();
@@ -139,7 +139,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to retrieve tyre {tyreId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve tyre {TyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
 
         return tyre;
@@ -148,7 +148,7 @@ public class TyresRepository(
     public async Task DeleteTyreAsync(Guid tyreId)
     {
         logger.LogInformation(
-            "Repository => Attempting to delete tyre {tyreId}",
+            "Repository => Attempting to delete tyre {TyreId}",
             tyreId);
 
         stopwatch.Start();
@@ -164,7 +164,7 @@ public class TyresRepository(
 
             logger.LogError(
                 ex,
-                "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete tyre {TyreId} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
 
             throw ex.GetBaseException();
@@ -172,7 +172,7 @@ public class TyresRepository(
         stopwatch.Stop();
 
         logger.LogInformation(
-            "{Announcement} ({stopwatchElapsedTime}ms): Attempt to delete tyre {tyreId} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete tyre {TyreId} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
     }
 
