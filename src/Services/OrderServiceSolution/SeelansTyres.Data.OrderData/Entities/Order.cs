@@ -37,5 +37,5 @@ public class Order
     public string City { get; set; } = string.Empty;
     [Required]
     public string PostalCode { get; set; } = string.Empty;
-    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public ICollection<OrderItem> OrderItems { get; set; } = [];
 }

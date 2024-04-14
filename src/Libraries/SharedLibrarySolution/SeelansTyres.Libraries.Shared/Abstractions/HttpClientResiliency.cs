@@ -55,7 +55,7 @@ public static class HttpClientResiliency
                         .BuildServiceProvider()
                         .GetRequiredService<ILogger<TService>>()?
                         .LogError(
-                            "Delaying for {delay}ms, then making retry: {retry}",
+                            "Delaying for {Delay}ms, then making retry: {Retry}",
                             timeSpan.TotalMilliseconds, retryAttempt);
                 });
     }

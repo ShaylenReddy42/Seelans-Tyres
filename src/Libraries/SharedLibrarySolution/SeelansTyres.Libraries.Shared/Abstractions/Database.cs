@@ -22,7 +22,7 @@ public static class Database
     public static async Task<WebApplication> MigrateDatabaseAsync<T>(this WebApplication app) where T : DbContext
     {
         app.Logger.LogInformation(
-            "Attempting to migrate database {dbContext}",
+            "Attempting to migrate database {DbContext}",
             typeof(T).Name);
 
         var stopwatch = new Stopwatch();
@@ -41,7 +41,7 @@ public static class Database
 
             app.Logger.LogError(
                 ex,
-                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to migrate database {dbContext} was unsuccessful",
+                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to migrate database {DbContext} was unsuccessful",
                 "FAILED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
             throw ex.GetBaseException();
@@ -49,7 +49,7 @@ public static class Database
         stopwatch.Stop();
 
         app.Logger.LogInformation(
-            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to migrate database {dbContext} completed successfully",
+            "{Announcement} ({StopwatchElapsedTime}ms): Attempt to migrate database {DbContext} completed successfully",
             "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return app;

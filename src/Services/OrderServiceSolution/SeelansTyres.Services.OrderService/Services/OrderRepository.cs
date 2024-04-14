@@ -44,7 +44,7 @@ public class OrderRepository(
             "Repository => Attempting to retrieve all orders{For}{CustomerId}{ExceptDelivered}",
             customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
-        IEnumerable<Order> orders = Enumerable.Empty<Order>();
+        IEnumerable<Order> orders = [];
 
         stopwatch.Start();
         try

@@ -176,7 +176,7 @@ public class CustomerServiceClient(
         }
 
         logger.LogError(
-            "{Announcement}: Attempt to delete account for customer {CustomerId} was unsuccessful with status code {statusCode}",
+            "{Announcement}: Attempt to delete account for customer {CustomerId} was unsuccessful with status code {StatusCode}",
             "FAILED", customerId, response.StatusCode);
 
         return false;

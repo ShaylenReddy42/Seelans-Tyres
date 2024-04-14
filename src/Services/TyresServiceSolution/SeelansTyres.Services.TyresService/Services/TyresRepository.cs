@@ -81,7 +81,7 @@ public class TyresRepository(
             "Repository => Attempting to retrieve all tyres{IncludingUnavailable}",
             includingUnavailable);
         
-        IEnumerable<Tyre> tyres = Enumerable.Empty<Tyre>();
+        IEnumerable<Tyre> tyres = [];
 
         stopwatch.Start();
         try

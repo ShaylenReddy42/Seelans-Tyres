@@ -11,5 +11,5 @@ public class Brand
     [Required]
     [MinLength(1)]
     public string Name { get; set; } = string.Empty;
-    public ICollection<Tyre> Tyres { get; set; } = new List<Tyre>();
+    public ICollection<Tyre> Tyres { get; set; } = [];
 }

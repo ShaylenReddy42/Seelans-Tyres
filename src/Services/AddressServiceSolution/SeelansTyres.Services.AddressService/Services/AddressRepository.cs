@@ -62,7 +62,7 @@ public class AddressRepository : IAddressRepository
             "Repository => Retrieving addresses for customer {CustomerId}", 
             customerId);
         
-        IEnumerable<Address> addresses = Enumerable.Empty<Address>();
+        IEnumerable<Address> addresses = [];
         
         stopwatch.Start();
         try

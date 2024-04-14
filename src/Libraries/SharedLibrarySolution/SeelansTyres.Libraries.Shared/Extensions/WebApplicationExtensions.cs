@@ -37,7 +37,7 @@ public static class WebApplicationExtensions
         if (startupDelayInSeconds > 0)
         {
             app.Logger.LogInformation(
-                "Adding a {startupDelay}s startup delay for dependencies to startup",
+                "Adding a {StartupDelay}s startup delay for dependencies to startup",
                 startupDelayInSeconds);
 
             Thread.Sleep(startupDelayInSeconds * 1_000);
