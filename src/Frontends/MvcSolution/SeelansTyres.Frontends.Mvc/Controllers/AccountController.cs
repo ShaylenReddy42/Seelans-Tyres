@@ -10,22 +10,39 @@ using System.Security.Cryptography;                      // RandomNumberGenerato
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
-public class AccountController(
-    ILogger<AccountController> logger,
-    IAddressServiceClient addressServiceClient,
-    ICustomerServiceClient customerServiceClient,
-    IOrderServiceClient orderServiceClient,
-    IMailService mailService) : Controller
+public class AccountController : Controller
 {
-    private readonly Stopwatch stopwatch = new();
+    private readonly ILogger<AccountController> logger;
+    private readonly IAddressServiceClient addressServiceClient;
+    private readonly ICustomerServiceClient customerServiceClient;
+    private readonly IOrderServiceClient orderServiceClient;
+    private readonly IMailService mailService;
+
+    private readonly Stopwatch stopwatch;
+    private readonly Guid customerId; 
+
+    public AccountController(
+        ILogger<AccountController> logger,
+        IAddressServiceClient addressServiceClient,
+        ICustomerServiceClient customerServiceClient,
+        IOrderServiceClient orderServiceClient,
+        IMailService mailService)
+    {
+        this.logger = logger;
+        this.addressServiceClient = addressServiceClient;
+        this.customerServiceClient = customerServiceClient;
+        this.orderServiceClient = orderServiceClient;
+        this.mailService = mailService;
+
+        stopwatch = new();
+        customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
+    }
 
     [Authorize]
     public async Task<IActionResult> Index()
     {
         stopwatch.Start();
         
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         logger.LogInformation(
             "Controller => Retrieving customer details, addresses and orders for customer {CustomerId}",
             customerId);
@@ -60,8 +77,6 @@ public class AccountController(
 
     public async Task Logout()
     {
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         var isAdmin = User.IsInRole("Administrator");
 
         if (isAdmin)
@@ -124,8 +139,6 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> UpdateAccount(AccountViewModel model)
     {
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         logger.LogInformation(
             "Controller => Attempting to update account for customer {CustomerId}. Encryption required",
             customerId);
@@ -138,8 +151,6 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> DeleteAccount(string password)
     {
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         logger.LogInformation(
             "Controller => Attempting to delete account for customer {CustomerId}. Encryption required",
             customerId);
@@ -161,8 +172,6 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> AddNewAddress(AccountViewModel model)
     {
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         logger.LogInformation(
             "Controller => Attempting to add a new address for customer {CustomerId}",
             customerId);
@@ -194,8 +203,6 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> MarkAddressAsPreferred(Guid addressId)
     {
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         logger.LogInformation(
             "Controller => Attempting to mark address {AddressId} for customer {CustomerId} as preferred",
             addressId, customerId);
@@ -208,8 +215,6 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> DeleteAddress(Guid addressId)
     {
-        var customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-
         logger.LogInformation(
             "Controller => Attempting to delete address {AddressId} for customer {CustomerId}",
             addressId, customerId);

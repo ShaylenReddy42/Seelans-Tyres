@@ -23,21 +23,17 @@ public class CloudImageService(
 
         logger.LogInformation("The administrator has chosen to upload a new image");
 
-        logger.LogInformation("Connecting to the Azure storage account");
+        logger.LogDebug("Connecting to the Azure storage account and retrieving a container client for the images");
 
         var blobServiceClient = new BlobServiceClient(configuration.GetConnectionString("AzureStorageAccount"));
 
-        logger.LogInformation("Retrieving a container client");
-
         var blobContainerClient = blobServiceClient.GetBlobContainerClient("images");
 
-        logger.LogInformation("Creating the container if it doesn't exist");
+        logger.LogDebug("Creating the container if it doesn't exist, and retrieving a blob client based on the container");
 
         await blobContainerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
 
         var blobName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
-
-        logger.LogInformation("Retrieving a blob client");
 
         var blobClient = blobContainerClient.GetBlobClient(blobName);
 
@@ -67,8 +63,6 @@ public class CloudImageService(
         logger.LogInformation(
             "{Announcement}: Attempt to upload the blob to the storage account completed successfully",
             "SUCCEEDED");
-
-        logger.LogInformation("Attempting to delete the older image");
 
         await DeleteAsync(defaultImage);
 

@@ -34,8 +34,6 @@ public class LocalImageService(
 
         filePath = $"/images/uploaded/{fileName}";
 
-        logger.LogInformation("Attempting to delete the older image");
-
         await DeleteAsync(defaultImage);
 
         return filePath;

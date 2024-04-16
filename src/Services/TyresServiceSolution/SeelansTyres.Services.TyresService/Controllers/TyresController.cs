@@ -145,7 +145,7 @@ public class TyresController(
 
         await tyresRepository.SaveChangesAsync();
 
-        logger.LogInformation("Preparing to publish the update for other microservices");
+        logger.LogDebug("Preparing to publish the update for other microservices");
 
         var baseMessage = new BaseMessage
         {
@@ -166,7 +166,7 @@ public class TyresController(
 
         stopwatch.Stop();
 
-        logger.LogInformation(
+        logger.LogDebug(
             "It took {StopwatchElapsedTime}ms to write the update to the channel",
             stopwatch.ElapsedMilliseconds);
 

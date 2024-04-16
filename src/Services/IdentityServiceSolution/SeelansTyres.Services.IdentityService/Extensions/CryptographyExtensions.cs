@@ -59,27 +59,25 @@ public static class CryptographyExtensions
             "Beginning decryption process for model of type {ModelType}", 
             typeof(T).Name);
 
-        logger.LogInformation("Retrieving the RSA Security Key from the signing credential store");
+        logger.LogDebug("Retrieving the RSA Security Key from the signing credential store, and decrypting the encrypted Aes key");
         
         var rsaSecurityKey = (RsaSecurityKey)(await signingCredentialStore.GetSigningCredentialsAsync()).Key;
 
         var rsa = RSA.Create(rsaSecurityKey.Parameters);
 
-        logger.LogInformation("Decrypting the encrypted Aes key");
-
         var aesKey = rsa.Decrypt(encryptedDataModel.EncryptedAesKey, RSAEncryptionPadding.OaepSHA256);
 
-        logger.LogInformation("Creating a byte array to hold the decrypted data");
-        
+        logger.LogDebug("Creating a byte array to hold the decrypted data");
+
         var modelAsBytes = new byte[encryptedDataModel.AesGcmCipherText.Length];
 
-        logger.LogInformation("Recreating the AesGcm instance with the Aes key to decrypt the data");
+        logger.LogDebug("Recreating the AesGcm instance with the Aes key to decrypt the data");
 
         using var aesGcm = new AesGcm(aesKey);
 
         try
         {
-            logger.LogInformation("Attempting to decrypt the data");
+            logger.LogDebug("Attempting to decrypt the data");
             
             aesGcm.Decrypt(
                 nonce: encryptedDataModel.AesGcmNonce,

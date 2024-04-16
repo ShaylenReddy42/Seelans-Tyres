@@ -40,8 +40,6 @@ public static class CryptographyExtensions
 
         var aesKey = RandomNumberGenerator.GetBytes(32);
 
-        logger.LogDebug("Creating a byte array to hold the encrypted data");
-
         encryptedDataModel.AesGcmCipherText = new byte[modelAsJson.Length];
 
         using var aesGcm = new AesGcm(aesKey, 16);
@@ -54,7 +52,7 @@ public static class CryptographyExtensions
             ciphertext: encryptedDataModel.AesGcmCipherText, 
             tag: encryptedDataModel.AesGcmTag);
 
-        logger.LogDebug("Attempting to retrieve the discovery document from IdentityServer4");
+        logger.LogDebug("Attempting to retrieve the discovery document from IdentityServer4 to extract the Json Web Keys [JWKs]");
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
@@ -65,11 +63,9 @@ public static class CryptographyExtensions
                 "FAILED", discoveryDocument.Error);
         }
 
-        logger.LogDebug("Retrieving the Json Web Key from the discovery document");
-
         var jsonWebKey = discoveryDocument.KeySet!.Keys[0];
 
-        logger.LogDebug("Converting the Json Web Key to an RSA public key. Values were encoded in base64url according to the documentation");
+        logger.LogDebug("Converting the JWK to an RSA public key by first decoding the exponent and modulus from base64url strings, and finally encrypting the Aes key");
 
         var rsaParameters = new RSAParameters
         {
@@ -78,8 +74,6 @@ public static class CryptographyExtensions
         };
 
         var rsa = RSA.Create(rsaParameters);
-
-        logger.LogDebug("Encrypting the Aes key");
 
         encryptedDataModel.EncryptedAesKey = rsa.Encrypt(aesKey, RSAEncryptionPadding.OaepSHA256);
 

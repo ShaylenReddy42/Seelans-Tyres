@@ -219,7 +219,7 @@ public class CustomersController : ControllerBase
         
         await customerService.UpdateAsync(id, updateAccountModel);
 
-        logger.LogInformation("Preparing to publish the update for other microservices");
+        logger.LogDebug("Preparing to publish the update for other microservices");
 
         var baseMessage = new BaseMessage
         {
@@ -240,7 +240,7 @@ public class CustomersController : ControllerBase
 
         stopwatch.Stop();
 
-        logger.LogInformation(
+        logger.LogDebug(
             "It took {StopwatchElapsedTime}ms to write the update to the channel",
             stopwatch.ElapsedMilliseconds);
 
@@ -267,7 +267,7 @@ public class CustomersController : ControllerBase
 
         await customerService.DeleteAsync(await customerService.RetrieveSingleAsync(id));
 
-        logger.LogInformation("Preparing to publish the update for other microservices");
+        logger.LogDebug("Preparing to publish the update for other microservices");
 
         var baseMessage = new BaseMessage
         {
@@ -287,7 +287,7 @@ public class CustomersController : ControllerBase
 
         stopwatch.Stop();
 
-        logger.LogInformation(
+        logger.LogDebug(
             "It took {StopwatchElapsedTime}ms to write the update to the channel",
             stopwatch.ElapsedMilliseconds);
 
