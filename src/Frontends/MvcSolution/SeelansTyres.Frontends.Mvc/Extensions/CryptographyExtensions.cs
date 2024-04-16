@@ -36,17 +36,17 @@ public static class CryptographyExtensions
 
         var encryptedDataModel = new EncryptedDataModel();
 
-        logger.LogInformation("Randomly generating a symmetric Aes key");
+        logger.LogDebug("Randomly generating a symmetric Aes key");
 
         var aesKey = RandomNumberGenerator.GetBytes(32);
 
-        logger.LogInformation("Creating a byte array to hold the encrypted data");
+        logger.LogDebug("Creating a byte array to hold the encrypted data");
 
         encryptedDataModel.AesGcmCipherText = new byte[modelAsJson.Length];
 
         using var aesGcm = new AesGcm(aesKey, 16);
 
-        logger.LogInformation("Performing symmetric encryption of the data using AesGcm");
+        logger.LogDebug("Performing symmetric encryption of the data using AesGcm");
 
         aesGcm.Encrypt(
             nonce: encryptedDataModel.AesGcmNonce, 
@@ -54,26 +54,22 @@ public static class CryptographyExtensions
             ciphertext: encryptedDataModel.AesGcmCipherText, 
             tag: encryptedDataModel.AesGcmTag);
 
-        logger.LogInformation("Attempting to retrieve the discovery document from IdentityServer4");
+        logger.LogDebug("Attempting to retrieve the discovery document from IdentityServer4");
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
 
         if (discoveryDocument.IsError)
         {
             logger.LogError(
-                "{Announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
-                "FAILED");
-
-            logger.LogError(
-                "True reason for failure: {IdentityServer4Error}",
-                discoveryDocument.Error);
+                "{Announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful. Reason: {IdentityServer4Error}",
+                "FAILED", discoveryDocument.Error);
         }
 
-        logger.LogInformation("Retrieving the Json Web Key from the discovery document");
+        logger.LogDebug("Retrieving the Json Web Key from the discovery document");
 
         var jsonWebKey = discoveryDocument.KeySet!.Keys[0];
 
-        logger.LogInformation("Converting the Json Web Key to an RSA public key. Values were encoded in base64url according to the documentation");
+        logger.LogDebug("Converting the Json Web Key to an RSA public key. Values were encoded in base64url according to the documentation");
 
         var rsaParameters = new RSAParameters
         {
@@ -83,7 +79,7 @@ public static class CryptographyExtensions
 
         var rsa = RSA.Create(rsaParameters);
 
-        logger.LogInformation("Encrypting the Aes key");
+        logger.LogDebug("Encrypting the Aes key");
 
         encryptedDataModel.EncryptedAesKey = rsa.Encrypt(aesKey, RSAEncryptionPadding.OaepSHA256);
 

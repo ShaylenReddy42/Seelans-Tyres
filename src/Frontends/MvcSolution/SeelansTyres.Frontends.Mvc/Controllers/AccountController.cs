@@ -246,7 +246,7 @@ public class AccountController(
                 return View(model);
             }
 
-            logger.LogInformation("Randomly generating a reset password token of size 256 bytes");
+            logger.LogDebug("Randomly generating a reset password token of size 256 bytes");
 
             string token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(256));
 

@@ -19,15 +19,11 @@ public class AdminController(
     {
         stopwatch.Start();
 
-        logger.LogInformation("Controller => Retrieving all brands");
+        logger.LogInformation("Controller => Retrieving all brands, orders and tyres [including unavailable]");
         
         var brands = tyresServiceClient.RetrieveAllBrandsAsync();
 
-        logger.LogInformation("Controller => Retrieving all orders");
-
         var orders = orderServiceClient.RetrieveAllAsync();
-
-        logger.LogInformation("Controller => Retrieving all tyres including unavailable");
 
         var tyres = tyresServiceClient.RetrieveAllTyresAsync(false);
 
@@ -63,8 +59,6 @@ public class AdminController(
         }
 
         logger.LogInformation("Controller => Administrator is attempting to add a new tyre");
-
-        logger.LogInformation("Attempting to upload image");
 
         var imageUrl = await imageService.UploadAsync(model.Image, "/images/no-image.png");
 
@@ -139,8 +133,6 @@ public class AdminController(
         logger.LogInformation(
             "Controller => Administrator is attempting to update tyre {TyreId}",
             model.Id);
-
-        logger.LogInformation("Attempting to upload image");
 
         var imageUrl = await imageService.UploadAsync(model.Image, model.OriginalImageUrl!);
 

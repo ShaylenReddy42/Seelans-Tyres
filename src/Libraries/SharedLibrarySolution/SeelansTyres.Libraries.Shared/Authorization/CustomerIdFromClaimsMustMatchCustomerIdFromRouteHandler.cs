@@ -35,23 +35,21 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
                 "{Announcement}: CustomerId from claims {CustomerIdFromClaims} does not match customerId from route {CustomerIdFromRoute}",
                 "FAILED", customerIdFromClaims, customerIdFromRoute);
 
-            logger.LogInformation(
-                "{Announcement}: {AuthorizationRequirement}",
-                "AUTHORIZATION REQUIREMENT COMPLETED", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
-
             context.Fail(new AuthorizationFailureReason(this, $"CustomerId from claims does not match customerId from route"));
-            return Task.CompletedTask;
         }
+        else
+        {
+            logger.LogInformation(
+                "{Announcement}: customerId from claims matches customerId from route, satisfying the rules for this requirement",
+                "SUCCEEDED");
 
-        logger.LogInformation(
-            "{Announcement}: customerId from claims matches customerId from route, satisfying the rules for this requirement",
-            "SUCCEEDED");
+            context.Succeed(requirement);
+        }
 
         logger.LogInformation(
             "{Announcement}: {AuthorizationRequirement}",
             "AUTHORIZATION REQUIREMENT COMPLETED", "CustomerIdFromClaimsMustMatchCustomerIdFromRoute");
 
-        context.Succeed(requirement);
         return Task.CompletedTask;
 	}
 }

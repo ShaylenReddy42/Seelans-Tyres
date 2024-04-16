@@ -152,7 +152,7 @@ public class ShoppingController(
                 "{Announcement}: Attempt to place an order for customer {CustomerId} completed successfully",
                 "SUCCEEDED", customerId);
 
-            logger.LogInformation("Controller => Writing the order to the channel for sending to the customer");
+            logger.LogDebug("Controller => Writing the order to the channel for sending to the customer");
 
             await sendReceiptChannel
                 .WriteToChannelAsync(

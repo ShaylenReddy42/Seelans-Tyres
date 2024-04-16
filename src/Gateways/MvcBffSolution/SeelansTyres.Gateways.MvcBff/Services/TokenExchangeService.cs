@@ -28,12 +28,8 @@ public class TokenExchangeService : ITokenExchangeService
         if (discoveryDocument.IsError)
         {
             logger.LogError(
-                "{Announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful",
-                "FAILED");
-
-            logger.LogError(
-                "True reason for failure: {IdentityServer4Error}",
-                discoveryDocument.Error);
+                "{Announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful. Reason: {IdentityServer4Error}",
+                "FAILED", discoveryDocument.Error);
         }
 
         var tokenResponse = await client.RequestTokenExchangeTokenAsync(new TokenExchangeTokenRequest
