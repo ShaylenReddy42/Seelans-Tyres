@@ -10,37 +10,20 @@ using System.Security.Cryptography;                      // RandomNumberGenerato
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
-public class AccountController : Controller
+public class AccountController(
+    ILogger<AccountController> logger,
+    IAddressServiceClient addressServiceClient,
+    ICustomerServiceClient customerServiceClient,
+    IOrderServiceClient orderServiceClient,
+    IMailService mailService) : Controller
 {
-    private readonly ILogger<AccountController> logger;
-    private readonly IAddressServiceClient addressServiceClient;
-    private readonly ICustomerServiceClient customerServiceClient;
-    private readonly IOrderServiceClient orderServiceClient;
-    private readonly IMailService mailService;
-
-    private readonly Stopwatch stopwatch;
-    private readonly Guid customerId; 
-
-    public AccountController(
-        ILogger<AccountController> logger,
-        IAddressServiceClient addressServiceClient,
-        ICustomerServiceClient customerServiceClient,
-        IOrderServiceClient orderServiceClient,
-        IMailService mailService)
-    {
-        this.logger = logger;
-        this.addressServiceClient = addressServiceClient;
-        this.customerServiceClient = customerServiceClient;
-        this.orderServiceClient = orderServiceClient;
-        this.mailService = mailService;
-
-        stopwatch = new();
-        customerId = Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
-    }
+    private readonly Stopwatch stopwatch = new();
 
     [Authorize]
     public async Task<IActionResult> Index()
     {
+        var customerId = RetrieveSignedInCustomerId();
+        
         stopwatch.Start();
         
         logger.LogInformation(
@@ -77,6 +60,8 @@ public class AccountController : Controller
 
     public async Task Logout()
     {
+        var customerId = RetrieveSignedInCustomerId();
+
         var isAdmin = User.IsInRole("Administrator");
 
         if (isAdmin)
@@ -139,6 +124,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateAccount(AccountViewModel model)
     {
+        var customerId = RetrieveSignedInCustomerId();
+
         logger.LogInformation(
             "Controller => Attempting to update account for customer {CustomerId}. Encryption required",
             customerId);
@@ -151,6 +138,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteAccount(string password)
     {
+        var customerId = RetrieveSignedInCustomerId();
+
         logger.LogInformation(
             "Controller => Attempting to delete account for customer {CustomerId}. Encryption required",
             customerId);
@@ -172,6 +161,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> AddNewAddress(AccountViewModel model)
     {
+        var customerId = RetrieveSignedInCustomerId();
+
         logger.LogInformation(
             "Controller => Attempting to add a new address for customer {CustomerId}",
             customerId);
@@ -203,6 +194,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> MarkAddressAsPreferred(Guid addressId)
     {
+        var customerId = RetrieveSignedInCustomerId();
+
         logger.LogInformation(
             "Controller => Attempting to mark address {AddressId} for customer {CustomerId} as preferred",
             addressId, customerId);
@@ -215,6 +208,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteAddress(Guid addressId)
     {
+        var customerId = RetrieveSignedInCustomerId();
+
         logger.LogInformation(
             "Controller => Attempting to delete address {AddressId} for customer {CustomerId}",
             addressId, customerId);
@@ -313,5 +308,10 @@ public class AccountController : Controller
         }
 
         return View(model);
+    }
+
+    private Guid RetrieveSignedInCustomerId()
+    {
+        return Guid.Parse(User.Claims.Single(claim => claim.Type.EndsWith("nameidentifier")).Value);
     }
 }
