@@ -14,14 +14,14 @@ steps:
   - template: prebuild-iac.yml
 
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 6.0.421'
+    displayName: 'Use .NET SDK 6.0.422'
     inputs:
-      version: 6.0.421
+      version: 6.0.422
 
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 8.0.204'
+    displayName: 'Use .NET SDK 8.0.300'
     inputs:
-      version: 8.0.204
+      version: 8.0.300
 
   - task: CMake@1
     displayName: 'Run CMake'
