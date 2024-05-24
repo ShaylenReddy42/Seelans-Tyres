@@ -62,6 +62,11 @@ public class ShoppingController(
     [HttpPost]
     public async Task<IActionResult> AddTyreToCart(int quantity, Guid tyreId, string tyreName, decimal tyrePrice)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(HomeController.Shop), "Home");
+        }
+        
         logger.LogInformation(
             "Controller => Adding tyre {TyreId} to cart with quantity {Quantity}",
             tyreId, quantity);
@@ -76,19 +81,24 @@ public class ShoppingController(
 
         await cartService.CreateItemAsync(cartItem);
         
-        return RedirectToAction("Cart");
+        return RedirectToAction(nameof(Cart));
     }
 
     [HttpPost]
     public async Task<IActionResult> RemoveTyreFromCart(Guid tyreId)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Cart));
+        }
+        
         logger.LogInformation(
             "Controller => Removing tyre {TyreId} from cart",
             tyreId);
 
         await cartService.DeleteItemAsync(tyreId);
 
-        return RedirectToAction("Cart");
+        return RedirectToAction(nameof(Cart));
     }
 
     [HttpPost]
@@ -182,6 +192,11 @@ public class ShoppingController(
     [HttpPost]
     public async Task<string> ViewReceipt(int orderId)
     {
+        if (!ModelState.IsValid) 
+        {
+            return string.Empty;
+        }
+        
         logger.LogInformation(
             "Controller => Attempting to retrieve order {OrderId}",
             orderId);
