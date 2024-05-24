@@ -99,6 +99,11 @@ public class AdminController(
     [HttpGet("Admin/UpdateTyre/{TyreId}")]
     public async Task<IActionResult> UpdateTyre(Guid tyreId)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         logger.LogInformation(
             "Controller => Administrator is attempting to retrieve tyre {TyreId} for update",
             tyreId);
@@ -172,6 +177,11 @@ public class AdminController(
     [HttpPost]
     public async Task<IActionResult> DeleteTyre(Guid tyreId, string imageUrl)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         logger.LogInformation(
             "Controller => Administrator is attempting to delete tyre {TyreId}",
             tyreId);
@@ -189,11 +199,16 @@ public class AdminController(
     [HttpPost]
     public async Task<IActionResult> MarkOrderAsDelivered(int orderId)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         logger.LogInformation(
             "Controller => Administrator is attempting to mark order {OrderId} as delivered",
             orderId);
         
-        _ = await orderServiceClient.MarkOrderAsDeliveredAsync(orderId);
+        await orderServiceClient.MarkOrderAsDeliveredAsync(orderId);
 
         return RedirectToAction(nameof(Index));
     }
