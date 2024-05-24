@@ -96,7 +96,7 @@ public class AccountController(
     {
         if (!ModelState.IsValid)
         {
-            return View();
+            return View(model);
         }
 
         logger.LogInformation("Controller => Attempting to create a new customer account");
@@ -124,6 +124,13 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> UpdateAccount(AccountViewModel model)
     {
+        ModelState.Clear();
+        
+        if (!TryValidateModel(model.UpdateAccountModel))
+        {
+            return RedirectToAction(nameof(Index), model);
+        }
+        
         var customerId = RetrieveSignedInCustomerId();
 
         logger.LogInformation(
@@ -138,6 +145,11 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> DeleteAccount(string password)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         var customerId = RetrieveSignedInCustomerId();
 
         logger.LogInformation(
@@ -161,6 +173,13 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> AddNewAddress(AccountViewModel model)
     {
+        ModelState.Clear();
+        
+        if (!TryValidateModel(model.AddressModel))
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         var customerId = RetrieveSignedInCustomerId();
 
         logger.LogInformation(
@@ -194,6 +213,11 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> MarkAddressAsPreferred(Guid addressId)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         var customerId = RetrieveSignedInCustomerId();
 
         logger.LogInformation(
@@ -208,6 +232,11 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> DeleteAddress(Guid addressId)
     {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        
         var customerId = RetrieveSignedInCustomerId();
 
         logger.LogInformation(
@@ -227,7 +256,9 @@ public class AccountController(
     [HttpPost]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
     {
-        if (model.SendCodeModel is not null)
+        ModelState.Clear();
+        
+        if (model.SendCodeModel is not null && TryValidateModel(model.SendCodeModel))
         {
             logger.LogInformation(
                 "Controller => Starting a reset password operation for customer with email {CustomerEmail}",
@@ -281,7 +312,7 @@ public class AccountController(
 
             return View(model);
         }
-        else if (model.ResetPasswordModel is not null)
+        else if (model.ResetPasswordModel is not null && TryValidateModel(model.ResetPasswordModel))
         {
             var customer = await customerServiceClient.RetrieveSingleAsync(model.ResetPasswordModel.Email);
 
@@ -296,7 +327,7 @@ public class AccountController(
                 return View(model);
             }
 
-            logger.LogError(
+            logger.LogInformation(
                 "{Announcement}: Customer with email {CustomerEmail} entered a valid token. The reset password operation will begin",
                 "SUCCEEDED", "***REDACTED***");
 
