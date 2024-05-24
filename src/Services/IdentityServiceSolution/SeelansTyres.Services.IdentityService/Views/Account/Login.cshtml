@@ -24,13 +24,17 @@
                             <input type="hidden" asp-for="ReturnUrl" />
 
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" asp-for="Username">Email</label>
-                                <input class="form-control" type="email" asp-for="Username" placeholder="Username" autofocus>
+                                <label class="w-100" asp-for="Username">
+                                    Email
+                                    <input class="form-control mt-2" type="email" asp-for="Username" placeholder="Username" autofocus>
+                                </label>
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" asp-for="Password">Password</label>
-                                <input class="form-control" type="password" asp-for="Password" placeholder="Password">
+                                <label class="w-100" asp-for="Password">
+                                    Password
+                                    <input class="form-control mt-2" type="password" asp-for="Password" placeholder="Password">
+                                </label>
                             </div>
 
                             @if (Model.AllowRememberLogin)

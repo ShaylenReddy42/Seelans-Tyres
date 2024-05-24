@@ -213,7 +213,7 @@
                         <span asp-validation-for="AddressModel!.PostalCode"></span>
                     </div>
                     <div class="input-group mb-3">
-                        <label class="input-group-text" asp-for="AddressModel!.PreferredAddress">Mark As Preferred Delivery Address</label>
+                        <span class="input-group-text" asp-for="AddressModel!.PreferredAddress">Mark As Preferred Delivery Address</span>
                         <select class="form-select" asp-for="AddressModel!.PreferredAddress">
                             <option value="true" selected>Yes</option>
                             @if (Model.Addresses.Count() is not 0)
