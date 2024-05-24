@@ -104,4 +104,4 @@ if (app.Configuration.GetValue<bool>("InContainer"))
     await app.MigrateDatabaseAsync<AddressDbContext>();
 }
 
-app.Run();
+await app.RunAsync();

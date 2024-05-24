@@ -103,4 +103,4 @@ if (app.Configuration.GetValue<bool>("InContainer"))
     await app.MigrateDatabaseAsync<OrderDbContext>();
 }
 
-app.Run();
+await app.RunAsync();

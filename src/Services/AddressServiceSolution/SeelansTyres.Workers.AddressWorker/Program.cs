@@ -64,4 +64,4 @@ app.MapCommonHealthChecks();
 
 app.AddCommonStartupDelay();
 
-app.Run();
+await app.RunAsync();

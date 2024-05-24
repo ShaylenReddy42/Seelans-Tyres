@@ -218,4 +218,4 @@ app.Logger.LogInformation("Program => Migrating and seeding databases");
 
 await app.RunSeedersAsync();
 
-app.Run();
+await app.RunAsync();

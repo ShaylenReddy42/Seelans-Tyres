@@ -23,4 +23,4 @@ app.MapHealthChecksUI(options =>
 
 app.AddCommonStartupDelay();
 
-app.Run();
+await app.RunAsync();

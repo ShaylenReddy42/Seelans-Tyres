@@ -117,4 +117,4 @@ if (app.Configuration.GetValue<bool>("InContainer"))
 
 await app.MigrateUnpublishedUpdatesManagementDatabaseAsync();
 
-app.Run();
+await app.RunAsync();

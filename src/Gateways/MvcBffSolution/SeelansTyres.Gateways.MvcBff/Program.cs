@@ -73,4 +73,4 @@ app.MapHealthChecks(app.Configuration["LivenessCheckEndpoint"]!, new HealthCheck
 
 app.AddCommonStartupDelay();
 
-app.Run();
+await app.RunAsync();
