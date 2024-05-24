@@ -126,7 +126,7 @@ public class AccountController(
     {
         ModelState.Clear();
         
-        if (!TryValidateModel(model.UpdateAccountModel))
+        if (model.UpdateAccountModel is null || !TryValidateModel(model.UpdateAccountModel))
         {
             return RedirectToAction(nameof(Index), model);
         }
@@ -174,8 +174,8 @@ public class AccountController(
     public async Task<IActionResult> AddNewAddress(AccountViewModel model)
     {
         ModelState.Clear();
-        
-        if (!TryValidateModel(model.AddressModel))
+
+        if (model.AddressModel is null || !TryValidateModel(model.AddressModel))
         {
             return RedirectToAction(nameof(Index));
         }

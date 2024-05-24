@@ -13,7 +13,7 @@
         <div class="col-md-4 account-info-div pb-5">
             <div class="profile-div p-4 border border-2 rounded-3 mb-4 text-center border-dark">
                 <div class="account-profile-pic rounded-circle mx-auto border border-1 mb-3"></div>
-                <p class="account-holder-name">@($"{Model.Customer.FirstName} {Model.Customer.LastName}")</p>
+                <p class="account-holder-name">@($"{Model.Customer?.FirstName} {Model.Customer?.LastName}")</p>
             </div>
             <div class="account-nav-div">
                 <div class="list-group">
@@ -111,28 +111,28 @@
                     <p>View and edit your personal info below</p>
                     <hr class="mt-5 mb-3">
                     <p>Login email:</p>
-                    <p class="mb-4"><span>@Model.Customer.Email</span></p>
+                    <p class="mb-4"><span>@Model.Customer?.Email</span></p>
                     <form method="post" asp-controller="Account" asp-action="UpdateAccount">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="UpdateAccountModel.FirstName">First Name</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel.FirstName" placeholder="e.g. Shaylen" value="@Model.Customer.FirstName">
-                                <span asp-validation-for="UpdateAccountModel.FirstName"></span>
+                                <label class="form-label" asp-for="UpdateAccountModel!.FirstName">First Name</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel!.FirstName" placeholder="e.g. Shaylen" value="@Model.Customer?.FirstName">
+                                <span asp-validation-for="UpdateAccountModel!.FirstName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="UpdateAccountModel.LastName">Last Name</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel.LastName" placeholder="e.g. Reddy" value="@Model.Customer.LastName">
-                                <span asp-validation-for="UpdateAccountModel.LastName"></span>
+                                <label class="form-label" asp-for="UpdateAccountModel!.LastName">Last Name</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel!.LastName" placeholder="e.g. Reddy" value="@Model.Customer?.LastName">
+                                <span asp-validation-for="UpdateAccountModel!.LastName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="email">Contact Email</label>
-                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@Model.Customer.Email" disabled>
+                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@Model.Customer?.Email" disabled>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="UpdateAccountModel.PhoneNumber">Phone</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel.PhoneNumber" placeholder="e.g. 0000000000" value="@Model.Customer.PhoneNumber">
-                                <span asp-validation-for="UpdateAccountModel.PhoneNumber"></span>
+                                <label class="form-label" asp-for="UpdateAccountModel!.PhoneNumber">Phone</label>
+                                <input type="text" class="form-control" asp-for="UpdateAccountModel!.PhoneNumber" placeholder="e.g. 0000000000" value="@Model.Customer?.PhoneNumber">
+                                <span asp-validation-for="UpdateAccountModel!.PhoneNumber"></span>
                             </div>
                             <div class="col-sm-12 col-md-6 offset-md-3">
                                 <button type="submit" class="btn btn-dark w-100">Update Info</button>
@@ -175,30 +175,30 @@
             <div class="modal-body">
                 <form method="post" asp-controller="Account" asp-action="AddNewAddress">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input asp-for="AddressModel.Id" value="0" hidden />
+                    <input asp-for="AddressModel!.Id" value="0" hidden />
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel.AddressLine1">Address Line 1</label>
-                        <input type="text" class="form-control" asp-for="AddressModel.AddressLine1" placeholder="Address Line 1">
-                        <span asp-validation-for="AddressModel.AddressLine1"></span>
+                        <label class="form-label" asp-for="AddressModel!.AddressLine1">Address Line 1</label>
+                        <input type="text" class="form-control" asp-for="AddressModel!.AddressLine1" placeholder="Address Line 1">
+                        <span asp-validation-for="AddressModel!.AddressLine1"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel.AddressLine2">Address Line 2</label>
-                        <input type="text" class="form-control" asp-for="AddressModel.AddressLine2" placeholder="Address Line 2">
-                        <span asp-validation-for="AddressModel.AddressLine2"></span>
+                        <label class="form-label" asp-for="AddressModel!.AddressLine2">Address Line 2</label>
+                        <input type="text" class="form-control" asp-for="AddressModel!.AddressLine2" placeholder="Address Line 2">
+                        <span asp-validation-for="AddressModel!.AddressLine2"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel.City">City</label>
-                        <input type="text" class="form-control" asp-for="AddressModel.City" placeholder="City Name">
-                        <span asp-validation-for="AddressModel.City"></span>
+                        <label class="form-label" asp-for="AddressModel!.City">City</label>
+                        <input type="text" class="form-control" asp-for="AddressModel!.City" placeholder="City Name">
+                        <span asp-validation-for="AddressModel!.City"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel.PostalCode">Postal Code</label>
-                        <input type="text" class="form-control" asp-for="AddressModel.PostalCode" placeholder="Postal Code">
-                        <span asp-validation-for="AddressModel.PostalCode"></span>
+                        <label class="form-label" asp-for="AddressModel!.PostalCode">Postal Code</label>
+                        <input type="text" class="form-control" asp-for="AddressModel!.PostalCode" placeholder="Postal Code">
+                        <span asp-validation-for="AddressModel!.PostalCode"></span>
                     </div>
                     <div class="input-group mb-3">
-                        <label class="input-group-text" asp-for="AddressModel.PreferredAddress">Mark As Preferred Delivery Address</label>
-                        <select class="form-select" asp-for="AddressModel.PreferredAddress">
+                        <label class="input-group-text" asp-for="AddressModel!.PreferredAddress">Mark As Preferred Delivery Address</label>
+                        <select class="form-select" asp-for="AddressModel!.PreferredAddress">
                             <option value="true" selected>Yes</option>
                             @if (Model.Addresses.Count() is not 0)
                             {
