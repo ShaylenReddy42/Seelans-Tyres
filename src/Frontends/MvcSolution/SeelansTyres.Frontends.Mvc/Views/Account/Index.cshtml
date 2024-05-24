@@ -116,22 +116,30 @@
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="UpdateAccountModel!.FirstName">First Name</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel!.FirstName" placeholder="e.g. Shaylen" value="@Model.Customer?.FirstName">
+                                <label class="w-100" asp-for="UpdateAccountModel!.FirstName">
+                                    First Name
+                                    <input type="text" class="form-control mt-2" asp-for="UpdateAccountModel!.FirstName" placeholder="e.g. Shaylen" value="@Model.Customer?.FirstName">
+                                </label>
                                 <span asp-validation-for="UpdateAccountModel!.FirstName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="UpdateAccountModel!.LastName">Last Name</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel!.LastName" placeholder="e.g. Reddy" value="@Model.Customer?.LastName">
+                                <label class="w-100" asp-for="UpdateAccountModel!.LastName">
+                                    Last Name
+                                    <input type="text" class="form-control mt-2" asp-for="UpdateAccountModel!.LastName" placeholder="e.g. Reddy" value="@Model.Customer?.LastName">
+                                </label>
                                 <span asp-validation-for="UpdateAccountModel!.LastName"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="email">Contact Email</label>
-                                <input type="email" class="form-control" placeholder="e.g. user@gmail.com" value="@Model.Customer?.Email" disabled>
+                                <label class="w-100" for="email">
+                                    Contact Email
+                                    <input type="email" class="form-control mt-2" placeholder="e.g. user@gmail.com" value="@Model.Customer?.Email" disabled>
+                                </label>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" asp-for="UpdateAccountModel!.PhoneNumber">Phone</label>
-                                <input type="text" class="form-control" asp-for="UpdateAccountModel!.PhoneNumber" placeholder="e.g. 0000000000" value="@Model.Customer?.PhoneNumber">
+                                <label class="w-100" asp-for="UpdateAccountModel!.PhoneNumber">
+                                    Phone
+                                    <input type="text" class="form-control mt-2" asp-for="UpdateAccountModel!.PhoneNumber" placeholder="e.g. 0000000000" value="@Model.Customer?.PhoneNumber">
+                                </label>
                                 <span asp-validation-for="UpdateAccountModel!.PhoneNumber"></span>
                             </div>
                             <div class="col-sm-12 col-md-6 offset-md-3">
@@ -142,18 +150,18 @@
                     <hr class="my-3">
                     <h4>Delete Account</h4>
                     <div class="alert alert-warning mt-4">
-                        <p>
-                            Note: Your account and its data are not recoverable.
-                            <br />
-                            On success, you will be logged out and redirected to the home screen.
-                            <br />
+                        <p class="my-0">
+                            <span class="fw-bold">Note:</span> Your account and its data are not recoverable.<br />
+                            On success, you will be logged out and redirected to the home screen.<br />
                             On failure, the screen will be refreshed
                         </p>
                     </div>
                     <form method="post" asp-controller="Account" asp-action="DeleteAccount">
                         <div class="w-100 mb-3">
-                            <label class="form-label">Enter your password to proceed</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <label class="w-100">
+                                Enter your password to proceed
+                                <input type="password" name="password" class="form-control mt-2" required>
+                            </label>
                         </div>
                         <div class="col-md-6 offset-md-3 mb-5">
                             <button type="submit" class="btn btn-danger w-100">Delete Account</button>
@@ -177,23 +185,31 @@
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                     <input asp-for="AddressModel!.Id" value="0" hidden />
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel!.AddressLine1">Address Line 1</label>
-                        <input type="text" class="form-control" asp-for="AddressModel!.AddressLine1" placeholder="Address Line 1">
+                        <label class="w-100" asp-for="AddressModel!.AddressLine1">
+                            Address Line 1
+                            <input type="text" class="form-control mt-2" asp-for="AddressModel!.AddressLine1" placeholder="Address Line 1">
+                        </label>
                         <span asp-validation-for="AddressModel!.AddressLine1"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel!.AddressLine2">Address Line 2</label>
-                        <input type="text" class="form-control" asp-for="AddressModel!.AddressLine2" placeholder="Address Line 2">
+                        <label class="w-100" asp-for="AddressModel!.AddressLine2">
+                            Address Line 2
+                            <input type="text" class="form-control mt-2" asp-for="AddressModel!.AddressLine2" placeholder="Address Line 2">
+                        </label>
                         <span asp-validation-for="AddressModel!.AddressLine2"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel!.City">City</label>
-                        <input type="text" class="form-control" asp-for="AddressModel!.City" placeholder="City Name">
+                        <label class="w-100" asp-for="AddressModel!.City">
+                            City
+                            <input type="text" class="form-control mt-2" asp-for="AddressModel!.City" placeholder="City Name">
+                        </label>
                         <span asp-validation-for="AddressModel!.City"></span>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label class="form-label" asp-for="AddressModel!.PostalCode">Postal Code</label>
-                        <input type="text" class="form-control" asp-for="AddressModel!.PostalCode" placeholder="Postal Code">
+                        <label class="w-100" asp-for="AddressModel!.PostalCode">
+                            Postal Code
+                            <input type="text" class="form-control mt-2" asp-for="AddressModel!.PostalCode" placeholder="Postal Code">
+                        </label>
                         <span asp-validation-for="AddressModel!.PostalCode"></span>
                     </div>
                     <div class="input-group mb-3">

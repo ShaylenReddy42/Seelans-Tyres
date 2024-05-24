@@ -15,33 +15,45 @@
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="FirstName">First Name</label>
-            <input type="text" class="form-control" asp-for="FirstName" placeholder="e.g. Shaylen">
+            <label class="w-100" asp-for="FirstName">
+                First Name
+                <input type="text" class="form-control mt-2" asp-for="FirstName" placeholder="e.g. Shaylen">
+            </label>
             <span asp-validation-for="FirstName"></span>
         </div>
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="LastName">Last Name</label>
-            <input type="text" class="form-control" asp-for="LastName" placeholder="e.g. Reddy">
+            <label class="w-100" asp-for="LastName">
+                Last Name
+                <input type="text" class="form-control mt-2" asp-for="LastName" placeholder="e.g. Reddy">
+            </label>
             <span asp-validation-for="LastName"></span>
         </div>
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="Email">Email</label>
-            <input type="email" class="form-control" asp-for="Email" placeholder="e.g. user@gmail.com">
+            <label class="w-100" asp-for="Email">
+                Email
+                <input type="email" class="form-control mt-2" asp-for="Email" placeholder="e.g. user@gmail.com">
+            </label>
             <span asp-validation-for="Email"></span>
         </div>
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="PhoneNumber">Phone</label>
-            <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="e.g. 0000000000">
+            <label class="w-100" asp-for="PhoneNumber">
+                Phone
+                <input type="text" class="form-control mt-2" asp-for="PhoneNumber" placeholder="e.g. 0000000000">
+            </label>
             <span asp-validation-for="PhoneNumber"></span>
         </div>
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="Password">Password</label>
-            <input type="password" class="form-control" asp-for="Password" placeholder="Enter Password">
+            <label class="w-100" asp-for="Password">
+                Password
+                <input type="password" class="form-control mt-2" asp-for="Password" placeholder="Enter Password">
+            </label>
             <span asp-validation-for="Password"></span>
         </div>
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="ConfirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password">
+            <label class="w-100" asp-for="ConfirmPassword">
+                Confirm Password
+                <input type="password" class="form-control mt-2" asp-for="ConfirmPassword" placeholder="Confirm Password">
+            </label>
             <span asp-validation-for="ConfirmPassword"></span>
         </div>
         <div class="text-center mb-2">

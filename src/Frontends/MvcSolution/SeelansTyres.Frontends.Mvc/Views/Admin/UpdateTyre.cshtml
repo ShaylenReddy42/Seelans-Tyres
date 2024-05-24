@@ -17,8 +17,10 @@
         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
         <input asp-for="Id" value="@Model.Id" hidden />
         <div class="col-md-12 mb-3">
-            <label class="form-label" asp-for="Name">Name</label>
-            <input type="text" asp-for="Name" class="form-control">
+            <label class="w-100" asp-for="Name">
+                Name
+                <input type="text" asp-for="Name" class="form-control mt-2">
+            </label>
             <span asp-validation-for="Name"></span>
         </div>
         <div class="col-md-12 mb-3">
