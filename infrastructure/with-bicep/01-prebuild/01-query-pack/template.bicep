@@ -18,7 +18,7 @@ resource healthCheckStatusQuery 'microsoft.operationalInsights/querypacks/querie
   properties: {
     displayName: 'Health Check Status'
     description: 'Used to query for the health status according to the AspNetCore Health Checks specification'
-    body: 'AppEvents\r\n| where Name == "AspNetCoreHealthCheck"\r\n| where Measurements.["AspNetCoreHealthCheckStatus"] == 0\r\n| project\r\n    TimeGenerated,\r\n    ApplicationName=Properties.["Assembly"],\r\n    HealthCheckStatus=Measurements.["AspNetCoreHealthCheckStatus"],\r\n    HealthCheckDuration=Measurements.["AspNetCoreHealthCheckDuration"]'
+    body: 'customEvents\r\n| where name == "AspNetCoreHealthCheck"\r\n| where customMeasurements.["AspNetCoreHealthCheckStatus"] == 0\r\n| project\r\n    timestamp,\r\n    ApplicationName=customDimensions.["Assembly"],\r\n    ApplicationVersion=application_Version,\r\n    HealthCheckStatus=customMeasurements.["AspNetCoreHealthCheckStatus"],\r\n    HealthCheckDuration=customMeasurements.["AspNetCoreHealthCheckDuration"]'
     related: {
       categories: []
       resourceTypes: [
@@ -39,7 +39,7 @@ resource matchElasticsearchAndKibanaExperienceQuery 'microsoft.operationalInsigh
   properties: {
     displayName: 'Match Elasticsearch and Kibana Experience'
     description: 'A very specific query to attempt to match the search experience when using Elasticsearch and Kibana'
-    body: 'AppEvents\r\n| sort by TimeGenerated desc\r\n| project \r\n    TimeGenerated,\r\n    DescriptiveApplicationName=Properties.["Custom: Descriptive Application Name"],\r\n    RenderedMessage=Properties.["RenderedMessage"],\r\n    Properties=Properties'
+    body: 'customEvents\r\n| sort by timestamp desc\r\n| project \r\n    timestamp,\r\n    DescriptiveApplicationName=customDimensions.["Custom: Descriptive Application Name"],\r\n    RenderedMessage=customDimensions.["RenderedMessage"],\r\n    CustomDimensions=customDimensions'
     related: {
       categories: []
       resourceTypes: [

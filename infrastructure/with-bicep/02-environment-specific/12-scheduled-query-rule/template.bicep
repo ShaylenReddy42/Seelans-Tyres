@@ -79,7 +79,7 @@ resource scheduledQueryRule 'Microsoft.Insights/scheduledqueryrules@2022-08-01-p
     criteria: {
       allOf: [
         {
-          query: 'AppEvents\r\n| where Name == "AspNetCoreHealthCheck"\r\n| where Measurements.["AspNetCoreHealthCheckStatus"] == 0\r\n| project\r\n    TimeGenerated,\r\n    ApplicationName=Properties.["Assembly"],\r\n    HealthCheckStatus=Measurements.["AspNetCoreHealthCheckStatus"],\r\n    HealthCheckDuration=Measurements.["AspNetCoreHealthCheckDuration"]'
+          query: 'customEvents\n| where name == "AspNetCoreHealthCheck"\n| where customMeasurements.["AspNetCoreHealthCheckStatus"] == 0\n| project\n    timestamp,\n    ApplicationName=customDimensions.["Assembly"],\n    ApplicationVersion=application_Version,\n    HealthCheckStatus=customMeasurements.["AspNetCoreHealthCheckStatus"],\n    HealthCheckDuration=customMeasurements.["AspNetCoreHealthCheckDuration"]\n'
           timeAggregation: 'Count'
           dimensions: []
           operator: 'GreaterThan'
