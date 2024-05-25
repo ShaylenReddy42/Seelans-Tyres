@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations; // EmailAddress, Required, MinLength, Compare
+﻿using System.ComponentModel.DataAnnotations; // Required, EmailAddress, Required, MinLength, Compare
 
 namespace SeelansTyres.Frontends.Mvc.Models;
 
 public class ResetPasswordModel
 {
+    [Required]
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
     [Required]

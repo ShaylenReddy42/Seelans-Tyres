@@ -30,7 +30,7 @@
                     <p>Check the status of your orders or browser through your past purchases</p>
                     <hr class="my-5">
                     <div class="text-center">
-                        @if (Model.Orders.Count() is 0)
+                        @if (Model.Orders is null || Model.Orders.Count() is 0)
                         {
                             <p>You haven't placed any orders yet</p>
                             <a class="btn btn-dark" asp-controller="Home" asp-action="Shop">Shop Now</a>
@@ -69,13 +69,13 @@
                     <p>Add or manage the addresses you use often</p>
                     <hr class="my-5">
                     <div class="addresses">
-                        @if (Model.Addresses!.Count() is 0)
+                        @if (Model.Addresses is null || Model.Addresses.Count() is 0)
                         {
                             <p class="text-center">You haven't saved any addresses yet</p>
                         }
                         else
                         {
-                            foreach (var address in Model.Addresses!)
+                            foreach (var address in Model.Addresses)
                             {
                                 <div class="card w-100 mb-2" style="width: 18rem;">
                                     <div class="card-body text-center">

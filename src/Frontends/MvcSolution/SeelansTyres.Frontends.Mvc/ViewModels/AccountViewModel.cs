@@ -5,6 +5,6 @@ public class AccountViewModel
     public UpdateAccountModel? UpdateAccountModel { get; set; } = null;
     public AddressModel? AddressModel { get; set; } = null;
     public CustomerModel? Customer { get; set; } = null;
-    public IEnumerable<AddressModel> Addresses { get; set; } = [];
-    public IEnumerable<OrderModel> Orders { get; set; } = [];
+    public IEnumerable<AddressModel>? Addresses { get; set; } = [];
+    public IEnumerable<OrderModel>? Orders { get; set; } = [];
 }
