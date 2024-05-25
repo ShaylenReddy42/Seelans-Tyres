@@ -85,7 +85,7 @@ public class CustomerService : ICustomerService
 	{
 		logger.LogInformation(
 			"Service => Attempting to retrieve customer by email {CustomerEmail}",
-			"***REDACTED***");
+			LoggerConstants.Redacted);
 
 		Customer? customer;
 
@@ -101,7 +101,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
 				"{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by email {CustomerEmail} was unsuccessful",
-				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, LoggerConstants.Redacted);
 
 			throw ex.GetBaseException();
 		}
@@ -109,7 +109,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by email {CustomerEmail} completed successfully",
-			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, LoggerConstants.Redacted);
 
 		return customer;
 	}

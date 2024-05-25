@@ -41,7 +41,7 @@ public class CustomerServiceClient(
             {
                 logger.LogInformation(
                     "Customer with email {CustomerEmail} already exists",
-                    "***REDACTED***");
+                    LoggerConstants.Redacted);
 
                 errors.Add($"Customer with email {registerModel.Email} already exists");
             }
@@ -117,7 +117,7 @@ public class CustomerServiceClient(
     {
         logger.LogInformation(
             "Service => Attempting to retrieve customer by email {CustomerEmail}",
-            "***REDACTED***");
+            LoggerConstants.Redacted);
 
         client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.retrievesinglebyemail"));
         var response = await client.GetAsync($"api/customers?email={email}");

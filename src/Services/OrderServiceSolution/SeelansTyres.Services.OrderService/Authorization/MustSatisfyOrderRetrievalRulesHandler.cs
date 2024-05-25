@@ -8,13 +8,17 @@ public class MustSatisfyOrderRetrievalRulesHandler(
     IHttpContextAccessor httpContextAccessor,
     ILogger<MustSatisfyOrderRetrievalRulesHandler> logger) : AuthorizationHandler<MustSatisfyOrderRetrievalRulesRequirement>
 {
+
+    private const string AuthorizationRequirementName = "MustSatisfyOrderRetrievalRules";
+    private const string AnnouncementLoggerTemplate = "{Announcement}: {AuthorizationRequirement}";
+
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context, 
         MustSatisfyOrderRetrievalRulesRequirement requirement)
     {
         logger.LogInformation(
-            "{Announcement}: {AuthorizationRequirement}", 
-            "AUTHORIZATION REQUIREMENT HIT", "MustSatisfyOrderRetrievalRules");
+            AnnouncementLoggerTemplate, 
+            "AUTHORIZATION REQUIREMENT HIT", AuthorizationRequirementName);
 
         httpContextAccessor.HttpContext!.Request.Query.TryGetValue("customerId", out StringValues customerIds);
 
@@ -30,8 +34,8 @@ public class MustSatisfyOrderRetrievalRulesHandler(
                 LoggerConstants.SucceededAnnouncement);
 
             logger.LogInformation(
-                "{Announcement}: {AuthorizationRequirement}", 
-                "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
+                AnnouncementLoggerTemplate, 
+                "AUTHORIZATION REQUIREMENT COMPLETED", AuthorizationRequirementName);
 
             context.Succeed(requirement);
             return Task.CompletedTask;
@@ -44,8 +48,8 @@ public class MustSatisfyOrderRetrievalRulesHandler(
                 LoggerConstants.SucceededAnnouncement, customerIdFromClaims);
 
             logger.LogInformation(
-                "{Announcement}: {AuthorizationRequirement}", 
-                "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
+                AnnouncementLoggerTemplate, 
+                "AUTHORIZATION REQUIREMENT COMPLETED", AuthorizationRequirementName);
 
             context.Succeed(requirement);
             return Task.CompletedTask;
@@ -64,8 +68,8 @@ public class MustSatisfyOrderRetrievalRulesHandler(
             LoggerConstants.FailedAnnouncement, failureMessage);
 
         logger.LogInformation(
-            "{Announcement}: {AuthorizationRequirement}", 
-            "AUTHORIZATION REQUIREMENT COMPLETED", "MustSatisfyOrderRetrievalRules");
+            AnnouncementLoggerTemplate, 
+            "AUTHORIZATION REQUIREMENT COMPLETED", AuthorizationRequirementName);
 
         context.Fail(new AuthorizationFailureReason(this, failureMessage));
         return Task.CompletedTask;

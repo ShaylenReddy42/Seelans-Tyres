@@ -15,6 +15,8 @@ public class AdminAccountSeeder
     private readonly UserManager<Customer> userManager;
     private readonly Stopwatch stopwatch = new();
 
+    private const string FullAdminRoleName = "Administrator";
+
     public AdminAccountSeeder(
         ILogger<AdminAccountSeeder> logger,
         IConfiguration configuration,
@@ -34,7 +36,7 @@ public class AdminAccountSeeder
         stopwatch.Start();
         try
         {
-            var administrators = await userManager!.GetUsersInRoleAsync("Administrator");
+            var administrators = await userManager!.GetUsersInRoleAsync(FullAdminRoleName);
 
             if (administrators.Count is not 0)
             {
@@ -47,18 +49,18 @@ public class AdminAccountSeeder
                 return;
             }
 
-            bool roleExists = await roleManager.RoleExistsAsync("Administrator");
+            bool roleExists = await roleManager.RoleExistsAsync(FullAdminRoleName);
 
             if (!roleExists)
             {
                 logger.LogInformation(
                     "Creating role {Role} because it doesn't exist", 
-                    "Administrator");
+                    FullAdminRoleName);
                 
                 await roleManager.CreateAsync(
                     new IdentityRole<Guid>
                     {
-                        Name = "Administrator"
+                        Name = FullAdminRoleName
                     });
             }
 
@@ -75,11 +77,11 @@ public class AdminAccountSeeder
                 new(ClaimTypes.Name, "Admin User"),
                 new(JwtRegisteredClaimNames.GivenName, "Admin"),
                 new(JwtRegisteredClaimNames.FamilyName, "User"),
-                new(ClaimTypes.Role, "Administrator")
+                new(ClaimTypes.Role, FullAdminRoleName)
             };
 
             await userManager.CreateAsync(admin, configuration["AdminCredentials:Password"]);
-            await userManager.AddToRoleAsync(admin, "Administrator");
+            await userManager.AddToRoleAsync(admin, FullAdminRoleName);
             await userManager.AddClaimsAsync(admin, claims);
         }
         catch (InvalidOperationException ex)

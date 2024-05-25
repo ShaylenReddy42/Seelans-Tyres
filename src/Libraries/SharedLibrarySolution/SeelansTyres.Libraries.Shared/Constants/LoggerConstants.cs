@@ -4,4 +4,6 @@ public static class LoggerConstants
 {
     public const string SucceededAnnouncement = "SUCCEEDED";
     public const string FailedAnnouncement = "FAILED";
+
+    public const string Redacted = "***REDACTED***";
 }

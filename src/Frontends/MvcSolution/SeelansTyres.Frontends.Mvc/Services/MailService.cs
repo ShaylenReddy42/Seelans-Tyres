@@ -50,7 +50,7 @@ public class MailService(
     {
         logger.LogInformation(
             "Attempting to send a reset password token to customer with email {CustomerEmail}",
-            "***REDACTED***");
+            LoggerConstants.Redacted);
 
         stopwatch.Start();
         try
@@ -74,7 +74,7 @@ public class MailService(
 
             logger.LogInformation(
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {CustomerEmail} completed successfully",
-                LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
+                LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, LoggerConstants.Redacted);
         }
         catch (Exception ex)
         {
@@ -83,7 +83,7 @@ public class MailService(
             logger.LogWarning(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {CustomerEmail} was unsuccessful",
-                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, LoggerConstants.Redacted);
 
             return false;
         }

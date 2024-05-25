@@ -33,6 +33,9 @@ public class CustomersController : ControllerBase
     private readonly PublishUpdateChannel publishUpdateChannel;
     private readonly Stopwatch stopwatch = new();
 
+    private const string CorruptedDataMessage = "Data got corrupted in transit, decryption failed!";
+    private const string DecryptionFailedLoggerTemplate = "{Announcement}: Decryption process failed";
+
     public CustomersController(
         ICustomerService customerService,
         ISigningCredentialStore signingCredentialStore,
@@ -89,10 +92,10 @@ public class CustomersController : ControllerBase
         if (registerModel is null)
         {
             logger.LogWarning(
-                "{Announcement}: Decryption process failed",
+                DecryptionFailedLoggerTemplate,
                 "NULL");
             
-            return BadRequest("Data got corrupted in transit, decryption failed!");
+            return BadRequest(CorruptedDataMessage);
         }
         
         var customer = await customerService.RetrieveSingleAsync(registerModel.Email);
@@ -101,7 +104,7 @@ public class CustomersController : ControllerBase
         {
             logger.LogWarning(
                 "{Announcement}: Customer with email {CustomerEmail} already exists",
-                "ABORTED", "***REDACTED***");
+                "ABORTED", LoggerConstants.Redacted);
 
             return BadRequest("Customer already exists");
         }
@@ -140,7 +143,7 @@ public class CustomersController : ControllerBase
     {
         logger.LogInformation(
             "API => Attempting to retrieve customer by email {CustomerEmail}",
-            "***REDACTED***");
+            LoggerConstants.Redacted);
         
         if (string.IsNullOrEmpty(email.Trim()))
         {
@@ -212,10 +215,10 @@ public class CustomersController : ControllerBase
         if (updateAccountModel is null)
         {
             logger.LogWarning(
-                "{Announcement}: Decryption process failed",
+                DecryptionFailedLoggerTemplate,
                 "NULL");
 
-            return BadRequest("Data got corrupted in transit, decryption failed!");
+            return BadRequest(CorruptedDataMessage);
         }
         
         await customerService.UpdateAsync(id, updateAccountModel);
@@ -331,10 +334,10 @@ public class CustomersController : ControllerBase
         if (passwordModel is null)
         {
             logger.LogWarning(
-                "{Announcement}: Decryption process failed",
+                DecryptionFailedLoggerTemplate,
                 "NULL");
 
-            return BadRequest("Data got corrupted in transit, decryption failed!");
+            return BadRequest(CorruptedDataMessage);
         }
         
         var result = await customerService.VerifyPasswordAsync(id, passwordModel.Password);
@@ -375,10 +378,10 @@ public class CustomersController : ControllerBase
         if (passwordModel is null)
         {
             logger.LogWarning(
-                "{Announcement}: Decryption process failed",
+                DecryptionFailedLoggerTemplate,
                 "NULL");
 
-            return BadRequest("Data got corrupted in transit, decryption failed!");
+            return BadRequest(CorruptedDataMessage);
         }
 
         await customerService.ResetPasswordAsync(id, passwordModel.Password);

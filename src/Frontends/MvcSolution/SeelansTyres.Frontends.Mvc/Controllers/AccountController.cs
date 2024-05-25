@@ -263,7 +263,7 @@ public class AccountController(
         {
             logger.LogInformation(
                 "Controller => Starting a reset password operation for customer with email {CustomerEmail}",
-                "***REDACTED***");
+                LoggerConstants.Redacted);
             
             var customer = await customerServiceClient.RetrieveSingleAsync(model.SendCodeModel.Email);
 
@@ -271,7 +271,7 @@ public class AccountController(
             {
                 logger.LogWarning(
                     "Customer with email {CustomerEmail} does not exist!",
-                    "***REDACTED***");
+                    LoggerConstants.Redacted);
                 
                 ModelState.AddModelError(string.Empty, $"Customer with email {model.SendCodeModel.Email} does not exist!");
 
@@ -286,7 +286,7 @@ public class AccountController(
 
             logger.LogInformation(
                 "Sending token to customer with email {CustomerEmail}",
-                "***REDACTED***");
+                LoggerConstants.Redacted);
 
              var result = 
                 await mailService.SendResetPasswordTokenAsync(
@@ -299,7 +299,7 @@ public class AccountController(
             {
                 logger.LogError(
                     "{Announcement}: The system failed to send the token to customer with email {CustomerEmail}",
-                    LoggerConstants.FailedAnnouncement, "***REDACTED***");
+                    LoggerConstants.FailedAnnouncement, LoggerConstants.Redacted);
                 
                 ModelState.AddModelError(string.Empty, "The system failed to send you an email with the token,\nplease resubmit and try again");
 
@@ -321,7 +321,7 @@ public class AccountController(
             {
                 logger.LogError(
                     "{Announcement}: Customer with email {CustomerEmail} entered an invalid token to try and reset their password",
-                    LoggerConstants.FailedAnnouncement, "***REDACTED***");
+                    LoggerConstants.FailedAnnouncement, LoggerConstants.Redacted);
                 
                 ModelState.AddModelError(string.Empty, "Invalid token!");
 
@@ -330,7 +330,7 @@ public class AccountController(
 
             logger.LogInformation(
                 "{Announcement}: Customer with email {CustomerEmail} entered a valid token. The reset password operation will begin",
-                LoggerConstants.SucceededAnnouncement, "***REDACTED***");
+                LoggerConstants.SucceededAnnouncement, LoggerConstants.Redacted);
 
             HttpContext.Session.Remove("ResetPasswordToken");
 
