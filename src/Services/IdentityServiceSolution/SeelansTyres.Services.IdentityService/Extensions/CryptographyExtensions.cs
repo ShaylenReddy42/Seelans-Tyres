@@ -1,9 +1,10 @@
-﻿using IdentityServer4.Stores;
-using Microsoft.IdentityModel.Tokens;
-using SeelansTyres.Libraries.Shared.Models;
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text.Json;
+﻿using IdentityServer4.Stores;                  // ISigningCredentialStore
+using Microsoft.IdentityModel.Tokens;          // Base64UrlEncoder, SigningCredentials, SecurityAlgorithms
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+using SeelansTyres.Libraries.Shared.Models;    // EncryptedDataModel
+using System.Diagnostics;                      // Stopwatch
+using System.Security.Cryptography;            // RSAParameters, RSA, RSAEncryptionPadding, AesGcm, CryptographicException
+using System.Text.Json;                        // JsonSerializer
 
 namespace SeelansTyres.Services.IdentityService.Extensions;
 
@@ -92,7 +93,7 @@ public static class CryptographyExtensions
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Decryption failed, integrity checks by the AesGcm algorithm indicates that the data has been compromised",
-                "FAILED", stopwatch.ElapsedMilliseconds);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
             
             return default;
         }
@@ -101,7 +102,7 @@ public static class CryptographyExtensions
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Decryption process for model of type {ModelType} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return JsonSerializer.Deserialize<T>(modelAsBytes);
     }

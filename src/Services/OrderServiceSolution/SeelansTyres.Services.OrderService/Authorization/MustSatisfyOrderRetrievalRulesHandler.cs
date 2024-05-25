@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization; // AuthorizationHandler, AuthorizationHandlerContext, AuthorizationFailureReason()
-using Microsoft.Extensions.Primitives;    // StringValues
+﻿using Microsoft.AspNetCore.Authorization;      // AuthorizationHandler, AuthorizationHandlerContext, AuthorizationFailureReason()
+using Microsoft.Extensions.Primitives;         // StringValues
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Services.OrderService.Authorization;
 
@@ -26,7 +27,7 @@ public class MustSatisfyOrderRetrievalRulesHandler(
         {
             logger.LogInformation(
                 "{Announcement}: An administrator is allowed to retrieve all orders but not for a specific customer, rules satisfied",
-                "SUCCEEDED");
+                LoggerConstants.SucceededAnnouncement);
 
             logger.LogInformation(
                 "{Announcement}: {AuthorizationRequirement}", 
@@ -40,7 +41,7 @@ public class MustSatisfyOrderRetrievalRulesHandler(
         {
             logger.LogInformation(
                 "{Announcement}: Customer {CustomerId} is allowed to retrieve their own orders, requirement rules satisfied",
-                "SUCCEEDED", customerIdFromClaims);
+                LoggerConstants.SucceededAnnouncement, customerIdFromClaims);
 
             logger.LogInformation(
                 "{Announcement}: {AuthorizationRequirement}", 
@@ -60,7 +61,7 @@ public class MustSatisfyOrderRetrievalRulesHandler(
 
         logger.LogWarning(
             "{Announcement}: {FailureMessage}",
-            "FAILED", failureMessage);
+            LoggerConstants.FailedAnnouncement, failureMessage);
 
         logger.LogInformation(
             "{Announcement}: {AuthorizationRequirement}", 

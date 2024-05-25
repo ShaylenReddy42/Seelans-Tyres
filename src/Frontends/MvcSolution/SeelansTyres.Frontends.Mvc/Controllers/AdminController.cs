@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;     // Authorize
-using SeelansTyres.Frontends.Mvc.HttpClients; // IOrderServiceClient, ITyresServiceClient
-using SeelansTyres.Frontends.Mvc.Models;      // MvcTyreModel
-using SeelansTyres.Frontends.Mvc.Services;    // IImageService
-using SeelansTyres.Frontends.Mvc.ViewModels;  // AdminPortalViewModel
+﻿using Microsoft.AspNetCore.Authorization;      // Authorize
+using SeelansTyres.Frontends.Mvc.HttpClients;  // IOrderServiceClient, ITyresServiceClient
+using SeelansTyres.Frontends.Mvc.Models;       // MvcTyreModel
+using SeelansTyres.Frontends.Mvc.Services;     // IImageService
+using SeelansTyres.Frontends.Mvc.ViewModels;   // AdminPortalViewModel
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants 
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
@@ -82,7 +83,7 @@ public class AdminController(
         {
             logger.LogError(
                 "{Announcement}: Attempt to add a new tyre was unsuccessful",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
             
             ModelState.AddModelError(string.Empty, "API is not available");
 
@@ -91,7 +92,7 @@ public class AdminController(
 
         logger.LogInformation(
             "{Announcement}: Attempt to add a new tyre completed successfully",
-            "SUCCEEDED");
+            LoggerConstants.SucceededAnnouncement);
 
         return RedirectToAction(nameof(Index));
     }
@@ -161,7 +162,7 @@ public class AdminController(
         {
             logger.LogError(
                 "{Announcement}: Attempt to update tyre {TyreId} was unsuccessful",
-                "FAILED", model.Id);
+                LoggerConstants.FailedAnnouncement, model.Id);
 
             ModelState.AddModelError(string.Empty, "API is not available");
             return View(model);
@@ -169,7 +170,7 @@ public class AdminController(
 
         logger.LogInformation(
             "{Announcement}: Attempt to update tyre {TyreId} completed successfully",
-            "SUCCEEDED", model.Id);
+            LoggerConstants.SucceededAnnouncement, model.Id);
 
         return RedirectToAction(nameof(Index));
     }

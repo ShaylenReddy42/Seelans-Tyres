@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;                                 // DiscoveryDocumentResponse, GetDiscoveryDocumentAsync()
 using Microsoft.Extensions.Logging;                         // ILogger
 using Microsoft.IdentityModel.Tokens;                       // SecurityKey, Base64UrlEncoder, RsaSecurityKey, TokenValidationParameters
+using SeelansTyres.Libraries.Shared.Constants;              // LoggerConstants
 using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 using System.IdentityModel.Tokens.Jwt;                      // JwtSecurityTokenHandler()
 using System.Security.Cryptography;                         // RSAParameters
@@ -36,7 +37,7 @@ public class TokenValidationService : ITokenValidationService
             logger.LogError(
                 ex,
                 "{Announcement}: Could not retrieve the discovery document",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return false;
         }
@@ -101,7 +102,7 @@ public class TokenValidationService : ITokenValidationService
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to validate token failed",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return false;
         }

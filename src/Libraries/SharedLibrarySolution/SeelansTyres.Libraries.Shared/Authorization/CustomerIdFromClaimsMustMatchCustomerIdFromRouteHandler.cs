@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization; // AuthorizationHandler, AuthorizationHandlerContext, AuthorizationFailureReason()
-using Microsoft.AspNetCore.Http;          // IHttpContextAccessor
-using Microsoft.AspNetCore.Routing;       // GetRouteValue()
-using Microsoft.Extensions.Logging;       // ILogger
+﻿using Microsoft.AspNetCore.Authorization;      // AuthorizationHandler, AuthorizationHandlerContext, AuthorizationFailureReason()
+using Microsoft.AspNetCore.Http;               // IHttpContextAccessor
+using Microsoft.AspNetCore.Routing;            // GetRouteValue()
+using Microsoft.Extensions.Logging;            // ILogger
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Libraries.Shared.Authorization;
 
@@ -33,7 +34,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
         {
             logger.LogWarning(
                 "{Announcement}: CustomerId from claims {CustomerIdFromClaims} does not match customerId from route {CustomerIdFromRoute}",
-                "FAILED", customerIdFromClaims, customerIdFromRoute);
+                LoggerConstants.FailedAnnouncement, customerIdFromClaims, customerIdFromRoute);
 
             context.Fail(new AuthorizationFailureReason(this, $"CustomerId from claims does not match customerId from route"));
         }
@@ -41,7 +42,7 @@ public class CustomerIdFromClaimsMustMatchCustomerIdFromRouteHandler : Authoriza
         {
             logger.LogInformation(
                 "{Announcement}: customerId from claims matches customerId from route, satisfying the rules for this requirement",
-                "SUCCEEDED");
+                LoggerConstants.SucceededAnnouncement);
 
             context.Succeed(requirement);
         }

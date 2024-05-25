@@ -1,4 +1,6 @@
-﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
+﻿using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+
+namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 public class TyresServiceClient(
     HttpClient client,
@@ -17,7 +19,7 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all brands completed successfully with {BrandsCount} brands",
-                "SUCCEEDED", brands!.Count());
+                LoggerConstants.SucceededAnnouncement, brands!.Count());
 
             return brands!;
         }
@@ -26,7 +28,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve all brands was unsuccessful",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return [];
         }
@@ -43,7 +45,7 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to add a new tyre completed successfully",
-                "SUCCEEDED");
+                LoggerConstants.SucceededAnnouncement);
 
             return true;
         }
@@ -52,7 +54,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to add a new tyre was unsuccessful",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return false;
         }
@@ -75,7 +77,7 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all tyres{IncludingUnavailable} completed successfully with {TyresCount} tyre(s)",
-                "SUCCEEDED", includingUnavailable, tyres?.Count() ?? 0);
+                LoggerConstants.SucceededAnnouncement, includingUnavailable, tyres?.Count() ?? 0);
 
             return tyres ?? [];
         }
@@ -84,7 +86,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve all tyres{IncludingUnavailable} was unsuccessful",
-                "FAILED", includingUnavailable);
+                LoggerConstants.FailedAnnouncement, includingUnavailable);
 
             return [];
         }
@@ -105,7 +107,7 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve tyre {TyreId} completed successfully",
-                "SUCCEEDED", tyreId);
+                LoggerConstants.SucceededAnnouncement, tyreId);
 
             return tyre;
         }
@@ -114,7 +116,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve tyre {TyreId} was unsuccessful",
-                "FAILED", tyreId);
+                LoggerConstants.FailedAnnouncement, tyreId);
 
             return null;
         }
@@ -133,7 +135,7 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to update tyre {TyreId} completed successfully",
-                "SUCCEEDED", tyreId);
+                LoggerConstants.SucceededAnnouncement, tyreId);
 
             return true;
         }
@@ -142,7 +144,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to update tyre {TyreId} was unsuccessful",
-                "FAILED", tyreId);
+                LoggerConstants.FailedAnnouncement, tyreId);
 
             return false;
         }
@@ -161,7 +163,7 @@ public class TyresServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to delete tyre {TyreId} completed successfully",
-                "SUCCEEDED", tyreId);
+                LoggerConstants.SucceededAnnouncement, tyreId);
 
             return true;
         }
@@ -170,7 +172,7 @@ public class TyresServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to delete tyre {TyreId} was unsuccessful",
-                "FAILED", tyreId);
+                LoggerConstants.FailedAnnouncement, tyreId);
 
             return false;
         }

@@ -1,4 +1,6 @@
-﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
+﻿using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+
+namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 public class AddressServiceClient(
     HttpClient client,
@@ -17,7 +19,7 @@ public class AddressServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to add a new address for customer {CustomerId} completed successfully",
-                "SUCCEEDED", customerId);
+                LoggerConstants.SucceededAnnouncement, customerId);
 
             return true;
         }
@@ -26,7 +28,7 @@ public class AddressServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to add a new address for customer {CustomerId} was unsuccessful",
-                "FAILED", customerId);
+                LoggerConstants.FailedAnnouncement, customerId);
 
             return false;
         }
@@ -47,7 +49,7 @@ public class AddressServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all addresses for customer {CustomerId} completed successfully with {AddressesCount} address(es)",
-                "SUCCEEDED", customerId, addresses?.Count() ?? 0);
+                LoggerConstants.SucceededAnnouncement, customerId, addresses?.Count() ?? 0);
 
             return addresses ?? [];
         }
@@ -56,7 +58,7 @@ public class AddressServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve all addresses for customer {CustomerId} was unsuccessful",
-                "FAILED", customerId);
+                LoggerConstants.FailedAnnouncement, customerId);
 
             return [];
         }
@@ -75,7 +77,7 @@ public class AddressServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to mark address {AddressId} as preferred for customer {CustomerId} completed successfully",
-                "SUCCEEDED", addressId, customerId);
+                LoggerConstants.SucceededAnnouncement, addressId, customerId);
 
             return true;
         }
@@ -84,7 +86,7 @@ public class AddressServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to mark address {AddressId} as preferred for customer {CustomerId} was unsuccessful",
-                "FAILED", addressId, customerId);
+                LoggerConstants.FailedAnnouncement, addressId, customerId);
 
             return false;
         }
@@ -103,7 +105,7 @@ public class AddressServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to delete address {AddressId} for customer {CustomerId} completed successfully",
-                "SUCCEEDED", addressId, customerId);
+                LoggerConstants.SucceededAnnouncement, addressId, customerId);
 
             return true;
         }
@@ -112,7 +114,7 @@ public class AddressServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to delete address {AddressId} for customer {CustomerId} was unsuccessful",
-                "FAILED", addressId, customerId);
+                LoggerConstants.FailedAnnouncement, addressId, customerId);
 
             return false;
         }

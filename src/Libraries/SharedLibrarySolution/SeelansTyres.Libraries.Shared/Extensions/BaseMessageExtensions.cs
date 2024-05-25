@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;                   // IConfiguration
 using Microsoft.Extensions.Logging;                         // ILogger
+using SeelansTyres.Libraries.Shared.Constants;              // LoggerConstants
 using SeelansTyres.Libraries.Shared.HttpClients;            // ITokenValidationService
 using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 
@@ -40,13 +41,13 @@ public static class BaseMessageExtensions
         {
             logger.LogError(
                 "{Announcement}: Attempt to validate the access token was unsuccessful",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
         }
         else
         {
             logger.LogInformation(
                 "{Announcement}: Attempt to validate the access token completed successfully",
-                "SUCCEEDED");
+                LoggerConstants.SucceededAnnouncement);
         }
 
         return message;

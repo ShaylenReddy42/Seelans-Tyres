@@ -11,6 +11,7 @@ using System.Text.Json;                                     // JsonSerializer
 using static System.Net.Mime.MediaTypeNames;                // Application
 using ShaylenReddy42.UnpublishedUpdatesManagement.Channels; // PublishUpdateChannel
 using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
+using SeelansTyres.Libraries.Shared.Constants;              // LoggerConstants
 
 namespace SeelansTyres.Services.IdentityService.Controllers.Api;
 
@@ -145,7 +146,7 @@ public class CustomersController : ControllerBase
         {
             logger.LogWarning(
                 "{Announcement}: Authenticated user using client '{ClientId}' attempted to retrieve all customers by not specifying an email",
-                "FAILED", User.Claims.Single(claim => claim.Type is "client_id").Value);
+                LoggerConstants.FailedAnnouncement, User.Claims.Single(claim => claim.Type is "client_id").Value);
 
             return BadRequest();
         }

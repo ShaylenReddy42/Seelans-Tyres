@@ -1,6 +1,7 @@
-﻿using Azure.Messaging.ServiceBus;         // ServiceBusProcessor, ServiceBusClient(), ServiceBusProcessorOptions
-using Microsoft.Extensions.Configuration; // IConfiguration
-using Microsoft.Extensions.Logging;       // ILogger
+﻿using Azure.Messaging.ServiceBus;              // ServiceBusProcessor, ServiceBusClient(), ServiceBusProcessorOptions
+using Microsoft.Extensions.Configuration;      // IConfiguration
+using Microsoft.Extensions.Logging;            // ILogger
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Libraries.Shared.Abstractions.Messaging;
 
@@ -43,7 +44,7 @@ public static class AzureServiceBus
             logger.LogError(
                 arg.Exception,
                 "{Announcement}: A error occured when trying to process the message",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return Task.CompletedTask;
         };

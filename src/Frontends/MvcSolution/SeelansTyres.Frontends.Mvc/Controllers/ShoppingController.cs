@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;     // Authorize
-using RazorLight;                             // RazorLightEngineBuilder
-using SeelansTyres.Frontends.Mvc.Channels;    // SendReceiptChannel
-using SeelansTyres.Frontends.Mvc.HttpClients; // IAddressServiceClient, ICustomerServiceClient, IOrderServiceClient
-using SeelansTyres.Frontends.Mvc.Models;      // CartItemModel
-using SeelansTyres.Frontends.Mvc.Services;    // ICartService
-using SeelansTyres.Frontends.Mvc.ViewModels;  // CartViewModel
+﻿using Microsoft.AspNetCore.Authorization;      // Authorize
+using RazorLight;                              // RazorLightEngineBuilder
+using SeelansTyres.Frontends.Mvc.Channels;     // SendReceiptChannel
+using SeelansTyres.Frontends.Mvc.HttpClients;  // IAddressServiceClient, ICustomerServiceClient, IOrderServiceClient
+using SeelansTyres.Frontends.Mvc.Models;       // CartItemModel
+using SeelansTyres.Frontends.Mvc.Services;     // ICartService
+using SeelansTyres.Frontends.Mvc.ViewModels;   // CartViewModel
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
 
@@ -160,7 +161,7 @@ public class ShoppingController(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to place an order for customer {CustomerId} completed successfully",
-                "SUCCEEDED", customerId);
+                LoggerConstants.SucceededAnnouncement, customerId);
 
             logger.LogDebug("Controller => Writing the order to the channel for sending to the customer");
 
@@ -182,7 +183,7 @@ public class ShoppingController(
             
             logger.LogInformation(
                 "{Announcement}: Attempt to place an order for customer {CustomerId} was unsuccessful",
-                "FAILED", customerId);
+                LoggerConstants.FailedAnnouncement, customerId);
         }
 
         return RedirectToAction("Index", "Home");
@@ -219,7 +220,7 @@ public class ShoppingController(
 
         logger.LogInformation(
             "{Announcement}: Attempt to retrieve order {OrderId} completed successfully",
-            "SUCCEEDED", orderId);
+            LoggerConstants.SucceededAnnouncement, orderId);
 
         return await engine.CompileRenderAsync("Receipt", order);
     }

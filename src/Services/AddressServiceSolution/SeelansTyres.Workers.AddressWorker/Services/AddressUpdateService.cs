@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;                        // ExecuteDeleteAsync()
 using SeelansTyres.Data.AddressData;                        // AddressDbContext
+using SeelansTyres.Libraries.Shared.Constants;              // LoggerConstants
 using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 using System.Diagnostics;                                   // Stopwatch
 
@@ -31,7 +32,7 @@ public class AddressUpdateService(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all addresses for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
         }
@@ -39,6 +40,6 @@ public class AddressUpdateService(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all addresses for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

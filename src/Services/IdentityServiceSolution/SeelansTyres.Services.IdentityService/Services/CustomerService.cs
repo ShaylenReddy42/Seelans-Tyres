@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;                       // UserManager
+using SeelansTyres.Libraries.Shared.Constants;             // LoggerConstants
 using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
 using System.Diagnostics;                                  // Stopwatch
 
@@ -34,7 +35,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to create a new customer account was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds);
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
 
 			throw ex.GetBaseException();
 		}
@@ -42,7 +43,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to create a new customer account completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds);
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds);
 
 		return customer;
 	}
@@ -67,7 +68,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by Id {CustomerId} was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
 		}
@@ -75,7 +76,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by Id {CustomerId} completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
 		return customer;
 	}
@@ -100,7 +101,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
 				"{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by email {CustomerEmail} was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
 			throw ex.GetBaseException();
 		}
@@ -108,7 +109,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve customer by email {CustomerEmail} completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
 		return customer;
 	}
@@ -137,7 +138,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update account for customer {CustomerId} was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
 		}
@@ -145,7 +146,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update account for customer {CustomerId} completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
     }
 
 	public async Task DeleteAsync(Customer customer)
@@ -166,7 +167,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete account for customer {CustomerId} was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds, customer.Id);
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customer.Id);
 
 			throw ex.GetBaseException();
 		}
@@ -174,7 +175,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete account for customer {CustomerId} completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customer.Id);
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customer.Id);
 	}
 
 	public async Task<bool> VerifyPasswordAsync(Guid customerId, string password)
@@ -197,7 +198,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Password verification process for customer {CustomerId} was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
 		}
@@ -205,7 +206,7 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
 			"{Announcement} ({StopwatchElapsedTime}ms): Password verification process for customer {CustomerId} completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
 		return passwordMatches;
 	}
@@ -231,7 +232,7 @@ public class CustomerService : ICustomerService
 			logger.LogError(
 				ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Password reset operation for customer {CustomerId} was unsuccessful",
-				"FAILED", stopwatch.ElapsedMilliseconds, customerId);
+				LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
 			throw ex.GetBaseException();
 		}
@@ -239,6 +240,6 @@ public class CustomerService : ICustomerService
 
 		logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Password reset operation for customer {CustomerId} completed successfully",
-			"SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
+			LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 	}
 }

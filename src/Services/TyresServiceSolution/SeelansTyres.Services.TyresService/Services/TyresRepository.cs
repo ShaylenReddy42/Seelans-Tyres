@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;                    // ToListAsync(), SingleAsync(), Include(), ExecuteDeleteAsync()
+using SeelansTyres.Libraries.Shared.Constants;          // LoggerConstants
 using SeelansTyres.Services.TyresService.Data;          // TyresDbContext
 using SeelansTyres.Services.TyresService.Data.Entities; // Brand, Tyre
 using System.Diagnostics;                               // Stopwatch
@@ -29,7 +30,7 @@ public class TyresRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all brands was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
         }
@@ -37,7 +38,7 @@ public class TyresRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all brands completed successfully with {BrandsCount} brands",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, brands.Count());
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, brands.Count());
 
         return brands;
     }
@@ -62,7 +63,7 @@ public class TyresRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new tyre was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
         }
@@ -70,7 +71,7 @@ public class TyresRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new tyre completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds);
     }
 
     public async Task<IEnumerable<Tyre>> RetrieveAllTyresAsync(bool availableOnly)
@@ -99,7 +100,7 @@ public class TyresRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all tyres{IncludingUnavailable} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, includingUnavailable);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, includingUnavailable);
 
             throw ex.GetBaseException();
         }
@@ -107,7 +108,7 @@ public class TyresRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all tyres{IncludingUnavailable} completed successfully with {TyresCount} tyre(s)",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, includingUnavailable, tyres.Count());
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, includingUnavailable, tyres.Count());
 
         return tyres;
     }
@@ -132,7 +133,7 @@ public class TyresRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve tyre {TyreId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, tyreId);
 
             throw ex.GetBaseException();
         }
@@ -140,7 +141,7 @@ public class TyresRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve tyre {TyreId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, tyreId);
 
         return tyre;
     }
@@ -165,7 +166,7 @@ public class TyresRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete tyre {TyreId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, tyreId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, tyreId);
 
             throw ex.GetBaseException();
         }
@@ -173,7 +174,7 @@ public class TyresRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete tyre {TyreId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, tyreId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, tyreId);
     }
 
     public async Task<bool> SaveChangesAsync() =>

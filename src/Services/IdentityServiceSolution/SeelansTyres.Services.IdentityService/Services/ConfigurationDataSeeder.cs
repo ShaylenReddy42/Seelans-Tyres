@@ -1,6 +1,7 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts; // ConfigurationDbContext
 using IdentityServer4.EntityFramework.Mappers;    // ToEntity()
 using Microsoft.EntityFrameworkCore;              // ExecuteDelete
+using SeelansTyres.Libraries.Shared.Constants;    // LoggerConstants
 using System.Diagnostics;                         // Stopwatch
 
 namespace SeelansTyres.Services.IdentityService.Services;
@@ -87,6 +88,6 @@ public class ConfigurationDataSeeder
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Configuration data seeded successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds);
     }
 }

@@ -1,4 +1,5 @@
-﻿using FluentEmail.Core;
+﻿using FluentEmail.Core;                        // IFluentEmailFactory
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
@@ -32,7 +33,7 @@ public class MailService(
 
             logger.LogInformation(
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a receipt for order {OrderId} to customer {CustomerId} completed successfully",
-                "SUCCEEDED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
+                LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
         catch (Exception ex)
         {
@@ -41,7 +42,7 @@ public class MailService(
             logger.LogWarning(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a receipt for order {OrderId} to customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, order.Id, order.CustomerId);
         }
     }
 
@@ -73,7 +74,7 @@ public class MailService(
 
             logger.LogInformation(
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {CustomerEmail} completed successfully",
-                "SUCCEEDED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
+                LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
         }
         catch (Exception ex)
         {
@@ -82,7 +83,7 @@ public class MailService(
             logger.LogWarning(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to send a reset password token to customer with email {CustomerEmail} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, "***REDACTED***");
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, "***REDACTED***");
 
             return false;
         }

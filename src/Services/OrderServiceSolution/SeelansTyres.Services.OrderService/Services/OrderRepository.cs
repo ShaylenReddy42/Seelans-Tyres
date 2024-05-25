@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;        // Include()
-using SeelansTyres.Data.OrderData.Entities; // Order
-using SeelansTyres.Data.OrderData;          // OrderDbContext
-using System.Diagnostics;                   // Stopwatch
+﻿using Microsoft.EntityFrameworkCore;           // Include()
+using SeelansTyres.Data.OrderData.Entities;    // Order
+using SeelansTyres.Data.OrderData;             // OrderDbContext
+using System.Diagnostics;                      // Stopwatch
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Services.OrderService.Services;
 
@@ -27,7 +28,7 @@ public class OrderRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to place a new order was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
 
             throw ex.GetBaseException();
         }
@@ -35,7 +36,7 @@ public class OrderRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to place a new order completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds);
     }
 
     public async Task<IEnumerable<Order>> RetrieveAllAsync(Guid? customerId, bool notDeliveredOnly)
@@ -71,7 +72,7 @@ public class OrderRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds,
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds,
                 customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "");
 
             throw ex.GetBaseException();
@@ -80,7 +81,7 @@ public class OrderRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered} completed successfully with {OrdersCount} order(s)",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds,
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds,
             customerId is not null ? " for customer " : "", customerId is not null ? customerId : "", notDeliveredOnly ? " except delivered ones" : "",
             orders.Count());
 
@@ -109,7 +110,7 @@ public class OrderRepository(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve order {OrderId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, orderId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, orderId);
             
             throw ex.GetBaseException();
         }
@@ -117,7 +118,7 @@ public class OrderRepository(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve order {OrderId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, orderId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, orderId);
 
         return order;
     }

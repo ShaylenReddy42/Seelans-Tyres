@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;            // Database
 using Microsoft.Extensions.DependencyInjection; // CreateScope()
 using Microsoft.Extensions.Logging;             // LogInformation(), LogError()
+using SeelansTyres.Libraries.Shared.Constants;  // LoggerConstants
 using System.Diagnostics;                       // Stopwatch
 
 namespace SeelansTyres.Libraries.Shared.Abstractions;
@@ -42,7 +43,7 @@ public static class Database
             app.Logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to migrate database {DbContext} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
             throw ex.GetBaseException();
         }
@@ -50,7 +51,7 @@ public static class Database
 
         app.Logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to migrate database {DbContext} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return app;
     }

@@ -1,5 +1,6 @@
-﻿using Azure.Storage.Blobs;        // BlobServiceClient
-using Azure.Storage.Blobs.Models; // PublicAccessType, BlobHttpHeaders, DeleteSnapshotsOption
+﻿using Azure.Storage.Blobs;                     // BlobServiceClient
+using Azure.Storage.Blobs.Models;              // PublicAccessType, BlobHttpHeaders, DeleteSnapshotsOption
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Frontends.Mvc.Services;
 
@@ -55,14 +56,14 @@ public class CloudImageService(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to upload the blob to the storage account failed",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return defaultImage;
         }
 
         logger.LogInformation(
             "{Announcement}: Attempt to upload the blob to the storage account completed successfully",
-            "SUCCEEDED");
+            LoggerConstants.SucceededAnnouncement);
 
         await DeleteAsync(defaultImage);
 
@@ -94,6 +95,6 @@ public class CloudImageService(
 
         logger.LogInformation(
             "{Announcement}: Attempt to delete image completed successfully if it existed prior",
-            "SUCCEEDED");
+            LoggerConstants.SucceededAnnouncement);
     }
 }

@@ -6,6 +6,7 @@ using SeelansTyres.Frontends.Mvc.HttpClients;            // IAddressServiceClien
 using SeelansTyres.Frontends.Mvc.Models;                 // ResetPasswordModel
 using SeelansTyres.Frontends.Mvc.Services;               // IMailService
 using SeelansTyres.Frontends.Mvc.ViewModels;             // AccountViewModel, ResetPasswordViewModel
+using SeelansTyres.Libraries.Shared.Constants;           // LoggerConstants
 using System.Security.Cryptography;                      // RandomNumberGenerator
 
 namespace SeelansTyres.Frontends.Mvc.Controllers;
@@ -107,14 +108,14 @@ public class AccountController(
         {
             logger.LogInformation(
                 "{Announcement}: Attempt to create a new customer account completed successfully",
-                "SUCCEEDED");
+                LoggerConstants.SucceededAnnouncement);
 
             return RedirectToAction(nameof(Login));
         }
 
         logger.LogWarning(
             "{Announcement}: Attempt to create a new customer account was unsuccessful",
-            "FAILED");
+            LoggerConstants.FailedAnnouncement);
 
         errors.ForEach(error => ModelState.AddModelError(string.Empty, error));
 
@@ -162,7 +163,7 @@ public class AccountController(
         {
             logger.LogInformation(
                 "{Announcement}: Attempt to delete account for customer {CustomerId} completed successfully. Logging them out",
-                "SUCCEEDED", customerId);
+                LoggerConstants.SucceededAnnouncement, customerId);
 
             return RedirectToAction(nameof(Logout));
         }
@@ -196,7 +197,7 @@ public class AccountController(
         {
             logger.LogError(
                 "{Announcement}: Attempt to add a new address for customer {CustomerId} was unsuccessful",
-                "FAILED", customerId);
+                LoggerConstants.FailedAnnouncement, customerId);
             
             ModelState.AddModelError(string.Empty, "API is unavailable to add your address,\nplease try again later");
         }
@@ -204,7 +205,7 @@ public class AccountController(
         {
             logger.LogInformation(
                 "{Announcement}: Attempt to add a new address for customer {CustomerId} completed successfully",
-                "SUCCEEDED", customerId);
+                LoggerConstants.SucceededAnnouncement, customerId);
         }
 
         return RedirectToAction(nameof(Index));
@@ -298,7 +299,7 @@ public class AccountController(
             {
                 logger.LogError(
                     "{Announcement}: The system failed to send the token to customer with email {CustomerEmail}",
-                    "FAILED", "***REDACTED***");
+                    LoggerConstants.FailedAnnouncement, "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, "The system failed to send you an email with the token,\nplease resubmit and try again");
 
@@ -320,7 +321,7 @@ public class AccountController(
             {
                 logger.LogError(
                     "{Announcement}: Customer with email {CustomerEmail} entered an invalid token to try and reset their password",
-                    "FAILED", "***REDACTED***");
+                    LoggerConstants.FailedAnnouncement, "***REDACTED***");
                 
                 ModelState.AddModelError(string.Empty, "Invalid token!");
 
@@ -329,7 +330,7 @@ public class AccountController(
 
             logger.LogInformation(
                 "{Announcement}: Customer with email {CustomerEmail} entered a valid token. The reset password operation will begin",
-                "SUCCEEDED", "***REDACTED***");
+                LoggerConstants.SucceededAnnouncement, "***REDACTED***");
 
             HttpContext.Session.Remove("ResetPasswordToken");
 

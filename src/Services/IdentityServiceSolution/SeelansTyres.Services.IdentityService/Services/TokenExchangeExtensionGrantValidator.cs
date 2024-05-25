@@ -1,5 +1,6 @@
-﻿using IdentityServer4.Models;     // TokenRequestErrors
-using IdentityServer4.Validation; // IExtensionGrantValidator, ITokenValidator, ExtensionGrantValidationContext, GrantValidationResult()
+﻿using IdentityServer4.Models;                  // TokenRequestErrors
+using IdentityServer4.Validation;              // IExtensionGrantValidator, ITokenValidator, ExtensionGrantValidationContext, GrantValidationResult()
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 
 namespace SeelansTyres.Services.IdentityService.Services;
 
@@ -47,7 +48,7 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
             {
                 logger.LogWarning(
                     "{Announcement}: Token exchange validation failed with reason '{ValidationFailureReason}'",
-                    "FAILED", validationArray[i, 1]);
+                    LoggerConstants.FailedAnnouncement, validationArray[i, 1]);
                 
                 context.Result =
                     new GrantValidationResult(
@@ -60,7 +61,7 @@ public class TokenExchangeExtensionGrantValidator : IExtensionGrantValidator
 
         logger.LogInformation(
             "{Announcement}: Token exchange validation completed successfully",
-            "SUCCEEDED");
+            LoggerConstants.SucceededAnnouncement);
 
         context.Result = 
             new GrantValidationResult(

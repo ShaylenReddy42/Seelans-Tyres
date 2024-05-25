@@ -1,4 +1,6 @@
-﻿namespace SeelansTyres.Frontends.Mvc.HttpClients;
+﻿using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+
+namespace SeelansTyres.Frontends.Mvc.HttpClients;
 
 public class OrderServiceClient(
     HttpClient client,
@@ -15,7 +17,7 @@ public class OrderServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to place a new order completed successfully",
-                "SUCCEEDED");
+                LoggerConstants.SucceededAnnouncement);
 
             return await response.Content.ReadFromJsonAsync<OrderModel>();
         }
@@ -24,7 +26,7 @@ public class OrderServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to place a new order was unsuccessful",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
 
             return null;
         }
@@ -62,7 +64,7 @@ public class OrderServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered} completed successfully with {OrdersCount} order(s)",
-                "SUCCEEDED", loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue, orders?.Count() ?? 0);
+                LoggerConstants.SucceededAnnouncement, loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue, orders?.Count() ?? 0);
 
             return orders ?? [];
         }
@@ -71,7 +73,7 @@ public class OrderServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve all orders{For}{CustomerId}{ExceptDelivered}",
-                "FAILED", loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue);
+                LoggerConstants.FailedAnnouncement, loggerForPlaceholderValue, loggerCustomerIdPlaceholderValue, loggerExceptDeliveredPlaceholderValue);
 
             return [];
         }
@@ -92,7 +94,7 @@ public class OrderServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to retrieve order {OrderId} completed successfully",
-                "SUCCEEDED", orderId);
+                LoggerConstants.SucceededAnnouncement, orderId);
 
             return order;
         }
@@ -101,7 +103,7 @@ public class OrderServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to retrieve order {OrderId} was unsuccessful",
-                "FAILED", orderId);
+                LoggerConstants.FailedAnnouncement, orderId);
 
             return null;
         }
@@ -120,7 +122,7 @@ public class OrderServiceClient(
 
             logger.LogInformation(
                 "{Announcement}: Attempt to mark order {OrderId} as delivered completed successfully",
-                "SUCCEEDED", orderId);
+                LoggerConstants.SucceededAnnouncement, orderId);
 
             return true;
         }
@@ -129,7 +131,7 @@ public class OrderServiceClient(
             logger.LogError(
                 ex,
                 "{Announcement}: Attempt to mark order {OrderId} as delivered was unsuccessful",
-                "FAILED", orderId);
+                LoggerConstants.FailedAnnouncement, orderId);
 
             return false;
         }

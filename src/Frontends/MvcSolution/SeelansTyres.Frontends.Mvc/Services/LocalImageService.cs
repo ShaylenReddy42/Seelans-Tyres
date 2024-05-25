@@ -1,4 +1,6 @@
-﻿namespace SeelansTyres.Frontends.Mvc.Services;
+﻿using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+
+namespace SeelansTyres.Frontends.Mvc.Services;
 
 /// <summary>
 /// Provides a local implementation for the image service that uploads images to wwwroot/images/uploaded
@@ -69,7 +71,7 @@ public class LocalImageService(
 
         logger.LogInformation(
             "{Announcement}: Attempt to delete image completed successfully",
-            "SUCCEEDED");
+            LoggerConstants.SucceededAnnouncement);
 
         return Task.CompletedTask;
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;                       // RoleManager, UserManager, IdentityRole
+using SeelansTyres.Libraries.Shared.Constants;             // LoggerConstants
 using SeelansTyres.Services.IdentityService.Data.Entities; // Customer
 using System.Diagnostics;                                  // Stopwatch
 using System.IdentityModel.Tokens.Jwt;                     // JwtRegisteredClaimNames
@@ -88,7 +89,7 @@ public class AdminAccountSeeder
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): The database is unavailable",
-                "FAILED", stopwatch.ElapsedMilliseconds);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
 
             throw;
         }
@@ -96,6 +97,6 @@ public class AdminAccountSeeder
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to create an administrator account completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds);
     }
 }

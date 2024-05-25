@@ -1,5 +1,6 @@
-﻿using IdentityModel.Client;    // GetDiscoveryDocumentAsync(), RequestTokenExchangeTokenAsync(), TokenExchangeTokenRequest
-using System.Net.Http.Headers; // AuthenticationHeaderValue
+﻿using IdentityModel.Client;                    // GetDiscoveryDocumentAsync(), RequestTokenExchangeTokenAsync(), TokenExchangeTokenRequest
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+using System.Net.Http.Headers;                 // AuthenticationHeaderValue
 
 namespace SeelansTyres.Gateways.MvcBff.Services;
 
@@ -29,7 +30,7 @@ public class TokenExchangeService : ITokenExchangeService
         {
             logger.LogError(
                 "{Announcement}: Attempt to retrieve IdentityServer4's discovery document was unsuccessful. Reason: {IdentityServer4Error}",
-                "FAILED", discoveryDocument.Error);
+                LoggerConstants.FailedAnnouncement, discoveryDocument.Error);
         }
 
         var tokenResponse = await client.RequestTokenExchangeTokenAsync(new TokenExchangeTokenRequest
@@ -46,7 +47,7 @@ public class TokenExchangeService : ITokenExchangeService
         {
             logger.LogError(
                 "{Announcement}: Token exchange request was unsuccessful",
-                "FAILED");
+                LoggerConstants.FailedAnnouncement);
         }
         else
         {

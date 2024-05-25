@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;                        // ExecuteDeleteAsync(), ExecuteUpdateAsync()
 using SeelansTyres.Data.OrderData;                          // OrderDbContext
+using SeelansTyres.Libraries.Shared.Constants;              // LoggerConstants
 using ShaylenReddy42.UnpublishedUpdatesManagement.Messages; // BaseMessage
 using System.Diagnostics;                                   // Stopwatch
 using System.Text.Json;                                     // JsonSerializer
@@ -32,7 +33,7 @@ public class OrderUpdateService(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all orders for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
         }
@@ -40,7 +41,7 @@ public class OrderUpdateService(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to remove all orders for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 
     public async Task UpdateAccountAsync(BaseMessage message)
@@ -69,7 +70,7 @@ public class OrderUpdateService(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
         }
@@ -77,7 +78,7 @@ public class OrderUpdateService(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 
     public async Task UpdateTyreAsync(BaseMessage message)
@@ -105,7 +106,7 @@ public class OrderUpdateService(
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders with tyre {TyreId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
 
             throw ex.GetBaseException();
         }
@@ -113,6 +114,6 @@ public class OrderUpdateService(
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to update all orders with tyre {TyreId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, message.IdOfEntityToUpdate);
     }
 }

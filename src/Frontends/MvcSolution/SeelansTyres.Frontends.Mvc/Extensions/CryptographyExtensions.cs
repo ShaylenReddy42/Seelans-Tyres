@@ -1,9 +1,9 @@
-﻿using IdentityModel.Client;                 // GetDiscoveryDocumentAsync()
-using Microsoft.IdentityModel.Tokens;       // Base64UrlEncoder
-using SeelansTyres.Libraries.Shared.Models; // EncryptedDataModel
-using System.Diagnostics;                   // Stopwatch
-using System.Security.Cryptography;         // RandomNumberGenerator, AesGcm, RSAParameters, RSA, RSAEncryptionPadding
-using System.Text.Json;                     // JsonSerializer
+﻿using IdentityModel.Client;                    // GetDiscoveryDocumentAsync()
+using Microsoft.IdentityModel.Tokens;          // Base64UrlEncoder
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
+using SeelansTyres.Libraries.Shared.Models;    // EncryptedDataModel
+using System.Security.Cryptography;            // RandomNumberGenerator, AesGcm, RSAParameters, RSA, RSAEncryptionPadding
+using System.Text.Json;                        // JsonSerializer
 
 namespace SeelansTyres.Frontends.Mvc.Extensions;
 
@@ -60,7 +60,7 @@ public static class CryptographyExtensions
         {
             logger.LogError(
                 "{Announcement}: Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful. Reason: {IdentityServer4Error}",
-                "FAILED", discoveryDocument.Error);
+                LoggerConstants.FailedAnnouncement, discoveryDocument.Error);
         }
 
         var jsonWebKey = discoveryDocument.KeySet!.Keys[0];
@@ -81,7 +81,7 @@ public static class CryptographyExtensions
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Encryption process for model of type {ModelType} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, typeof(T).Name);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, typeof(T).Name);
 
         return encryptedDataModel;
     }

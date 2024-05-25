@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;          // ExecuteUpdateAsync(), ToListAsync(), SingleOrDefaultAsync(), ExecuteDeleteAsync()
-using SeelansTyres.Data.AddressData.Entities; // Address
-using SeelansTyres.Data.AddressData;          // AddressDbContext
-using System.Diagnostics;                     // Stopwatch
+﻿using Microsoft.EntityFrameworkCore;           // ExecuteUpdateAsync(), ToListAsync(), SingleOrDefaultAsync(), ExecuteDeleteAsync()
+using SeelansTyres.Data.AddressData.Entities;  // Address
+using SeelansTyres.Data.AddressData;           // AddressDbContext
+using System.Diagnostics;                      // Stopwatch
+using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants                   
 
 namespace SeelansTyres.Services.AddressService.Services;
 
@@ -45,7 +46,7 @@ public class AddressRepository : IAddressRepository
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new address for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, customerId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
             throw ex.GetBaseException();
         }
@@ -53,7 +54,7 @@ public class AddressRepository : IAddressRepository
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to add a new address for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
     }
 
     public async Task<IEnumerable<Address>> RetrieveAllAsync(Guid customerId)
@@ -76,7 +77,7 @@ public class AddressRepository : IAddressRepository
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, customerId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, customerId);
 
             throw ex.GetBaseException();
         }
@@ -84,7 +85,7 @@ public class AddressRepository : IAddressRepository
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve all addresses for customer {CustomerId} completed successfully, returning {AddressesCount} address(es)",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, customerId, addresses.Count());
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, customerId, addresses.Count());
 
         return addresses;
     }
@@ -109,7 +110,7 @@ public class AddressRepository : IAddressRepository
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve address {AddressId} for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, addressId, customerId);
 
             throw ex.GetBaseException();
         }
@@ -117,7 +118,7 @@ public class AddressRepository : IAddressRepository
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve address {AddressId} for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, addressId, customerId);
 
         return address;
     }
@@ -148,7 +149,7 @@ public class AddressRepository : IAddressRepository
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to mark address {AddressId} as preferred for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
 
             throw ex.GetBaseException();
         }
@@ -156,7 +157,7 @@ public class AddressRepository : IAddressRepository
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to mark address {AddressId} as preferred for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, addressToMarkAsPreferred.Id, customerId);
     }
 
     public async Task DeleteAsync(Guid customerId, Guid addressId)
@@ -179,7 +180,7 @@ public class AddressRepository : IAddressRepository
             logger.LogError(
                 ex,
                 "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete address {AddressId} for customer {CustomerId} was unsuccessful",
-                "FAILED", stopwatch.ElapsedMilliseconds, addressId, customerId);
+                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds, addressId, customerId);
 
             throw ex.GetBaseException();
         }
@@ -187,7 +188,7 @@ public class AddressRepository : IAddressRepository
 
         logger.LogInformation(
             "{Announcement} ({StopwatchElapsedTime}ms): Attempt to delete address {AddressId} for customer {CustomerId} completed successfully",
-            "SUCCEEDED", stopwatch.ElapsedMilliseconds, addressId, customerId);
+            LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds, addressId, customerId);
     }
 
     public async Task<bool> SaveChangesAsync() =>
