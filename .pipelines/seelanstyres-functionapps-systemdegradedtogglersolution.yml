@@ -31,10 +31,10 @@ stages:
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
         steps:
-          - ${{ if eq(variables.deploySolution, 'true') }}:
+          - ${{ if eq(variables.deploySolution, true) }}:
             - template: templates/download-artifacts-and-deploy-infrastructure.yml
 
             - template: templates/deploy-system-degraded-toggler.yml
           - ${{ else }}:
-            - script: echo "deploySolution is set to $(deploySolution)"
+            - script: echo deploySolution is set to $(deploySolution)
               displayName: 'Show variables.deploySolution State'
