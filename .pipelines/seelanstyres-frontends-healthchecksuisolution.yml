@@ -32,10 +32,9 @@ stages:
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
         steps:
-          - ${{ if eq(variables.deploySolution, 'true') }}:
-            - template: templates/download-artifacts-and-deploy-infrastructure.yml
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml
 
-            - template: templates/deploy-webapp.yml
-              parameters:
-                intendedResourceName: app-seelanstyres-healthchecksui-$(environment)
-                project: SeelansTyres.Frontends.HealthChecksUI
+          - template: templates/deploy-webapp.yml
+            parameters:
+              intendedResourceName: app-seelanstyres-healthchecksui-$(environment)
+              project: SeelansTyres.Frontends.HealthChecksUI

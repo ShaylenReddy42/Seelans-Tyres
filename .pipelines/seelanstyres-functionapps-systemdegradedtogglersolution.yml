@@ -31,10 +31,6 @@ stages:
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
         steps:
-          - ${{ if eq(variables.deploySolution, 'enabled') }}:
-            - template: templates/download-artifacts-and-deploy-infrastructure.yml
+          - template: templates/download-artifacts-and-deploy-infrastructure.yml
 
-            - template: templates/deploy-system-degraded-toggler.yml
-          - ${{ else }}:
-            - script: echo deploySolution is set to $(deploySolution)
-              displayName: 'Show variables.deploySolution State'
+          - template: templates/deploy-system-degraded-toggler.yml
