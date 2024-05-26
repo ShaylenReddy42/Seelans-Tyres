@@ -15,8 +15,9 @@ steps:
       inlineScript: |
         $appServiceName = $(az webapp list --query "[?tags.intendedResourceName == '${{ parameters.intendedResourceName }}'] | [0].name" -o tsv)
 
-        az webapp deployment source config-zip `
+        az webapp deploy `
           --resource-group $(resourceGroup) `
           --name $appServiceName `
-          --src .\${{ parameters.project }}.zip
+          --src-path .\${{ parameters.project }}.zip `
+          --type zip
       workingDirectory: '$(Pipeline.Workspace)/drop'
