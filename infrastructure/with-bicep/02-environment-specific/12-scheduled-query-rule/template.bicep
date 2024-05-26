@@ -61,7 +61,7 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2023-09-01-preview' = {
   }
 }
 
-resource scheduledQueryRule 'Microsoft.Insights/scheduledQueryRules@2023-12-01' = {
+resource scheduledQueryRule 'Microsoft.Insights/scheduledQueryRules@2023-03-15-preview' = {
   name: scheduledQueryRuleName
   location: location
   properties: {
