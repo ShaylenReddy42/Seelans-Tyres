@@ -83,7 +83,7 @@ resource scheduledQueryRule 'Microsoft.Insights/scheduledqueryrules@2022-08-01-p
           timeAggregation: 'Count'
           dimensions: []
           operator: 'GreaterThan'
-          threshold: 5
+          threshold: 3
           failingPeriods: {
             numberOfEvaluationPeriods: 1
             minFailingPeriodsToAlert: 1
