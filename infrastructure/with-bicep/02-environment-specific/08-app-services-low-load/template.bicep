@@ -35,7 +35,7 @@ var appServicePlanName = 'plan-seelantyres-ll-${environment}-${uniqueString(reso
 // Needed to extract its connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list-keys?tabs=HTTP
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' existing = {
   name: existingAppConfigurationName
 }
 
@@ -56,13 +56,13 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existin
 // Needed to build the connection string to the database
 // using its fully qualified domain name
 // part of app settings
-resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
+resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' existing = {
   name: existingSqlServerName
 }
 
 var databaseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Database=$(Database:Name);User ID=${sqlServerAdminLogin};Password=${sqlServerAdminPassword};MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;'
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
   location: location
   kind: 'linux'
@@ -81,7 +81,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource healthChecksUI 'Microsoft.Web/sites@2022-03-01' = {
+resource healthChecksUI 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-healthchecksui-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
@@ -148,7 +148,7 @@ resource healthChecksUI 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource addressWorker 'Microsoft.Web/sites@2022-03-01' = {
+resource addressWorker 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-addressworker-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
@@ -204,7 +204,7 @@ resource addressWorker 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource orderWorker 'Microsoft.Web/sites@2022-03-01' = {
+resource orderWorker 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-orderworker-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {

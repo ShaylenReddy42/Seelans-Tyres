@@ -13,7 +13,7 @@ var storageAccountName = substring('stseelanstyres${environment}${uniqueString(r
 
 var storageAccountSku = environment == 'dev' ? 'Standard_LRS' : 'Standard_ZRS'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' = {
   name: storageAccountName
   location: location
   kind: 'StorageV2'

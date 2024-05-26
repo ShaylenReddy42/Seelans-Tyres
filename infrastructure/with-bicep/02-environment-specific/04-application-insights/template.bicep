@@ -13,7 +13,7 @@ var logAnalyticsName = 'log-seelanstyres-${environment}-${uniqueString(resourceG
 
 var applicationInsightsName = 'appi-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: logAnalyticsName
   location: location
   tags: {

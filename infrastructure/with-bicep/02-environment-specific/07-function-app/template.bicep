@@ -21,7 +21,7 @@ var functionAppName = 'func-systemdegradedtoggler-${environment}-${uniqueString(
 
 // Needed to extract the name of the instance,
 // part of the functionapp's app settings
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' existing = {
   name: existingAppConfigurationName
 }
 
@@ -35,11 +35,11 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 // part of the functionapp's app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list-keys?tabs=HTTP
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing = {
   name: existingStorageAccountName
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
   location: location
   sku: {
@@ -56,7 +56,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource systemDegradedFunctionApp 'Microsoft.Web/sites@2022-03-01' = {
+resource systemDegradedFunctionApp 'Microsoft.Web/sites@2023-12-01' = {
   name: functionAppName
   kind: 'functionapp,linux'
   location: location

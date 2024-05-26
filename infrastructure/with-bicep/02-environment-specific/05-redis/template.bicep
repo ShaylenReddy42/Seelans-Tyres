@@ -11,7 +11,7 @@ param environment string = 'dev'
 
 var redisName = 'redis-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 
-resource redis 'Microsoft.Cache/redis@2022-06-01' = {
+resource redis 'Microsoft.Cache/redis@2023-08-01' = {
   name: redisName
   location: location
   properties: {

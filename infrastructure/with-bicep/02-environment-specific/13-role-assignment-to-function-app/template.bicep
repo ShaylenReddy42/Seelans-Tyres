@@ -3,18 +3,18 @@ param existingAppConfigurationName string
 param existingFunctionAppName string
 
 // Needed to extract its name to create the role assignment
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' existing = {
   name: existingAppConfigurationName
 }
 
 // Needed for its id and principalId to create the role assignment
-resource functionApp 'Microsoft.Web/sites@2022-03-01' existing = {
+resource functionApp 'Microsoft.Web/sites@2023-12-01' existing = {
   name: existingFunctionAppName
 }
 
 // Got this from https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 // pressed [ctrl+f] to find 'app configuration data owner' 
-resource appConfigurationDataOwnerRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+resource appConfigurationDataOwnerRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
   name: '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b'
 }
 

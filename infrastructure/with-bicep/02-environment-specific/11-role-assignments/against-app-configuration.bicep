@@ -12,11 +12,11 @@ param roleAssignmentName string
 
 // Needed to create the role assignment
 // acts as the scope rather than a resource group or subscription scope
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' existing = {
   name: appConfigurationName
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: roleAssignmentName
   scope: appConfiguration
   properties: {

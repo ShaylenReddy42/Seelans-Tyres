@@ -35,7 +35,7 @@ var appServicePlanName = 'plan-seelantyres-ml-${environment}-${uniqueString(reso
 // Needed to extract its connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list-keys?tabs=HTTP
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' existing = {
   name: existingAppConfigurationName
 }
 
@@ -56,7 +56,7 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existin
 // Needed to build the connection string to the database
 // using its fully qualified domain name
 // part of app settings
-resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
+resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' existing = {
   name: existingSqlServerName
 }
 
@@ -81,7 +81,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource addressService 'Microsoft.Web/sites@2022-03-01' = {
+resource addressService 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-addressservice-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
@@ -133,7 +133,7 @@ resource addressService 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource orderService 'Microsoft.Web/sites@2022-03-01' = {
+resource orderService 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-orderservice-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
@@ -185,7 +185,7 @@ resource orderService 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource tyresService 'Microsoft.Web/sites@2022-03-01' = {
+resource tyresService 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-tyresservice-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {

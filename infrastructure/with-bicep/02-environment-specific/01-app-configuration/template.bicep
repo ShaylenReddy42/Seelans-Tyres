@@ -11,7 +11,7 @@ param environment string = 'dev'
 
 var appConfigurationName = 'appcs-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' = {
   name: appConfigurationName
   location: location
   sku: {
@@ -25,7 +25,7 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-0
   }
 }
 
-resource systemDegradedKeyValue 'Microsoft.AppConfiguration/configurationStores/keyValues@2022-05-01' = {
+resource systemDegradedKeyValue 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-09-01-preview' = {
   parent: appConfiguration
   name: 'SystemDegraded'
   properties: {

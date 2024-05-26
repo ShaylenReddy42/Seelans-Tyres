@@ -24,7 +24,7 @@ param clientIPOfAgent string
 
 var sqlServerName = 'sql-seelanstyres-${environment}-${uniqueString(resourceGroup().id)}'
 
-resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' = {
+resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' = {
   name: sqlServerName
   location: location
   properties: {
@@ -54,7 +54,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' = {
   }
 }
 
-resource seelansTyresAddressDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
+resource seelansTyresAddressDb 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresAddressDb'
   location: location
@@ -69,7 +69,7 @@ resource seelansTyresAddressDb 'Microsoft.Sql/servers/databases@2022-08-01-previ
                               }
 }
 
-resource seelansTyresIdentityDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
+resource seelansTyresIdentityDb 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresIdentityDb'
   location: location
@@ -84,7 +84,7 @@ resource seelansTyresIdentityDb 'Microsoft.Sql/servers/databases@2022-08-01-prev
                               }
 }
 
-resource seelansTyresOrderDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
+resource seelansTyresOrderDb 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresOrderDb'
   location: location
@@ -99,7 +99,7 @@ resource seelansTyresOrderDb 'Microsoft.Sql/servers/databases@2022-08-01-preview
                               }
 }
 
-resource seelansTyresTyresDb 'Microsoft.Sql/servers/databases@2022-08-01-preview' = {
+resource seelansTyresTyresDb 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   parent: sqlServer
   name: 'SeelansTyresTyresDb'
   location: location

@@ -29,11 +29,11 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 // Needed to create the action group, and acts as a receiver
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-host-keys
-resource functionApp 'Microsoft.Web/sites@2022-03-01' existing = {
+resource functionApp 'Microsoft.Web/sites@2023-12-01' existing = {
   name: existingFunctionAppName
 }
 
-resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {
+resource actionGroup 'Microsoft.Insights/actionGroups@2023-09-01-preview' = {
   name: actionGroupName
   location: 'Global'
   properties: {
@@ -61,7 +61,7 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2022-06-01' = {
   }
 }
 
-resource scheduledQueryRule 'Microsoft.Insights/scheduledqueryrules@2022-08-01-preview' = {
+resource scheduledQueryRule 'Microsoft.Insights/scheduledQueryRules@2023-12-01' = {
   name: scheduledQueryRuleName
   location: location
   properties: {

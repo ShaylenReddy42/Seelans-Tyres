@@ -63,7 +63,7 @@ var appServicePlanName = 'plan-seelantyres-hl-${environment}-${uniqueString(reso
 // Needed to extract its connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list-keys?tabs=HTTP
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' existing = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-09-01-preview' existing = {
   name: existingAppConfigurationName
 }
 
@@ -84,21 +84,21 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existin
 // Needed to build the connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/redis/redis/list-keys?tabs=HTTP
-resource redis 'Microsoft.Cache/redis@2022-06-01' existing = {
+resource redis 'Microsoft.Cache/redis@2023-08-01' existing = {
   name: existingRedisName
 }
 
 // Needed to build the connection string to the database
 // using its fully qualified domain name
 // part of app settings
-resource sqlServer 'Microsoft.Sql/servers@2022-08-01-preview' existing = {
+resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' existing = {
   name: existingSqlServerName
 }
 
 // Needed to build a connection string for app settings
 // listKeys() is used
 // see https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list-keys?tabs=HTTP
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing = {
   name: existingStorageAccountName
 }
 
@@ -127,7 +127,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource mvc 'Microsoft.Web/sites@2022-03-01' = {
+resource mvc 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-mvc-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
@@ -207,7 +207,7 @@ resource mvc 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource mvcBff 'Microsoft.Web/sites@2022-03-01' = {
+resource mvcBff 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
@@ -311,7 +311,7 @@ resource mvcBff 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource identityService 'Microsoft.Web/sites@2022-03-01' = {
+resource identityService 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-seelanstyres-identityservice-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
