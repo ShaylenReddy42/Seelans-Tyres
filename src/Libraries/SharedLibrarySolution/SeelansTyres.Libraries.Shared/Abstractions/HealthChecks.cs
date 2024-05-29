@@ -36,6 +36,7 @@ public static class HealthChecks
             healthChecks
                 .AddElasticsearch(
                     elasticsearchUri: healthChecksModel.ElasticsearchUrl,
+                    name: "Elasticsearch",
                     failureStatus: HealthStatus.Degraded,
                     timeout: TimeSpan.FromSeconds(1.5));
         }
