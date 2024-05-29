@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;          // GetValue()
 using Microsoft.Extensions.DependencyInjection;    // GetRequiredService()
 using Microsoft.Extensions.Hosting;                // IHostBuilder, Configuration
+using SeelansTyres.Libraries.Shared.Configuration; // ElasticsearchLoggingSinkOptions, ExternalServiceOptions
 using SeelansTyres.Libraries.Shared.Models;        // CommonBuilderConfigurationModel
 using Serilog;                                     // UseSerilog()
 using Serilog.Enrichers.Span;                      // ActivityEnricher
@@ -82,11 +83,16 @@ public static class Logging
 
             metadata.ForEach(attribute => loggerConfiguration.Enrich.WithProperty($"Custom: {attribute.Key}", attribute.Value!));
 
-            if (hostBuilderContext.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"))
+            var elasticsearchLoggingSinkOptions =
+                hostBuilderContext.Configuration.GetSection("LoggingSinks:Elasticsearch")
+                    .Get<ElasticsearchLoggingSinkOptions>()
+                        ?? throw new InvalidOperationException("Elasticsearch Logging Sink configuration section is missing");
+
+            if (bool.Parse(elasticsearchLoggingSinkOptions.Enabled))
             {
                 loggerConfiguration
                     .WriteTo.Elasticsearch(
-                        new ElasticsearchSinkOptions(new Uri(hostBuilderContext.Configuration["LoggingSinks:Elasticsearch:Url"]!))
+                        new ElasticsearchSinkOptions(new Uri(elasticsearchLoggingSinkOptions.Url))
                         {
                             AutoRegisterTemplate = true,
                             AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
@@ -95,7 +101,12 @@ public static class Logging
                         });
             }
 
-            if (hostBuilderContext.Configuration.GetValue<bool>("AppInsights:Enabled"))
+            var applicationInsightsOptions =
+                hostBuilderContext.Configuration.GetSection("AppInsights")
+                    .Get<ExternalServiceOptions>()
+                        ?? throw new InvalidOperationException("AppInsights configuration section is missing");
+
+            if (applicationInsightsOptions.Enabled)
             {
                 loggerConfiguration
                     .WriteTo.ApplicationInsights(

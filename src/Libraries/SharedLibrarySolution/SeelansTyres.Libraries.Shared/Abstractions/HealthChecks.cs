@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;                  // WebApplication
 using Microsoft.AspNetCore.Diagnostics.HealthChecks; // HealthCheckOptions
 using Microsoft.EntityFrameworkCore;                 // DbContext, AddDbContextCheck()
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;            // Get()
 using Microsoft.Extensions.DependencyInjection;      // IHealthChecksBuilder
 using Microsoft.Extensions.Diagnostics.HealthChecks; // HealthCheckResult, HealthStatus
 using SeelansTyres.Libraries.Shared.Configuration;   // ElasticsearchLoggingSinkOptions
