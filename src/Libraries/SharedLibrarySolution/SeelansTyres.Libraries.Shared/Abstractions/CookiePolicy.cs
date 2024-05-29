@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;       // WebApplication, CookiePolicyOptions
-using Microsoft.AspNetCore.Http;          // SameSiteMode
-using Microsoft.Extensions.Configuration; // GetValue()
+﻿using Microsoft.AspNetCore.Builder;                // WebApplication, CookiePolicyOptions
+using Microsoft.AspNetCore.Http;                   // SameSiteMode
+using Microsoft.Extensions.Configuration;          // GetValue()
+using SeelansTyres.Libraries.Shared.Configuration; // ApplicationHostingOptions
 
 namespace SeelansTyres.Libraries.Shared.Abstractions;
 
@@ -19,8 +20,13 @@ public static class CookiePolicy
     /// <returns>The web application used to configure the http pipeline with the configured cookie policy</returns>
     public static WebApplication UseCommonCookiePolicy(this WebApplication app)
     {
-        if (!app.Configuration.GetValue<bool>("InContainer") &&
-            !app.Configuration.GetValue<bool>("InAzure"))
+        var applicationHostingOptions =
+            app.Configuration
+                .Get<ApplicationHostingOptions>()
+                    ?? throw new InvalidOperationException("InAzure and InContainer settings are missing in configuration");
+
+        if (!applicationHostingOptions.InContainer &&
+            !applicationHostingOptions.InAzure)
         {
             app.UseCookiePolicy(new CookiePolicyOptions
             {

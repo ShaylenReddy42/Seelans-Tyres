@@ -69,17 +69,11 @@ public static class WebApplicationBuilderConfiguration
             builder.Configuration.GetSection("LoggingSinks:Elasticsearch")
                 .Get<ElasticsearchLoggingSinkOptions>()
                     ?? throw new InvalidOperationException("Elasticsearch Logging Sink configuration section is missing");
-
-        var healthChecksModel = new HealthChecksModel
-        {
-            EnableElasticsearchHealthCheck = bool.Parse(elasticsearchLoggingSinkOptions.Enabled),
-            ElasticsearchUrl = elasticsearchLoggingSinkOptions.Url,
-
-            PublishHealthStatusToAppInsights = applicationInsightsOptions.Enabled
-        };
-
+        
         builder.Services.AddHealthChecks()
-            .AddCommonChecks(healthChecksModel);
+            .AddCommonChecks(
+                elasticsearchLoggingSinkOptions, 
+                applicationInsightsOptions.Enabled);
 
         if (azureAppConfigurationOptions.Enabled)
         {

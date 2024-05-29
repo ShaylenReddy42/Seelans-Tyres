@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks; // HealthCheckOptions
 using Microsoft.EntityFrameworkCore;                 // DbContext, AddDbContextCheck()
 using Microsoft.Extensions.DependencyInjection;      // IHealthChecksBuilder
 using Microsoft.Extensions.Diagnostics.HealthChecks; // HealthCheckResult, HealthStatus
-using SeelansTyres.Libraries.Shared.Models;          // HealthChecksModel
+using SeelansTyres.Libraries.Shared.Configuration;   // ElasticsearchLoggingSinkOptions
 
 namespace SeelansTyres.Libraries.Shared.Abstractions;
 
@@ -21,9 +21,13 @@ public static class HealthChecks
     /// If Application Insights is enabled, the health check status is published to it
     /// </remarks>
     /// <param name="healthChecks">The health checks builder</param>
-    /// <param name="healthChecksModel">The model containing the needed properties to configure the health checks</param>
-    /// <returns></returns>
-    public static IHealthChecksBuilder AddCommonChecks(this IHealthChecksBuilder healthChecks, HealthChecksModel healthChecksModel)
+    /// <param name="elasticsearchLoggingSinkOptions">Elasticsearch options coming from a POCO bound to configuration</param>
+    /// <param name="publishHealthStatusToAppicationInsights">Enable publishing the health check status to Application Insights</param>
+    /// <returns>The original health checks builder with a check on self and Elasticsearch if enabled</returns>
+    public static IHealthChecksBuilder AddCommonChecks(
+        this IHealthChecksBuilder healthChecks, 
+        ElasticsearchLoggingSinkOptions elasticsearchLoggingSinkOptions,
+        bool publishHealthStatusToAppicationInsights)
     {
         healthChecks
             .AddCheck(
@@ -31,17 +35,17 @@ public static class HealthChecks
                 check: () => HealthCheckResult.Healthy(),
                 tags: new[] { "self" });
 
-        if (healthChecksModel.EnableElasticsearchHealthCheck)
+        if (bool.Parse(elasticsearchLoggingSinkOptions.Enabled))
         {
             healthChecks
                 .AddElasticsearch(
-                    elasticsearchUri: healthChecksModel.ElasticsearchUrl,
+                    elasticsearchUri: elasticsearchLoggingSinkOptions.Url,
                     name: "Elasticsearch",
                     failureStatus: HealthStatus.Degraded,
                     timeout: TimeSpan.FromSeconds(1.5));
         }
 
-        if (healthChecksModel.PublishHealthStatusToAppInsights)
+        if (publishHealthStatusToAppicationInsights)
         {
             healthChecks.AddApplicationInsightsPublisher();
         }
