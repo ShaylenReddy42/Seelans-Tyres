@@ -138,7 +138,7 @@ builder.Services.AddHealthChecks()
     .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
     .AddUrlGroup(
         uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
-        name: "gateway",
+        name: "Mvc Backend-For-Frontend",
         failureStatus: HealthStatus.Unhealthy);
 
 if (!builder.Environment.IsDevelopment())
@@ -146,7 +146,7 @@ if (!builder.Environment.IsDevelopment())
     builder.Services.AddHealthChecks()
         .AddAzureBlobStorage(
             connectionString: builder.Configuration.GetConnectionString("AzureStorageAccount")!,
-            name: "azureStorageAccount",
+            name: "Azure Storage",
             failureStatus: HealthStatus.Unhealthy);
 }
 
@@ -155,7 +155,7 @@ if (builder.Configuration.GetValue<bool>("Redis:Enabled"))
     builder.Services.AddHealthChecks()
         .AddRedis(
             redisConnectionString: builder.Configuration["Redis:ConnectionString"]!,
-            name: "redis",
+            name: "Redis",
             failureStatus: HealthStatus.Unhealthy);
 }
 

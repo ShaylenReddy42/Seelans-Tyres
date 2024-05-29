@@ -27,7 +27,7 @@ public static class HealthChecks
     {
         healthChecks
             .AddCheck(
-                name: "self",
+                name: "Self",
                 check: () => HealthCheckResult.Healthy(),
                 tags: new[] { "self" });
 
@@ -57,7 +57,7 @@ public static class HealthChecks
     public static IHealthChecksBuilder AddCommonDbContextCheck<TDbContext>(this IHealthChecksBuilder healthChecks) where TDbContext : DbContext
     {
         healthChecks.AddDbContextCheck<TDbContext>(
-            name: "database",
+            name: "Database",
             failureStatus: HealthStatus.Unhealthy);
 
         return healthChecks;
@@ -73,7 +73,7 @@ public static class HealthChecks
     {
         healthChecks.AddIdentityServer(
             idSvrUri: new(identityServerUrl),
-            name: "identityServer",
+            name: "Identity Server",
             failureStatus: HealthStatus.Unhealthy);
 
         return healthChecks;
@@ -89,7 +89,7 @@ public static class HealthChecks
         this IHealthChecksBuilder healthChecks, string connectionString)
     {
         healthChecks.AddRabbitMQ(
-            name: "rabbitmq",
+            name: "RabbitMQ",
             rabbitConnectionString: connectionString,
             failureStatus: HealthStatus.Degraded,
             timeout: TimeSpan.FromSeconds(1.5));
@@ -110,7 +110,7 @@ public static class HealthChecks
         healthChecks.AddAzureServiceBusTopic(
             connectionString: connectionString,
             topicName: topicName,
-            name: $"azureServiceBusTopic: {topicName}",
+            name: $"Azure Service Bus Topic: {topicName}",
             failureStatus: HealthStatus.Degraded);
 
         return healthChecks;
@@ -131,7 +131,7 @@ public static class HealthChecks
             connectionString: connectionString,
             topicName: topicName,
             subscriptionName: subscriptionName,
-            name: $"azureServiceBusTopicSubscription: {subscriptionName}",
+            name: $"Azure Service Bus Topic Subscription: {subscriptionName}",
             failureStatus: HealthStatus.Degraded);
 
         return healthChecks;

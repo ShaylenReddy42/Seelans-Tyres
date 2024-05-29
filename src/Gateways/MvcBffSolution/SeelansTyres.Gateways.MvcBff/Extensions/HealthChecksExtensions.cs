@@ -14,9 +14,9 @@ public static class HealthChecksExtensions
     {
         var serviceList = new List<string>()
         {
-            "AddressService",
-            "OrderService",
-            "TyresService"
+            "Address Service",
+            "Order Service",
+            "Tyres Service"
         };
 
         serviceList.ForEach(service =>
