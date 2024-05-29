@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;                  // WebApplication
 using Microsoft.AspNetCore.Diagnostics.HealthChecks; // HealthCheckOptions
 using Microsoft.EntityFrameworkCore;                 // DbContext, AddDbContextCheck()
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;      // IHealthChecksBuilder
 using Microsoft.Extensions.Diagnostics.HealthChecks; // HealthCheckResult, HealthStatus
 using SeelansTyres.Libraries.Shared.Configuration;   // ElasticsearchLoggingSinkOptions
@@ -32,8 +33,7 @@ public static class HealthChecks
         healthChecks
             .AddCheck(
                 name: "Self",
-                check: () => HealthCheckResult.Healthy(),
-                tags: new[] { "self" });
+                check: () => HealthCheckResult.Healthy());
 
         if (bool.Parse(elasticsearchLoggingSinkOptions.Enabled))
         {
@@ -152,14 +152,19 @@ public static class HealthChecks
     /// <returns>The web application used to configure the http pipeline with the mapped health check endpoints</returns>
     public static WebApplication MapCommonHealthChecks(this WebApplication app)
     {
-        app.MapHealthChecks(app.Configuration["HealthCheckEndpoint"]!, new HealthCheckOptions
+        var healthCheckEndpointOptions =
+            app.Configuration
+                .Get<HealthCheckEndpointOptions>()
+                    ?? throw new InvalidOperationException("HealthCheckEndpoint and LivenessCheckEndpoint settings are missing in configuration");
+
+        app.MapHealthChecks(healthCheckEndpointOptions.HealthCheckEndpoint, new HealthCheckOptions
         {
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
 
-        app.MapHealthChecks(app.Configuration["LivenessCheckEndpoint"]!, new HealthCheckOptions
+        app.MapHealthChecks(healthCheckEndpointOptions.LivenessCheckEndpoint, new HealthCheckOptions
         {
-            Predicate = healthCheckRegistration => healthCheckRegistration.Tags.Contains("self"),
+            Predicate = healthCheckRegistration => healthCheckRegistration.Name is "Self",
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
 
