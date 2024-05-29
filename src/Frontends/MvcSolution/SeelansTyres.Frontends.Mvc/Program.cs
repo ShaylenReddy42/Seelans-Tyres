@@ -12,6 +12,7 @@ using SeelansTyres.Frontends.Mvc.Channels;               // SendReceiptChannel
 using SeelansTyres.Libraries.Shared.Extensions;          // ConditionallyUseAzureAppConfiguration(), AddCommonStartupDelay()
 using SeelansTyres.Frontends.Mvc.HttpClients;            // All strongly-typed http clients
 using SeelansTyres.Libraries.Shared.Abstractions;        // All common methods
+using SeelansTyres.Libraries.Shared.Configuration;       // ExternalServiceOptions
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +62,12 @@ builder.Services.AddHttpClient<ITyresServiceClient, TyresServiceClient>(client =
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 
-if (!builder.Configuration.GetValue<bool>("Redis:Enabled"))
+var redisOptions =
+    builder.Configuration.GetSection("Redis")
+        .Get<ExternalServiceOptions>()
+            ?? throw new InvalidOperationException("Redis configuration section is missing");
+
+if (!redisOptions.Enabled)
 {
     builder.Services.AddMemoryCache();
     builder.Services.AddScoped<ICacheService, InMemoryCacheService>(); 
@@ -70,7 +76,7 @@ else
 {
     builder.Services.AddStackExchangeRedisCache(setup =>
     {
-        setup.Configuration = builder.Configuration["Redis:ConnectionString"]!;
+        setup.Configuration = redisOptions.ConnectionString;
         setup.InstanceName = "seelanstyres_";
     });
     builder.Services.AddScoped<ICacheService, DistributedCacheService>();

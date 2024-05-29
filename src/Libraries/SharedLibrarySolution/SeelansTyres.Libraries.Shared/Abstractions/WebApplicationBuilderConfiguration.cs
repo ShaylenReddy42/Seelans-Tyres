@@ -1,9 +1,10 @@
-﻿using ConfigurationSubstitution;                 // EnableSubstitutionsWithDelimitedFallbackDefaults()
-using Microsoft.AspNetCore.Builder;              // WebApplicationBuilder
-using Microsoft.Extensions.Configuration;        // GetValue(), AddAzureAppConfiguration()
-using Microsoft.Extensions.DependencyInjection;  // AddApplicationInsightsTelemetry(), AddApplicationInsightsKubernetesEnricher(), AddHealthChecks()
-using Microsoft.Extensions.Logging;              // ClearProviders()
-using SeelansTyres.Libraries.Shared.Models;      // CommonBuilderConfigurationModel, HealthChecksModel
+﻿using ConfigurationSubstitution;                   // EnableSubstitutionsWithDelimitedFallbackDefaults()
+using Microsoft.AspNetCore.Builder;                // WebApplicationBuilder
+using Microsoft.Extensions.Configuration;          // GetValue(), AddAzureAppConfiguration()
+using Microsoft.Extensions.DependencyInjection;    // AddApplicationInsightsTelemetry(), AddApplicationInsightsKubernetesEnricher(), AddHealthChecks()
+using Microsoft.Extensions.Logging;                // ClearProviders()
+using SeelansTyres.Libraries.Shared.Configuration; // ElasticsearchLoggingSinkOptions, ExternalServiceOptions
+using SeelansTyres.Libraries.Shared.Models;        // CommonBuilderConfigurationModel, HealthChecksModel
 
 namespace SeelansTyres.Libraries.Shared.Abstractions;
 
@@ -19,14 +20,19 @@ public static class WebApplicationBuilderConfiguration
         this WebApplicationBuilder builder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
-        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled"))
+        var azureAppConfigurationOptions =
+            builder.Configuration.GetSection("AzureAppConfig")
+                .Get<ExternalServiceOptions>()
+                    ?? throw new InvalidOperationException("AzureAppConfig configuration section is missing");
+
+        if (azureAppConfigurationOptions.Enabled)
         {
             // Adds Azure App Configuration support using 'SystemDegraded' as the sentinel key to enable configuration refresh
             // It only has 'SystemDegraded' to have it toggled on by a function app and override the state to inform users
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
                 options
-                    .Connect(builder.Configuration["AzureAppConfig:ConnectionString"])
+                    .Connect(azureAppConfigurationOptions.ConnectionString)
                     .Select("*")
                     .ConfigureRefresh(refreshOptions =>
                     {
@@ -44,28 +50,38 @@ public static class WebApplicationBuilderConfiguration
 
         builder.Host.UseCommonSerilog(commonBuilderConfigurationModel);
 
+        var applicationInsightsOptions =
+            builder.Configuration.GetSection("AppInsights")
+                .Get<ExternalServiceOptions>()
+                    ?? throw new InvalidOperationException("AppInsights configuration section is missing");
+
         // Instruments the solution with application insights
-        if (builder.Configuration.GetValue<bool>("AppInsights:Enabled"))
+        if (applicationInsightsOptions.Enabled)
         {
             builder.Services.AddApplicationInsightsTelemetry(
                 options => options.ConnectionString =
-                    builder.Configuration["AppInsights:ConnectionString"]);
+                    applicationInsightsOptions.ConnectionString);
 
             builder.Services.AddApplicationInsightsKubernetesEnricher();
         }
 
+        var elasticsearchLoggingSinkOptions =
+            builder.Configuration.GetSection("LoggingSinks:Elasticsearch")
+                .Get<ElasticsearchLoggingSinkOptions>()
+                    ?? throw new InvalidOperationException("Elasticsearch Logging Sink configuration section is missing");
+
         var healthChecksModel = new HealthChecksModel
         {
-            EnableElasticsearchHealthCheck = builder.Configuration.GetValue<bool>("LoggingSinks:Elasticsearch:Enabled"),
-            ElasticsearchUrl = builder.Configuration["LoggingSinks:Elasticsearch:Url"]!,
+            EnableElasticsearchHealthCheck = bool.Parse(elasticsearchLoggingSinkOptions.Enabled),
+            ElasticsearchUrl = elasticsearchLoggingSinkOptions.Url,
 
-            PublishHealthStatusToAppInsights = builder.Configuration.GetValue<bool>("AppInsights:Enabled")
+            PublishHealthStatusToAppInsights = applicationInsightsOptions.Enabled
         };
 
         builder.Services.AddHealthChecks()
             .AddCommonChecks(healthChecksModel);
 
-        if (builder.Configuration.GetValue<bool>("AzureAppConfig:Enabled"))
+        if (azureAppConfigurationOptions.Enabled)
         {
             builder.Services.AddAzureAppConfiguration();
         }

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;       // WebApplication
-using Microsoft.Extensions.Configuration; // GetValue()
-using Microsoft.Extensions.Logging;       // LogInformation()
+﻿using Microsoft.AspNetCore.Builder;                // WebApplication
+using Microsoft.Extensions.Configuration;          // GetValue()
+using Microsoft.Extensions.Logging;                // LogInformation()
+using SeelansTyres.Libraries.Shared.Configuration; // ExternalServiceOptions
 
 namespace SeelansTyres.Libraries.Shared.Extensions;
 
@@ -13,7 +14,12 @@ public static class WebApplicationExtensions
     /// <returns>The original web application</returns>
     public static WebApplication ConditionallyUseAzureAppConfiguration(this WebApplication app)
     {
-        if (app.Configuration.GetValue<bool>("AzureAppConfig:Enabled"))
+        var azureAppConfigurationOptions =
+            app.Configuration.GetSection("AzureAppConfig")
+                .Get<ExternalServiceOptions>()
+                    ?? throw new InvalidOperationException("AzureAppConfig configuration section is missing");
+
+        if (azureAppConfigurationOptions.Enabled)
         {
             app.UseAzureAppConfiguration();
         }
