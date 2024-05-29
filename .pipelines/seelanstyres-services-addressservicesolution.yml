@@ -45,18 +45,21 @@ stages:
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
         steps:
-          - template: templates/download-artifacts-and-deploy-infrastructure.yml
+          - checkout: none
+          
+          - ${{ if eq(variables.deploySolution, 'true') }}:
+            - template: templates/download-artifacts-and-deploy-infrastructure.yml
 
-          - template: templates/execute-efcore-bundle.yml
-            parameters:
-              bundleName: SeelansTyresAddressDb
+            - template: templates/execute-efcore-bundle.yml
+              parameters:
+                bundleName: SeelansTyresAddressDb
 
-          - template: templates/deploy-webapp.yml
-            parameters:
-              intendedResourceName: app-seelanstyres-addressservice-$(environment)
-              project: SeelansTyres.Services.AddressService
+            - template: templates/deploy-webapp.yml
+              parameters:
+                intendedResourceName: app-seelanstyres-addressservice-$(environment)
+                project: SeelansTyres.Services.AddressService
 
-          - template: templates/deploy-webapp.yml
-            parameters:
-              intendedResourceName: app-seelanstyres-addressworker-$(environment)
-              project: SeelansTyres.Workers.AddressWorker
+            - template: templates/deploy-webapp.yml
+              parameters:
+                intendedResourceName: app-seelanstyres-addressworker-$(environment)
+                project: SeelansTyres.Workers.AddressWorker

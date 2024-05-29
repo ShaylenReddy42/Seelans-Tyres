@@ -1,6 +1,4 @@
 steps:
-  - checkout: none
-  
   - download: 'current'
     artifact: 'drop'
     displayName: 'Download Artifacts'
