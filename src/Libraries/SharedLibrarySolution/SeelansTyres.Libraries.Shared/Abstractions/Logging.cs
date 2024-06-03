@@ -66,6 +66,7 @@ public static class Logging
         {
             loggerConfiguration
                 .ReadFrom.Configuration(hostBuilderContext.Configuration, serilogConfigurationReaderOptions)
+                .MinimumLevel.Override("System.Net.Http.HttpClient", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .Enrich.With<ActivityEnricher>()
