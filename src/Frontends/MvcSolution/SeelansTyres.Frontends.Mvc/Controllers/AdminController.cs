@@ -97,7 +97,7 @@ public class AdminController(
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet("Admin/UpdateTyre/{TyreId}")]
+    [HttpGet("~/Admin/UpdateTyre/{TyreId}")]
     public async Task<IActionResult> UpdateTyre(Guid tyreId)
     {
         if (!ModelState.IsValid)

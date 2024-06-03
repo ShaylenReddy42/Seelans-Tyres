@@ -84,7 +84,7 @@ public class AdminAccountSeeder
             await userManager.AddToRoleAsync(admin, FullAdminRoleName);
             await userManager.AddClaimsAsync(admin, claims);
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
             stopwatch.Stop();
             
@@ -93,7 +93,7 @@ public class AdminAccountSeeder
                 "{Announcement} ({StopwatchElapsedTime}ms): The database is unavailable",
                 LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
 
-            throw;
+            throw ex.GetBaseException();
         }
         stopwatch.Stop();
 
