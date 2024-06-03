@@ -21,9 +21,9 @@ public static class HealthChecksExtensions
 
         serviceList.ForEach(service =>
         {
-            string scheme = configuration[$"Services:{service}:Scheme"]!,
-                   host   = configuration[$"Services:{service}:Host"]!,
-                   port   = configuration[$"Services:{service}:Port"]!;
+            string scheme = configuration[$"Services:{service.Replace(" ", "")}:Scheme"]!,
+                   host   = configuration[$"Services:{service.Replace(" ", "")}:Host"]!,
+                   port   = configuration[$"Services:{service.Replace(" ", "")}:Port"]!;
 
             string serviceUrl = $"{scheme}://{host}:{port}";
 
