@@ -2,7 +2,6 @@ trigger:
   paths:
     include:
       - src/Services/AddressServiceSolution
-      - src/Libraries/SharedLibrarySolution
 
 stages:
   - stage: Build

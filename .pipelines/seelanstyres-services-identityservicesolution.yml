@@ -2,7 +2,6 @@ trigger:
   paths:
     include:
       - src/Services/IdentityServiceSolution
-      - src/Libraries/SharedLibrarySolution
 
 stages:
   - stage: Build

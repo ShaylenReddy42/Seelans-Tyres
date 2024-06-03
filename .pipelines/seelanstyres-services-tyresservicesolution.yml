@@ -2,7 +2,6 @@ trigger:
   paths:
     include:
       - src/Services/TyresServiceSolution
-      - src/Libraries/SharedLibrarySolution
 
 stages:
   - stage: Build

@@ -2,7 +2,6 @@ trigger:
   paths:
     include:
       - src/Frontends/HealthChecksUISolution
-      - src/Libraries/SharedLibrarySolution
 
 stages:
   - stage: Build

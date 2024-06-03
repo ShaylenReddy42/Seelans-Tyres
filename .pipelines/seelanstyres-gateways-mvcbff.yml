@@ -2,7 +2,6 @@ trigger:
   paths:
     include:
       - src/Gateways/MvcBffSolution
-      - src/Libraries/SharedLibrarySolution
 
 stages:
   - stage: Build
