@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class="w-100 h-100 m-0 p-0">
+<body class="w-100 h-100 m-0 p-0 min-vh-100 d-flex flex-column">
     <header>
         @if (Configuration.GetValue<bool>("SystemDegraded"))
         {
@@ -92,7 +92,7 @@
     
     @RenderBody()
 
-    <footer class="border-top w-100 p-5 text-muted text-center">
+    <footer class="border-top w-100 p-4 text-muted text-center mt-auto">
         Shaylen Reddy: MIT License<br>
         <a href="@commitUrl" target="_blank">@($"v{informationalVersion}")</a>
     </footer>
