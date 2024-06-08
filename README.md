@@ -280,11 +280,12 @@ The solution now comprises of 10 runnable projects with 18 projects in total
 
 ## Required local setup to build and run
 
-* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.10.0 or later
-* .NET SDK [6.0.422](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [8.0.300](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.10.1 or later
+* .NET SDK [6.0.423](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [8.0.301](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [CMake](https://cmake.org/download/) 3.29.0 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16#download-ssms)
+* [WSL](https://github.com/microsoft/WSL/releases/tag/1.0.3) 1.0.3 [this is the version that I stick to because the Docker Engine fails to start on anything newer]
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 * [PowerToys](https://github.com/microsoft/PowerToys/releases) 0.77.0 or later [For the hosts file editor and environment variables utility]
 
