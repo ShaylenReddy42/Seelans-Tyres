@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     $('.viewReceiptForm').on('submit', function (event) {
         event.preventDefault();
 
