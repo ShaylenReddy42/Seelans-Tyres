@@ -1,9 +1,17 @@
-.seelanstyres-color {
-    color: rgb(255, 40, 0) !important;
+:root {
+    --brand-color: rgb(255, 40, 0);
 }
 
-.seelanstyres-bg {
-    background-color: rgb(255, 40, 0);
+.text-brand {
+    color: var(--brand-color) !important;
+}
+
+.bg-brand {
+    background-color: var(--brand-color);
+}
+
+.border-brand {
+    border-color: var(--brand-color) !important;
 }
 
 .modalLink {
@@ -42,10 +50,6 @@
 
 .service-group {
     background-color: rgb(240, 240, 240);
-}
-
-.service {
-    border-color: rgb(255, 40, 0) !important;
 }
 
 /* end of the services page css */
