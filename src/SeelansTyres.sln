@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MvcSolution", "MvcSolution"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SystemDegradedTogglerSolution", "SystemDegradedTogglerSolution", "{B7ACA2E3-A554-48C6-A657-8F5EA4CD98A7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MvcBffSolution", "MvcBffSolution", "{D1943C06-5BCA-41C6-99A1-12475B103B9D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebBffSolution", "WebBffSolution", "{D1943C06-5BCA-41C6-99A1-12475B103B9D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedLibrarySolution", "SharedLibrarySolution", "{00D35252-F1A3-47BE-86B8-D0291098B4DC}"
 EndProject
@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Frontends.Mvc"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.FunctionApps.SystemDegradedToggler", "FunctionApps\SystemDegradedTogglerSolution\SeelansTyres.FunctionApps.SystemDegradedToggler\SeelansTyres.FunctionApps.SystemDegradedToggler.csproj", "{13D843BE-C1DF-49B8-8CF7-21618DA52F51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Gateways.MvcBff", "Gateways\MvcBffSolution\SeelansTyres.Gateways.MvcBff\SeelansTyres.Gateways.MvcBff.csproj", "{8CA497BC-2F47-4AD8-8686-DDBCB25324F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Gateways.WebBff", "Gateways\WebBffSolution\SeelansTyres.Gateways.WebBff\SeelansTyres.Gateways.WebBff.csproj", "{8CA497BC-2F47-4AD8-8686-DDBCB25324F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeelansTyres.Libraries.Shared", "Libraries\SharedLibrarySolution\SeelansTyres.Libraries.Shared\SeelansTyres.Libraries.Shared.csproj", "{B1FA8818-FA6D-4DFF-A9B9-09865651C106}"
 EndProject

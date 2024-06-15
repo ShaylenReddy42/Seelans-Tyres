@@ -46,7 +46,7 @@ services:
       - EmailCredentials__Email=${EmailCredentials__Email}
       - EmailCredentials__Password=${EmailCredentials__Password}
       - IdentityServer=${IDENTITYSERVER}
-      - MvcBffUrl=http://${HOST}:7050
+      - WebBffUrl=http://${HOST}:7050
       - envUseElasticsearch=true
       - envElasticsearchUrl=${ELASTICSEARCH}
       - HealthCheckEndpoint=${DOCKERHEALTHCHECKENDPOINT}
@@ -60,12 +60,12 @@ services:
 
   # Gateways ############################################################################################
 
-  seelanstyres-gateways-mvcbff:
+  seelanstyres-gateways-webbff:
     build:
       context: ../../src/
-      dockerfile: 'Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/Dockerfile'
-    container_name: 'seelanstyres_gateways_mvcbff'
-    image: 'seelanstyres/gateways/mvcbff:${TAG}'
+      dockerfile: 'Gateways/WebBffSolution/SeelansTyres.Gateways.WebBff/Dockerfile'
+    container_name: 'seelanstyres_gateways_webbff'
+    image: 'seelanstyres/gateways/webbff:${TAG}'
     ports:
       - 7050:7050
     environment:

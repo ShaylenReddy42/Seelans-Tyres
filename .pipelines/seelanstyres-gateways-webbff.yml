@@ -1,12 +1,12 @@
 trigger:
   paths:
     include:
-      - src/Gateways/MvcBffSolution
+      - src/Gateways/WebBffSolution
 
 stages:
   - stage: Build
     jobs:
-      - job: Build_MvcBffSolution
+      - job: Build_WebBffSolution
         pool: Default
         cancelTimeoutInMinutes: 2
         steps:
@@ -15,8 +15,8 @@ stages:
           - template: templates/publish-project.yml
             parameters:
               solutionFolder: Gateways
-              solutionSubfolder: MvcBffSolution
-              project: SeelansTyres.Gateways.MvcBff
+              solutionSubfolder: WebBffSolution
+              project: SeelansTyres.Gateways.WebBff
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 
@@ -26,7 +26,7 @@ stages:
     variables:
       - group: seelanstyres-dev
     jobs:
-      - job: Deploy_MvcBffSolution_Dev
+      - job: Deploy_WebBffSolution_Dev
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
@@ -38,5 +38,5 @@ stages:
 
             - template: templates/deploy-webapp.yml
               parameters:
-                intendedResourceName: app-seelanstyres-mvcbff-$(environment)
-                project: SeelansTyres.Gateways.MvcBff
+                intendedResourceName: app-seelanstyres-webbff-$(environment)
+                project: SeelansTyres.Gateways.WebBff

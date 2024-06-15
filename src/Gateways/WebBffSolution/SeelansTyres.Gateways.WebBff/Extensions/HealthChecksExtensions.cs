@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace SeelansTyres.Gateways.MvcBff.Extensions;
+namespace SeelansTyres.Gateways.WebBff.Extensions;
 
 public static class HealthChecksExtensions
 {
@@ -22,8 +22,8 @@ public static class HealthChecksExtensions
         serviceList.ForEach(service =>
         {
             string scheme = configuration[$"Services:{service.Replace(" ", "")}:Scheme"]!,
-                   host   = configuration[$"Services:{service.Replace(" ", "")}:Host"]!,
-                   port   = configuration[$"Services:{service.Replace(" ", "")}:Port"]!;
+                   host = configuration[$"Services:{service.Replace(" ", "")}:Host"]!,
+                   port = configuration[$"Services:{service.Replace(" ", "")}:Port"]!;
 
             string serviceUrl = $"{scheme}://{host}:{port}";
 

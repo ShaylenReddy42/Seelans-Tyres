@@ -8,7 +8,7 @@ metadata:
 data:
   ASPNETCORE_URLS: http://*:5000
   Applications__Mvc: http://seelanstyres-frontends-mvc:5001
-  Applications__MvcBff: http://seelanstyres-gateways-mvcbff:7050
+  Applications__WebBff: http://seelanstyres-gateways-webbff:7050
   Applications__AddressService: http://seelanstyres-services-addressservice:5011
   Applications__AddressWorker: http://seelanstyres-workers-addressworker:5021
   Applications__IdentityService: http://seelanstyres-services-identityservice:5005

@@ -34,8 +34,8 @@ param healthCheckEndpoint string
 param mvcClientSecret string
 
 @secure()
-@description('Used to authenticate the MvcBff Gateway with IdentityServer4')
-param mvcBffClientSecret string
+@description('Used to authenticate the WebBff Gateway with IdentityServer4')
+param webBffClientSecret string
 
 @secure()
 @description('The admin username for the server')
@@ -176,8 +176,8 @@ resource mvc 'Microsoft.Web/sites@2023-12-01' = {
           value: 'true'
         }
         {
-          name: 'MvcBffUrl'
-          value: 'https://app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+          name: 'WebBffUrl'
+          value: 'https://app-seelanstyres-webbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
           name: 'Redis__Enabled'
@@ -207,8 +207,8 @@ resource mvc 'Microsoft.Web/sites@2023-12-01' = {
   }
 }
 
-resource mvcBff 'Microsoft.Web/sites@2023-12-01' = {
-  name: 'app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}'
+resource webBff 'Microsoft.Web/sites@2023-12-01' = {
+  name: 'app-seelanstyres-webbff-${environment}-${uniqueString(resourceGroup().id)}'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -233,7 +233,7 @@ resource mvcBff 'Microsoft.Web/sites@2023-12-01' = {
         }
         {
           name: 'ClientCredentials__ClientSecret'
-          value: mvcBffClientSecret
+          value: webBffClientSecret
         }
         {
           name: 'IdentityServer'
@@ -241,7 +241,7 @@ resource mvcBff 'Microsoft.Web/sites@2023-12-01' = {
         }
         {
           name: 'envBaseUrl'
-          value: 'https://app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+          value: 'https://app-seelanstyres-webbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
           name: 'envAddressServiceScheme'
@@ -307,7 +307,7 @@ resource mvcBff 'Microsoft.Web/sites@2023-12-01' = {
     }
   }
   tags: {
-    intendedResourceName: 'app-seelanstyres-mvcbff-${environment}'
+    intendedResourceName: 'app-seelanstyres-webbff-${environment}'
   }
 }
 
@@ -356,8 +356,8 @@ resource identityService 'Microsoft.Web/sites@2023-12-01' = {
           value: 'https://app-seelanstyres-mvc-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
-          name: 'Clients__SeelansTyresMvcBffClient__ClientSecret'
-          value: mvcBffClientSecret
+          name: 'Clients__SeelansTyresWebBffClient__ClientSecret'
+          value: webBffClientSecret
         }
         {
           name: 'Database__ConnectionString'

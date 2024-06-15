@@ -2,7 +2,7 @@
 using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
 using System.Net.Http.Headers;                 // AuthenticationHeaderValue
 
-namespace SeelansTyres.Gateways.MvcBff.Services;
+namespace SeelansTyres.Gateways.WebBff.Services;
 
 public class TokenExchangeService : ITokenExchangeService
 {
@@ -13,7 +13,7 @@ public class TokenExchangeService : ITokenExchangeService
     public TokenExchangeService(
         HttpClient client,
         IConfiguration configuration,
-        ILogger<TokenExchangeService> logger) => 
+        ILogger<TokenExchangeService> logger) =>
             (this.client, this.configuration, this.logger) = (client, configuration, logger);
 
     public async Task<AuthenticationHeaderValue> PerformTokenExchangeAsync(HttpRequestMessage incomingRequest, string additionalScopes)
@@ -21,7 +21,7 @@ public class TokenExchangeService : ITokenExchangeService
         logger.LogInformation(
             "Token exchange request triggered with {AdditionalScopes} as requested scope(s)",
             additionalScopes);
-        
+
         var incomingAccessToken = incomingRequest.Headers.Authorization!.Parameter;
 
         var discoveryDocument = await client.GetDiscoveryDocumentAsync();

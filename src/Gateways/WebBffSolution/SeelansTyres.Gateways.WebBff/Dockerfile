@@ -14,18 +14,18 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/SeelansTyres.Libraries.Shared.csproj", "Libraries/SharedLibrarySolution/SeelansTyres.Libraries.Shared/"]
 COPY ["Libraries/UnpublishedUpdatesManagementSolution/ShaylenReddy42.UnpublishedUpdatesManagement/ShaylenReddy42.UnpublishedUpdatesManagement.csproj", "Libraries/UnpublishedUpdatesManagementSolution/ShaylenReddy42.UnpublishedUpdatesManagement/"]
-COPY ["Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/SeelansTyres.Gateways.MvcBff.csproj", "Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/"]
-RUN dotnet restore "Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/SeelansTyres.Gateways.MvcBff.csproj"
+COPY ["Gateways/WebBffSolution/SeelansTyres.Gateways.WebBff/SeelansTyres.Gateways.WebBff.csproj", "Gateways/WebBffSolution/SeelansTyres.Gateways.WebBff/"]
+RUN dotnet restore "Gateways/WebBffSolution/SeelansTyres.Gateways.WebBff/SeelansTyres.Gateways.WebBff.csproj"
 COPY . .
-WORKDIR "/src/Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff"
-RUN dotnet build "SeelansTyres.Gateways.MvcBff.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
+WORKDIR "/src/Gateways/WebBffSolution/SeelansTyres.Gateways.WebBff"
+RUN dotnet build "SeelansTyres.Gateways.WebBff.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SeelansTyres.Gateways.MvcBff.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
+RUN dotnet publish "SeelansTyres.Gateways.WebBff.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
 
 FROM base AS final
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 USER nonroot
 WORKDIR /app
-COPY --from=publish /src/Gateways/MvcBffSolution/SeelansTyres.Gateways.MvcBff/publish .
-ENTRYPOINT ["dotnet", "SeelansTyres.Gateways.MvcBff.dll"]
+COPY --from=publish /src/Gateways/WebBffSolution/SeelansTyres.Gateways.WebBff/publish .
+ENTRYPOINT ["dotnet", "SeelansTyres.Gateways.WebBff.dll"]

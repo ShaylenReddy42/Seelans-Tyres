@@ -8,7 +8,7 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
-    <DockerfileTag>seelanstyres/gateways/mvcbff</DockerfileTag>
+    <DockerfileTag>seelanstyres/gateways/webbff</DockerfileTag>
   </PropertyGroup>
 
   <!-- Manually added PropertyGroup for reducing files created during publishing -->

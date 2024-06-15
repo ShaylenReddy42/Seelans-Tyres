@@ -102,8 +102,8 @@ resource healthChecksUI 'Microsoft.Web/sites@2023-12-01' = {
           value: 'https://app-seelanstyres-mvc-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
-          name: 'Applications__MvcBff'
-          value: 'https://app-seelanstyres-mvcbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
+          name: 'Applications__WebBff'
+          value: 'https://app-seelanstyres-webbff-${environment}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
         }
         {
           name: 'Applications__AddressService'

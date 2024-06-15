@@ -25,7 +25,7 @@ steps:
             emailCredentialsPassword=$(emailCredentialsPassword) `
             healthCheckEndpoint=$(healthCheckEndpoint) `
             mvcClientSecret=$(mvcClientSecret) `
-            mvcBffClientSecret=$(mvcBffClientSecret) `
+            webBffClientSecret=$(webBffClientSecret) `
             sqlServerAdminLogin=$(sqlServerAdminLogin) `
             sqlServerAdminPassword=$(sqlServerAdminPassword)
       workingDirectory: '$(Pipeline.Workspace)/drop/infrastructure/with-bicep'

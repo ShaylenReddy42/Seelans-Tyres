@@ -9,6 +9,9 @@ ECHO Restore dotnet tools
 ECHO.
 dotnet tool restore
 
+SET LoggingSinks__Elasticsearch__Enabled=false
+SET LoggingSinks__Elasticsearch__Url=http://localhost:9200
+
 SET PROJECT=src/Services/AddressServiceSolution/SeelansTyres.Services.AddressService/SeelansTyres.Services.AddressService.csproj
 
 ECHO.

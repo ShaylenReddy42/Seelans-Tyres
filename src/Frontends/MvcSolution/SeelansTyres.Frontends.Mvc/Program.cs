@@ -133,7 +133,7 @@ builder.Services.AddAuthentication(options =>
         
         options.GetClaimsFromUserInfoEndpoint = true;
 
-        options.Scope.Add("SeelansTyresMvcBff.fullaccess");
+        options.Scope.Add("SeelansTyresWebBff.fullaccess");
         options.Scope.Add("offline_access");
         options.Scope.Add("role");
 
@@ -143,8 +143,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddHealthChecks()
     .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
     .AddUrlGroup(
-        uri: new($"{builder.Configuration["MvcBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
-        name: "Mvc Backend-For-Frontend",
+        uri: new($"{builder.Configuration["WebBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
+        name: "Web Backend-For-Frontend",
         failureStatus: HealthStatus.Unhealthy);
 
 if (!builder.Environment.IsDevelopment())

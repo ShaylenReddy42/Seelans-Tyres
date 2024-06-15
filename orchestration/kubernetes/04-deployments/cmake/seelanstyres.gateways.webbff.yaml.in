@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   labels:
     solution: seelanstyres
-  name: seelanstyres-gateways-mvcbff
+  name: seelanstyres-gateways-webbff
   namespace: default
 data:
   ASPNETCORE_URLS: http://*:7050
@@ -11,7 +11,7 @@ data:
   envCustomerServiceHost: seelanstyres-services-identityservice
   envOrderServiceHost: seelanstyres-services-orderservice
   envTyresServiceHost: seelanstyres-services-tyresservice
-  envBaseUrl: http://seelanstyres-gateways-mvcbff:7050
+  envBaseUrl: http://seelanstyres-gateways-webbff:7050
 
 ---
 
@@ -20,22 +20,22 @@ kind: Deployment
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-gateways-mvcbff
-  name: seelanstyres-gateways-mvcbff
+    app: seelanstyres-gateways-webbff
+  name: seelanstyres-gateways-webbff
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: seelanstyres-gateways-mvcbff
+      app: seelanstyres-gateways-webbff
   template:
     metadata:
       labels:
-        app: seelanstyres-gateways-mvcbff
+        app: seelanstyres-gateways-webbff
     spec:
       containers:
-        - image: @DOCKER_REGISTRY@seelanstyres/gateways/mvcbff:@DOCKER_IMAGE_TAG@
-          name: mvcbff
+        - image: @DOCKER_REGISTRY@seelanstyres/gateways/webbff:@DOCKER_IMAGE_TAG@
+          name: webbff
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
@@ -45,7 +45,7 @@ spec:
             - configMapRef:
                 name: configmap-global
             - configMapRef:
-                name: seelanstyres-gateways-mvcbff
+                name: seelanstyres-gateways-webbff
             - secretRef:
                 name: secrets-global
           resources:
@@ -85,8 +85,8 @@ kind: Service
 metadata:
   labels:
     solution: seelanstyres
-    app: seelanstyres-gateways-mvcbff
-  name: seelanstyres-gateways-mvcbff
+    app: seelanstyres-gateways-webbff
+  name: seelanstyres-gateways-webbff
   namespace: default
 spec:
   ports:
@@ -94,5 +94,5 @@ spec:
     protocol: TCP
     targetPort: 7050
   selector:
-    app: seelanstyres-gateways-mvcbff
+    app: seelanstyres-gateways-webbff
   type: ClusterIP

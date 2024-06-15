@@ -30,7 +30,7 @@
     "mvcClientSecret": {
       "value": ""
     },
-    "mvcBffClientSecret": {
+    "webBffClientSecret": {
       "value": ""
     },
     "sqlServerAdminLogin": {

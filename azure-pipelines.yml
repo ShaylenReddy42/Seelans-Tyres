@@ -55,8 +55,8 @@ stages:
           - template: .pipelines/templates/publish-project.yml
             parameters:
               solutionFolder: Gateways
-              solutionSubfolder: MvcBffSolution
-              project: SeelansTyres.Gateways.MvcBff
+              solutionSubfolder: WebBffSolution
+              project: SeelansTyres.Gateways.WebBff
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
@@ -175,8 +175,8 @@ stages:
 
             - template: .pipelines/templates/deploy-webapp.yml
               parameters:
-                intendedResourceName: app-seelanstyres-mvcbff-$(environment)
-                project: SeelansTyres.Gateways.MvcBff
+                intendedResourceName: app-seelanstyres-webbff-$(environment)
+                project: SeelansTyres.Gateways.WebBff
 
             - template: .pipelines/templates/deploy-webapp.yml
               parameters:

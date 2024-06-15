@@ -13,7 +13,7 @@
         "DebugTarget": ""
       },
       {
-        "Name": "Gateways\\MvcBffSolution\\SeelansTyres.Gateways.MvcBff\\SeelansTyres.Gateways.MvcBff.csproj",
+        "Name": "Gateways\\WebBffSolution\\SeelansTyres.Gateways.WebBff\\SeelansTyres.Gateways.WebBff.csproj",
         "Action": "Start",
         "DebugTarget": ""
       },

@@ -1,31 +1,31 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;   // JwtBearerDefaults
 using Ocelot.DependencyInjection;                      // AddOcelot()
 using Ocelot.Middleware;                               // UseOcelot()
-using SeelansTyres.Gateways.MvcBff.DelegatingHandlers; // AddressServiceDelegatingHandler, CustomerServiceFullAccessDelegatingHandler, OrderServiceDelegatingHandler, TyresServiceDelegatingHandler
-using SeelansTyres.Gateways.MvcBff.Services;           // ITokenExchangeService, TokenExchangeService
 using static System.Net.Mime.MediaTypeNames;           // Application
 using HealthChecks.UI.Client;                          // UIResponseWriter
-using SeelansTyres.Gateways.MvcBff.Extensions;         // AddDownstreamChecks()
 using SeelansTyres.Libraries.Shared.Extensions;        // AddCommonStartupDelay
 using SeelansTyres.Libraries.Shared.Abstractions;      // All common methods
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;   // HealthCheckOptions
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using SeelansTyres.Gateways.WebBff.Extensions;
+using SeelansTyres.Gateways.WebBff.Services;
+using SeelansTyres.Gateways.WebBff.DelegatingHandlers;   // HealthCheckOptions
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCommonBuilderConfiguration(new()
 {
     OriginAssembly = typeof(Program).Assembly,
-    DefaultDescriptiveApplicationName = "Seelan's Tyres: Mvc Backend-for-Frontend"
+    DefaultDescriptiveApplicationName = "Seelan's Tyres: Web Backend-for-Frontend"
 });
 
 // Against the norm, done for Ocelot
-var authenticationScheme = "SeelansTyresMvcBffAuthenticationScheme";
+var authenticationScheme = "SeelansTyresWebBffAuthenticationScheme";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(authenticationScheme, configure =>
     {
         configure.Authority = builder.Configuration["IdentityServer"];
-        configure.Audience = "SeelansTyresMvcBff";
+        configure.Audience = "SeelansTyresWebBff";
         configure.TokenValidationParameters.ValidTypes = [ "at+jwt" ];
         configure.RequireHttpsMetadata = false;
     });

@@ -104,7 +104,7 @@ set(
 
 	"FunctionApps | SystemDegradedTogglerSolution | SeelansTyres.FunctionApps.SystemDegradedToggler | Yes | 7071"
 
-	"Gateways | MvcBffSolution | SeelansTyres.Gateways.MvcBff | Yes | 7050"
+	"Gateways | WebBffSolution | SeelansTyres.Gateways.WebBff | Yes | 7050"
 
 	"Libraries | SharedLibrarySolution | SeelansTyres.Libraries.Shared | No | 0"
 	"Libraries | UnpublishedUpdatesManagementSolution | ShaylenReddy42.UnpublishedUpdatesManagement | No | 0"

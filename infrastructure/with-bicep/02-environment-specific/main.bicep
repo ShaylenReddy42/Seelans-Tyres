@@ -44,8 +44,8 @@ param healthCheckEndpoint string
 param mvcClientSecret string
 
 @secure()
-@description('Used to authenticate the MvcBff Gateway with IdentityServer4')
-param mvcBffClientSecret string
+@description('Used to authenticate the WebBff Gateway with IdentityServer4')
+param webBffClientSecret string
 
 @secure()
 @description('The admin username for the server')
@@ -182,7 +182,7 @@ module appServicesHighLoad '10-app-services-high-load/template.bicep' = {
     emailCredentialsPassword: emailCredentialsPassword
     healthCheckEndpoint: healthCheckEndpoint
     mvcClientSecret: mvcClientSecret
-    mvcBffClientSecret: mvcBffClientSecret
+    webBffClientSecret: webBffClientSecret
     sqlServerAdminLogin: sqlServerAdminLogin
     sqlServerAdminPassword: sqlServerAdminPassword
 

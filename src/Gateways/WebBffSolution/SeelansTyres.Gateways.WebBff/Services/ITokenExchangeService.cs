@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers; // AuthenticationHeaderValue
 
-namespace SeelansTyres.Gateways.MvcBff.Services;
+namespace SeelansTyres.Gateways.WebBff.Services;
 
 /// <summary>
 /// Provides functionality to perform a token exchange to access a downstream api

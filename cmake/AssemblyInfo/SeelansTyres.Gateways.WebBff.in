@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Seelan's Tyres: Mvc Backend-for-Frontend")]
+[assembly: AssemblyTitle("Seelan's Tyres: Web Backend-for-Frontend")]
 [assembly: AssemblyCompany("Shaylen Reddy")]
-[assembly: AssemblyProduct("Seelan's Tyres: Mvc Backend-for-Frontend")]
+[assembly: AssemblyProduct("Seelan's Tyres: Web Backend-for-Frontend")]
 [assembly: AssemblyCopyright("Shaylen Reddy: MIT License")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

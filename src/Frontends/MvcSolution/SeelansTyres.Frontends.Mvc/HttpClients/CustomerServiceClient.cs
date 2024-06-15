@@ -238,7 +238,7 @@ public class CustomerServiceClient(
                     ClientId = configuration["ClientCredentials:ClientId"]!,
                     ClientSecret = configuration["ClientCredentials:ClientSecret"],
                     Address = discoveryDocument.TokenEndpoint,
-                    Scope = $"SeelansTyresMvcBff.fullaccess {additionalScopes}"
+                    Scope = $"SeelansTyresWebBff.fullaccess {additionalScopes}"
                 });
 
         stopwatch.Start();

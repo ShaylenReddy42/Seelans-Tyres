@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "SeelansTyres.Gateways.MvcBff": {
+    "SeelansTyres.Gateways.WebBff": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
