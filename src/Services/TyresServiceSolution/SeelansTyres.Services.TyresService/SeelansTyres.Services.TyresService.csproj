@@ -20,11 +20,8 @@
 
   <!-- Manually added PropertyGroup for reducing files created during publishing -->
   <PropertyGroup>
-	<DebugType>embedded</DebugType>
-	<PublishSingleFile>false</PublishSingleFile>
-	<SelfContained>false</SelfContained>
-	<PublishDir>publish</PublishDir>
-	<PublishReadyToRun>true</PublishReadyToRun>
+    <DebugType>embedded</DebugType>
+    <PublishDir>publish</PublishDir>
   </PropertyGroup>
 
   <ItemGroup>

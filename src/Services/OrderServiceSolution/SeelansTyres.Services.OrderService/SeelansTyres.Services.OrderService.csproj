@@ -22,7 +22,6 @@
   <PropertyGroup>
     <DebugType>embedded</DebugType>
     <PublishDir>publish</PublishDir>
-    <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
   <ItemGroup>
