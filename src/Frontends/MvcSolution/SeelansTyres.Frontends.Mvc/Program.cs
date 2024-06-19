@@ -25,7 +25,7 @@ builder.AddCommonBuilderConfiguration(new()
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddAccessTokenManagement();
+builder.Services.AddOpenIdConnectAccessTokenManagement();
 
 builder.Services.AddHttpClient<IAddressServiceClient, AddressServiceClient>(client =>
 {
