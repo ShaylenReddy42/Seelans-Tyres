@@ -20,6 +20,8 @@ public static class WebApplicationBuilderConfiguration
         this WebApplicationBuilder builder,
         CommonBuilderConfigurationModel commonBuilderConfigurationModel)
     {
+        Console.Title = commonBuilderConfigurationModel.DefaultDescriptiveApplicationName;
+        
         var azureAppConfigurationOptions =
             builder.Configuration.GetSection("AzureAppConfig")
                 .Get<ExternalServiceOptions>()
