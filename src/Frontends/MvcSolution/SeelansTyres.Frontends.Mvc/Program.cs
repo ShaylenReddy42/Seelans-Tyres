@@ -59,8 +59,16 @@ builder.Services.AddHttpClient<ITyresServiceClient, TyresServiceClient>(client =
     .AddUserAccessTokenHandler()
     .AddCommonResiliencyPolicies<TyresServiceClient>(builder.Services);
 
+builder.Services.AddHttpClient<IClientCredentialsAuthenticationClient, ClientCredentialsAuthenticationClient>(client =>
+{
+    client.DefaultRequestHeaders.Accept.Add(new(Application.Json));
+})
+    .AddCommonResiliencyPolicies<ClientCredentialsAuthenticationClient>(builder.Services);
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+builder.Services.AddTransient<Stopwatch>();
 
 var redisOptions =
     builder.Configuration.GetSection("Redis")

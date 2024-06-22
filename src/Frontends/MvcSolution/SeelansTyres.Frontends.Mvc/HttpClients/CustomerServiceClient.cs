@@ -1,4 +1,4 @@
-﻿using IdentityModel.Client;                    // SetBearerToken(), GetDiscoveryDocumentAsync(), RequestClientCredentialsTokenAsync(), ClientCredentialsTokenRequest
+﻿using IdentityModel.Client;                    // SetBearerToken()
 using SeelansTyres.Frontends.Mvc.Extensions;   // EncryptAsync()
 using SeelansTyres.Frontends.Mvc.Services;     // ICacheService
 using SeelansTyres.Libraries.Shared.Constants; // LoggerConstants
@@ -10,10 +10,9 @@ public class CustomerServiceClient(
     IHttpContextAccessor httpContextAccessor,
     IConfiguration configuration,
     ICacheService cacheService,
-    ILogger<CustomerServiceClient> logger) : ICustomerServiceClient
+    ILogger<CustomerServiceClient> logger,
+    IClientCredentialsAuthenticationClient clientCredentialsAuthenticationClient) : ICustomerServiceClient
 {
-    private readonly Stopwatch stopwatch = new();
-
     public async Task<(CustomerModel?, bool, List<string>)> CreateAsync(RegisterModel registerModel)
     {
         logger.LogInformation("Service => Attempting to create a new customer account");
@@ -24,7 +23,11 @@ public class CustomerServiceClient(
 
         try
         {
-            client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.createaccount"));
+            var accessToken = (await clientCredentialsAuthenticationClient.RetrieveAccessTokenAsync("CustomerService.createaccount"))
+                           ?? throw new InvalidOperationException("IdentityServer is unavailable for retrieving an access token using client credentials flow");
+            
+            client.SetBearerToken(accessToken);
+
             var response = await client.PostAsync("api/customers", JsonContent.Create(await registerModel.EncryptAsync(client, configuration, logger)));
 
             if (response.IsSuccessStatusCode)
@@ -119,7 +122,17 @@ public class CustomerServiceClient(
             "Service => Attempting to retrieve customer by email {CustomerEmail}",
             LoggerConstants.Redacted);
 
-        client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.retrievesinglebyemail"));
+        var accessToken = await clientCredentialsAuthenticationClient.RetrieveAccessTokenAsync("CustomerService.retrievesinglebyemail");
+
+        if (accessToken is null)
+        {
+            logger.LogWarning("Couldn't retrieve an access token, aborting");
+            
+            return null;
+        }
+
+        client.SetBearerToken(accessToken);
+
         var response = await client.GetAsync($"api/customers?email={email}");
 
         var customer = response.IsSuccessStatusCode switch
@@ -189,7 +202,16 @@ public class CustomerServiceClient(
             "Service => Attempting a reset password operation for customer {CustomerId}",
             customerId);
 
-        client.SetBearerToken(await GetClientAccessTokenAsync("CustomerService.resetpassword"));
+        var accessToken = await clientCredentialsAuthenticationClient.RetrieveAccessTokenAsync("CustomerService.resetpassword");
+
+        if (accessToken is null)
+        {
+            logger.LogWarning("Couldn't retrieve an access token, aborting");
+
+            return;
+        }
+
+        client.SetBearerToken(accessToken);
 
         var passwordModel = new PasswordModel { Password = password };
 
@@ -201,61 +223,11 @@ public class CustomerServiceClient(
                 "{Announcement}: Reset password operation for customer {CustomerId} was unsuccessful",
                 LoggerConstants.FailedAnnouncement, customerId);
         }
-
-        logger.LogInformation(
-                "{Announcement}: Reset password operation for customer {CustomerId} completed successfully",
-                LoggerConstants.SucceededAnnouncement, customerId);
-    }
-
-    /// <summary>
-    /// Uses the client credential flow to get an access token from IdentityServer4 using specific scopes
-    /// </summary>
-    /// <param name="additionalScopes">Space-separated api scopes to request in order to access downstream apis</param>
-    /// <returns>A valid access token meant to be used with 'Bearer' authentication</returns>
-    private async Task<string> GetClientAccessTokenAsync(string additionalScopes)
-    {
-        logger.LogInformation(
-            "Attempting to retrieve an access token from IdentityServer4 using the client credentials flow with {AdditionalScopes} as additional scope(s)",
-            additionalScopes);
-
-        stopwatch.Start();
-
-        var discoveryDocument = await client.GetDiscoveryDocumentAsync(configuration["IdentityServer"]);
-
-        if (discoveryDocument.IsError)
-        {
-            stopwatch.Stop();
-
-            logger.LogError(
-                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve the discovery document from IdentityServer4 was unsuccessful",
-                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
-        }
-
-        var tokenResponse =
-            await client.RequestClientCredentialsTokenAsync(
-                new ClientCredentialsTokenRequest
-                {
-                    ClientId = configuration["ClientCredentials:ClientId"]!,
-                    ClientSecret = configuration["ClientCredentials:ClientSecret"],
-                    Address = discoveryDocument.TokenEndpoint,
-                    Scope = $"SeelansTyresWebBff.fullaccess {additionalScopes}"
-                });
-
-        stopwatch.Start();
-
-        if (tokenResponse.IsError)
-        {
-            logger.LogError(
-                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve an access token was unsuccessful",
-                LoggerConstants.FailedAnnouncement, stopwatch.ElapsedMilliseconds);
-        }
         else
         {
             logger.LogInformation(
-                "{Announcement} ({StopwatchElapsedTime}ms): Attempt to retrieve an access token completed successfully",
-                LoggerConstants.SucceededAnnouncement, stopwatch.ElapsedMilliseconds);
+                "{Announcement}: Reset password operation for customer {CustomerId} completed successfully",
+                LoggerConstants.SucceededAnnouncement, customerId);
         }
-
-        return tokenResponse.AccessToken!;
     }
 }
