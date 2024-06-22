@@ -135,18 +135,21 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CreateAccountPolicy", policy =>
     {
         policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "SeelansTyresWebBff.fullaccess");
         policy.RequireClaim("scope", "CustomerService.createaccount");
     });
 
     options.AddPolicy("RetrieveSingleByEmailPolicy", policy =>
     {
         policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "SeelansTyresWebBff.fullaccess");
         policy.RequireClaim("scope", "CustomerService.retrievesinglebyemail");
     });
 
     options.AddPolicy("ResetPasswordPolicy", policy =>
     {
         policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "SeelansTyresWebBff.fullaccess");
         policy.RequireClaim("scope", "CustomerService.resetpassword");
     });
 });
