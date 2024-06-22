@@ -5,10 +5,10 @@ using static System.Net.Mime.MediaTypeNames;           // Application
 using HealthChecks.UI.Client;                          // UIResponseWriter
 using SeelansTyres.Libraries.Shared.Extensions;        // AddCommonStartupDelay
 using SeelansTyres.Libraries.Shared.Abstractions;      // All common methods
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using SeelansTyres.Gateways.WebBff.Extensions;
-using SeelansTyres.Gateways.WebBff.Services;
-using SeelansTyres.Gateways.WebBff.DelegatingHandlers;   // HealthCheckOptions
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;   // HealthCheckOptions
+using SeelansTyres.Gateways.WebBff.Extensions;         // AddDownstreamChecks()
+using SeelansTyres.Gateways.WebBff.Services;           // ITokenExchangeService, TokenExchangeService
+using SeelansTyres.Gateways.WebBff.DelegatingHandlers; // HealthCheckOptions
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(authenticationScheme, configure =>
     {
         configure.Authority = builder.Configuration["IdentityServer"];
-        configure.Audience = "SeelansTyresWebBff";
+        configure.Audience = "WebBff";
         configure.TokenValidationParameters.ValidTypes = [ "at+jwt" ];
         configure.RequireHttpsMetadata = false;
     });

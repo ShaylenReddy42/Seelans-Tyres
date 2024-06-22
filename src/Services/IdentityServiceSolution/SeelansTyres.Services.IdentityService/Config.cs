@@ -20,7 +20,7 @@ public static class Config
 
     public static List<ApiScope> ApiScopes => new()
     {
-        new ApiScope("SeelansTyresWebBff.fullaccess"),
+        new ApiScope("WebBff.fullaccess"),
 
         new ApiScope("AddressService.fullaccess"),
 
@@ -37,11 +37,11 @@ public static class Config
     public static List<ApiResource> ApiResources => new()
     {
         new ApiResource(
-            name: "SeelansTyresWebBff", 
-            displayName: "Seelan's Tyres Mvc Bff", 
+            name: "WebBff", 
+            displayName: "Web Bff", 
             userClaims: new[] { ClaimTypes.Role })
         {
-            Scopes = { "SeelansTyresWebBff.fullaccess" }
+            Scopes = { "WebBff.fullaccess" }
         },
         new ApiResource(
             name: "AddressService", 
@@ -94,7 +94,7 @@ public static class Config
             AllowedScopes = 
             { 
                 "openid", "profile", "role",
-                "SeelansTyresWebBff.fullaccess",
+                "WebBff.fullaccess",
                 "CustomerService.createaccount",
                 "CustomerService.retrievesinglebyemail",
                 "CustomerService.resetpassword"
@@ -103,7 +103,7 @@ public static class Config
         new Client
         {
             ClientId = Configuration!["Clients:SeelansTyresWebBffClient:ClientId"],
-            ClientName = "Seelan's Tyres Mvc Bff to Downstream",
+            ClientName = "Seelan's Tyres Web Bff to Downstream",
             ClientSecrets = { new Secret(Configuration!["Clients:SeelansTyresWebBffClient:ClientSecret"].Sha256()) },
             AllowedGrantTypes = { "urn:ietf:params:oauth:grant-type:token-exchange" },
             AllowedScopes =

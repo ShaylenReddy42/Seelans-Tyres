@@ -35,7 +35,7 @@ public class ClientCredentialsAuthenticationClient(
                     ClientId = configuration["ClientCredentials:ClientId"]!,
                     ClientSecret = configuration["ClientCredentials:ClientSecret"],
                     Address = discoveryDocument.TokenEndpoint,
-                    Scope = $"SeelansTyresWebBff.fullaccess {additionalScopes}"
+                    Scope = $"WebBff.fullaccess {additionalScopes}"
                 });
 
         stopwatch.Start();

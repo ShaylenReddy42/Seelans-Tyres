@@ -141,7 +141,7 @@ builder.Services.AddAuthentication(options =>
         
         options.GetClaimsFromUserInfoEndpoint = true;
 
-        options.Scope.Add("SeelansTyresWebBff.fullaccess");
+        options.Scope.Add("WebBff.fullaccess");
         options.Scope.Add("offline_access");
         options.Scope.Add("role");
 
