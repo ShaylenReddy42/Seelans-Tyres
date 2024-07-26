@@ -12,7 +12,7 @@ public class TyresServiceClient(
 
         try
         {
-            var response = await client.GetAsync("api/brands");
+            using var response = await client.GetAsync("api/brands");
             response.EnsureSuccessStatusCode();
 
             var brands = await response.Content.ReadFromJsonAsync<IEnumerable<BrandModel>>();
@@ -40,7 +40,7 @@ public class TyresServiceClient(
 
         try
         {
-            var response = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
+            using var response = await client.PostAsync("api/tyres", JsonContent.Create(tyre));
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
@@ -70,7 +70,7 @@ public class TyresServiceClient(
 
         try
         {
-            var response = await client.GetAsync($"api/tyres?availableOnly={availableOnly}");
+            using var response = await client.GetAsync($"api/tyres?availableOnly={availableOnly}");
             response.EnsureSuccessStatusCode();
 
             var tyres = await response.Content.ReadFromJsonAsync<IEnumerable<TyreModel>>();
@@ -100,7 +100,7 @@ public class TyresServiceClient(
 
         try
         {
-            var response = await client.GetAsync($"api/tyres/{tyreId}");
+            using var response = await client.GetAsync($"api/tyres/{tyreId}");
             response.EnsureSuccessStatusCode();
 
             var tyre = await response.Content.ReadFromJsonAsync<TyreModel>();
@@ -130,7 +130,7 @@ public class TyresServiceClient(
 
         try
         {
-            var response = await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
+            using var response = await client.PutAsync($"api/tyres/{tyreId}", JsonContent.Create(tyre));
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
@@ -158,7 +158,7 @@ public class TyresServiceClient(
 
         try
         {
-            var response = await client.DeleteAsync($"api/tyres/{tyreId}");
+            using var response = await client.DeleteAsync($"api/tyres/{tyreId}");
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(

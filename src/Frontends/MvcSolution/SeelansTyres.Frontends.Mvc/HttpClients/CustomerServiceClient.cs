@@ -28,7 +28,7 @@ public class CustomerServiceClient(
             
             client.SetBearerToken(accessToken);
 
-            var response = await client.PostAsync("api/customers", JsonContent.Create(await registerModel.EncryptAsync(client, configuration, logger)));
+            using var response = await client.PostAsync("api/customers", JsonContent.Create(await registerModel.EncryptAsync(client, configuration, logger)));
 
             if (response.IsSuccessStatusCode)
             {
@@ -87,7 +87,7 @@ public class CustomerServiceClient(
                 "Customer {CustomerId} is not in the cache. Retrieving from downstream and adding it",
                 customerId);
 
-            var response = await client.GetAsync($"api/customers/{customerId}");
+            using var response = await client.GetAsync($"api/customers/{customerId}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -133,7 +133,7 @@ public class CustomerServiceClient(
 
         client.SetBearerToken(accessToken);
 
-        var response = await client.GetAsync($"api/customers?email={email}");
+        using var response = await client.GetAsync($"api/customers?email={email}");
 
         var customer = response.IsSuccessStatusCode switch
         {
@@ -152,7 +152,7 @@ public class CustomerServiceClient(
             "Service => Attempting to update account for customer {CustomerId}",
             customerId);
 
-        var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(await updateAccountModel.EncryptAsync(client, configuration, logger)));
+        using var response = await client.PutAsync($"api/customers/{customerId}", JsonContent.Create(await updateAccountModel.EncryptAsync(client, configuration, logger)));
 
         // Upon success, remove the model from the cache because it's outdated
         if (response.IsSuccessStatusCode)
@@ -181,7 +181,7 @@ public class CustomerServiceClient(
 
         var passwordModel = new PasswordModel { Password = password };
 
-        var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(await passwordModel.EncryptAsync(client, configuration, logger)));
+        using var response = await client.PostAsync($"api/customers/{customerId}/verifypassword", JsonContent.Create(await passwordModel.EncryptAsync(client, configuration, logger)));
 
         if (response.IsSuccessStatusCode)
         {
@@ -215,7 +215,7 @@ public class CustomerServiceClient(
 
         var passwordModel = new PasswordModel { Password = password };
 
-        var response = await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(await passwordModel.EncryptAsync(client, configuration, logger)));
+        using var response = await client.PutAsync($"api/customers/{customerId}/resetpassword", JsonContent.Create(await passwordModel.EncryptAsync(client, configuration, logger)));
 
         if (!response.IsSuccessStatusCode)
         {

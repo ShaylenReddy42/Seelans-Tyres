@@ -14,7 +14,7 @@ public class AddressServiceClient(
 
         try
         {
-            var response = await client.PostAsync($"api/customers/{customerId}/addresses", JsonContent.Create(address));
+            using var response = await client.PostAsync($"api/customers/{customerId}/addresses", JsonContent.Create(address));
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
@@ -42,7 +42,7 @@ public class AddressServiceClient(
 
         try
         {
-            var response = await client.GetAsync($"api/customers/{customerId}/addresses");
+            using var response = await client.GetAsync($"api/customers/{customerId}/addresses");
             response.EnsureSuccessStatusCode();
 
             var addresses = await response.Content.ReadFromJsonAsync<IEnumerable<AddressModel>>();
@@ -72,7 +72,7 @@ public class AddressServiceClient(
 
         try
         {
-            var response = await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", null);
+            using var response = await client.PutAsync($"api/customers/{customerId}/addresses/{addressId}?markAsPreferred=true", null);
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
@@ -100,7 +100,7 @@ public class AddressServiceClient(
 
         try
         {
-            var response = await client.DeleteAsync($"api/customers/{customerId}/addresses/{addressId}");
+            using var response = await client.DeleteAsync($"api/customers/{customerId}/addresses/{addressId}");
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(

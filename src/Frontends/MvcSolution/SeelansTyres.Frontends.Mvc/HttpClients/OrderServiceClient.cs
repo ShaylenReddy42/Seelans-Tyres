@@ -12,7 +12,7 @@ public class OrderServiceClient(
 
         try
         {
-            var response = await client.PostAsync("api/orders", JsonContent.Create(order));
+            using var response = await client.PostAsync("api/orders", JsonContent.Create(order));
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
@@ -87,7 +87,7 @@ public class OrderServiceClient(
 
         try
         {
-            var response = await client.GetAsync($"api/orders/{orderId}");
+            using var response = await client.GetAsync($"api/orders/{orderId}");
             response.EnsureSuccessStatusCode();
 
             var order = await response.Content.ReadFromJsonAsync<OrderModel>();
@@ -117,7 +117,7 @@ public class OrderServiceClient(
 
         try
         {
-            var response = await client.PutAsync($"api/orders/{orderId}?delivered=true", null);
+            using var response = await client.PutAsync($"api/orders/{orderId}?delivered=true", null);
             response.EnsureSuccessStatusCode();
 
             logger.LogInformation(
