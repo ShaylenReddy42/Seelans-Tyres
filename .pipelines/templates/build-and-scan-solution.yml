@@ -49,7 +49,7 @@ steps:
     inputs:
       SonarCloud: 'SonarCloud'
       organization: 'shaylenreddy42'
-      scannerMode: 'MSBuild'
+      scannerMode: 'dotnet'
       projectKey: 'ShaylenReddy42_Seelans-Tyres'
       projectName: 'Seelans-Tyres'
       extraProperties: |
