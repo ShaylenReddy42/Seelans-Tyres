@@ -44,7 +44,7 @@ steps:
       arguments: restore
       workingDirectory: '${{ parameters.workDir }}'
 
-  - task: SonarCloudPrepare@2
+  - task: SonarCloudPrepare@3
     displayName: 'Prepare SonarCloud for Analysis'
     inputs:
       SonarCloud: 'SonarCloud'
@@ -63,10 +63,10 @@ steps:
       arguments: -c ${{ parameters.buildConfiguration }}
       projects: '${{ parameters.workDir }}/src/SeelansTyres.sln'
 
-  - task: SonarCloudAnalyze@2
+  - task: SonarCloudAnalyze@3
     displayName: 'Run SonarCloud Analysis'
 
-  - task: SonarCloudPublish@2
+  - task: SonarCloudPublish@3
     displayName: 'Publish SonarCloud Quality Gate Result'
     inputs:
       pollingTimeoutSec: '300'
