@@ -70,8 +70,8 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
                                 tier: 'Basic'
                                 name: 'B1'
                               } : {
-                                tier: 'Standard'
-                                name: 'S1'
+                                tier: 'Premium0V3'
+                                name: 'P0V3'
                               }
   properties: {
     reserved: true
@@ -140,7 +140,7 @@ resource healthChecksUI 'Microsoft.Web/sites@2023-12-01' = {
         ]
       }
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
     }
   }
   tags: {
@@ -196,7 +196,7 @@ resource addressWorker 'Microsoft.Web/sites@2023-12-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
     }
   }
   tags: {
@@ -252,7 +252,7 @@ resource orderWorker 'Microsoft.Web/sites@2023-12-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
     }
   }
   tags: {

@@ -17,6 +17,7 @@ stages:
               solutionFolder: Services
               solutionSubfolder: IdentityServiceSolution
               project: SeelansTyres.Services.IdentityService
+              selfContained: --self-contained
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

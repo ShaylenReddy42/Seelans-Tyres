@@ -1,9 +1,9 @@
 @ECHO off
 
-docker pull elasticsearch:7.17.22
+docker pull elasticsearch:7.17.25
 @ECHO.
 
-docker pull kibana:7.17.22
+docker pull kibana:7.17.25
 @ECHO.
 
 docker pull nginx:1-bullseye
@@ -21,10 +21,10 @@ docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 docker pull mcr.microsoft.com/dotnet/sdk:6.0
 @ECHO.
 
-docker pull mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+docker pull mcr.microsoft.com/dotnet/aspnet:9.0-alpine
 @ECHO.
 
-docker pull mcr.microsoft.com/dotnet/sdk:8.0
+docker pull mcr.microsoft.com/dotnet/sdk:9.0
 @ECHO.
 
 docker pull mcr.microsoft.com/mssql/server:2022-latest

@@ -23,13 +23,20 @@ parameters:
       - win-x64
       - linux-x64
 
+  - name: selfContained
+    type: string
+    default: --no-self-contained
+    values:
+      - --self-contained
+      - --no-self-contained
+
   - name: workDir
     type: string
     default: $(Build.SourcesDirectory)
 
 steps:
   - ${{ if eq(parameters.uploadZip, true) }}:
-    - script: dotnet publish -c ${{ parameters.buildConfiguration }} -r ${{ parameters.runtimeIdentifier }} --no-self-contained
+    - script: dotnet publish -c ${{ parameters.buildConfiguration }} -r ${{ parameters.runtimeIdentifier }} ${{ parameters.selfContained }}
       displayName: 'Publish ${{ parameters.project }}'
       workingDirectory: '${{ parameters.workDir }}\src\${{ parameters.solutionFolder }}\${{ parameters.solutionSubfolder }}\${{ parameters.project }}'
       

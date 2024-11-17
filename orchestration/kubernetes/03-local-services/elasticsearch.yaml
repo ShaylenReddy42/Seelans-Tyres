@@ -17,7 +17,7 @@ spec:
         app: elasticsearch
     spec:
       containers:
-        - image: elasticsearch:7.17.22
+        - image: elasticsearch:7.17.25
           name: elasticsearch
           imagePullPolicy: IfNotPresent
           securityContext:

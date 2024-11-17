@@ -113,8 +113,8 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   location: location
   kind: 'linux'
   sku: environment == 'dev' ? {
-                                tier: 'Standard'
-                                name: 'S2'
+                                tier: 'PremiumV3'
+                                name: 'P1V3'
                               } : {
                                 tier: 'PremiumV3'
                                 name: 'P2V3'
@@ -199,7 +199,7 @@ resource mvc 'Microsoft.Web/sites@2023-12-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
     }
   }
   tags: {
@@ -303,7 +303,7 @@ resource webBff 'Microsoft.Web/sites@2023-12-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|8.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
     }
   }
   tags: {
@@ -383,7 +383,7 @@ resource identityService 'Microsoft.Web/sites@2023-12-01' = {
       }
       healthCheckPath: '${healthCheckEndpoint}/liveness'
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNETCORE|6.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
     }
   }
   tags: {
