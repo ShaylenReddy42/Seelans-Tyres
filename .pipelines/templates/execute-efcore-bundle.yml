@@ -12,13 +12,13 @@ steps:
       inlineScript: |
         $sqlServerFqdn = $(az sql server list --query "[?tags.intendedResourceName == 'sql-seelanstyres-$(environment)'] | [0].fullyQualifiedDomainName" -o tsv)
 
-        $Env:LoggingSinks__Elasticsearch__Enabled = false
+        $Env:LoggingSinks__Elasticsearch__Enabled = "false"
         $Env:LoggingSinks__Elasticsearch__Url = "http://localhost:9200"
 
-        $Env:AzureAppConfig__Enabled = false
+        $Env:AzureAppConfig__Enabled = "false"
         $Env:AzureAppConfig__ConnectionString = "..."
 
-        $Env:AppInsights__Enabled = false
+        $Env:AppInsights__Enabled = "false"
         $Env:AppInsights__ConnectionString = "..."
         
         $Env:Database__ConnectionString = "Server=tcp:" + $sqlServerFqdn + ",1433;Database=${{ parameters.bundleName }};User ID=$(sqlServerAdminLogin);Password=$(sqlServerAdminPassword);MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
