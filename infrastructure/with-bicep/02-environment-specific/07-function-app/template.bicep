@@ -108,7 +108,7 @@ resource systemDegradedFunctionApp 'Microsoft.Web/sites@2023-12-01' = {
         }
       ]
       use32BitWorkerProcess: false
-      linuxFxVersion: 'DOTNET-ISOLATED|9.0'
+      linuxFxVersion: 'DOTNET-ISOLATED|9'
     }
   }
   tags: {
