@@ -1,10 +1,10 @@
-using Microsoft.Extensions.Logging;          // ILogger, ILoggerFactory
-using Azure.Data.AppConfiguration;           // ConfigurationClient, ConfigurationSetting
-using Azure.Identity;                        // DefaultAzureCredential
-using static System.Environment;             // GetEnvironmentVariable()
-using Microsoft.Azure.Functions.Worker;      // Function, HttpTrigger, AuthorizationLevel
-using Microsoft.Azure.Functions.Worker.Http; // HttpResponseData, HttpRequestData
-using System.Net;                            // HttpStatusCode
+using Microsoft.Extensions.Logging;     // ILogger, ILoggerFactory
+using Azure.Data.AppConfiguration;      // ConfigurationClient, ConfigurationSetting
+using Azure.Identity;                   // DefaultAzureCredential
+using static System.Environment;        // GetEnvironmentVariable()
+using Microsoft.Azure.Functions.Worker; // Function, HttpTrigger, AuthorizationLevel
+using Microsoft.AspNetCore.Http;        // HttpRequest
+using Microsoft.AspNetCore.Mvc;         // IActionResult, OkObjectResult
 
 namespace SeelansTyres.FunctionApps.SystemDegradedToggler;
 
@@ -13,7 +13,7 @@ public class TurnItOn(ILoggerFactory loggerFactory)
     private readonly ILogger logger = loggerFactory.CreateLogger<TurnItOn>();
 
     [Function("TurnItOn")]
-    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Admin, "post")] HttpRequestData request)
+    public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Admin, "post")] HttpRequest request)
     {
         var appConfigurationUri = new Uri($"https://{GetEnvironmentVariable("AzureAppConfigName")}.azconfig.io");
 
@@ -31,8 +31,6 @@ public class TurnItOn(ILoggerFactory loggerFactory)
 
         await configurationClient.SetConfigurationSettingAsync(systemDegradedConfigurationSetting);
 
-        var response = request.CreateResponse(HttpStatusCode.OK);
-
-        return response;
+        return new OkObjectResult(null);
     }
 }

@@ -19,6 +19,11 @@ steps:
       version: 6.x
 
   - task: UseDotNet@2
+    displayName: 'Use .NET sdk 8.x'
+    inputs:
+      version: 8.x
+
+  - task: UseDotNet@2
     displayName: 'Use .NET sdk 9.x'
     inputs:
       version: 9.x

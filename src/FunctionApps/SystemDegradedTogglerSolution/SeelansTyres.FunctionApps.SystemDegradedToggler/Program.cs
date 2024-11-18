@@ -1,7 +1,14 @@
-using Microsoft.Extensions.Hosting; // HostBuilder
+using Microsoft.Azure.Functions.Worker;         // ConfigureFunctionsApplicationInsights
+using Microsoft.Extensions.DependencyInjection; // AddApplicationInsightsTelemetryWorkerService
+using Microsoft.Extensions.Hosting;             // HostBuilder
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWebApplication()
+    .ConfigureServices(services =>
+    {
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.ConfigureFunctionsApplicationInsights();
+    })
     .Build();
 
 await host.RunAsync();
