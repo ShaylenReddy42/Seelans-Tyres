@@ -164,6 +164,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_Infrastructure
         steps:
           - checkout: none
 
@@ -178,6 +179,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_SystemDegradedTogglerSolution
         steps:
           - checkout: none
 
@@ -202,6 +204,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_DatabaseSchema
         steps:
           - checkout: none
 
@@ -219,6 +222,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: TyresServiceSolution
         steps:
           - checkout: none
 
@@ -246,6 +250,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_OrderServiceSolution
         steps:
           - checkout: none
 
@@ -263,6 +268,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_IdentityServiceSolution
         steps:
           - checkout: none
 
@@ -290,6 +296,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_AddressServiceSolution
         steps:
           - checkout: none
 
@@ -307,6 +314,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_WebBffSolution
         steps:
           - checkout: none
 
@@ -324,6 +332,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
+        dependsOn: Deploy_MvcSolution
         steps:
           - checkout: none
 
