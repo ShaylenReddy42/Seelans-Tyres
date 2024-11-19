@@ -121,17 +121,70 @@ stages:
     variables:
       - group: seelanstyres-dev
     jobs:
-      - job: Deploy_Solution_Dev
+      - job: Deploy_Infrastructure
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
         steps:
           - checkout: none
           
-          # - ${{ if eq(variables.deploySolution, 'true') }}:
-          - template: .pipelines/templates/download-artifacts-and-deploy-infrastructure.yml
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/infrastructure/**'
+            displayName: 'Download Infrastructure'
+          
+          - task: AzureCLI@2
+            displayName: 'Deploy Infrastructure'
+            inputs:
+              azureSubscription: 'Azure-Manual-SP'
+              scriptType: ps
+              scriptLocation: inlineScript
+              inlineScript: |
+                $clientIP = $(Invoke-RestMethod https://ipinfo.io/json?token=$(ipInfoAccessToken)).ip
+              
+                az deployment sub create `
+                  --template-file .\02-environment-specific\main.bicep `
+                  --location southafricanorth `
+                  --parameters `
+                    environment=$(environment) `
+                    adminCredentialsEmail=$(adminCredentialsEmail) `
+                    adminCredentialsPassword=$(adminCredentialsPassword) `
+                    clientIPOfAgent=$clientIP `
+                    emailAddressOfResponder=$(emailAddress) `
+                    emailCredentialsEmail=$(emailCredentialsEmail) `
+                    emailCredentialsPassword=$(emailCredentialsPassword) `
+                    healthCheckEndpoint=$(healthCheckEndpoint) `
+                    mvcClientSecret=$(mvcClientSecret) `
+                    webBffClientSecret=$(webBffClientSecret) `
+                    sqlServerAdminLogin=$(sqlServerAdminLogin) `
+                    sqlServerAdminPassword=$(sqlServerAdminPassword)
+              workingDirectory: '$(Pipeline.Workspace)/drop/infrastructure/with-bicep'
 
+      - job: Deploy_SystemDegradedTogglerSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.FunctionApps.SystemDegradedToggler.zip'
+            displayName: 'Download the System-Degraded Toggler Zip'
+          
           - template: .pipelines/templates/deploy-system-degraded-toggler.yml
+
+      - job: Deploy_DatabaseSchema
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/.exe'
+            displayName: 'Download EF Core Bundles'
 
           - template: .pipelines/templates/execute-efcore-bundle.yml
             parameters:
@@ -145,11 +198,40 @@ stages:
             parameters:
               bundleName: SeelansTyresTyresDb
 
+      - job: Deploy_TyresServiceSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Services.TyresService.zip'
+            displayName: 'Download the Tyres Service Zip'
+
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
               intendedResourceName: app-seelanstyres-tyresservice-$(environment)
               project: SeelansTyres.Services.TyresService
 
+      - job: Deploy_OrderServiceSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Workers.OrderWorker.zip'
+            displayName: 'Download the Order Worker Zip'
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Services.OrderService.zip'
+            displayName: 'Download the Order Service Zip'
+          
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
               intendedResourceName: app-seelanstyres-orderworker-$(environment)
@@ -160,10 +242,39 @@ stages:
               intendedResourceName: app-seelanstyres-orderservice-$(environment)
               project: SeelansTyres.Services.OrderService
 
+      - job: Deploy_IdentityServiceSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Services.IdentityService.zip'
+            displayName: 'Download the Identity Service Zip'
+
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
               intendedResourceName: app-seelanstyres-identityservice-$(environment)
               project: SeelansTyres.Services.IdentityService
+
+      - job: Deploy_AddressServiceSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Workers.AddressWorker.zip'
+            displayName: 'Download the Address Worker Zip'
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Services.AddressService.zip'
+            displayName: 'Download the Address Service Zip'
 
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
@@ -175,15 +286,51 @@ stages:
               intendedResourceName: app-seelanstyres-addressservice-$(environment)
               project: SeelansTyres.Services.AddressService
 
+      - job: Deploy_WebBffSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Gateways.WebBff.zip'
+            displayName: 'Download the WebBff Gateway Zip'
+          
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
               intendedResourceName: app-seelanstyres-webbff-$(environment)
               project: SeelansTyres.Gateways.WebBff
 
+      - job: Deploy_MvcSolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Frontends.Mvc.zip'
+            displayName: 'Download the Mvc Frontend Zip'
+          
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
               intendedResourceName: app-seelanstyres-mvc-$(environment)
               project: SeelansTyres.Frontends.Mvc
+
+      - job: Deploy_HealthChecksUISolution
+        pool: Default
+        cancelTimeoutInMinutes: 2
+        timeoutInMinutes: 120
+        steps:
+          - checkout: none
+
+          - download: 'current'
+            artifact: 'drop'
+            patterns: '**/SeelansTyres.Frontends.HealthChecksUI.zip'
+            displayName: 'Download the HealthChecksUI Frontend Zip'
 
           - template: .pipelines/templates/deploy-webapp.yml
             parameters:
