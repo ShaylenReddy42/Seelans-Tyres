@@ -222,7 +222,7 @@ stages:
         pool: Default
         cancelTimeoutInMinutes: 2
         timeoutInMinutes: 120
-        dependsOn: TyresServiceSolution
+        dependsOn: Deploy_TyresServiceSolution
         steps:
           - checkout: none
 
