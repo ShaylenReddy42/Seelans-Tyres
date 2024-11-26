@@ -4,7 +4,7 @@ using Azure.Identity;                   // DefaultAzureCredential
 using static System.Environment;        // GetEnvironmentVariable()
 using Microsoft.Azure.Functions.Worker; // Function, HttpTrigger, AuthorizationLevel
 using Microsoft.AspNetCore.Http;        // HttpRequest
-using Microsoft.AspNetCore.Mvc;         // IActionResult, OkObjectResult
+using Microsoft.AspNetCore.Mvc;         // IActionResult, NoContentResult
 
 namespace SeelansTyres.FunctionApps.SystemDegradedToggler;
 
@@ -31,6 +31,6 @@ public class TurnItOn(ILoggerFactory loggerFactory)
 
         await configurationClient.SetConfigurationSettingAsync(systemDegradedConfigurationSetting);
 
-        return new OkObjectResult(null);
+        return new NoContentResult();
     }
 }

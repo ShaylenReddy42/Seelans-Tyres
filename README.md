@@ -18,7 +18,7 @@
 
 This project is a rewrite of my [original college project](https://bitbucket.org/Shaylen/seelans-tyres/src/master/) which - compared to this - was very poorly written and insecure
 
-Originally, it was written using PHP. This is written using C# and .NET 6, 8 [for the Azure Function App] and 9
+Originally, it was written using PHP. This is written using C# on .NET 6 and 9
 
 It's also rewritten to utilize my Azure and DevOps skills since I had earned Microsoft's Azure Certifications and needed a way to prove my skills with a project
 
@@ -280,8 +280,8 @@ The solution now comprises of 10 runnable projects with 18 projects in total
 
 ## Required local setup to build and run
 
-* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.12.0 or later
-* Latest .NET SDK [6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0), [8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), and [9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 17.12.1 or later
+* Latest .NET SDK [6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and [9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 * [CMake](https://cmake.org/download/) 3.29.0 or later
 * An Instance of [SQL Server 2022 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) [Default, not named]
 * [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16#download-ssms)

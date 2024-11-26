@@ -17,7 +17,6 @@ stages:
               solutionFolder: FunctionApps
               solutionSubfolder: SystemDegradedTogglerSolution
               project: SeelansTyres.FunctionApps.SystemDegradedToggler
-              selfContained: --self-contained
 
           - template: templates/final-copy-and-publish-of-artifacts.yml
 

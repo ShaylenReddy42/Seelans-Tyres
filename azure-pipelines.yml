@@ -51,7 +51,6 @@ stages:
               solutionFolder: FunctionApps
               solutionSubfolder: SystemDegradedTogglerSolution
               project: SeelansTyres.FunctionApps.SystemDegradedToggler
-              selfContained: --self-contained
 
           - template: .pipelines/templates/publish-project.yml
             parameters:
