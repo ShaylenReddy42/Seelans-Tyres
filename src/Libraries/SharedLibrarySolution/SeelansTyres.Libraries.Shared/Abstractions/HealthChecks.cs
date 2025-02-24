@@ -74,10 +74,10 @@ public static class HealthChecks
     /// <param name="healthChecks">The health checks builder</param>
     /// <param name="identityServerUrl">The url of the identity server</param>
     /// <returns>The health checks builder with the added health check</returns>
-    public static IHealthChecksBuilder AddCommonIdentityServerCheck(this IHealthChecksBuilder healthChecks, string identityServerUrl)
+    public static IHealthChecksBuilder AddCommonOidcServerCheck(this IHealthChecksBuilder healthChecks, string identityServerUrl)
     {
-        healthChecks.AddIdentityServer(
-            idSvrUri: new(identityServerUrl),
+        healthChecks.AddOpenIdConnectServer(
+            oidcSvrUri: new(identityServerUrl),
             name: "Identity Server",
             failureStatus: HealthStatus.Unhealthy);
 

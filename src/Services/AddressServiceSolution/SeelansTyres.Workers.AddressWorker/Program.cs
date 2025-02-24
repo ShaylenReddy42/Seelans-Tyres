@@ -40,7 +40,7 @@ builder.Services.AddHttpClient<ITokenValidationService, TokenValidationService>(
 
 builder.Services.AddHealthChecks()
     .AddCommonDbContextCheck<AddressDbContext>()
-    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!);
+    .AddCommonOidcServerCheck(builder.Configuration["IdentityServer"]!);
 
 if (builder.Environment.IsDevelopment())
 {

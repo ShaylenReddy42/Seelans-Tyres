@@ -149,7 +149,7 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddHealthChecks()
-    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
+    .AddCommonOidcServerCheck(builder.Configuration["IdentityServer"]!)
     .AddUrlGroup(
         uri: new($"{builder.Configuration["WebBffUrl"]}{builder.Configuration["LivenessCheckEndpoint"]}"),
         name: "Web Backend-For-Frontend",

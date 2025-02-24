@@ -49,7 +49,7 @@ builder.Services.AddOcelot()
     .AddDelegatingHandler<TyresServiceDelegatingHandler>();
 
 builder.Services.AddHealthChecks()
-    .AddCommonIdentityServerCheck(builder.Configuration["IdentityServer"]!)
+    .AddCommonOidcServerCheck(builder.Configuration["IdentityServer"]!)
     .AddDownstreamChecks(builder.Configuration);
 
 var app = builder.Build();

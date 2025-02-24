@@ -317,7 +317,7 @@ services:
   # Other Services ######################################################################################
 
   elasticsearch:
-    image: elasticsearch:7.17.25
+    image: elasticsearch:7.17.27
     container_name: elasticsearch
     ports:
       - 9200:9200
@@ -336,7 +336,7 @@ services:
       - seelanstyres-network
 
   kibana:
-    image: kibana:7.17.25
+    image: kibana:7.17.27
     container_name: kibana
     ports:
       - 5601:5601

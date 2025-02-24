@@ -1,9 +1,9 @@
 @ECHO off
 
-docker pull elasticsearch:7.17.25
+docker pull elasticsearch:7.17.27
 @ECHO.
 
-docker pull kibana:7.17.25
+docker pull kibana:7.17.27
 @ECHO.
 
 docker pull nginx:1-bullseye
