@@ -24,11 +24,11 @@ WORKDIR "/src/Services/OrderServiceSolution/SeelansTyres.Workers.OrderWorker"
 RUN dotnet build "SeelansTyres.Workers.OrderWorker.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SeelansTyres.Workers.OrderWorker.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
+RUN dotnet publish "SeelansTyres.Workers.OrderWorker.csproj" -c Release -r linux-x64 --no-self-contained -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 USER nonroot
 WORKDIR /app
-COPY --from=publish /src/Services/OrderServiceSolution/SeelansTyres.Workers.OrderWorker/publish .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SeelansTyres.Workers.OrderWorker.dll"]

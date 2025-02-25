@@ -21,11 +21,11 @@ WORKDIR "/src/Services/IdentityServiceSolution/SeelansTyres.Services.IdentitySer
 RUN dotnet build "SeelansTyres.Services.IdentityService.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SeelansTyres.Services.IdentityService.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
+RUN dotnet publish "SeelansTyres.Services.IdentityService.csproj" -c Release -r linux-x64 --no-self-contained -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 USER nonroot
 WORKDIR /app
-COPY --from=publish /src/Services/IdentityServiceSolution/SeelansTyres.Services.IdentityService/publish .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SeelansTyres.Services.IdentityService.dll"]

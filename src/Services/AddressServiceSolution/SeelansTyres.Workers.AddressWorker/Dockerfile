@@ -22,11 +22,11 @@ WORKDIR "/src/Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker
 RUN dotnet build "SeelansTyres.Workers.AddressWorker.csproj" -c Release -r linux-x64 --no-self-contained -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SeelansTyres.Workers.AddressWorker.csproj" -c Release -r linux-x64 --no-self-contained /p:UseAppHost=false
+RUN dotnet publish "SeelansTyres.Workers.AddressWorker.csproj" -c Release -r linux-x64 --no-self-contained -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 USER nonroot
 WORKDIR /app
-COPY --from=publish /src/Services/AddressServiceSolution/SeelansTyres.Workers.AddressWorker/publish .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SeelansTyres.Workers.AddressWorker.dll"]
