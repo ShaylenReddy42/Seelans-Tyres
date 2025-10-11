@@ -1,66 +1,45 @@
 {
   "version": "1.0",
-  "defaultProvider": "unpkg",
+  "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "provider": "unpkg",
-      "library": "@fortawesome/fontawesome-free@6.7.2",
-      "destination": "wwwroot/lib/fortawesome/fontawesome-free/",
+      "library": "bootstrap@5.3.8",
+      "destination": "wwwroot/lib/bootstrap/",
       "files": [
-        "LICENSE.txt",
-        "css/all.min.css",
-        "webfonts/fa-brands-400.ttf",
-        "webfonts/fa-brands-400.woff2",
-        "webfonts/fa-regular-400.ttf",
-        "webfonts/fa-regular-400.woff2",
-        "webfonts/fa-solid-900.ttf",
-        "webfonts/fa-solid-900.woff2",
-        "webfonts/fa-v4compatibility.ttf",
-        "webfonts/fa-v4compatibility.woff2"
+        "css/bootstrap.min.css",
+        "js/bootstrap.bundle.min.js"
       ]
     },
     {
-      "provider": "unpkg",
-      "library": "bootstrap@5.3.3",
-      "destination": "wwwroot/lib/bootstrap/",
+      "library": "font-awesome@7.0.1",
+      "destination": "wwwroot/lib/font-awesome/",
       "files": [
-        "dist/css/bootstrap.min.css",
-        "dist/css/bootstrap.min.css.map",
-        "dist/js/bootstrap.bundle.min.js",
-        "dist/js/bootstrap.bundle.min.js.map",
-        "LICENSE",
-        "README.md"
+        "css/all.min.css",
+        "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-solid-900.woff2",
+        "webfonts/fa-v4compatibility.woff2"
       ]
     },
     {
       "library": "jquery@3.7.1",
       "destination": "wwwroot/lib/jquery/",
       "files": [
-        "LICENSE.txt",
-        "README.md",
-        "dist/jquery.min.js",
-        "dist/jquery.min.map"
+        "jquery.min.js"
       ]
     },
     {
-      "provider": "unpkg",
-      "library": "jquery-validation@1.21.0",
-      "destination": "wwwroot/lib/jquery-validation/",
+      "library": "jquery-validate@1.21.0",
+      "destination": "wwwroot/lib/jquery-validate/",
       "files": [
-        "LICENSE.md",
-        "README.md",
-        "dist/jquery.validate.min.js"
+        "jquery.validate.min.js"
       ]
     },
     {
-      "provider": "unpkg",
       "library": "jquery-validation-unobtrusive@4.0.0",
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
       "files": [
-        "README.md",
-        "LICENSE.txt",
-        "dist/jquery.validate.unobtrusive.js",
-        "dist/jquery.validate.unobtrusive.min.js"
+        "jquery.validate.unobtrusive.min.js"
       ]
     }
   ]

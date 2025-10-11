@@ -1,28 +1,23 @@
 {
   "version": "1.0",
-  "defaultProvider": "unpkg",
+  "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "provider": "unpkg",
-      "library": "bootstrap@5.3.3",
+      "library": "bootstrap@5.3.8",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
-        "dist/css/bootstrap.min.css",
-        "dist/css/bootstrap.min.css.map",
-        "dist/js/bootstrap.bundle.min.js",
-        "dist/js/bootstrap.bundle.min.js.map",
-        "LICENSE",
-        "README.md"
+        "css/bootstrap.min.css",
+        "css/bootstrap.min.css.map",
+        "js/bootstrap.bundle.min.js",
+        "js/bootstrap.bundle.min.js.map"
       ]
     },
     {
       "library": "jquery@3.7.1",
       "destination": "wwwroot/lib/jquery/",
       "files": [
-        "dist/jquery.slim.min.js",
-        "dist/jquery.slim.min.map",
-        "README.md",
-        "LICENSE.txt"
+        "jquery.slim.min.js",
+        "jquery.slim.min.map"
       ]
     }
   ]
