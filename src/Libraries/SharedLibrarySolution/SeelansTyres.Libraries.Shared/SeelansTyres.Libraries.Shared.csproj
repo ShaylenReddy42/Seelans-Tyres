@@ -46,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <ProjectReference Include="..\..\UnpublishedUpdatesManagementSolution\ShaylenReddy42.UnpublishedUpdatesManagement\ShaylenReddy42.UnpublishedUpdatesManagement.csproj" />
   </ItemGroup>
 
